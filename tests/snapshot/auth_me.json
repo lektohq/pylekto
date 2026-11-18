@@ -1,0 +1,29 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/auth/me",
+  "path": "/auth/me",
+  "params": {},
+  "json": null,
+  "status": 200,
+  "body": {
+    "user": {
+      "id": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+      "username": "admin",
+      "display_name": null,
+      "personal_space_id": null,
+      "role": "admin",
+      "active": true,
+      "created_at": "2026-11-18T21:45:07.006624Z"
+    },
+    "authenticated_with": "token",
+    "csrf_token": null,
+    "session_expires_at": null,
+    "token_scope": "read_write",
+    "has_password": true,
+    "totp_enabled": false,
+    "linked_accounts": [],
+    "lekto_version": "0.15.5",
+    "shortcut_url": null
+  }
+}

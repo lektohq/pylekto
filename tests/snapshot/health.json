@@ -1,0 +1,16 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/health",
+  "path": "/health",
+  "params": {},
+  "json": null,
+  "status": 200,
+  "body": {
+    "status": "ok",
+    "checks": {
+      "database": "ok",
+      "object_store": "ok"
+    }
+  }
+}
