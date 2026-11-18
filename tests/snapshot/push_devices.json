@@ -1,0 +1,20 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/push/devices",
+  "path": "/push/devices",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": [
+    {
+      "id": "01a1f0c4-eabe-7c95-8103-618aae5880fa",
+      "name": "Muster Phone",
+      "locale": "en",
+      "endpoint": "https://web.push.apple.com/QGuQyavXutnMH9Byyn6xHn",
+      "created_at": "2026-11-18T22:26:39.422344Z",
+      "last_success_at": null
+    }
+  ]
+}

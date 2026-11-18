@@ -1,0 +1,26 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/push/devices",
+  "path": "/push/devices",
+  "params": {},
+  "json": {
+    "endpoint": "https://web.push.apple.com/QGuQyavXutnMH9Byyn6xHn",
+    "keys": {
+      "auth": "BTBZMqHH6r4Tts7J_aSIgg",
+      "p256dh": "BCVxsr7N_eNgVRqvHtD0zTZsEc6-VV-JvLexhqUzORcxaOzi6-AYWXvTBHm4bjyPjs7Vd8pZGH6SRpkNtoIAiw4"
+    },
+    "name": "Muster Phone",
+    "locale": "en"
+  },
+  "data": {},
+  "status": 201,
+  "body": {
+    "id": "01a1f0c4-eabe-7c95-8103-618aae5880fa",
+    "name": "Muster Phone",
+    "locale": "en",
+    "endpoint": "https://web.push.apple.com/QGuQyavXutnMH9Byyn6xHn",
+    "created_at": "2026-11-18T22:26:39.422344Z",
+    "last_success_at": null
+  }
+}

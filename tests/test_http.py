@@ -1,9 +1,11 @@
 """Tests of the HTTP layer: errors as exceptions, answers as models, pages of items."""
 
 from dataclasses import dataclass
+from datetime import date
 
 import httpx2
 import pytest
+from pydantic import SecretBytes, SecretStr
 
 from pylekto import (
     LektoApiError,
@@ -19,7 +21,8 @@ from pylekto import (
     LektoTimeoutError,
     LektoValidationError,
 )
-from pylekto._http import cursor_items, offset_items
+from pylekto._http import _reveal, body, cursor_items, offset_items
+from pylekto.models import DocumentPatch, MailboxPatch
 
 from .conftest import DOCUMENT_ID, Api
 
@@ -186,3 +189,12 @@ async def test_offset_items() -> None:
 
     assert [item async for item in offset_items(fetch)] == [1, 2, 3]
     assert asked == [0, 2]
+
+
+def test_body_sends_secrets_and_only_what_was_set() -> None:
+    """A body holds the values set, secrets as they are, ids and dates as JSON."""
+    mailbox = MailboxPatch(password=SecretStr("made-up-password"), interval_minutes=60)
+    assert body(mailbox) == {"password": "made-up-password", "interval_minutes": 60}
+    patch = DocumentPatch(contact_id=None, document_date=date(2026, 10, 1))
+    assert body(patch) == {"contact_id": None, "document_date": "2026-10-01"}
+    assert _reveal([SecretBytes(b"made up")]) == [b"made up"]

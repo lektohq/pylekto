@@ -1,0 +1,14 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/push",
+  "path": "/push",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "enabled": true,
+    "public_key": "BCFVwZPxP17Gd_exW1Ll6puioUhnXAEktcALOuHu6TGSulditnsOUfNt_7xhe9elkN1gq4R0FTmKRFXcP1c0WF0"
+  }
+}

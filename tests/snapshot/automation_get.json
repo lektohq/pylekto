@@ -1,0 +1,52 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/automation",
+  "path": "/automation",
+  "params": {
+    "period": "all",
+    "tz": "Europe/Berlin"
+  },
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "channels": [
+      "api",
+      "mail",
+      "web"
+    ],
+    "period": "all",
+    "since": null,
+    "lanes": {
+      "green": 0,
+      "yellow": 0,
+      "red": 0
+    },
+    "flow": [],
+    "decided": 0,
+    "untouched": 0,
+    "months": [
+      {
+        "start": "2026-11-01",
+        "lanes": {
+          "green": 0,
+          "yellow": 0,
+          "red": 0
+        }
+      }
+    ],
+    "duration": {
+      "count": 0,
+      "median_ms": null,
+      "p90_ms": null
+    },
+    "work": {
+      "count": 0,
+      "median_ms": null,
+      "p90_ms": null
+    },
+    "steps": [],
+    "fields": []
+  }
+}

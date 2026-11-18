@@ -1,0 +1,13 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/pipeline/read-facts",
+  "path": "/pipeline/read-facts",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 202,
+  "body": {
+    "queued": 38
+  }
+}

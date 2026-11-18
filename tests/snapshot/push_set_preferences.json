@@ -1,0 +1,23 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "PUT",
+  "operation": "/push/preferences",
+  "path": "/push/preferences",
+  "params": {},
+  "json": {
+    "kinds": [
+      "waiting",
+      "job_failed"
+    ],
+    "titles": false
+  },
+  "data": {},
+  "status": 200,
+  "body": {
+    "kinds": [
+      "job_failed",
+      "waiting"
+    ],
+    "titles": false
+  }
+}

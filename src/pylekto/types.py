@@ -109,3 +109,18 @@ type RuleScope = Literal["global", "space"]
 
 # A tab of the inbox.
 type InboxTab = Literal["new", "review", "intervene", "processing", "done"]
+
+# The outcome of a webhook delivery.
+type DeliveryOutcome = Literal["delivered", "retrying", "gave_up", "dropped"]
+
+# What became of a mail a mailbox fetched.
+type MailOutcome = Literal["taken", "no_rule", "nothing", "known", "too_large", "failed"]
+
+# The state of a job.
+type JobState = Literal["running", "due", "planned", "done", "failed"]
+
+# The way a document came in.
+type Channel = Literal["web", "api", "migration", "mail"]
+
+# The time an automation report looks back on.
+type Period = Literal["30d", "12m", "all"]

@@ -1,0 +1,11 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/classifier/train",
+  "path": "/classifier/train",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 202,
+  "body": null
+}

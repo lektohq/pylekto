@@ -8,7 +8,7 @@ from typing import IO, Any, Protocol, TypedDict, Unpack
 from uuid import UUID
 
 import httpx2
-from pydantic import BaseModel, TypeAdapter, ValidationError
+from pydantic import BaseModel, SecretBytes, SecretStr, TypeAdapter, ValidationError
 
 from pylekto.exceptions import (
     LektoApiError,
@@ -26,6 +26,8 @@ from pylekto.exceptions import (
 from pylekto.models import Problem
 
 API_PATH = "/api/v1"
+# Writes ids, dates and the like as JSON (for request bodies).
+_JSON: TypeAdapter[Any] = TypeAdapter(Any)
 # Lekto recognises a file by its content, not by the type a client names.
 FILE_TYPE = "application/octet-stream"
 
@@ -142,8 +144,23 @@ def _text(value: object) -> str:
 
 
 def body(model: BaseModel) -> Any:
-    """Return the JSON of a request body: only the values set, so a change sends no others."""
-    return model.model_dump(mode="json", by_alias=True, exclude_unset=True)
+    """Return the JSON of a request body: only the values set, so a change sends no others.
+
+    Secrets (a mailbox's password) go as they are: pydantic would write them as ``**********``.
+    """
+    values = model.model_dump(mode="python", by_alias=True, exclude_unset=True)
+    return _JSON.dump_python(_reveal(values), mode="json")
+
+
+def _reveal(value: object) -> object:
+    """Put the values of the secrets in a dumped model in place of the secrets."""
+    if isinstance(value, SecretStr | SecretBytes):
+        return value.get_secret_value()
+    if isinstance(value, dict):
+        return {key: _reveal(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_reveal(item) for item in value]
+    return value
 
 
 def parse[M: BaseModel](response: httpx2.Response, model: type[M]) -> M:

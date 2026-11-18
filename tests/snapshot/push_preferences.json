@@ -1,0 +1,19 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/push/preferences",
+  "path": "/push/preferences",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "kinds": [
+      "job_failed",
+      "mailbox_failed",
+      "waiting",
+      "webhook_disabled"
+    ],
+    "titles": true
+  }
+}

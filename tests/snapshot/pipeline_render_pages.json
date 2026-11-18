@@ -1,0 +1,13 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/pipeline/render-pages",
+  "path": "/pipeline/render-pages",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 202,
+  "body": {
+    "queued": 0
+  }
+}
