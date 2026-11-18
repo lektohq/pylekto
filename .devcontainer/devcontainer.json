@@ -1,0 +1,59 @@
+{
+  "name": "pylekto",
+  "build": {
+    "dockerfile": "../Dockerfile.dev",
+    "context": ".."
+  },
+  "remoteUser": "vscode",
+  "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && script/setup",
+  "postStartCommand": "script/bootstrap",
+  "containerEnv": {
+    "DEVCONTAINER": "true",
+    "CLAUDE_CONFIG_DIR": "/home/vscode/.claude",
+    "GH_TOKEN": "${localEnv:GH_DEVCONTAINER_TOKEN}"
+  },
+  "mounts": [
+    "source=pylekto-claude-config,target=/home/vscode/.claude,type=volume",
+    "source=pylekto-uv-cache,target=/home/vscode/.cache/uv,type=volume"
+  ],
+  "runArgs": [
+    "-e",
+    "GIT_EDITOR=code --wait",
+    "--security-opt",
+    "label=disable"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Anthropic.claude-code",
+        "charliermarsh.ruff",
+        "editorconfig.editorconfig",
+        "GitHub.vscode-pull-request-github",
+        "ms-python.mypy-type-checker",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "redhat.vscode-yaml",
+        "ryanluker.vscode-coverage-gutters",
+        "tekumara.typos-vscode",
+        "yzhang.markdown-all-in-one"
+      ],
+      "settings": {
+        "coverage-gutters.showGutterCoverage": true,
+        "coverage-gutters.showLineCoverage": true,
+        "coverage-gutters.xmlname": "coverage.xml",
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": true,
+        "files.trimTrailingWhitespace": true,
+        "python.defaultInterpreterPath": "/home/vscode/.local/dev-venv/bin/python",
+        "python.terminal.activateEnvInCurrentTerminal": true,
+        "python.testing.pytestEnabled": true,
+        "python.testing.unittestEnabled": false,
+        "python.testing.pytestArgs": ["tests"],
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        },
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      }
+    }
+  }
+}

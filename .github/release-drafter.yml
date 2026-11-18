@@ -1,0 +1,105 @@
+---
+name-template: "pylekto $RESOLVED_VERSION 🦉"
+tag-template: "v$RESOLVED_VERSION"
+
+change-template: "- $TITLE ($NUMBERS)$BODY"
+change-title-escapes: '\<*_&|'
+sort-by: merged_at
+sort-direction: ascending
+
+new-contributor-template: "- $AUTHOR_MENTION made their first contribution in #$NUMBER"
+no-new-contributor-template: "<!-- no new contributors -->"
+
+group-changes:
+  - pattern: '/^(?:chore\(deps\): )?[Uu]pdate (?:dependency )?(?<group>.+?)(?: action| Docker tag)? to (?<to>\S+)$/'
+    title-template: "Update $GROUP to $LAST_TO"
+
+replacers:
+  # The section "## Release notes" of the pull request text becomes ⟦notes⟧ behind the title.
+  - target: change-body
+    search: '/<!--[\s\S]*?-->/g'
+    replace: ""
+  - target: change-body
+    search: '/^[\s\S]*?^## Release notes[ \t]*\n([\s\S]*?)(?=^## |(?![\s\S]))[\s\S]*$/m'
+    replace: "⟦$1⟧"
+  - target: change-body
+    search: '/^(?!⟦)[\s\S]*$/'
+    replace: ""
+  - target: change-body
+    search: '/\s*\n\s*/g'
+    replace: " "
+  - target: change-body
+    search: '/(⟦)\s+|\s+(⟧)/g'
+    replace: "$1$2"
+  - search: '/^(- .*?)⟦(.*?)⟧$/gm'
+    replace: "$1<br><sub>$2</sub>"
+  - search: '/<br><sub><\/sub>/g'
+    replace: ""
+  - search: '/## 👋 New contributors\s*<!-- no new contributors -->\s*/'
+    replace: ""
+
+categories:
+  - type: pre-exclude
+    when:
+      label: "skip-changelog"
+  - title: "🚨 Breaking changes"
+    semver-increment: major
+    when:
+      label: "breaking-change"
+  - title: "✨ New features"
+    semver-increment: minor
+    when:
+      label: "new-feature"
+  - title: "🚀 Enhancements"
+    when:
+      labels:
+        - "enhancement"
+        - "refactor"
+        - "performance"
+  - title: "🐛 Bug fixes"
+    when:
+      label: "bugfix"
+  - title: "📚 Documentation"
+    when:
+      label: "documentation"
+  - title: "🧰 Maintenance"
+    collapse-after: 0
+    when:
+      labels:
+        - "maintenance"
+        - "ci"
+  - title: "⬆️ Dependencies"
+    collapse-after: 0
+    when:
+      labels:
+        - "dependencies"
+        - "dev-deps"
+  # The version alone, without a section of their own.
+  - type: version-resolver
+    semver-increment: major
+    when:
+      label: "major"
+  - type: version-resolver
+    semver-increment: minor
+    when:
+      label: "minor"
+  - type: version-resolver
+    semver-increment: patch
+
+template: |
+
+  $CHANGES
+
+footer: |
+
+  ## 👋 New contributors
+
+  $NEW_CONTRIBUTORS
+
+  ## Install
+
+  ```sh
+  pip install pylekto==$RESOLVED_VERSION
+  ```
+
+  **Full changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION

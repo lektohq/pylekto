@@ -1,0 +1,35 @@
+---
+name: Feature request
+description: Suggest an idea or an enhancement for pylekto
+title: "[FEATURE] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        pylekto is a side project, so a reply can take a while, but every issue gets one.
+        A pull request that implements the feature speeds things up a lot.
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature description
+      description: What would you like pylekto to do?
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: Which problem does it solve?
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: implementation-offer
+    attributes:
+      label: How can you help?
+      options:
+        - label: I'm willing to implement this feature and open a pull request
+        - label: I can help with testing
+        - label: I can help with documentation
