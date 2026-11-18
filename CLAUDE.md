@@ -56,6 +56,9 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
   (`DocumentFilter`), taken as keyword arguments, and so are choices the generator wrote inline
   (`IdentifierKind`, `TagScope`, `OpenSource`); tests keep them equal to the description's. Form fields always go as parts of a multipart body (`(None, text)`): Lekto reads
   them nowhere else.
+- Streams (`GET /events`) are read line by line without a read timeout (`Http.lines`) and parsed by
+  `_sse.py` as the HTML standard says; a recording of a stream holds its text
+  (`Recording.listen`, with a request that triggers events).
 - `models.py` is generated; a test fails if it differs from what datamodel-codegen writes from
   `openapi.json`. Ruff and typos leave it out; mypy checks it.
 - While Lekto is in beta, connecting to another version than `LEKTO_VERSION` warns

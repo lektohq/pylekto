@@ -8,7 +8,8 @@ Async Python client for the [Lekto](https://github.com/lektohq/lekto) DMS REST A
 > edits, changes of many documents), `search`, `relations`, the master data (`contacts`,
 > `document_types`, `tags`, `fields`), `spaces`, `users`, `identifiers`, the `inbox`, the
 > `expected` documents, `lenses`, `rules` (with templates), `mailboxes`, `mail_rules`,
-> `webhooks`, `push`, the `pipeline`, `jobs`, `automation` and the `classifier`.
+> `webhooks`, `push`, the `pipeline`, `jobs`, `automation`, the `classifier` and the `events`
+> as they happen.
 
 ```python
 import asyncio
@@ -26,6 +27,9 @@ async def main() -> None:
 
         result = await lekto.search.page("electricity bill", limit=5)
         print([hit.document.title for hit in result.items])
+
+        async for event in lekto.events.listen():  # until Lekto ends the stream
+            print(event.type, event.document_id)
 
 
 asyncio.run(main())
