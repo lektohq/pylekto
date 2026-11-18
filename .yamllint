@@ -1,0 +1,18 @@
+# yamllint for the YAML files of this repository: the workflows, the GitHub settings, prek's
+# configuration. `uv run yamllint .`; prek runs it before every commit, CI in the job `lint`.
+extends: default
+
+# Whatever git ignores is not ours to lint (the virtual environment, caches, `.idea`).
+ignore-from-file: [.gitignore]
+
+rules:
+  # Workflows start without `---`.
+  document-start: disable
+  # Workflows hold shell scripts that cannot be wrapped without changing them.
+  line-length: disable
+  # `on:` of the workflows is a key, not a boolean.
+  truthy:
+    check-keys: false
+  # Action pins carry their version as `@<sha> # v7.0.1` (Renovate writes it so).
+  comments:
+    min-spaces-from-content: 1

@@ -1,0 +1,92 @@
+[project]
+name = "pylekto"
+# Set from the release's tag when it is built (.github/workflows/release.yml).
+version = "0.0.0"
+description = "Async Python client for the Lekto DMS REST API"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["lekto", "dms", "document-management", "api-client", "async"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+requires-python = ">=3.14"
+# A library states lower bounds only; uv.lock pins the development environment.
+dependencies = []
+
+[project.urls]
+"Source Code" = "https://github.com/lektohq/pylekto"
+"Bug Reports" = "https://github.com/lektohq/pylekto/issues"
+
+[dependency-groups]
+dev = [
+    "covdefaults>=2.3.0",
+    "mypy>=2.4.1",
+    "prek>=0.5.9",
+    "pytest>=9.2.0",
+    "pytest-asyncio>=1.4.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.17.3",
+    "typos>=1.51.1",
+    "yamllint>=1.38.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN401", # Any is sometimes the honest type of a value
+    "CPY001", # no copyright notice in every file
+    "D203",   # conflicts with D211
+    "D213",   # conflicts with D212
+    "D417",   # false positives
+    "PLR2004", # magic values in comparisons
+    "PLR0913", # too many arguments: not actionable without breaking the public API
+    "RUF012", # mutable class attributes without ClassVar
+    # Conflict with the Ruff formatter.
+    "COM812",
+    "ISC001",
+]
+
+[tool.ruff.lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[tool.ruff.lint.isort]
+known-first-party = ["pylekto"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 25
+
+[tool.mypy]
+strict = true
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov --cov-report=term --cov-report=xml"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+
+[tool.coverage.run]
+plugins = ["covdefaults"]
+source = ["pylekto"]
+
+[tool.coverage.report]
+fail_under = 95
+show_missing = true
+
+[tool.typos.files]
+extend-exclude = ["uv.lock"]

@@ -1,0 +1,14 @@
+# The rules of the project, adjusted for tests.
+extend = "../pyproject.toml"
+
+lint.extend-select = [
+    "PT", # pytest style
+]
+
+lint.extend-ignore = [
+    "S101",   # tests assert
+    "S105",   # tests hold made-up passwords and tokens
+    "S106",   # the same, passed as keyword arguments
+    "SLF001", # tests reach private members
+    "TC002",  # pytest needs some imports at run time
+]

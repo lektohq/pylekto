@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Packaging
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+
+# Tests and coverage
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.pytest_cache/
+.hypothesis/
+
+# Tools
+.mypy_cache/
+.ruff_cache/
+
+# Editors
+.vscode/
+*.iml
+
+# The knowledge vault, a checkout of the private repository lektohq/lekto-knowledge
+.idea/
+
+# Documentation build and its deployment (Zensical, Cloudflare)
+site/
+.wrangler/
+.dev.vars*
+!.dev.vars.example
+
+# Local settings and secrets
+.env*
+!.env.example
+
+# macOS
+.DS_Store
+._*
+
+# Claude Code
+.claude/settings.local.json
