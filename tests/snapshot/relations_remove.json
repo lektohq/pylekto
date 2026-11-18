@@ -1,0 +1,16 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "DELETE",
+  "operation": "/documents/{id}/relations/{other_id}",
+  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/relations/01a1f0a0-2712-7a30-a4d1-45271bf7d2d2",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "refers_to": [],
+    "referred_by": [],
+    "suggested": [],
+    "editable": true
+  }
+}

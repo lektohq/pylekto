@@ -1,10 +1,12 @@
 """Tests that every recording fits the model the OpenAPI description names for its answer."""
 
 import json
+from http import HTTPStatus
 from pathlib import Path
+from typing import Any
 
 import pytest
-from pydantic import BaseModel
+from pydantic import ValidationError
 
 from pylekto import LEKTO_VERSION, models
 
@@ -15,13 +17,32 @@ DESCRIPTION = json.loads((ROOT / "openapi.json").read_text(encoding="utf-8"))
 NAMES = sorted(path.stem for path in SNAPSHOT.glob("*.json"))
 
 
-def answer_model(method: str, operation: str, status: int) -> tuple[type[BaseModel], bool]:
-    """Return the model the description names for an answer, and whether it is a list of them."""
+def answer_schema(method: str, operation: str, status: int) -> dict[str, Any]:
+    """Return the schema the description names for an answer."""
     answer = DESCRIPTION["paths"]["/api/v1" + operation][method.lower()]["responses"][str(status)]
-    schema = answer["content"]["application/json"]["schema"]
-    many = schema.get("type") == "array"
-    reference = schema["items"]["$ref"] if many else schema["$ref"]
-    return getattr(models, reference.rsplit("/", 1)[-1]), many
+    schema: dict[str, Any] = answer["content"]["application/json"]["schema"]
+    return schema
+
+
+def validate(schema: dict[str, Any], value: object) -> None:
+    """Validate a value against a schema of the description, by the models it names."""
+    if "$ref" in schema:
+        getattr(models, schema["$ref"].rsplit("/", 1)[-1]).model_validate(value)
+    elif "anyOf" in schema:
+        failures = []
+        for option in schema["anyOf"]:
+            try:
+                validate(option, value)
+            except ValidationError as failure:
+                failures.append(failure)
+        assert len(failures) < len(schema["anyOf"]), failures
+    elif schema.get("type") == "array":
+        assert isinstance(value, list)
+        for item in value:
+            validate(schema["items"], item)
+    else:
+        assert schema.get("type") == "object"
+        assert isinstance(value, dict)
 
 
 def test_there_are_recordings() -> None:
@@ -35,7 +56,9 @@ def test_recording_fits_its_model(name: str) -> None:
     recorded = snapshot(name)
     raw = json.loads((SNAPSHOT / f"{name}.json").read_text(encoding="utf-8"))
     assert raw["lekto_version"] == LEKTO_VERSION
-    if recorded.body is not None:
-        model, many = answer_model(recorded.method, recorded.operation, recorded.status)
-        for item in recorded.body if many else [recorded.body]:
-            model.model_validate(item)
+    if recorded.body is None:
+        return
+    if recorded.status >= HTTPStatus.BAD_REQUEST:
+        models.Problem.model_validate(recorded.body)
+        return
+    validate(answer_schema(recorded.method, recorded.operation, recorded.status), recorded.body)

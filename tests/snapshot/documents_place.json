@@ -1,0 +1,39 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/documents/{id}/places/{kind}/{ref}",
+  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/places/customer_number/Af9djVUO-QXXIXACVV1hdi4lF_18ai28Ww",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "document_id": "01a1f0a0-2797-7197-8560-bfd323a73977",
+    "title": "Stromabrechnung 2023/2024",
+    "date": "2026-02-02",
+    "role": "contact",
+    "excerpt": {
+      "before": "…Garten Kundennummer ",
+      "match": "7700 4521",
+      "after": " Versandhaus Bergmann GmbH · Versandallee 100 · 33100 Paketstadt Bestellnummer…"
+    },
+    "occurrences": [
+      {
+        "own": true,
+        "locations": [
+          {
+            "page": 1,
+            "boxes": [
+              {
+                "x": 0.8373,
+                "y": 0.1676,
+                "width": 0.0675,
+                "height": 0.0097
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

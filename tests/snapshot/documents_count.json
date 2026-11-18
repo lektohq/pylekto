@@ -1,0 +1,13 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/documents/count",
+  "path": "/documents/count",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "total": 40
+  }
+}

@@ -1,0 +1,360 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/documents/{id}/facts",
+  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/facts",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "contact_id": "01a1f0a0-261b-7455-8a87-2fc5bc48ac4f",
+    "named": [
+      {
+        "contact_id": "01a1f0a0-258e-7399-ad86-a85145bc6db8",
+        "name": "Hansebank AG",
+        "alias": false,
+        "in_text": true,
+        "in_code": false,
+        "spans": [
+          {
+            "start": 1521,
+            "end": 1530,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.5011,
+                    "y": 0.924,
+                    "width": 0.051,
+                    "height": 0.0068
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "contact_id": "01a1f0a0-261b-7455-8a87-2fc5bc48ac4f",
+        "name": "Versandhaus Bergmann GmbH",
+        "alias": false,
+        "in_text": true,
+        "in_code": false,
+        "spans": [
+          {
+            "start": 338,
+            "end": 358,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.1191,
+                    "y": 0.1858,
+                    "width": 0.1268,
+                    "height": 0.0079
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "start": 1463,
+            "end": 1483,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.1191,
+                    "y": 0.924,
+                    "width": 0.1086,
+                    "height": 0.0068
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "identifiers": [
+      {
+        "kind": "customer_number",
+        "value": "77004521",
+        "contact_id": null,
+        "topic_id": null,
+        "in_text": true,
+        "in_code": false,
+        "spans": [
+          {
+            "start": 328,
+            "end": 337,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.8373,
+                    "y": 0.1676,
+                    "width": 0.0675,
+                    "height": 0.0097
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "role": "contact",
+        "origins": [
+          "pattern",
+          "person"
+        ],
+        "state": "rejected",
+        "kept": true,
+        "rejected_at": null,
+        "holder": null,
+        "other_contacts": 0,
+        "other_contact_ids": []
+      },
+      {
+        "kind": "email_domain",
+        "value": "bergmann-versand.example",
+        "contact_id": null,
+        "topic_id": null,
+        "in_text": true,
+        "in_code": false,
+        "spans": [
+          {
+            "start": 1622,
+            "end": 1646,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.2801,
+                    "y": 0.9341,
+                    "width": 0.2006,
+                    "height": 0.0069
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "start": 1736,
+            "end": 1760,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.2801,
+                    "y": 0.9442,
+                    "width": 0.1501,
+                    "height": 0.0068
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "role": "contact",
+        "origins": [
+          "pattern"
+        ],
+        "state": "found",
+        "kept": true,
+        "rejected_at": null,
+        "holder": {
+          "kind": "sender",
+          "name": "Versandhaus Bergmann GmbH",
+          "source": "rule"
+        },
+        "other_contacts": 0,
+        "other_contact_ids": []
+      }
+    ],
+    "codes": [],
+    "numbers": [
+      {
+        "kind": "order_number",
+        "value": "BG7781234",
+        "written": "BG-7781234",
+        "role": "own",
+        "origins": [
+          "pattern"
+        ],
+        "state": "found",
+        "spans": [
+          {
+            "start": 446,
+            "end": 456,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.8238,
+                    "y": 0.1824,
+                    "width": 0.081,
+                    "height": 0.0097
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "start": 648,
+            "end": 658,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.2577,
+                    "y": 0.3371,
+                    "width": 0.1058,
+                    "height": 0.0126
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "holder": null
+      },
+      {
+        "kind": "commercial_register",
+        "value": "HRB10077",
+        "written": "HRB 10077",
+        "role": "contact",
+        "origins": [
+          "pattern"
+        ],
+        "state": "found",
+        "spans": [
+          {
+            "start": 1573,
+            "end": 1582,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.7944,
+                    "y": 0.924,
+                    "width": 0.0521,
+                    "height": 0.0068
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "holder": null
+      },
+      {
+        "kind": "iban",
+        "value": "DE07300400000777123456",
+        "written": "DE07 3004 0000 0777 1234 56",
+        "role": "contact",
+        "origins": [
+          "pattern"
+        ],
+        "state": "found",
+        "spans": [
+          {
+            "start": 1653,
+            "end": 1680,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.5275,
+                    "y": 0.9341,
+                    "width": 0.1401,
+                    "height": 0.0069
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "holder": {
+          "kind": "sender",
+          "name": null,
+          "source": "rule"
+        }
+      },
+      {
+        "kind": "vat_id",
+        "value": "DE771234989",
+        "written": "DE 771 234 989",
+        "role": "contact",
+        "origins": [
+          "pattern"
+        ],
+        "state": "found",
+        "spans": [
+          {
+            "start": 1692,
+            "end": 1706,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.7327,
+                    "y": 0.9341,
+                    "width": 0.0729,
+                    "height": 0.0069
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "holder": null
+      }
+    ],
+    "decided": [
+      {
+        "kind": "email_address",
+        "value": "kundenservice@bergmann-versand.example",
+        "written": "kundenservice@bergmann-versand.example",
+        "role": "person",
+        "origins": [
+          "pattern"
+        ],
+        "state": "found",
+        "spans": [
+          {
+            "start": 1608,
+            "end": 1646,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.2801,
+                    "y": 0.9341,
+                    "width": 0.2006,
+                    "height": 0.0069
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "holder": null
+      }
+    ],
+    "editable": true,
+    "persons": []
+  }
+}

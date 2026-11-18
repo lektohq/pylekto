@@ -1,0 +1,401 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/documents/stream",
+  "path": "/documents/stream",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "lanes": [
+      {
+        "kind": "series",
+        "documents": [
+          {
+            "id": "01a1f0a0-2d8b-7971-a826-5130625258c2",
+            "title": "Kontoauszug 1/2024",
+            "document_date": "2024-01-31",
+            "created_at": "2026-11-18T21:46:31.686353Z",
+            "contact_id": "01a1f0a0-25db-7ef6-b553-a59140395ec0",
+            "document_type_id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2db9-7184-801b-0cafa31b43a3",
+            "title": "Kontoauszug 7/2024",
+            "document_date": "2024-07-31",
+            "created_at": "2026-11-18T21:46:31.731741Z",
+            "contact_id": "01a1f0a0-25db-7ef6-b553-a59140395ec0",
+            "document_type_id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2998-703a-b506-b89db3fa12c6",
+            "title": "Kontoauszug 1/2025",
+            "document_date": "2025-01-31",
+            "created_at": "2026-11-18T21:46:30.676671Z",
+            "contact_id": "01a1f0a0-25db-7ef6-b553-a59140395ec0",
+            "document_type_id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
+            "lane": "green"
+          }
+        ],
+        "contact_id": "01a1f0a0-25db-7ef6-b553-a59140395ec0",
+        "document_type_id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
+        "number": "SWM2004771801",
+        "target": null,
+        "expected": null,
+        "parent": null,
+        "joins": null,
+        "folded": false
+      },
+      {
+        "kind": "single",
+        "documents": [
+          {
+            "id": "01a1f0a0-2712-7a30-a4d1-45271bf7d2d2",
+            "title": "Gehaltsabrechnung Februar 2024",
+            "document_date": "2024-02-25",
+            "created_at": "2026-11-18T21:46:30.029787Z",
+            "contact_id": "01a1f0a0-24db-72f8-998c-aff72f87037a",
+            "document_type_id": "01a1f0a0-2661-7674-a4c0-df10ba50d9ad",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2de5-722d-ae8d-3556494b2962",
+            "title": "Jahresabrechnung Strom 2023/2024",
+            "document_date": "2024-03-18",
+            "created_at": "2026-11-18T21:46:31.776060Z",
+            "contact_id": "01a1f0a0-25fe-7a21-8947-8534569b685a",
+            "document_type_id": "01a1f0a0-2670-7f16-b551-abf98167f8f6",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2b75-761a-b901-81bd26988bbc",
+            "title": "Tankbeleg 22.03.2024",
+            "document_date": "2024-03-22",
+            "created_at": "2026-11-18T21:46:31.151622Z",
+            "contact_id": "01a1f0a0-260c-7ce0-af23-8be2978263ef",
+            "document_type_id": "01a1f0a0-264a-71bd-9645-2664e885f021",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2cc5-7efa-a88e-dce40ab826ff",
+            "title": "Tankbeleg 01.04.2024",
+            "document_date": "2024-04-01",
+            "created_at": "2026-11-18T21:46:31.486414Z",
+            "contact_id": "01a1f0a0-260c-7ce0-af23-8be2978263ef",
+            "document_type_id": "01a1f0a0-264a-71bd-9645-2664e885f021",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2ae1-736f-8794-c945ec790b2a",
+            "title": "Telefonrechnung Juni 2024",
+            "document_date": "2024-06-05",
+            "created_at": "2026-11-18T21:46:31.006404Z",
+            "contact_id": "01a1f0a0-256d-79ba-b7de-f7ad245197b3",
+            "document_type_id": "01a1f0a0-2670-7f16-b551-abf98167f8f6",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2a16-7b37-864f-116b30441c0d",
+            "title": "Kontoauszug Erika Q2/2024",
+            "document_date": "2024-06-30",
+            "created_at": "2026-11-18T21:46:30.800333Z",
+            "contact_id": "01a1f0a0-2527-7e84-a5b7-849c9f557834",
+            "document_type_id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2a9a-704e-96fa-7d43cdc6e49b",
+            "title": "Kontoauszug 6/2024",
+            "document_date": "2024-06-30",
+            "created_at": "2026-11-18T21:46:30.931838Z",
+            "contact_id": "01a1f0a0-25db-7ef6-b553-a59140395ec0",
+            "document_type_id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2b9e-7187-92cb-94e8ea2edac5",
+            "title": "Kindergeld 2025",
+            "document_date": "2025-01-15",
+            "created_at": "2026-11-18T21:46:31.192586Z",
+            "contact_id": "01a1f0a0-255b-7e07-85ef-ffb9fcbf039d",
+            "document_type_id": "01a1f0a0-2633-73c1-8945-0b3c57dfa934",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2b00-7751-a4ed-e488d54a34d7",
+            "title": "Telefonrechnung Februar 2025",
+            "document_date": "2025-02-05",
+            "created_at": "2026-11-18T21:46:31.037388Z",
+            "contact_id": "01a1f0a0-256d-79ba-b7de-f7ad245197b3",
+            "document_type_id": "01a1f0a0-2670-7f16-b551-abf98167f8f6",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2c25-78cf-952e-a928c59a52f3",
+            "title": "Arbeitszeugnis Erika",
+            "document_date": "2025-02-28",
+            "created_at": "2026-11-18T21:46:31.327730Z",
+            "contact_id": "01a1f0a0-24ec-7036-8d87-7c93b514695a",
+            "document_type_id": "01a1f0a0-268d-7377-a3d1-f76c7786b363",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-283b-7c5b-80ae-962e9fac971d",
+            "title": "Gehaltsabrechnung April 2025",
+            "document_date": "2025-04-25",
+            "created_at": "2026-11-18T21:46:30.327522Z",
+            "contact_id": "01a1f0a0-24db-72f8-998c-aff72f87037a",
+            "document_type_id": "01a1f0a0-2661-7674-a4c0-df10ba50d9ad",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2740-71bc-8bd6-5ec2f830969d",
+            "title": "Kassenbon Drogerie 26.07.2025",
+            "document_date": "2025-07-26",
+            "created_at": "2026-11-18T21:46:30.076100Z",
+            "contact_id": "01a1f0a0-254a-7606-934e-371971906690",
+            "document_type_id": "01a1f0a0-264a-71bd-9645-2664e885f021",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2937-782d-a15d-51e483146997",
+            "title": "Kassenbon Drogerie 06.08.2025",
+            "document_date": "2025-08-06",
+            "created_at": "2026-11-18T21:46:30.577217Z",
+            "contact_id": "01a1f0a0-254a-7606-934e-371971906690",
+            "document_type_id": "01a1f0a0-264a-71bd-9645-2664e885f021",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-29c3-73d3-839a-32747e41ef43",
+            "title": "Kontoauszug 9/2025",
+            "document_date": "2025-09-30",
+            "created_at": "2026-11-18T21:46:30.719176Z",
+            "contact_id": "01a1f0a0-25db-7ef6-b553-a59140395ec0",
+            "document_type_id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2c59-740e-b433-e57ba577132e",
+            "title": "Entlassungsbrief Lena",
+            "document_date": "2025-10-20",
+            "created_at": "2026-11-18T21:46:31.379109Z",
+            "contact_id": "01a1f0a0-25a0-7b91-97ea-19a655d833af",
+            "document_type_id": "01a1f0a0-262a-799a-baa4-751ddb0b4a32",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2a44-76a4-978f-753c4695fec3",
+            "title": "Kreditkarte Oktober 2025",
+            "document_date": "2025-10-31",
+            "created_at": "2026-11-18T21:46:30.846200Z",
+            "contact_id": "01a1f0a0-258e-7399-ad86-a85145bc6db8",
+            "document_type_id": "01a1f0a0-2659-743f-bbe0-f20845f82be9",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2b20-7ee6-9b78-8484389ad402",
+            "title": "Telefonrechnung November 2025",
+            "document_date": "2025-11-05",
+            "created_at": "2026-11-18T21:46:31.068216Z",
+            "contact_id": "01a1f0a0-256d-79ba-b7de-f7ad245197b3",
+            "document_type_id": "01a1f0a0-2670-7f16-b551-abf98167f8f6",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-286b-7f01-9f5b-71a7636e5bdf",
+            "title": "Gehaltsabrechnung Dezember 2025",
+            "document_date": "2025-12-25",
+            "created_at": "2026-11-18T21:46:30.374523Z",
+            "contact_id": "01a1f0a0-24db-72f8-998c-aff72f87037a",
+            "document_type_id": "01a1f0a0-2661-7674-a4c0-df10ba50d9ad",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-296c-7e98-8537-55714af8aac7",
+            "title": "Arbeitsunfähigkeitsbescheinigung",
+            "document_date": "2026-01-13",
+            "created_at": "2026-11-18T21:46:30.631315Z",
+            "contact_id": "01a1f0a0-2538-721f-8a8d-0b0c5769f48d",
+            "document_type_id": "01a1f0a0-263b-77bd-bccb-edf3c4283b75",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-27bf-7dbe-bb4e-d301d51467fc",
+            "title": "Bezügemitteilung Erika Januar 2026",
+            "document_date": "2026-01-20",
+            "created_at": "2026-11-18T21:46:30.203218Z",
+            "contact_id": "01a1f0a0-25ed-7ccc-b5ca-f7570ad04c69",
+            "document_type_id": "01a1f0a0-2661-7674-a4c0-df10ba50d9ad",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2812-7741-9ad6-398ea8fbb6ed",
+            "title": "Hundesteuer 2026",
+            "document_date": "2026-01-20",
+            "created_at": "2026-11-18T21:46:30.287617Z",
+            "contact_id": "01a1f0a0-25ed-7ccc-b5ca-f7570ad04c69",
+            "document_type_id": "01a1f0a0-2633-73c1-8945-0b3c57dfa934",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2797-7197-8560-bfd323a73977",
+            "title": "Stromabrechnung 2023/2024",
+            "document_date": "2026-02-02",
+            "created_at": "2026-11-18T21:46:30.163242Z",
+            "contact_id": "01a1f0a0-261b-7455-8a87-2fc5bc48ac4f",
+            "document_type_id": "01a1f0a0-2642-7ce2-96d5-0d10ad2addaa",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2d61-7129-b8e0-efa6bb76cf44",
+            "title": "Cloudberry invoice March 2026",
+            "document_date": "2026-03-01",
+            "created_at": "2026-11-18T21:46:31.643185Z",
+            "contact_id": "01a1f0a0-250d-77d3-a3b2-c69143877b6e",
+            "document_type_id": "01a1f0a0-2670-7f16-b551-abf98167f8f6",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2767-74c9-b24a-dc83d79e27ab",
+            "title": "Anhörungsbogen Geschwindigkeit",
+            "document_date": "2026-03-10",
+            "created_at": "2026-11-18T21:46:30.115484Z",
+            "contact_id": "01a1f0a0-25b5-7fe1-bea6-33a00c74f17d",
+            "document_type_id": "01a1f0a0-2668-7826-ba23-5b7f6c485c73",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2ac0-71a0-8525-1d3410c4583a",
+            "title": "Gehaltsanpassung 2026",
+            "document_date": "2026-03-18",
+            "created_at": "2026-11-18T21:46:30.973029Z",
+            "contact_id": "01a1f0a0-24db-72f8-998c-aff72f87037a",
+            "document_type_id": "01a1f0a0-2668-7826-ba23-5b7f6c485c73",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2c89-7c08-b836-eddac03115e5",
+            "title": "HU-Bericht 2026",
+            "document_date": "2026-05-12",
+            "created_at": "2026-11-18T21:46:31.429114Z",
+            "contact_id": "01a1f0a0-25c1-72ce-afef-4536048e063c",
+            "document_type_id": "01a1f0a0-263b-77bd-bccb-edf3c4283b75",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-29ec-7b75-871e-cbb854cec005",
+            "title": "Kontoauszug 5/2026",
+            "document_date": "2026-05-31",
+            "created_at": "2026-11-18T21:46:30.759721Z",
+            "contact_id": "01a1f0a0-25db-7ef6-b553-a59140395ec0",
+            "document_type_id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2d08-7290-95dd-ac1fe8047c87",
+            "title": "Zeitnachweis Mai 2026",
+            "document_date": "2026-06-02",
+            "created_at": "2026-11-18T21:46:31.553597Z",
+            "contact_id": "01a1f0a0-24db-72f8-998c-aff72f87037a",
+            "document_type_id": "01a1f0a0-2684-7e10-b89f-6348f20ebd5a",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2904-74a7-aa92-c7cd03dbf7e4",
+            "title": "Kassenbon Frischmarkt 07.06.2026",
+            "document_date": "2026-06-07",
+            "created_at": "2026-11-18T21:46:30.526517Z",
+            "contact_id": "01a1f0a0-257e-71df-b20c-1211b0acff8d",
+            "document_type_id": "01a1f0a0-264a-71bd-9645-2664e885f021",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2a71-788d-9adc-e64b10cc5ac0",
+            "title": "Kreditkarte Juni 2026",
+            "document_date": "2026-06-30",
+            "created_at": "2026-11-18T21:46:30.894079Z",
+            "contact_id": "01a1f0a0-258e-7399-ad86-a85145bc6db8",
+            "document_type_id": "01a1f0a0-2659-743f-bbe0-f20845f82be9",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2bf4-74d2-ab57-2a17e9bae6b7",
+            "title": "Kassenbon Café 05.08.2026",
+            "document_date": "2026-08-05",
+            "created_at": "2026-11-18T21:46:31.280499Z",
+            "contact_id": "01a1f0a0-24fa-7250-bee5-fdeb0991819a",
+            "document_type_id": "01a1f0a0-264a-71bd-9645-2664e885f021",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-27ee-7b77-9e6d-cd3ecec9337b",
+            "title": "Boarding pass SN 1452",
+            "document_date": "2026-08-09",
+            "created_at": "2026-11-18T21:46:30.248813Z",
+            "contact_id": "01a1f0a0-25ce-7a3e-9520-f35c1334ab09",
+            "document_type_id": "01a1f0a0-267a-7fb2-9c05-fecb33c2675a",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-28a5-7b82-b51a-60fa0715bb9b",
+            "title": "Gehaltsabrechnung August 2026",
+            "document_date": "2026-08-25",
+            "created_at": "2026-11-18T21:46:30.430586Z",
+            "contact_id": "01a1f0a0-24db-72f8-998c-aff72f87037a",
+            "document_type_id": "01a1f0a0-2661-7674-a4c0-df10ba50d9ad",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2b41-77f8-a839-6034c0931164",
+            "title": "Telefonrechnung September 2026",
+            "document_date": "2026-09-05",
+            "created_at": "2026-11-18T21:46:31.102506Z",
+            "contact_id": "01a1f0a0-256d-79ba-b7de-f7ad245197b3",
+            "document_type_id": "01a1f0a0-2670-7f16-b551-abf98167f8f6",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-2d33-77b6-aad4-904c77df90f8",
+            "title": "Kassenbon Baumarkt 23.10.2026",
+            "document_date": "2026-10-23",
+            "created_at": "2026-11-18T21:46:31.598739Z",
+            "contact_id": "01a1f0a0-24d2-793e-8aec-0b7686854864",
+            "document_type_id": "01a1f0a0-264a-71bd-9645-2664e885f021",
+            "lane": "green"
+          },
+          {
+            "id": "01a1f0a0-28d4-7b72-abd8-2fc086c95580",
+            "title": "IMG-20241229-WA0050",
+            "document_date": null,
+            "created_at": "2026-11-18T21:46:30.480905Z",
+            "contact_id": null,
+            "document_type_id": null,
+            "lane": "red"
+          },
+          {
+            "id": "01a1f0a0-2bcb-79a6-967a-bc1882e41a8e",
+            "title": "SCN_20251102_161136",
+            "document_date": null,
+            "created_at": "2026-11-18T21:46:31.237319Z",
+            "contact_id": null,
+            "document_type_id": null,
+            "lane": "red"
+          }
+        ],
+        "contact_id": null,
+        "document_type_id": null,
+        "number": null,
+        "target": null,
+        "expected": null,
+        "parent": null,
+        "joins": null,
+        "folded": false
+      }
+    ],
+    "truncated": false
+  }
+}

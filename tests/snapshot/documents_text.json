@@ -1,0 +1,18 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/documents/{id}/text",
+  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/text",
+  "params": {
+    "limit": 400
+  },
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "text": "                                                                                   Bergmann                     B\n                                                                             Alles für Haus und Garten\n\n                                                                         Kundennummer                         7700 4521\nVersandhaus Bergmann GmbH · Versandallee 100 · 33100 Paketstad",
+    "offset": 0,
+    "total_length": 1838,
+    "next_offset": 400
+  }
+}

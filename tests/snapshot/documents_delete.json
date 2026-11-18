@@ -1,0 +1,11 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "DELETE",
+  "operation": "/documents/{id}",
+  "path": "/documents/01a1f0b0-b391-70f0-8961-4a85b1919857",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 204,
+  "body": null
+}

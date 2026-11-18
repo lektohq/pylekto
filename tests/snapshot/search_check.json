@@ -1,0 +1,18 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/search/check",
+  "path": "/search/check",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "current": 40,
+    "missing": 0,
+    "outdated": 0,
+    "other_model": 0,
+    "extra": 1,
+    "took_ms": 63.5
+  }
+}

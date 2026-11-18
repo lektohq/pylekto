@@ -1,0 +1,11 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/search/reindex",
+  "path": "/search/reindex",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 202,
+  "body": null
+}
