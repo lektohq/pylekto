@@ -5,7 +5,8 @@ Async Python client for the [Lekto](https://github.com/lektohq/lekto) DMS REST A
 > [!NOTE]
 > pylekto is at its beginning: the client stands, the areas of the API follow one by one. So far
 > it covers `auth` (who calls), `health`, `documents` (with uploads, downloads, facts, page
-> edits, changes of many documents), `search` and `relations`.
+> edits, changes of many documents), `search`, `relations`, the master data (`contacts`,
+> `document_types`, `tags`, `fields`), `spaces`, `users` and `identifiers`.
 
 ```python
 import asyncio
