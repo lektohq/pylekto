@@ -1,0 +1,6 @@
+# The rules of the project; the scripts are no package.
+extend = "../pyproject.toml"
+
+lint.extend-ignore = [
+    "INP001", # implicit namespace package
+]
