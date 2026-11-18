@@ -1,0 +1,37 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "PATCH",
+  "operation": "/mail-rules/{id}",
+  "path": "/mail-rules/01a1f0bf-8917-7323-8c33-1f489ab504ce",
+  "params": {},
+  "json": {
+    "enabled": false
+  },
+  "data": {},
+  "status": 200,
+  "body": {
+    "id": "01a1f0bf-8917-7323-8c33-1f489ab504ce",
+    "mailbox_id": "01a1f0bf-5435-7684-a492-2d59e9620c37",
+    "name": "Muster Mail Rule",
+    "priority": 100,
+    "conditions": {
+      "all": [
+        {
+          "field": "sender",
+          "op": "ends_with",
+          "value": "@muster.example"
+        }
+      ],
+      "not": false
+    },
+    "parts": "all",
+    "user_id": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+    "space_id": null,
+    "text_type_id": null,
+    "after": [],
+    "enabled": false,
+    "disabled_reason": null,
+    "created_at": "2026-11-18T22:20:46.743460Z",
+    "updated_at": "2026-11-18T22:20:46.773164Z"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "DELETE",
+  "operation": "/push/devices/{id}",
+  "path": "/push/devices/01a1f0c4-eabe-7c95-8103-618aae5880fa",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 204,
+  "body": null
+}

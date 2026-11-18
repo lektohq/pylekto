@@ -1,0 +1,20 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/webhooks/{id}/deliveries/summary",
+  "path": "/webhooks/01a1f0bf-895d-7d8e-8690-5986287998e2/deliveries/summary",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "delivered": 0,
+    "retrying": 0,
+    "gave_up": 1,
+    "dropped": 0,
+    "event_types": [
+      "webhook.test"
+    ],
+    "kept_since": "2026-11-11T22:20:46.886083Z"
+  }
+}

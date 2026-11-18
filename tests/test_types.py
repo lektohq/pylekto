@@ -5,12 +5,17 @@ from pathlib import Path
 from typing import get_args, get_type_hints
 
 from pylekto.types import (
+    Channel,
+    DeliveryOutcome,
     DocumentFilter,
     EditPart,
     IdentifierKind,
     InboxTab,
+    JobState,
+    MailOutcome,
     OpenSource,
     PagePick,
+    Period,
     RuleScope,
     TagScope,
 )
@@ -54,5 +59,10 @@ def test_literals_are_the_descriptions_choices() -> None:
         (OpenSource, "OpenSource"),
         (RuleScope, "RuleScope"),
         (InboxTab, "InboxTab"),
+        (DeliveryOutcome, "DeliveryOutcome"),
+        (MailOutcome, "MailOutcome"),
+        (JobState, "JobState"),
+        (Channel, "Channel"),
+        (Period, "Period"),
     ]:
         assert list(get_args(alias.__value__)) == schemas[schema]["enum"]

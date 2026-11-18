@@ -49,6 +49,8 @@ ROOT = Path(__file__).resolve().parent.parent
 SNAPSHOT = ROOT / "tests" / "snapshot"
 TESTS_URL = "https://lekto.example.com"
 PLACEHOLDER = re.compile(r"\{(\w+)\}")
+# Secrets in answers are written as these made-up values (a webhook's signing secret).
+REDACTED = {"secret": "whsec_TWFkZSB1cCBmb3IgdGhlIHNuYXBzaG90IQ=="}
 
 type Lookup = Callable[["Recorder"], str]
 
@@ -136,6 +138,7 @@ class Recorder:
         )
         answer = response.json() if response.content else None
         self.answers[recording.name] = answer
+        answer = redact(answer)
         snapshot = {
             "lekto_version": LEKTO_VERSION,
             "method": recording.method,
@@ -152,6 +155,18 @@ class Recorder:
             text.replace(self.url, TESTS_URL), encoding="utf-8"
         )
         return response.status_code
+
+
+def redact(value: Any) -> Any:
+    """Replace the secrets in an answer by made-up values of the same form."""
+    if isinstance(value, list):
+        return [redact(item) for item in value]
+    if isinstance(value, dict):
+        return {
+            key: REDACTED[key] if key in REDACTED and item else redact(item)
+            for key, item in value.items()
+        }
+    return value
 
 
 def pdf(text: str) -> bytes:
@@ -290,6 +305,12 @@ def _rule_tag(recorder: Recorder) -> str:
     return str(recorder.call("POST", "/tags", json=tag)["id"])
 
 
+def _job(recorder: Recorder) -> str:
+    """Look up a job that is done (retrying it is refused)."""
+    page = recorder.call("GET", "/jobs", params={"state": "done", "limit": 1})
+    return str(page["items"][0]["id"])
+
+
 def _open(part: str) -> Lookup:
     """Look up a part of the first open identifier that has a contact."""
 
@@ -326,7 +347,24 @@ LOOKUPS: dict[str, Lookup] = {
     "new_rule": _created("rules_create", "/rules?include_disabled=true", "name", "Muster Rule"),
     "rule_tag": _rule_tag,
     "application": _answer("rules_apply"),
+    "new_mailbox": _created("mailboxes_create", "/mailboxes", "name", "Muster Mailbox"),
+    "new_mail_rule": _created("mail_rules_create", "/mail-rules", "name", "Muster Mail Rule"),
+    "new_webhook": _created("webhooks_create", "/webhooks", "name", "Muster Hook"),
+    "new_device": _created("push_add_device", "/push/devices", "name", "Muster Phone"),
+    "job": _job,
+    "me": lambda recorder: str(recorder.call("GET", "/auth/me")["user"]["id"]),
 }
+
+MAILBOX = {
+    "name": "Muster Mailbox",
+    "host": "imap.example.com",
+    "port": 993,
+    "security": "tls",
+    "username": "jane@example.com",
+    "password": "made-up-password",
+    "enabled": False,
+}
+MAIL_CONDITIONS = {"all": [{"field": "sender", "op": "ends_with", "value": "@muster.example"}]}
 
 RULE = {
     "name": "Muster Rule",
@@ -814,6 +852,186 @@ RECORDINGS: list[Recording] = [
         "/templates/preview",
         json={"template": "{{ title }} ({{ document_date }})", "document_id": "{document}"},
     ),
+    # Mailboxes and mail rules (the mailbox is switched off and points at no real server).
+    Recording("mailboxes_create", "POST", "/mailboxes", "/mailboxes", json=MAILBOX),
+    Recording("mailboxes_list", "GET", "/mailboxes", "/mailboxes"),
+    Recording("mailboxes_get", "GET", "/mailboxes/{new_mailbox}", "/mailboxes/{id}"),
+    Recording(
+        "mailboxes_update",
+        "PATCH",
+        "/mailboxes/{new_mailbox}",
+        "/mailboxes/{id}",
+        json={"interval_minutes": 60},
+    ),
+    Recording(
+        "mailboxes_test",
+        "POST",
+        "/mailboxes/test",
+        "/mailboxes/test",
+        json={key: MAILBOX[key] for key in ("host", "port", "security", "username", "password")},
+    ),
+    Recording("mailboxes_fetch", "POST", "/mailboxes/{new_mailbox}/fetch", "/mailboxes/{id}/fetch"),
+    Recording(
+        "mailboxes_mails_page",
+        "GET",
+        "/mailboxes/{new_mailbox}/mails",
+        "/mailboxes/{id}/mails",
+        params={"limit": 5},
+    ),
+    Recording(
+        "mailboxes_mails_summary",
+        "GET",
+        "/mailboxes/{new_mailbox}/mails/summary",
+        "/mailboxes/{id}/mails/summary",
+    ),
+    Recording(
+        "mail_rules_create",
+        "POST",
+        "/mail-rules",
+        "/mail-rules",
+        json={
+            "mailbox_id": "{new_mailbox}",
+            "name": "Muster Mail Rule",
+            "user_id": "{me}",
+            "conditions": MAIL_CONDITIONS,
+        },
+    ),
+    Recording("mail_rules_list", "GET", "/mail-rules", "/mail-rules"),
+    Recording("mail_rules_get", "GET", "/mail-rules/{new_mail_rule}", "/mail-rules/{id}"),
+    Recording(
+        "mail_rules_update",
+        "PATCH",
+        "/mail-rules/{new_mail_rule}",
+        "/mail-rules/{id}",
+        json={"enabled": False},
+    ),
+    Recording(
+        "mail_rules_dry_run",
+        "POST",
+        "/mail-rules/dry-run",
+        "/mail-rules/dry-run",
+        json={
+            "mailbox_id": "{new_mailbox}",
+            "name": "Muster Mail Rule",
+            "user_id": "{me}",
+            "conditions": MAIL_CONDITIONS,
+        },
+    ),
+    Recording("mail_rules_delete", "DELETE", "/mail-rules/{new_mail_rule}", "/mail-rules/{id}"),
+    Recording("mailboxes_delete", "DELETE", "/mailboxes/{new_mailbox}", "/mailboxes/{id}"),
+    # Webhooks (switched off, pointing at no real server).
+    Recording(
+        "webhooks_create",
+        "POST",
+        "/webhooks",
+        "/webhooks",
+        json={
+            "name": "Muster Hook",
+            "url": "https://hooks.example.com/lekto",
+            "event_types": ["document.filed"],
+            "signed": True,
+            "active": False,
+        },
+    ),
+    Recording("webhooks_list", "GET", "/webhooks", "/webhooks"),
+    Recording("webhooks_get", "GET", "/webhooks/{new_webhook}", "/webhooks/{id}"),
+    Recording(
+        "webhooks_update",
+        "PATCH",
+        "/webhooks/{new_webhook}",
+        "/webhooks/{id}",
+        json={"event_types": ["document.filed", "document.lane_changed"]},
+    ),
+    Recording("webhooks_test", "POST", "/webhooks/{new_webhook}/test", "/webhooks/{id}/test"),
+    Recording(
+        "webhooks_deliveries_page",
+        "GET",
+        "/webhooks/{new_webhook}/deliveries",
+        "/webhooks/{id}/deliveries",
+        params={"limit": 5},
+    ),
+    Recording(
+        "webhooks_deliveries_summary",
+        "GET",
+        "/webhooks/{new_webhook}/deliveries/summary",
+        "/webhooks/{id}/deliveries/summary",
+    ),
+    Recording(
+        "webhooks_renew_secret", "POST", "/webhooks/{new_webhook}/secret", "/webhooks/{id}/secret"
+    ),
+    Recording(
+        "webhooks_stop_signing",
+        "DELETE",
+        "/webhooks/{new_webhook}/secret",
+        "/webhooks/{id}/secret",
+    ),
+    Recording("webhooks_delete", "DELETE", "/webhooks/{new_webhook}", "/webhooks/{id}"),
+    # Push notifications: the device is the example of Lekto's description. Adding and removing
+    # it send nothing to the push service; a test notification would, so it is not recorded.
+    Recording("push_settings", "GET", "/push", "/push"),
+    Recording(
+        "push_add_device",
+        "POST",
+        "/push/devices",
+        "/push/devices",
+        json={
+            "endpoint": "https://web.push.apple.com/QGuQyavXutnMH9Byyn6xHn",
+            "keys": {
+                "auth": "BTBZMqHH6r4Tts7J_aSIgg",
+                "p256dh": (
+                    "BCVxsr7N_eNgVRqvHtD0zTZsEc6-VV-JvLexhqUzORcxaOzi6-AYWXvTBHm4"
+                    "bjyPjs7Vd8pZGH6SRpkNtoIAiw4"
+                ),
+            },
+            "name": "Muster Phone",
+            "locale": "en",
+        },
+    ),
+    Recording("push_devices", "GET", "/push/devices", "/push/devices"),
+    Recording("push_remove_device", "DELETE", "/push/devices/{new_device}", "/push/devices/{id}"),
+    Recording("push_preferences", "GET", "/push/preferences", "/push/preferences"),
+    Recording(
+        "push_set_preferences",
+        "PUT",
+        "/push/preferences",
+        "/push/preferences",
+        json={"kinds": ["waiting", "job_failed"], "titles": False},
+    ),
+    # Pipeline, jobs, automation and classifier.
+    Recording("pipeline_get", "GET", "/pipeline", "/pipeline"),
+    Recording("pipeline_reparse", "POST", "/pipeline/reparse", "/pipeline/reparse"),
+    Recording("pipeline_relate", "POST", "/pipeline/relate", "/pipeline/relate"),
+    Recording("pipeline_render_pages", "POST", "/pipeline/render-pages", "/pipeline/render-pages"),
+    Recording("pipeline_read_facts", "POST", "/pipeline/read-facts", "/pipeline/read-facts"),
+    Recording("jobs_summary", "GET", "/jobs/summary", "/jobs/summary"),
+    Recording("jobs_page", "GET", "/jobs", "/jobs", params={"limit": 5}),
+    Recording("jobs_durations", "GET", "/jobs/durations", "/jobs/durations"),
+    Recording("jobs_retry", "POST", "/jobs/{job}/retry", "/jobs/{id}/retry"),
+    Recording(
+        "automation_get",
+        "GET",
+        "/automation",
+        "/automation",
+        params={"period": "all", "tz": "Europe/Berlin"},
+    ),
+    Recording(
+        "automation_signals",
+        "GET",
+        "/automation/signals",
+        "/automation/signals",
+        params={"period": "all", "tz": "Europe/Berlin"},
+    ),
+    Recording("automation_holders", "GET", "/automation/holders", "/automation/holders"),
+    Recording(
+        "automation_holder_cases",
+        "GET",
+        "/automation/holders/cases",
+        "/automation/holders/cases",
+        params={"measure": "iban", "outcome": "right"},
+    ),
+    Recording("classifier_status", "GET", "/classifier", "/classifier"),
+    Recording("classifier_models", "GET", "/classifier/models", "/classifier/models"),
+    Recording("classifier_train", "POST", "/classifier/train", "/classifier/train"),
 ]
 
 

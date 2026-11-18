@@ -1,0 +1,28 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/push/devices",
+  "path": "/push/devices",
+  "params": {},
+  "json": {
+    "endpoint": "https://push.example.com/send/12345",
+    "keys": {
+      "auth": "BTBZMqHH6r4Tts7J_aSIgg",
+      "p256dh": "BCVxsr7N_eNgVRqvHtD0zTZsEc6-VV-JvLexhqUzORcxaOzi6-AYWXvTBHm4bjyPjs7Vd8pZGH6SRpkNtoIAiw4"
+    },
+    "name": "Muster Phone",
+    "locale": "en"
+  },
+  "data": {},
+  "status": 409,
+  "body": {
+    "type": "about:blank",
+    "title": "Conflict",
+    "status": 409,
+    "detail": "notifications are off on this server",
+    "reason": {
+      "code": "push_off",
+      "params": {}
+    }
+  }
+}

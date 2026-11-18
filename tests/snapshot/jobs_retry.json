@@ -1,0 +1,20 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/jobs/{id}/retry",
+  "path": "/jobs/01a1f0c4-64a6-76c6-8fcc-2453f819c3b6/retry",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 409,
+  "body": {
+    "type": "about:blank",
+    "title": "Conflict",
+    "status": 409,
+    "detail": "only a failed job can be tried again",
+    "reason": {
+      "code": "job_not_failed",
+      "params": {}
+    }
+  }
+}

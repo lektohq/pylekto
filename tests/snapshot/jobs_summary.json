@@ -1,0 +1,121 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/jobs/summary",
+  "path": "/jobs/summary",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "kinds": [
+      {
+        "kind": "classifier.check",
+        "running": 0,
+        "due": 0,
+        "planned": 1,
+        "failed": 0,
+        "done": 5
+      },
+      {
+        "kind": "classifier.train",
+        "running": 0,
+        "due": 0,
+        "planned": 0,
+        "failed": 0,
+        "done": 1
+      },
+      {
+        "kind": "documents.bulk",
+        "running": 0,
+        "due": 0,
+        "planned": 0,
+        "failed": 0,
+        "done": 2
+      },
+      {
+        "kind": "documents.remove_files",
+        "running": 0,
+        "due": 0,
+        "planned": 0,
+        "failed": 0,
+        "done": 4
+      },
+      {
+        "kind": "maintenance.cleanup",
+        "running": 0,
+        "due": 0,
+        "planned": 1,
+        "failed": 0,
+        "done": 1
+      },
+      {
+        "kind": "pipeline.facts",
+        "running": 0,
+        "due": 38,
+        "planned": 0,
+        "failed": 0,
+        "done": 39
+      },
+      {
+        "kind": "pipeline.node",
+        "running": 0,
+        "due": 0,
+        "planned": 0,
+        "failed": 2,
+        "done": 622
+      },
+      {
+        "kind": "pipeline.relate",
+        "running": 0,
+        "due": 40,
+        "planned": 0,
+        "failed": 0,
+        "done": 4
+      },
+      {
+        "kind": "pipeline.reparse",
+        "running": 0,
+        "due": 40,
+        "planned": 0,
+        "failed": 0,
+        "done": 0
+      },
+      {
+        "kind": "rules.apply",
+        "running": 0,
+        "due": 0,
+        "planned": 0,
+        "failed": 0,
+        "done": 1
+      },
+      {
+        "kind": "search.index",
+        "running": 0,
+        "due": 0,
+        "planned": 0,
+        "failed": 0,
+        "done": 80
+      },
+      {
+        "kind": "search.rebuild",
+        "running": 0,
+        "due": 0,
+        "planned": 0,
+        "failed": 0,
+        "done": 3
+      },
+      {
+        "kind": "search.reconcile",
+        "running": 0,
+        "due": 0,
+        "planned": 1,
+        "failed": 0,
+        "done": 4
+      }
+    ],
+    "last_started_at": "2026-11-18T22:26:05.143440Z",
+    "now": "2026-11-18T22:26:39.622315Z",
+    "kept_since": "2026-11-11T22:26:39.622315Z"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/mailboxes/test",
+  "path": "/mailboxes/test",
+  "params": {},
+  "json": {
+    "host": "imap.example.com",
+    "port": 993,
+    "security": "tls",
+    "username": "jane@example.com",
+    "password": "made-up-password"
+  },
+  "data": {},
+  "status": 200,
+  "body": {
+    "ok": false,
+    "folders": [],
+    "keywords": [],
+    "own_keywords": false,
+    "error": {
+      "code": "mail_unreachable",
+      "params": {
+        "host": "imap.example.com"
+      },
+      "subject": null,
+      "rule": null,
+      "field": null
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/mailboxes/{id}",
+  "path": "/mailboxes/01a1f0bf-5435-7684-a492-2d59e9620c37",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "id": "01a1f0bf-5435-7684-a492-2d59e9620c37",
+    "name": "Muster Mailbox",
+    "host": "imap.example.com",
+    "port": 993,
+    "security": "tls",
+    "username": "jane@example.com",
+    "folders": [
+      "INBOX"
+    ],
+    "interval_minutes": 5,
+    "start": "since_setup",
+    "since": null,
+    "fallback": "nothing",
+    "fallback_user_id": null,
+    "body_type_id": null,
+    "enabled": false,
+    "status": {
+      "last_attempt_at": null,
+      "last_success_at": null,
+      "error": null,
+      "mails": 0,
+      "documents": 0,
+      "skipped_at": null,
+      "skipped": null,
+      "step_failed_at": null,
+      "step_failed": null,
+      "keywords": [],
+      "own_keywords": null
+    },
+    "created_at": "2026-11-18T22:20:33.204689Z",
+    "updated_at": "2026-11-18T22:20:33.204689Z"
+  }
+}

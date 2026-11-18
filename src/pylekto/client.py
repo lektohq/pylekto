@@ -10,6 +10,8 @@ from pylekto._lekto import LEKTO_VERSION
 from pylekto.exceptions import LektoVersionWarning
 from pylekto.resources import (
     AuthResource,
+    AutomationResource,
+    ClassifierResource,
     ContactsResource,
     DocumentsResource,
     DocumentTypesResource,
@@ -18,13 +20,19 @@ from pylekto.resources import (
     HealthResource,
     IdentifiersResource,
     InboxResource,
+    JobsResource,
     LensesResource,
+    MailboxesResource,
+    MailRulesResource,
+    PipelineResource,
+    PushResource,
     RelationsResource,
     RulesResource,
     SearchResource,
     SpacesResource,
     TagsResource,
     UsersResource,
+    WebhooksResource,
 )
 
 if TYPE_CHECKING:
@@ -63,6 +71,8 @@ class LektoClient:
         self._client = httpx2.AsyncClient(timeout=TIMEOUT) if client is None else client
         http = Http(url, token, self._client)
         self.auth = AuthResource(http)
+        self.automation = AutomationResource(http)
+        self.classifier = ClassifierResource(http)
         self.contacts = ContactsResource(http)
         self.document_types = DocumentTypesResource(http)
         self.documents = DocumentsResource(http)
@@ -71,13 +81,19 @@ class LektoClient:
         self.health = HealthResource(http)
         self.identifiers = IdentifiersResource(http)
         self.inbox = InboxResource(http)
+        self.jobs = JobsResource(http)
         self.lenses = LensesResource(http)
+        self.mail_rules = MailRulesResource(http)
+        self.mailboxes = MailboxesResource(http)
+        self.pipeline = PipelineResource(http)
+        self.push = PushResource(http)
         self.relations = RelationsResource(http)
         self.rules = RulesResource(http)
         self.search = SearchResource(http)
         self.spaces = SpacesResource(http)
         self.tags = TagsResource(http)
         self.users = UsersResource(http)
+        self.webhooks = WebhooksResource(http)
         self.lekto_version: str | None = None
 
     async def __aenter__(self) -> Self:

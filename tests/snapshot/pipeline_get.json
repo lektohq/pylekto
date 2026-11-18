@@ -1,0 +1,119 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/pipeline",
+  "path": "/pipeline",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "nodes": [
+      {
+        "node": "receive",
+        "requires": [],
+        "waits_for": []
+      },
+      {
+        "node": "separate",
+        "requires": [
+          "receive"
+        ],
+        "waits_for": []
+      },
+      {
+        "node": "ocr",
+        "requires": [
+          "separate"
+        ],
+        "waits_for": []
+      },
+      {
+        "node": "pages",
+        "requires": [
+          "separate"
+        ],
+        "waits_for": []
+      },
+      {
+        "node": "parse",
+        "requires": [
+          "ocr"
+        ],
+        "waits_for": []
+      },
+      {
+        "node": "signal_llm",
+        "requires": [
+          "parse"
+        ],
+        "waits_for": [
+          "pages"
+        ]
+      },
+      {
+        "node": "signal_classifier",
+        "requires": [
+          "parse"
+        ],
+        "waits_for": []
+      },
+      {
+        "node": "signal_neighbours",
+        "requires": [
+          "parse"
+        ],
+        "waits_for": []
+      },
+      {
+        "node": "signal_facts",
+        "requires": [
+          "parse"
+        ],
+        "waits_for": []
+      },
+      {
+        "node": "judge",
+        "requires": [
+          "signal_classifier",
+          "signal_facts",
+          "signal_llm",
+          "signal_neighbours"
+        ],
+        "waits_for": []
+      },
+      {
+        "node": "fields",
+        "requires": [
+          "judge"
+        ],
+        "waits_for": []
+      },
+      {
+        "node": "relate",
+        "requires": [
+          "fields"
+        ],
+        "waits_for": []
+      },
+      {
+        "node": "apply_rules",
+        "requires": [
+          "relate"
+        ],
+        "waits_for": []
+      },
+      {
+        "node": "file",
+        "requires": [
+          "apply_rules",
+          "pages"
+        ],
+        "waits_for": []
+      }
+    ],
+    "vision": null,
+    "logo_fetch": false,
+    "meaning_search": false
+  }
+}

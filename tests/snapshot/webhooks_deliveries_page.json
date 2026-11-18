@@ -1,0 +1,35 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/webhooks/{id}/deliveries",
+  "path": "/webhooks/01a1f0bf-895d-7d8e-8690-5986287998e2/deliveries",
+  "params": {
+    "limit": 5
+  },
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "items": [
+      {
+        "id": "01a1f0bf-898c-709e-945d-6200b4416a5d",
+        "webhook_id": "01a1f0bf-895d-7d8e-8690-5986287998e2",
+        "event_id": "01a1f0bf-8983-72cf-8010-78b7fb368ef2",
+        "event_type": "webhook.test",
+        "document_id": null,
+        "attempt": 1,
+        "started_at": "2026-11-18T22:20:46.851935Z",
+        "duration_ms": 5,
+        "outcome": "gave_up",
+        "status_code": null,
+        "error": "cannot connect",
+        "reason": null,
+        "next_attempt_at": null,
+        "document": null,
+        "document_hidden": false
+      }
+    ],
+    "total": 1,
+    "next_offset": null
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/mailboxes/{id}/fetch",
+  "path": "/mailboxes/01a1f0bf-5435-7684-a492-2d59e9620c37/fetch",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 422,
+  "body": {
+    "type": "about:blank",
+    "title": "Unprocessable Content",
+    "status": 422,
+    "detail": "the mailbox is paused; activate it to fetch",
+    "reason": {
+      "code": "mailbox_paused",
+      "params": {}
+    }
+  }
+}
