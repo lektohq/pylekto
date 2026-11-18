@@ -9,7 +9,7 @@ Async Python client for the [Lekto](https://github.com/lektohq/lekto) DMS REST A
 > `document_types`, `tags`, `fields`), `spaces`, `users`, `identifiers`, the `inbox`, the
 > `expected` documents, `lenses`, `rules` (with templates), `mailboxes`, `mail_rules`,
 > `webhooks`, `push`, the `pipeline`, `jobs`, `automation`, the `classifier` and the `events`
-> as they happen.
+> as they happen; `pylekto.webhooks` receives what Lekto sends to a webhook.
 
 ```python
 import asyncio
@@ -44,6 +44,23 @@ asyncio.run(main())
 - **One Lekto release.** pylekto speaks the API of `pylekto.LEKTO_VERSION`; its models are
   generated from that release's OpenAPI description. While Lekto is in beta, each release may
   change its API, so connecting to another version warns (`LektoVersionWarning`).
+
+### Receiving webhooks
+
+Lekto signs what it sends to a webhook (Standard Webhooks). In whatever web framework receives it:
+
+```python
+from pylekto import webhooks
+from pylekto.models import TaskAnswer
+
+
+async def receive(headers: dict[str, str], body: bytes) -> None:
+    webhooks.verify(headers, body, "whsec_…")  # raises WebhookVerificationError
+    asked = webhooks.read_rule_ask(body)  # or read_event, read_rule_send, read_propose …
+    task = webhooks.task(headers)
+    if task is not None:
+        await webhooks.answer(task, TaskAnswer(status="ok", answer={"paid": True}))
+```
 
 ## Requirements
 
