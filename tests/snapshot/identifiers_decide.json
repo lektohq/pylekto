@@ -1,0 +1,27 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/identifiers/open/decisions",
+  "path": "/identifiers/open/decisions",
+  "params": {},
+  "json": {
+    "decisions": [
+      {
+        "kind": "contract_number",
+        "value": "FNV778812",
+        "action": "confirm",
+        "contact_id": "01a1f0a0-256d-79ba-b7de-f7ad245197b3"
+      }
+    ]
+  },
+  "data": {},
+  "status": 200,
+  "body": [
+    {
+      "kind": "contract_number",
+      "value": "FNV778812",
+      "done": true,
+      "reason": null
+    }
+  ]
+}

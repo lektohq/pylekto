@@ -7,6 +7,7 @@ from typing import Any
 
 import httpx2
 import pytest
+from pydantic import BaseModel, TypeAdapter
 
 from pylekto import LEKTO_VERSION, LektoClient
 
@@ -151,3 +152,21 @@ def assert_sent(api: Api, recorded: Snapshot) -> None:
     assert sent == expected
     if recorded.json is not None:
         assert json.loads(request.content) == recorded.json
+
+
+def plain(answer: object) -> object:
+    """Return an answer as JSON values, to compare it with the recorded body."""
+    if isinstance(answer, BaseModel):
+        return answer.model_dump(mode="json", by_alias=True)
+    return TypeAdapter(type(answer)).dump_python(answer, mode="json")
+
+
+def expected(answer: object, body: object) -> object:
+    """Return the recorded body read the way the answer was, as JSON values."""
+    if isinstance(answer, BaseModel):
+        return plain(type(answer).model_validate(body))
+    if isinstance(answer, list) and answer and isinstance(answer[0], BaseModel):
+        model = type(answer[0])
+        assert isinstance(body, list)
+        return [plain(model.model_validate(item)) for item in body]
+    return body

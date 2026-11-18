@@ -1,0 +1,20 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/users",
+  "path": "/users",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": [
+    {
+      "id": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+      "username": "admin",
+      "personal_space_id": "01a1f09e-e2c4-7eab-8db4-6012e58e96e6",
+      "role": "admin",
+      "active": true,
+      "created_at": "2026-11-18T21:45:07.006624Z"
+    }
+  ]
+}

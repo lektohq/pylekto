@@ -32,8 +32,10 @@ import argparse
 import json
 import os
 import re
+import struct
 import sys
 import time
+import zlib
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -56,8 +58,8 @@ class Recording:
     """One request to record; ``{name}`` in path, query or body is filled by that lookup.
 
     ``operation`` is the path of the operation in the OpenAPI description below ``/api/v1``.
-    ``upload`` sends a one-page PDF with that text as the form field ``file``; ``settle`` waits
-    until the document of that lookup is processed before the request is sent.
+    ``upload`` sends a file (name and content) as the form field ``file``; ``settle`` waits until
+    the document of that lookup is processed before the request is sent.
     """
 
     name: str
@@ -67,7 +69,7 @@ class Recording:
     params: dict[str, Any] = field(default_factory=dict)
     json: Any = None
     data: dict[str, str] = field(default_factory=dict)
-    upload: str | None = None
+    upload: tuple[str, bytes] | None = None
     settle: str | None = None
 
 
@@ -128,9 +130,7 @@ class Recorder:
         # Form fields go as parts of a multipart body, as Lekto reads them.
         files: list[tuple[str, Any]] = [(name, (None, text)) for name, text in data.items()]
         if recording.upload is not None:
-            files.append(
-                ("file", (f"{recording.name}.pdf", pdf(recording.upload), "application/pdf"))
-            )
+            files.append(("file", (*recording.upload, "application/octet-stream")))
         response = self.client.request(
             recording.method, path, params=params, json=body, files=files or None
         )
@@ -180,6 +180,28 @@ def pdf(text: str) -> bytes:
         xref,
     )
     return bytes(out)
+
+
+def png() -> bytes:
+    """Make a 32 by 32 PNG in one colour (a logo)."""
+    width = height = 32
+    rows = b"".join(b"\x00" + bytes((13, 107, 107)) * width for _ in range(height))
+
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        return (
+            struct.pack(">I", len(data))
+            + kind
+            + data
+            + struct.pack(">I", zlib.crc32(kind + data) & 0xFFFFFFFF)
+        )
+
+    header = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + chunk(b"IHDR", header)
+        + chunk(b"IDAT", zlib.compress(rows))
+        + chunk(b"IEND", b"")
+    )
 
 
 def _document(recorder: Recorder) -> str:
@@ -243,6 +265,33 @@ def _answer(name: str) -> Lookup:
     return lookup
 
 
+def _created(name: str, path: str, key: str, value: str) -> Lookup:
+    """Look up an object an earlier recording created, or (on a run again) the one it made."""
+
+    def lookup(recorder: Recorder) -> str:
+        answer = recorder.answers.get(name)
+        if isinstance(answer, dict) and "id" in answer:
+            return str(answer["id"])
+        for item in recorder.call("GET", path):
+            if item[key] == value:
+                return str(item["id"])
+        message = f"{name} made nothing at {path}"
+        raise SystemExit(message)
+
+    return lookup
+
+
+def _open(part: str) -> Lookup:
+    """Look up a part of the first open identifier that has a contact."""
+
+    def lookup(recorder: Recorder) -> str:
+        page = recorder.call("GET", "/identifiers/open", params={"limit": 50})
+        item = next(item for item in page["items"] if item["contacts"])
+        return str(item["contacts"][0]["id"] if part == "contact" else item[part])
+
+    return lookup
+
+
 LOOKUPS: dict[str, Lookup] = {
     "document": _document,
     "other_document": _other_document,
@@ -254,6 +303,16 @@ LOOKUPS: dict[str, Lookup] = {
     "document_type": _of_document("document_type_id"),
     "uploaded": _answer("documents_upload"),
     "bulk": _answer("documents_bulk"),
+    "open_kind": _open("kind"),
+    "open_value": _open("value"),
+    "open_ref": _open("ref"),
+    "open_contact": _open("contact"),
+    "new_user": _created("users_create", "/users", "username", "jane"),
+    "new_space": _created("spaces_create", "/spaces", "name", "Muster Household"),
+    "new_contact": _created("contacts_create", "/contacts", "name", "Muster Bakery"),
+    "new_field": _created("fields_create", "/fields", "name", "Muster Number"),
+    "new_type": _created("document_types_create", "/document-types", "name", "Muster Policy"),
+    "new_tag": _created("tags_create", "/tags", "name", "Muster Tag"),
 }
 
 DOCUMENT = "/documents/{document}"
@@ -372,14 +431,18 @@ RECORDINGS: list[Recording] = [
         json={"from_node": "relate"},
     ),
     Recording(
-        "documents_upload", "POST", "/documents", "/documents", upload="Muster Versicherung 12345"
+        "documents_upload",
+        "POST",
+        "/documents",
+        "/documents",
+        upload=("documents_upload.pdf", pdf("Muster Versicherung 12345")),
     ),
     Recording(
         "documents_add_version",
         "POST",
         UPLOADED + "/versions",
         "/documents/{id}/versions",
-        upload="Muster Versicherung 12345, zweite Fassung",
+        upload=("documents_add_version.pdf", pdf("Muster Versicherung 12345, zweite Fassung")),
         settle="uploaded",
     ),
     Recording(
@@ -387,7 +450,7 @@ RECORDINGS: list[Recording] = [
         "POST",
         UPLOADED + "/edit/pages",
         "/documents/{id}/edit/pages",
-        upload="Muster Versicherung, Anlage",
+        upload=("documents_edit_pages.pdf", pdf("Muster Versicherung, Anlage")),
         settle="uploaded",
     ),
     Recording(
@@ -439,6 +502,229 @@ RECORDINGS: list[Recording] = [
     Recording("documents_bulk_progress", "GET", "/documents/bulk/{bulk}", "/documents/bulk/{id}"),
     Recording("documents_delete", "DELETE", UPLOADED, "/documents/{id}", settle="uploaded"),
     Recording("search_reindex", "POST", "/search/reindex", "/search/reindex"),
+    # Identifiers.
+    Recording("identifiers_open", "GET", "/identifiers/open", "/identifiers/open", {"limit": 5}),
+    Recording(
+        "identifiers_search_open",
+        "POST",
+        "/identifiers/open/search",
+        "/identifiers/open/search",
+        {"limit": 5},
+        json={"q": "FernNetz"},
+    ),
+    Recording(
+        "identifiers_open_summary", "GET", "/identifiers/open/summary", "/identifiers/open/summary"
+    ),
+    Recording(
+        "identifiers_open_identifier",
+        "GET",
+        "/identifiers/open/{open_kind}/{open_ref}",
+        "/identifiers/open/{kind}/{ref}",
+    ),
+    Recording(
+        "identifiers_ref",
+        "POST",
+        "/identifiers/refs",
+        "/identifiers/refs",
+        json={"kind": "{kind}", "value": "{value}"},
+    ),
+    Recording(
+        "identifiers_value",
+        "GET",
+        "/identifiers/refs/{kind}/{ref}",
+        "/identifiers/refs/{kind}/{ref}",
+    ),
+    Recording(
+        "identifiers_places",
+        "GET",
+        "/identifiers/places/{kind}/{ref}",
+        "/identifiers/places/{kind}/{ref}",
+    ),
+    Recording(
+        "identifiers_decide",
+        "POST",
+        "/identifiers/open/decisions",
+        "/identifiers/open/decisions",
+        json={
+            "decisions": [
+                {
+                    "kind": "{open_kind}",
+                    "value": "{open_value}",
+                    "action": "confirm",
+                    "contact_id": "{open_contact}",
+                }
+            ]
+        },
+    ),
+    Recording(
+        "identifiers_confirm_recommended",
+        "POST",
+        "/identifiers/open/recommended",
+        "/identifiers/open/recommended",
+    ),
+    # Users (a token cannot delete one: on a run again, creating Jane Doe answers 409).
+    Recording("users_list", "GET", "/users", "/users"),
+    Recording(
+        "users_create",
+        "POST",
+        "/users",
+        "/users",
+        json={"username": "jane", "display_name": "Jane Doe", "role": "user"},
+    ),
+    Recording("users_get", "GET", "/users/{new_user}", "/users/{id}"),
+    Recording("users_update", "PATCH", "/users/{new_user}", "/users/{id}", json={"role": "user"}),
+    Recording("users_profile", "GET", "/users/{new_user}/profile", "/users/{id}/profile"),
+    Recording(
+        "users_update_profile",
+        "PATCH",
+        "/users/{new_user}/profile",
+        "/users/{id}/profile",
+        json={"display_name": "Jane Doe"},
+    ),
+    # A token sets only the display name and the e-mail address of a profile.
+    Recording(
+        "users_update_profile_refused",
+        "PATCH",
+        "/users/{new_user}/profile",
+        "/users/{id}/profile",
+        json={"aliases": ["Jane"]},
+    ),
+    Recording("users_removal", "GET", "/users/{new_user}/removal", "/users/{id}/removal"),
+    # Spaces.
+    Recording("spaces_list", "GET", "/spaces", "/spaces"),
+    Recording(
+        "spaces_create",
+        "POST",
+        "/spaces",
+        "/spaces",
+        json={"name": "Muster Household", "description": "Made up for the snapshot"},
+    ),
+    Recording("spaces_get", "GET", "/spaces/{new_space}", "/spaces/{id}"),
+    Recording(
+        "spaces_update",
+        "PATCH",
+        "/spaces/{new_space}",
+        "/spaces/{id}",
+        json={"description": "Shared documents"},
+    ),
+    Recording(
+        "spaces_set_member",
+        "PUT",
+        "/spaces/{new_space}/members/{new_user}",
+        "/spaces/{id}/members/{user_id}",
+        json={"role": "edit"},
+    ),
+    Recording(
+        "spaces_remove_member",
+        "DELETE",
+        "/spaces/{new_space}/members/{new_user}",
+        "/spaces/{id}/members/{user_id}",
+    ),
+    Recording("spaces_delete", "DELETE", "/spaces/{new_space}", "/spaces/{id}"),
+    # Contacts.
+    Recording("contacts_list", "GET", "/contacts", "/contacts", params={"document_counts": "true"}),
+    Recording(
+        "contacts_create",
+        "POST",
+        "/contacts",
+        "/contacts",
+        json={"name": "Muster Bakery", "aliases": ["Bakery Muster"]},
+    ),
+    Recording("contacts_get", "GET", "/contacts/{new_contact}", "/contacts/{id}"),
+    Recording(
+        "contacts_update",
+        "PATCH",
+        "/contacts/{new_contact}",
+        "/contacts/{id}",
+        json={"aliases": ["Muster Bakehouse"]},
+    ),
+    Recording(
+        "contacts_attach_identifier",
+        "POST",
+        "/contacts/{new_contact}/identifiers",
+        "/contacts/{id}/identifiers",
+        json={"kind": "customer_number", "value": "12345"},
+    ),
+    Recording(
+        "contacts_upload_logo",
+        "PUT",
+        "/contacts/{new_contact}/logo",
+        "/contacts/{id}/logo",
+        upload=("logo.png", png()),
+    ),
+    Recording(
+        "contacts_delete_logo", "DELETE", "/contacts/{new_contact}/logo", "/contacts/{id}/logo"
+    ),
+    Recording(
+        "contacts_fetch_logo",
+        "POST",
+        "/contacts/{new_contact}/logo/fetch",
+        "/contacts/{id}/logo/fetch",
+    ),
+    Recording("contacts_fetch_logos", "POST", "/contacts/logos/fetch", "/contacts/logos/fetch"),
+    Recording("contacts_delete", "DELETE", "/contacts/{new_contact}", "/contacts/{id}"),
+    # Fields, document types and tags.
+    Recording("fields_list", "GET", "/fields", "/fields"),
+    Recording(
+        "fields_create",
+        "POST",
+        "/fields",
+        "/fields",
+        json={"name": "Muster Number", "data_type": "text", "document_type_ids": []},
+    ),
+    Recording("fields_get", "GET", "/fields/{new_field}", "/fields/{id}"),
+    Recording(
+        "fields_update",
+        "PATCH",
+        "/fields/{new_field}",
+        "/fields/{id}",
+        json={"description": "A made-up number"},
+    ),
+    Recording(
+        "document_types_list",
+        "GET",
+        "/document-types",
+        "/document-types",
+        params={"document_counts": "true"},
+    ),
+    Recording(
+        "document_types_create",
+        "POST",
+        "/document-types",
+        "/document-types",
+        json={"name": "Muster Policy"},
+    ),
+    Recording("document_types_get", "GET", "/document-types/{new_type}", "/document-types/{id}"),
+    Recording(
+        "document_types_update",
+        "PATCH",
+        "/document-types/{new_type}",
+        "/document-types/{id}",
+        json={"description": "Insurance policies"},
+    ),
+    Recording(
+        "document_types_set_fields",
+        "PUT",
+        "/document-types/{new_type}/fields",
+        "/document-types/{id}/fields",
+        json={"fields": [{"field_id": "{new_field}", "required": False}]},
+    ),
+    # A document type a field belongs to is in use: the field goes first.
+    Recording("fields_delete", "DELETE", "/fields/{new_field}", "/fields/{id}"),
+    Recording(
+        "document_types_delete", "DELETE", "/document-types/{new_type}", "/document-types/{id}"
+    ),
+    Recording("tags_list", "GET", "/tags", "/tags", params={"scope": "document"}),
+    Recording(
+        "tags_create",
+        "POST",
+        "/tags",
+        "/tags",
+        json={"name": "Muster Tag", "scope": "document"},
+    ),
+    Recording("tags_get", "GET", "/tags/{new_tag}", "/tags/{id}"),
+    Recording("tags_update", "PATCH", "/tags/{new_tag}", "/tags/{id}", json={"color": "#0d6b6b"}),
+    Recording("tags_delete", "DELETE", "/tags/{new_tag}", "/tags/{id}"),
 ]
 
 

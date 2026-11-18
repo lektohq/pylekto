@@ -1,0 +1,157 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/document-types",
+  "path": "/document-types",
+  "params": {
+    "document_counts": "true"
+  },
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": [
+    {
+      "id": "01a1f0a0-262a-799a-baa4-751ddb0b4a32",
+      "name": "Arztbrief",
+      "created_at": "2026-11-18T21:46:29.802215Z",
+      "document_count": 1,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    },
+    {
+      "id": "01a1f0a0-2633-73c1-8945-0b3c57dfa934",
+      "name": "Bescheid",
+      "created_at": "2026-11-18T21:46:29.811152Z",
+      "document_count": 2,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    },
+    {
+      "id": "01a1f0a0-263b-77bd-bccb-edf3c4283b75",
+      "name": "Bescheinigung",
+      "created_at": "2026-11-18T21:46:29.819606Z",
+      "document_count": 2,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    },
+    {
+      "id": "01a1f0a0-2642-7ce2-96d5-0d10ad2addaa",
+      "name": "Bestellbestätigung",
+      "created_at": "2026-11-18T21:46:29.826731Z",
+      "document_count": 1,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    },
+    {
+      "id": "01a1f0a0-264a-71bd-9645-2664e885f021",
+      "name": "Kassenbon",
+      "created_at": "2026-11-18T21:46:29.834044Z",
+      "document_count": 7,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    },
+    {
+      "id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
+      "name": "Kontoauszug",
+      "created_at": "2026-11-18T21:46:29.842349Z",
+      "document_count": 7,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    },
+    {
+      "id": "01a1f0a0-2659-743f-bbe0-f20845f82be9",
+      "name": "Kreditkartenabrechnung",
+      "created_at": "2026-11-18T21:46:29.849988Z",
+      "document_count": 2,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    },
+    {
+      "id": "01a1f0a0-2661-7674-a4c0-df10ba50d9ad",
+      "name": "Lohnabrechnung",
+      "created_at": "2026-11-18T21:46:29.857408Z",
+      "document_count": 5,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    },
+    {
+      "id": "01a1f0a0-2668-7826-ba23-5b7f6c485c73",
+      "name": "Mitteilung",
+      "created_at": "2026-11-18T21:46:29.864732Z",
+      "document_count": 2,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    },
+    {
+      "id": "01a1f0a0-2670-7f16-b551-abf98167f8f6",
+      "name": "Rechnung",
+      "created_at": "2026-11-18T21:46:29.872165Z",
+      "document_count": 6,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    },
+    {
+      "id": "01a1f0a0-267a-7fb2-9c05-fecb33c2675a",
+      "name": "Ticket",
+      "created_at": "2026-11-18T21:46:29.882337Z",
+      "document_count": 1,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    },
+    {
+      "id": "01a1f0a0-2684-7e10-b89f-6348f20ebd5a",
+      "name": "Zeitnachweis",
+      "created_at": "2026-11-18T21:46:29.892383Z",
+      "document_count": 1,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    },
+    {
+      "id": "01a1f0a0-268d-7377-a3d1-f76c7786b363",
+      "name": "Zeugnis",
+      "created_at": "2026-11-18T21:46:29.901561Z",
+      "document_count": 1,
+      "description": null,
+      "title_pattern": null,
+      "group_ids": [],
+      "icon": null,
+      "relation_target": false
+    }
+  ]
+}

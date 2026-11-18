@@ -1,0 +1,22 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/users/{id}",
+  "path": "/users/01a1f0b7-cf1f-7dd4-b46c-e161bdc86b90",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "id": "01a1f0b7-cf1f-7dd4-b46c-e161bdc86b90",
+    "username": "jane",
+    "display_name": "Jane Doe",
+    "personal_space_id": "01a1f0b7-cf22-7881-a055-5be21e830f3a",
+    "role": "user",
+    "active": true,
+    "created_at": "2026-11-18T22:12:20.382346Z",
+    "has_password": false,
+    "totp_enabled": false,
+    "linked_accounts": []
+  }
+}

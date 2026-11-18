@@ -66,3 +66,40 @@ class EditPart(TypedDict):
     """Its pages in their order; each page goes in one part at most."""
     replaces: NotRequired[bool]
     """It becomes the document's next version; every other part becomes a new document."""
+
+
+# The kind of an identifier, such as an IBAN or a customer number.
+type IdentifierKind = Literal[
+    "iban",
+    "vat_id",
+    "customer_number",
+    "personnel_number",
+    "email_domain",
+    "tax_id",
+    "social_security_number",
+    "health_insurance_number",
+    "email_address",
+    "creditor_id",
+    "commercial_register",
+    "tax_number",
+    "contract_number",
+    "meter_number",
+    "mandate_reference",
+    "license_plate",
+    "invoice_number",
+    "credit_note_number",
+    "order_number",
+    "file_reference",
+    "our_reference",
+    "claim_number",
+    "ticket_number",
+    "your_reference",
+    "letter_date",
+    "child_benefit_number",
+]
+
+# What a tag is for.
+type TagScope = Literal["document", "contact", "document_type", "topic"]
+
+# Where an open identifier comes from: learned from confirmed documents, or suggested.
+type OpenSource = Literal["learned", "suggested"]

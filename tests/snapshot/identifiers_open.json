@@ -1,0 +1,172 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/identifiers/open",
+  "path": "/identifiers/open",
+  "params": {
+    "limit": 5
+  },
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "items": [
+      {
+        "kind": "contract_number",
+        "value": "FNV778812",
+        "ref": "AV4Y-jBG8EdiplOO0X5XEsFGwxS1bTCK8NY",
+        "written": "FN-V-778812",
+        "source": "learned",
+        "contacts": [
+          {
+            "id": "01a1f0a0-256d-79ba-b7de-f7ad245197b3",
+            "name": "FernNetz Telekommunikation GmbH"
+          }
+        ],
+        "person": null,
+        "documents": 4,
+        "last": "2026-09-05",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm",
+            "params": {
+              "count": 4,
+              "name": "FernNetz Telekommunikation GmbH"
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      },
+      {
+        "kind": "customer_number",
+        "value": "40012345",
+        "ref": "AVVTDA4ChpU7F9Fe1NaCufei--23eW2DVg",
+        "written": "40012345",
+        "source": "learned",
+        "contacts": [
+          {
+            "id": "01a1f0a0-256d-79ba-b7de-f7ad245197b3",
+            "name": "FernNetz Telekommunikation GmbH"
+          }
+        ],
+        "person": null,
+        "documents": 4,
+        "last": "2026-09-05",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm",
+            "params": {
+              "count": 4,
+              "name": "FernNetz Telekommunikation GmbH"
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      },
+      {
+        "kind": "email_domain",
+        "value": "fernnetz.example",
+        "ref": "AfhagG2Yr1UjnAy8uj5pX3PfJLloDPbyuxp-YOGpDisG",
+        "written": "fernnetz.example",
+        "source": "suggested",
+        "contacts": [
+          {
+            "id": "01a1f0a0-256d-79ba-b7de-f7ad245197b3",
+            "name": "FernNetz Telekommunikation GmbH"
+          }
+        ],
+        "person": null,
+        "documents": 4,
+        "last": "2026-09-05",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm_named",
+            "params": {
+              "count": 4,
+              "name": "FernNetz Telekommunikation GmbH"
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      },
+      {
+        "kind": "iban",
+        "value": "DE30250500000123456789",
+        "ref": "ARcU0RB0k6JYlmHi4JtT4AgDkLP7SEGbyLT-x5szroKfeSaBH6pw",
+        "written": "DE30 2505 0000 0123\n4567 89",
+        "source": "suggested",
+        "contacts": [],
+        "person": {
+          "id": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+          "name": "admin"
+        },
+        "documents": 4,
+        "last": "2026-09-05",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm_named",
+            "params": {
+              "count": 4,
+              "name": ""
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      },
+      {
+        "kind": "email_domain",
+        "value": "sparkasse-musterstadt.example",
+        "ref": "ATOd7Lw85HrMwkt5TqdvMa4GuyHBerImwH-H6JiEWE1CYb7a1N9VyHXHrgIaNw",
+        "written": "sparkasse-musterstadt.example",
+        "source": "suggested",
+        "contacts": [
+          {
+            "id": "01a1f0a0-25db-7ef6-b553-a59140395ec0",
+            "name": "Sparkasse Musterstadt"
+          }
+        ],
+        "person": null,
+        "documents": 3,
+        "last": "2026-05-31",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm_named",
+            "params": {
+              "count": 3,
+              "name": "Sparkasse Musterstadt"
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      }
+    ],
+    "total": 11,
+    "counts": {
+      "learned": 3,
+      "suggested": 8
+    },
+    "kinds": {
+      "contract_number": 1,
+      "customer_number": 2,
+      "email_domain": 7,
+      "iban": 1
+    },
+    "recommended": 7,
+    "to_confirm": 7
+  }
+}

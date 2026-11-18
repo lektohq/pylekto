@@ -1,0 +1,159 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/identifiers/open/{kind}/{ref}",
+  "path": "/identifiers/open/contract_number/AV4Y-jBG8EdiplOO0X5XEsFGwxS1bTCK8NY",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "identifier": {
+      "kind": "contract_number",
+      "value": "FNV778812",
+      "ref": "AV4Y-jBG8EdiplOO0X5XEsFGwxS1bTCK8NY",
+      "written": "FN-V-778812",
+      "source": "learned",
+      "contacts": [
+        {
+          "id": "01a1f0a0-256d-79ba-b7de-f7ad245197b3",
+          "name": "FernNetz Telekommunikation GmbH"
+        }
+      ],
+      "person": null,
+      "documents": 4,
+      "last": "2026-09-05",
+      "recommendation": {
+        "action": "confirm",
+        "reason": {
+          "code": "recommend_confirm",
+          "params": {
+            "count": 4,
+            "name": "FernNetz Telekommunikation GmbH"
+          },
+          "subject": null,
+          "rule": null,
+          "field": null
+        }
+      }
+    },
+    "places": [
+      {
+        "document_id": "01a1f0a0-2b41-77f8-a839-6034c0931164",
+        "title": "Telefonrechnung September 2026",
+        "date": "2026-09-05",
+        "role": "target",
+        "excerpt": {
+          "before": "…FN2609532462 Vertragsnummer ",
+          "match": "FN-V-778812",
+          "after": " Herrn Datum 05.09.2026 Max Mustermann…"
+        },
+        "occurrences": [
+          {
+            "own": true,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.8191,
+                    "y": 0.1972,
+                    "width": 0.0857,
+                    "height": 0.0097
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "document_id": "01a1f0a0-2b20-7ee6-9b78-8484389ad402",
+        "title": "Telefonrechnung November 2025",
+        "date": "2025-11-05",
+        "role": "target",
+        "excerpt": {
+          "before": "…FN2511634793 Vertragsnummer ",
+          "match": "FN-V-778812",
+          "after": " Herrn Datum 05.11.2025 Max…"
+        },
+        "occurrences": [
+          {
+            "own": true,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.8191,
+                    "y": 0.1972,
+                    "width": 0.0857,
+                    "height": 0.0097
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "document_id": "01a1f0a0-2b00-7751-a4ed-e488d54a34d7",
+        "title": "Telefonrechnung Februar 2025",
+        "date": "2025-02-05",
+        "role": "target",
+        "excerpt": {
+          "before": "…FN2502132039 Vertragsnummer ",
+          "match": "FN-V-778812",
+          "after": " Herrn Datum 05.02.2025 Max…"
+        },
+        "occurrences": [
+          {
+            "own": true,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.8191,
+                    "y": 0.1972,
+                    "width": 0.0857,
+                    "height": 0.0097
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "document_id": "01a1f0a0-2ae1-736f-8794-c945ec790b2a",
+        "title": "Telefonrechnung Juni 2024",
+        "date": "2024-06-05",
+        "role": "target",
+        "excerpt": {
+          "before": "…FN2406720049 Vertragsnummer ",
+          "match": "FN-V-778812",
+          "after": " Herrn Datum 05.06.2024 Max…"
+        },
+        "occurrences": [
+          {
+            "own": true,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.8191,
+                    "y": 0.1972,
+                    "width": 0.0857,
+                    "height": 0.0097
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
