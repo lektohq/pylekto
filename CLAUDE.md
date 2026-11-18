@@ -12,8 +12,8 @@ decided in `.idea/decisions/2026-11-18-pylekto-architecture.md`, the order of th
 | `src/pylekto/` | The package (typed: `py.typed`): `client.py` (`LektoClient`), `_http.py` (requests, problem details as exceptions, pages), `exceptions.py`, `resources/` (one module per area of the API) |
 | `src/pylekto/models.py` | The models, generated from `openapi.json` by datamodel-codegen (settings in `pyproject.toml`); never edited by hand |
 | `openapi.json`, `src/pylekto/_lekto.py` | Lekto's OpenAPI description of the release `LEKTO_VERSION`, and that version |
-| `tests/` | pytest; `tests/ruff.toml` adjusts the rules for tests |
-| `script/` | `setup` (once: dependencies, Git hooks), `bootstrap` (every start of the devcontainer: dependencies), `update_openapi.py` (the description of another Lekto release) |
+| `tests/` | pytest; `tests/ruff.toml` adjusts the rules for tests; `tests/snapshot/` the recorded answers of a Lekto instance, one JSON file per request |
+| `script/` | `setup` (once: dependencies, Git hooks), `bootstrap` (every start of the devcontainer: dependencies), `update_openapi.py` (the description of another Lekto release), `record_snapshot.py` (the snapshot) |
 | `.devcontainer/`, `Dockerfile.dev` | Devcontainer: Python 3.14, uv, gh, Claude Code; the virtual environment lives in `/home/vscode/.local/dev-venv` |
 | `.github/` | Workflows (`ci.yml`, `release.yml`, Release Drafter, labels, stale, lock), labels, templates, `scripts/` (the test of the action pins) |
 | `.idea/` | The knowledge in German as small notes with frontmatter; start with `INDEX.md` and `README.md`. A checkout of the private repository `lektohq/lekto-knowledge`, shared with lekto and ignored by this one (see "Working style") |
@@ -59,9 +59,12 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
 - Dependencies state lower bounds only (`httpx2>=2.14`); `uv.lock` pins the development
   environment. The library must install beside Home Assistant, which pins its own versions. New
   dependencies need agreement first.
-- Tests run against a snapshot of the API: JSON recorded from a Lekto instance filled with the
-  synthetic documents of `lekto/examples/documents`, and a copy of lekto's `web/openapi.json`.
-  Never against a live instance.
+- Tests run against a snapshot of the API, never against a live instance: `tests/snapshot/<name>.json`
+  holds a request and Lekto's answer. `script/record_snapshot.py` records them from a throwaway
+  Lekto of the release `LEKTO_VERSION` filled with the synthetic documents of
+  `lekto/examples/documents` (its docstring says how); a new area adds its `Recording`s there.
+  In a test, `api.replay(name)` answers the request as Lekto did; `tests/test_snapshot.py` checks
+  every recording against the model the OpenAPI description names for its answer.
 - This repository will be public: every value in code, tests, fixtures, commits and pull requests
   is made up. No real names, companies, IBANs, addresses, numbers, hosts or tokens.
 - Comments explain *why* (constraints, surprises, workarounds), never *what*; one short line or

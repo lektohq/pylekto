@@ -1,6 +1,8 @@
 """Fixtures: a LektoClient whose requests the test answers, and values made up for it."""
 
+import json
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any
 
 import httpx2
@@ -8,6 +10,7 @@ import pytest
 
 from pylekto import LEKTO_VERSION, LektoClient
 
+SNAPSHOT = Path(__file__).resolve().parent / "snapshot"
 URL = "https://lekto.example.com"
 TOKEN = "lekto_0123456789abcdef"
 USER_ID = "0199a3c4-0000-7000-8000-000000000001"
@@ -28,6 +31,35 @@ def me(**changes: Any) -> dict[str, Any]:
         "lekto_version": LEKTO_VERSION,
         "shortcut_url": None,
     } | changes
+
+
+@dataclass(frozen=True)
+class Snapshot:
+    """A request to Lekto and its answer, recorded by ``script/record_snapshot.py``."""
+
+    name: str
+    method: str
+    operation: str
+    path: str
+    params: dict[str, Any]
+    json: Any
+    status: int
+    body: Any
+
+
+def snapshot(name: str) -> Snapshot:
+    """Read the recording ``tests/snapshot/<name>.json``."""
+    recorded = json.loads((SNAPSHOT / f"{name}.json").read_text(encoding="utf-8"))
+    return Snapshot(
+        name=name,
+        method=recorded["method"],
+        operation=recorded["operation"],
+        path=recorded["path"],
+        params=recorded["params"],
+        json=recorded["json"],
+        status=recorded["status"],
+        body=recorded["body"],
+    )
 
 
 @dataclass
@@ -52,6 +84,12 @@ class Api:
     def answer(self, method: str, path: str, status: int = 200, **answer: Any) -> None:
         """Answer ``method`` on ``path`` (below ``/api/v1``) with ``status`` and ``answer``."""
         self.answers[method, "/api/v1" + path] = Answer(status, **answer)
+
+    def replay(self, name: str) -> Snapshot:
+        """Answer the request of the recording ``name`` as Lekto did; return the recording."""
+        recorded = snapshot(name)
+        self.answer(recorded.method, recorded.path, recorded.status, json=recorded.body)
+        return recorded
 
     def __call__(self, request: httpx2.Request) -> httpx2.Response:
         """Answer a request as told; an unexpected one fails the test."""

@@ -2,28 +2,34 @@
 
 from typing import TYPE_CHECKING
 
-import pytest
-
-from .conftest import USER_ID, Api, me
+from pylekto import LEKTO_VERSION, LektoClient
 
 if TYPE_CHECKING:
-    from pylekto import LektoClient
+    from .conftest import Api
 
 
 async def test_me(api: Api, lekto: LektoClient) -> None:
     """``auth.me`` reads the caller."""
-    api.answer("GET", "/auth/me", json=me())
+    recorded = api.replay("auth_me")
     answer = await lekto.auth.me()
-    assert str(answer.user.id) == USER_ID
-    assert answer.user.display_name == "Jane Doe"
-    assert answer.token_scope == "read"
+    assert str(answer.user.id) == recorded.body["user"]["id"]
+    assert answer.user.role == "admin"
+    assert answer.token_scope == "read_write"
+    assert answer.lekto_version == LEKTO_VERSION
 
 
-@pytest.mark.parametrize(("status", "state"), [(200, "ok"), (503, "degraded")])
-async def test_health(api: Api, lekto: LektoClient, status: int, state: str) -> None:
-    """``health.get`` returns the state, also when Lekto answers 503."""
-    checks = {"database": "ok", "object_store": "ok" if state == "ok" else "failed"}
-    api.answer("GET", "/health", status, json={"status": state, "checks": checks})
+async def test_health(api: Api, lekto: LektoClient) -> None:
+    """``health.get`` reads the state of Lekto and its services."""
+    recorded = api.replay("health")
     health = await lekto.health.get()
-    assert health.status == state
+    assert health.status == "ok"
+    assert health.checks == recorded.body["checks"]
+
+
+async def test_health_unavailable(api: Api, lekto: LektoClient) -> None:
+    """``health.get`` returns the state also when Lekto answers 503."""
+    checks = {"database": "ok", "object_store": "failed"}
+    api.answer("GET", "/health", 503, json={"status": "degraded", "checks": checks})
+    health = await lekto.health.get()
+    assert health.status == "degraded"
     assert health.checks == checks
