@@ -1,0 +1,21 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/document-types/{id}",
+  "path": "/document-types/01a1f0b8-182a-7552-9d2f-d1896b69da6f",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "id": "01a1f0b8-182a-7552-9d2f-d1896b69da6f",
+    "name": "Muster Policy",
+    "created_at": "2026-11-18T22:12:39.082770Z",
+    "document_count": null,
+    "description": null,
+    "title_pattern": null,
+    "group_ids": [],
+    "icon": null,
+    "relation_target": false
+  }
+}

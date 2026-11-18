@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any, Literal, Unpack
 
 from pydantic import TypeAdapter
 
-from pylekto._http import Part, Upload, body, cursor_items, query
+from pylekto._http import FILE_TYPE, Part, Upload, body, cursor_items, query
 from pylekto.models import (
     BulkOperationOut,
     BulkRequest,
@@ -44,9 +44,6 @@ if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Mapping, Sequence
 
     from pylekto.types import DocumentFilter, EditPart, Id
-
-# Lekto recognises a file by its content, not by the type a client names.
-FILE_TYPE = "application/octet-stream"
 
 _CHANGED = TypeAdapter(DocumentChanged | DocumentOutOfReach)
 _CONFIRMED = TypeAdapter(DocumentDetails | DocumentOutOfReach)

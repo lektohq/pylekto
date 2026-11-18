@@ -1,0 +1,14 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/identifiers/open/summary",
+  "path": "/identifiers/open/summary",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "learned": 3,
+    "suggested": 8
+  }
+}

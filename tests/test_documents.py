@@ -6,7 +6,6 @@ from datetime import date
 from uuid import UUID
 
 import pytest
-from pydantic import BaseModel, TypeAdapter
 
 from pylekto import LektoClient, LektoConflictError, LektoResponseError, LektoValidationError
 from pylekto._http import query
@@ -18,7 +17,7 @@ from pylekto.models import (
     ReprocessRequest,
 )
 
-from .conftest import DOCUMENT_ID, Api, Snapshot, assert_sent
+from .conftest import DOCUMENT_ID, Api, Snapshot, assert_sent, expected, plain
 
 type Call = Callable[[LektoClient, Snapshot], Awaitable[object]]
 
@@ -83,24 +82,6 @@ EMPTY: dict[str, Call] = {
     "search_warm": lambda lekto, _: lekto.search.warm(),
     "search_reindex": lambda lekto, _: lekto.search.reindex(),
 }
-
-
-def plain(answer: object) -> object:
-    """Return an answer as JSON values, to compare it with the recorded body."""
-    if isinstance(answer, BaseModel):
-        return answer.model_dump(mode="json", by_alias=True)
-    return TypeAdapter(type(answer)).dump_python(answer, mode="json")
-
-
-def expected(answer: object, body: object) -> object:
-    """Return the recorded body read the way the answer was, as JSON values."""
-    if isinstance(answer, BaseModel):
-        return plain(type(answer).model_validate(body))
-    if isinstance(answer, list) and answer and isinstance(answer[0], BaseModel):
-        model = type(answer[0])
-        assert isinstance(body, list)
-        return [plain(model.model_validate(item)) for item in body]
-    return body
 
 
 @pytest.mark.parametrize("name", sorted(ANSWERS))

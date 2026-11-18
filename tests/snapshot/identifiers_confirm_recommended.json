@@ -1,0 +1,54 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/identifiers/open/recommended",
+  "path": "/identifiers/open/recommended",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": [
+    {
+      "kind": "customer_number",
+      "value": "40012345",
+      "done": true,
+      "reason": null
+    },
+    {
+      "kind": "email_domain",
+      "value": "fernnetz.example",
+      "done": true,
+      "reason": null
+    },
+    {
+      "kind": "iban",
+      "value": "DE30250500000123456789",
+      "done": false,
+      "reason": {
+        "code": "session_needed_profile",
+        "params": {},
+        "subject": null,
+        "rule": null,
+        "field": null
+      }
+    },
+    {
+      "kind": "email_domain",
+      "value": "sparkasse-musterstadt.example",
+      "done": true,
+      "reason": null
+    },
+    {
+      "kind": "customer_number",
+      "value": "8812447100",
+      "done": true,
+      "reason": null
+    },
+    {
+      "kind": "email_domain",
+      "value": "hansebank.example",
+      "done": true,
+      "reason": null
+    }
+  ]
+}

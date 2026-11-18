@@ -26,6 +26,8 @@ from pylekto.exceptions import (
 from pylekto.models import Problem
 
 API_PATH = "/api/v1"
+# Lekto recognises a file by its content, not by the type a client names.
+FILE_TYPE = "application/octet-stream"
 
 type Params = Mapping[str, str | Sequence[str]]
 type Upload = bytes | IO[bytes]

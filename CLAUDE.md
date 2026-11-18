@@ -53,8 +53,8 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
   value (`SearchIn.q`, `MoveRequest.space_id`, `RelateIn.document_id`) is passed as that value.
   Path ids are named for what they are (`document_id`, not `id`) and take `UUID` or `str`
   (`types.Id`). Query filters the description gives no model are `TypedDict`s in `types.py`
-  (`DocumentFilter`), taken as keyword arguments; a test keeps their keys equal to the
-  description's. Form fields always go as parts of a multipart body (`(None, text)`): Lekto reads
+  (`DocumentFilter`), taken as keyword arguments, and so are choices the generator wrote inline
+  (`IdentifierKind`, `TagScope`, `OpenSource`); tests keep them equal to the description's. Form fields always go as parts of a multipart body (`(None, text)`): Lekto reads
   them nowhere else.
 - `models.py` is generated; a test fails if it differs from what datamodel-codegen writes from
   `openapi.json`. Ruff and typos leave it out; mypy checks it.

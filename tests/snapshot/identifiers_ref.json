@@ -1,0 +1,18 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/identifiers/refs",
+  "path": "/identifiers/refs",
+  "params": {},
+  "json": {
+    "kind": "customer_number",
+    "value": "77004521"
+  },
+  "data": {},
+  "status": 200,
+  "body": {
+    "kind": "customer_number",
+    "value": "77004521",
+    "ref": "Af9djVUO-QXXIXACVV1hdi4lF_18ai28Ww"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/contacts/logos/fetch",
+  "path": "/contacts/logos/fetch",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 503,
+  "body": {
+    "type": "about:blank",
+    "title": "Service Unavailable",
+    "status": 503,
+    "detail": "Lekto does not fetch logos"
+  }
+}
