@@ -7,7 +7,8 @@ Async Python client for the [Lekto](https://github.com/lektohq/lekto) DMS REST A
 > it covers `auth` (who calls), `health`, `documents` (with uploads, downloads, facts, page
 > edits, changes of many documents), `search`, `relations`, the master data (`contacts`,
 > `document_types`, `tags`, `fields`), `spaces`, `users`, `identifiers`, the `inbox`, the
-> `expected` documents, `lenses` and `rules` (with templates).
+> `expected` documents, `lenses`, `rules` (with templates), `mailboxes`, `mail_rules`,
+> `webhooks`, `push`, the `pipeline`, `jobs`, `automation` and the `classifier`.
 
 ```python
 import asyncio
