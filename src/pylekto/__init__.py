@@ -1,5 +1,6 @@
 """Async Python client for the Lekto DMS REST API."""
 
+from pylekto import webhooks
 from pylekto._lekto import LEKTO_VERSION
 from pylekto.client import LektoClient
 from pylekto.exceptions import (
@@ -16,6 +17,7 @@ from pylekto.exceptions import (
     LektoTimeoutError,
     LektoValidationError,
     LektoVersionWarning,
+    WebhookVerificationError,
 )
 
 __all__ = [
@@ -34,4 +36,6 @@ __all__ = [
     "LektoTimeoutError",
     "LektoValidationError",
     "LektoVersionWarning",
+    "WebhookVerificationError",
+    "webhooks",
 ]

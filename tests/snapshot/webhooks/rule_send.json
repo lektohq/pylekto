@@ -1,0 +1,18 @@
+{
+  "lekto_version": "0.15.5",
+  "secret": "whsec_KofPfJ6jkzuZFGh8v7kTLqFOST7IKijz/EkHn0TPcus=",
+  "path": "/hook",
+  "headers": {
+    "Host": "hook-snap:8080",
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "User-Agent": "Lekto/0.15.5",
+    "Content-Type": "application/json",
+    "webhook-id": "01a1f0d1-6992-76cb-82a7-148099b40a11",
+    "webhook-timestamp": "1795041618",
+    "webhook-signature": "v1,i5kKpA+CEA0xNqHlFb6qamWvypqL8ei1k/GrhnwAC6E=",
+    "Content-Length": "806"
+  },
+  "body": "{\"id\":\"01a1f0d1-6992-76cb-82a7-148099b40a11\",\"type\":\"rule.send\",\"occurred_at\":\"2026-11-18T22:40:18Z\",\"document_id\":\"01a1f0d1-33cd-7110-8a0a-cd9ca7f6440e\",\"rule\":{\"id\":\"01a1f0d1-33b4-71bc-aad9-5e67e8efa7eb\",\"name\":\"Muster Question\"},\"document\":{\"id\":\"01a1f0d1-33cd-7110-8a0a-cd9ca7f6440e\",\"title\":\"Muster Frage\",\"original_filename\":\"question.pdf\",\"contact\":{\"id\":\"01a1f0a0-261b-7455-8a87-2fc5bc48ac4f\",\"name\":\"Versandhaus Bergmann GmbH\"},\"document_type\":{\"id\":\"01a1f0a0-2642-7ce2-96d5-0d10ad2addaa\",\"name\":\"Bestellbestätigung\"},\"topic\":null,\"tags\":[],\"document_date\":\"2026-10-01\",\"added\":\"2026-11-18\",\"space\":{\"id\":\"01a1f09e-e2c4-7eab-8db4-6012e58e96e6\",\"name\":\"admin\"},\"lane\":\"green\",\"channel\":\"api\",\"pages\":1,\"fields\":{},\"link\":\"http://127.0.0.1:18000/ui/documents/01a1f0d1-33cd-7110-8a0a-cd9ca7f6440e\"}}"
+}

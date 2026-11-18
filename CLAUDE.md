@@ -10,6 +10,7 @@ decided in `.idea/decisions/2026-11-18-pylekto-architecture.md`, the order of th
 | Path | Content |
 | --- | --- |
 | `src/pylekto/` | The package (typed: `py.typed`): `client.py` (`LektoClient`), `_http.py` (requests, problem details as exceptions, pages), `exceptions.py`, `resources/` (one module per area of the API) |
+| `src/pylekto/webhooks.py` | Receiving webhooks: `verify` (Standard Webhooks), `read_*` for each body, `task`, `answer`, `download` |
 | `src/pylekto/models.py` | The models, generated from `openapi.json` by datamodel-codegen (settings in `pyproject.toml`); never edited by hand |
 | `openapi.json`, `src/pylekto/_lekto.py` | Lekto's OpenAPI description of the release `LEKTO_VERSION`, and that version |
 | `tests/` | pytest; `tests/ruff.toml` adjusts the rules for tests; `tests/snapshot/` the recorded answers of a Lekto instance, one JSON file per request |
@@ -56,6 +57,9 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
   (`DocumentFilter`), taken as keyword arguments, and so are choices the generator wrote inline
   (`IdentifierKind`, `TagScope`, `OpenSource`); tests keep them equal to the description's. Form fields always go as parts of a multipart body (`(None, text)`): Lekto reads
   them nowhere else.
+- What Lekto sends to a webhook is recorded as it came (`tests/snapshot/webhooks/`, with the secret
+  of a webhook deleted at the end): `record_snapshot.py --receiver <url Lekto reaches>
+  --receiver-log <file a receiving server writes>`; the tests verify Lekto's real signatures.
 - Streams (`GET /events`) are read line by line without a read timeout (`Http.lines`) and parsed by
   `_sse.py` as the HTML standard says; a recording of a stream holds its text
   (`Recording.listen`, with a request that triggers events).

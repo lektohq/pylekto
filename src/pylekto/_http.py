@@ -2,6 +2,7 @@
 
 import json
 from collections.abc import AsyncIterator, Awaitable, Callable, Collection, Mapping, Sequence
+from contextlib import asynccontextmanager
 from datetime import date
 from http import HTTPStatus
 from typing import IO, Any, Protocol, TypedDict, Unpack
@@ -26,6 +27,8 @@ from pylekto.exceptions import (
 from pylekto.models import Problem
 
 API_PATH = "/api/v1"
+# Only for the clients pylekto makes itself; a client passed in keeps its own settings.
+TIMEOUT = httpx2.Timeout(30.0, connect=10.0)
 # A stream waits for its next line as long as it takes; connecting has its usual limit.
 STREAM = httpx2.Timeout(None, connect=10.0)
 # Writes ids, dates and the like as JSON (for request bodies).
@@ -76,24 +79,7 @@ class Http:
 
     async def request(self, method: str, path: str, **send: Unpack[Send]) -> httpx2.Response:
         """Send a request below ``/api/v1``; an error status raises, unless it is in ``accept``."""
-        try:
-            response = await self._client.request(
-                method,
-                self._api + path,
-                params=send.get("params"),
-                json=send.get("json"),
-                files=send.get("files"),
-                headers=self._headers,
-            )
-        except httpx2.TimeoutException as error:
-            message = f"Lekto did not answer {method} {path} in time"
-            raise LektoTimeoutError(message) from error
-        except httpx2.TransportError as error:
-            message = f"Lekto is not reachable: {type(error).__name__}"
-            raise LektoConnectionError(message) from error
-        if response.is_error and response.status_code not in send.get("accept", ()):
-            raise api_error(response)
-        return response
+        return await exchange(self._client, method, self._api + path, self._headers, **send)
 
     async def get[M: BaseModel](self, path: str, model: type[M], **send: Unpack[Send]) -> M:
         """GET a JSON answer as a model."""
@@ -139,6 +125,47 @@ class Http:
         except httpx2.TransportError as error:
             message = f"Lekto is not reachable: {type(error).__name__}"
             raise LektoConnectionError(message) from error
+
+
+async def exchange(
+    client: httpx2.AsyncClient,
+    method: str,
+    url: str,
+    headers: Mapping[str, str],
+    **send: Unpack[Send],
+) -> httpx2.Response:
+    """Send a request to Lekto; a failed connection or an error status raises a LektoError."""
+    try:
+        response = await client.request(
+            method,
+            url,
+            params=send.get("params"),
+            json=send.get("json"),
+            files=send.get("files"),
+            headers=headers,
+        )
+    except httpx2.TimeoutException as error:
+        message = f"Lekto did not answer {method} {httpx2.URL(url).path} in time"
+        raise LektoTimeoutError(message) from error
+    except httpx2.TransportError as error:
+        message = f"Lekto is not reachable: {type(error).__name__}"
+        raise LektoConnectionError(message) from error
+    if response.is_error and response.status_code not in send.get("accept", ()):
+        raise api_error(response)
+    return response
+
+
+@asynccontextmanager
+async def http_client(client: httpx2.AsyncClient | None) -> AsyncIterator[httpx2.AsyncClient]:
+    """Yield the client given, or one made for the moment and closed afterwards."""
+    if client is not None:
+        yield client
+        return
+    own = httpx2.AsyncClient(timeout=TIMEOUT)
+    try:
+        yield own
+    finally:
+        await own.aclose()
 
 
 def query(**values: object) -> dict[str, str | list[str]]:
