@@ -29,6 +29,7 @@ the instance is a throwaway one. Uploads send a small PDF the script makes itsel
 """
 
 import argparse
+import contextlib
 import json
 import os
 import re
@@ -61,7 +62,9 @@ class Recording:
 
     ``operation`` is the path of the operation in the OpenAPI description below ``/api/v1``.
     ``upload`` sends a file (name and content) as the form field ``file``; ``settle`` waits until
-    the document of that lookup is processed before the request is sent.
+    the document of that lookup is processed before the request is sent. ``listen`` records a
+    stream of server-sent events as text: once it is ready, the ``trigger`` request (method,
+    path, body) is sent, and the stream is read until it is quiet for so many seconds.
     """
 
     name: str
@@ -73,6 +76,8 @@ class Recording:
     data: dict[str, str] = field(default_factory=dict)
     upload: tuple[str, bytes] | None = None
     settle: str | None = None
+    listen: float | None = None
+    trigger: tuple[str, str, Any] | None = None
 
 
 class Recorder:
@@ -121,8 +126,47 @@ class Recorder:
         message = f"document {document_id} is still in processing"
         raise SystemExit(message)
 
+    def listen(self, recording: Recording, path: str, params: Any) -> tuple[int, str]:
+        """Record a stream of events around its trigger; return the status and the text."""
+        seconds = recording.listen or 0.0
+        timeout = httpx2.Timeout(seconds, connect=10.0)
+        lines: list[str] = []
+        with self.client.stream("GET", path, params=params, timeout=timeout) as response:
+            stream = response.iter_lines()
+            for line in stream:
+                lines.append(line)
+                if line.startswith(": ready"):
+                    break
+            if recording.trigger is not None:
+                method, target, body = recording.trigger
+                self.call(method, self.fill(target), json=self.fill(body))
+            with contextlib.suppress(httpx2.ReadTimeout):
+                lines.extend(stream)
+            return response.status_code, "\n".join(lines) + "\n"
+
     def record(self, recording: Recording) -> int:
         """Send one recording and write its file; return the status."""
+        if recording.listen is not None:
+            path = self.fill(recording.path)
+            params = self.fill(recording.params)
+            status, text = self.listen(recording, path, params)
+            snapshot = {
+                "lekto_version": LEKTO_VERSION,
+                "method": recording.method,
+                "operation": recording.operation,
+                "path": path,
+                "params": params,
+                "json": None,
+                "data": {},
+                "status": status,
+                "body": None,
+                "text": text,
+            }
+            written = json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n"
+            (SNAPSHOT / f"{recording.name}.json").write_text(
+                written.replace(self.url, TESTS_URL), encoding="utf-8"
+            )
+            return status
         if recording.settle is not None:
             self.settle(self.value(recording.settle))
         path = self.fill(recording.path)
@@ -1032,6 +1076,24 @@ RECORDINGS: list[Recording] = [
     Recording("classifier_status", "GET", "/classifier", "/classifier"),
     Recording("classifier_models", "GET", "/classifier/models", "/classifier/models"),
     Recording("classifier_train", "POST", "/classifier/train", "/classifier/train"),
+    # Events: a change of a document's title, as the stream tells it.
+    Recording(
+        "events_listen",
+        "GET",
+        "/events",
+        "/events",
+        listen=5.0,
+        trigger=("PATCH", DOCUMENT, {"title": "Stromabrechnung 2023-2024"}),
+    ),
+    Recording(
+        "events_listen_document",
+        "GET",
+        "/events",
+        "/events",
+        params={"document_id": "{document}"},
+        listen=5.0,
+        trigger=("PATCH", DOCUMENT, {"title": "Stromabrechnung 2023/2024"}),
+    ),
 ]
 
 

@@ -26,6 +26,8 @@ from pylekto.exceptions import (
 from pylekto.models import Problem
 
 API_PATH = "/api/v1"
+# A stream waits for its next line as long as it takes; connecting has its usual limit.
+STREAM = httpx2.Timeout(None, connect=10.0)
 # Writes ids, dates and the like as JSON (for request bodies).
 _JSON: TypeAdapter[Any] = TypeAdapter(Any)
 # Lekto recognises a file by its content, not by the type a client names.
@@ -116,6 +118,27 @@ class Http:
     async def download(self, path: str, **send: Unpack[Send]) -> bytes:
         """GET the bytes of a file."""
         return (await self.request("GET", path, **send)).content
+
+    async def lines(self, path: str, *, params: Params | None = None) -> AsyncIterator[str]:
+        """GET a stream and yield its lines as they come, until Lekto ends it.
+
+        The stream may stay quiet for long: it waits for each line without a time limit.
+        """
+        try:
+            async with self._client.stream(
+                "GET", self._api + path, params=params, headers=self._headers, timeout=STREAM
+            ) as response:
+                if response.is_error:
+                    await response.aread()
+                    raise api_error(response)
+                async for line in response.aiter_lines():
+                    yield line
+        except httpx2.TimeoutException as error:
+            message = f"Lekto did not answer GET {path} in time"
+            raise LektoTimeoutError(message) from error
+        except httpx2.TransportError as error:
+            message = f"Lekto is not reachable: {type(error).__name__}"
+            raise LektoConnectionError(message) from error
 
 
 def query(**values: object) -> dict[str, str | list[str]]:

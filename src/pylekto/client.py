@@ -15,6 +15,7 @@ from pylekto.resources import (
     ContactsResource,
     DocumentsResource,
     DocumentTypesResource,
+    EventsResource,
     ExpectedResource,
     FieldsResource,
     HealthResource,
@@ -76,6 +77,7 @@ class LektoClient:
         self.contacts = ContactsResource(http)
         self.document_types = DocumentTypesResource(http)
         self.documents = DocumentsResource(http)
+        self.events = EventsResource(http)
         self.expected = ExpectedResource(http)
         self.fields = FieldsResource(http)
         self.health = HealthResource(http)
