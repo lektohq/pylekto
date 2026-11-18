@@ -1,16 +1,19 @@
 # CLAUDE.md
 
 pylekto (technical name `pylekto`, on PyPI) is the async Python client of the Lekto DMS REST API
-(`lektohq/lekto`). Python 3.14 only, because Home Assistant requires it. The library is not
-designed yet; this file grows with it.
+(`lektohq/lekto`). Python 3.14 only, because Home Assistant requires it. The architecture is
+decided in `.idea/decisions/2026-11-18-pylekto-architecture.md`, the order of the work in
+`.idea/plans/pylekto-library.md`.
 
 ## Layout
 
 | Path | Content |
 | --- | --- |
-| `src/pylekto/` | The package (typed: `py.typed`) |
+| `src/pylekto/` | The package (typed: `py.typed`): `client.py` (`LektoClient`), `_http.py` (requests, problem details as exceptions, pages), `exceptions.py`, `resources/` (one module per area of the API) |
+| `src/pylekto/models.py` | The models, generated from `openapi.json` by datamodel-codegen (settings in `pyproject.toml`); never edited by hand |
+| `openapi.json`, `src/pylekto/_lekto.py` | Lekto's OpenAPI description of the release `LEKTO_VERSION`, and that version |
 | `tests/` | pytest; `tests/ruff.toml` adjusts the rules for tests |
-| `script/` | `setup` (once: dependencies, Git hooks), `bootstrap` (every start of the devcontainer: dependencies) |
+| `script/` | `setup` (once: dependencies, Git hooks), `bootstrap` (every start of the devcontainer: dependencies), `update_openapi.py` (the description of another Lekto release) |
 | `.devcontainer/`, `Dockerfile.dev` | Devcontainer: Python 3.14, uv, gh, Claude Code; the virtual environment lives in `/home/vscode/.local/dev-venv` |
 | `.github/` | Workflows (`ci.yml`, `release.yml`, Release Drafter, labels, stale, lock), labels, templates, `scripts/` (the test of the action pins) |
 | `.idea/` | The knowledge in German as small notes with frontmatter; start with `INDEX.md` and `README.md`. A checkout of the private repository `lektohq/lekto-knowledge`, shared with lekto and ignored by this one (see "Working style") |
@@ -26,6 +29,8 @@ uv run typos
 uv run yamllint .
 uv run prek run --all-files      # every hook at once, as before each commit
 python3 -m unittest discover -s .github/scripts   # every action is pinned to a commit
+uv run datamodel-codegen         # the models from openapi.json again
+uv run python script/update_openapi.py v0.15.6   # another Lekto release: description, version, models
 ```
 
 Run all checks before every commit; `script/setup` installs them as a Git hook (`prek install`).
@@ -38,6 +43,16 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
 
 ## Rules
 
+- The client sends requests and reads the answers, nothing else: no repetitions, no waiting, no
+  caching. Errors raise a subclass of `LektoError`; whether to try again is the caller's logic.
+- Only API tokens: no sign-in with a password, no session. Endpoints that need a session stay out.
+- Every area of the API is a class in `resources/` with explicit methods (`get`, `list`, `create`,
+  …) that take and return the generated models under their OpenAPI names. Lists with a cursor or
+  an offset are async iterators (`_http.cursor_items`, `_http.offset_items`).
+- `models.py` is generated; a test fails if it differs from what datamodel-codegen writes from
+  `openapi.json`. Ruff and typos leave it out; mypy checks it.
+- While Lekto is in beta, connecting to another version than `LEKTO_VERSION` warns
+  (`LektoVersionWarning`).
 - Ruff (`select = ["ALL"]`) and mypy (`strict`) report nothing on new or changed code.
 - No suppressions (`# noqa`, `# type: ignore` and the like): fix the cause. Only `# noqa: F401` on
   a re-export in an `__init__.py` is allowed without asking.

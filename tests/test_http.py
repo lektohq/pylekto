@@ -1,0 +1,188 @@
+"""Tests of the HTTP layer: errors as exceptions, answers as models, pages of items."""
+
+from dataclasses import dataclass
+
+import httpx2
+import pytest
+
+from pylekto import (
+    LektoApiError,
+    LektoAuthenticationError,
+    LektoClient,
+    LektoConflictError,
+    LektoConnectionError,
+    LektoForbiddenError,
+    LektoNotFoundError,
+    LektoRateLimitError,
+    LektoResponseError,
+    LektoServerError,
+    LektoTimeoutError,
+    LektoValidationError,
+)
+from pylekto._http import cursor_items, offset_items
+
+from .conftest import DOCUMENT_ID, Api
+
+
+@pytest.mark.parametrize(
+    ("status", "error"),
+    [
+        (400, LektoApiError),
+        (401, LektoAuthenticationError),
+        (403, LektoForbiddenError),
+        (404, LektoNotFoundError),
+        (409, LektoConflictError),
+        (413, LektoApiError),
+        (422, LektoValidationError),
+        (429, LektoRateLimitError),
+        (500, LektoServerError),
+        (502, LektoServerError),
+    ],
+)
+async def test_status_gives_its_error(
+    api: Api, lekto: LektoClient, status: int, error: type[LektoApiError]
+) -> None:
+    """Each error status raises its own exception, with the status and the title."""
+    api.answer("GET", "/auth/me", status, json={"title": "Refused", "status": status})
+    with pytest.raises(LektoApiError) as raised:
+        await lekto.auth.me()
+    assert type(raised.value) is error
+    assert raised.value.status == status
+    assert str(raised.value) == f"{status} Refused"
+
+
+async def test_problem_details(api: Api, lekto: LektoClient) -> None:
+    """The problem details come with the exception: detail, reason and the errors per field."""
+    reason = {"code": "input_too_short", "params": {"min": 1}}
+    problem = {
+        "title": "Unprocessable Content",
+        "status": 422,
+        "detail": "name: too short",
+        "reason": reason,
+        "errors": [{"field": "name", "message": "too short", "reason": reason}],
+    }
+    api.answer("GET", "/auth/me", 422, json=problem)
+    with pytest.raises(LektoValidationError) as raised:
+        await lekto.auth.me()
+    error = raised.value
+    assert str(error) == "422 Unprocessable Content: name: too short"
+    assert error.reason is not None
+    assert error.reason.code == "input_too_short"
+    assert [(e.field, e.reason.code) for e in error.errors] == [("name", "input_too_short")]
+
+
+async def test_conflict_names_the_existing_document(api: Api, lekto: LektoClient) -> None:
+    """A duplicate upload names the document it collided with."""
+    problem = {"title": "Conflict", "status": 409, "existing_document_id": DOCUMENT_ID}
+    api.answer("GET", "/auth/me", 409, json=problem)
+    with pytest.raises(LektoConflictError) as raised:
+        await lekto.auth.me()
+    assert str(raised.value.existing_document_id) == DOCUMENT_ID
+    assert raised.value.errors == []
+
+
+async def test_error_without_problem_details(api: Api, lekto: LektoClient) -> None:
+    """An error page of a proxy gives the status and its phrase."""
+    api.answer("GET", "/auth/me", 502, content=b"<html>Bad Gateway</html>")
+    with pytest.raises(LektoServerError) as raised:
+        await lekto.auth.me()
+    assert raised.value.problem.title == "Bad Gateway"
+    assert raised.value.problem.detail is None
+    assert raised.value.reason is None
+
+
+async def test_error_with_unknown_reason_keeps_its_text(api: Api, lekto: LektoClient) -> None:
+    """Problem details with a reason the models do not know keep their title and detail."""
+    problem = {
+        "title": "Bad Request",
+        "status": 400,
+        "detail": "something new",
+        "reason": {"code": "made_up_code", "params": {}},
+    }
+    api.answer("GET", "/auth/me", 400, json=problem)
+    with pytest.raises(LektoApiError) as raised:
+        await lekto.auth.me()
+    assert str(raised.value) == "400 Bad Request: something new"
+    assert raised.value.reason is None
+
+
+@pytest.mark.parametrize(
+    ("header", "seconds"),
+    [("7", 7.0), ("0.5", 0.5), ("-3", 0.0), ("Wed, 21 Oct 2026 07:28:00 GMT", None), (None, None)],
+)
+async def test_rate_limit_says_how_long_to_wait(
+    api: Api, lekto: LektoClient, header: str | None, seconds: float | None
+) -> None:
+    """``Retry-After`` in seconds becomes ``retry_after``; any other form is None."""
+    headers = {} if header is None else {"Retry-After": header}
+    api.answer("GET", "/auth/me", 429, json={"title": "Too Many", "status": 429}, headers=headers)
+    with pytest.raises(LektoRateLimitError) as raised:
+        await lekto.auth.me()
+    assert raised.value.retry_after == seconds
+
+
+@pytest.mark.parametrize(
+    ("failure", "error"),
+    [
+        (httpx2.ConnectError("refused"), LektoConnectionError),
+        (httpx2.ReadTimeout("slow"), LektoTimeoutError),
+    ],
+)
+async def test_transport_failure(
+    api: Api, lekto: LektoClient, failure: Exception, error: type[LektoConnectionError]
+) -> None:
+    """A connection that fails or times out raises a connection error, with the cause."""
+    api.answer("GET", "/auth/me", error=failure)
+    with pytest.raises(LektoConnectionError) as raised:
+        await lekto.auth.me()
+    assert type(raised.value) is error
+    assert raised.value.__cause__ is failure
+
+
+async def test_answer_the_models_do_not_describe(api: Api, lekto: LektoClient) -> None:
+    """An answer that does not fit the model raises a response error."""
+    api.answer("GET", "/auth/me", json={"user": None})
+    with pytest.raises(LektoResponseError, match=r"GET /api/v1/auth/me is no Me"):
+        await lekto.auth.me()
+
+
+@dataclass
+class CursorPage:
+    """A page of a list with a cursor."""
+
+    items: list[int]
+    next_cursor: str | None
+
+
+@dataclass
+class OffsetPage:
+    """A page of a list with an offset."""
+
+    items: list[int]
+    next_offset: int | None
+
+
+async def test_cursor_items() -> None:
+    """Every item of every page, the cursor of each page handed to the next request."""
+    pages = {None: CursorPage([1, 2], "b"), "b": CursorPage([3], "c"), "c": CursorPage([], None)}
+    asked: list[str | None] = []
+
+    async def fetch(cursor: str | None) -> CursorPage:
+        asked.append(cursor)
+        return pages[cursor]
+
+    assert [item async for item in cursor_items(fetch)] == [1, 2, 3]
+    assert asked == [None, "b", "c"]
+
+
+async def test_offset_items() -> None:
+    """Every item of every page, from offset 0 to where the last page ends."""
+    pages = {0: OffsetPage([1, 2], 2), 2: OffsetPage([3], None)}
+    asked: list[int] = []
+
+    async def fetch(offset: int) -> OffsetPage:
+        asked.append(offset)
+        return pages[offset]
+
+    assert [item async for item in offset_items(fetch)] == [1, 2, 3]
+    assert asked == [0, 2]

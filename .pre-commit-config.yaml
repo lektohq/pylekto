@@ -28,6 +28,8 @@ repos:
     hooks:
       - id: check-ast
       - id: check-docstring-first
+        # The generated models carry docstrings below fields and type aliases.
+        exclude: ^src/pylekto/models\.py$
   - repo: local
     hooks:
       - id: yamllint
@@ -45,7 +47,8 @@ repos:
         name: Ruff linter
         language: system
         types: [python]
-        entry: uv run ruff check --fix
+        # --force-exclude: what pyproject.toml excludes stays out when prek names the file.
+        entry: uv run ruff check --fix --force-exclude
         require_serial: true
         stages: [pre-commit, pre-push, manual]
       - id: ruff-format
@@ -53,7 +56,7 @@ repos:
         language: system
         # Markdown too: Ruff formats the Python code blocks in it.
         types_or: [python, markdown]
-        entry: uv run ruff format
+        entry: uv run ruff format --force-exclude
         require_serial: true
         stages: [pre-commit, pre-push, manual]
       - id: mypy

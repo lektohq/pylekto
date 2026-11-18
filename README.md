@@ -3,8 +3,34 @@
 Async Python client for the [Lekto](https://github.com/lektohq/lekto) DMS REST API.
 
 > [!NOTE]
-> pylekto is at its very beginning: the repository is set up, the library itself is still to be
-> designed. Nothing here is usable yet.
+> pylekto is at its beginning: the client stands, the areas of the API follow one by one. So far
+> it covers `auth` (who calls) and `health`.
+
+```python
+import asyncio
+
+from pylekto import LektoClient
+
+
+async def main() -> None:
+    async with LektoClient("https://lekto.example.com", "lekto_…") as lekto:
+        me = await lekto.auth.me()
+        health = await lekto.health.get()
+        print(me.user.username, me.token_scope, health.status)
+
+
+asyncio.run(main())
+```
+
+- **Token only.** A personal API token from Lekto; its scope (`read`, `upload`, `read_write`)
+  decides what the client may do.
+- **Your own httpx2 client** if you like (`LektoClient(url, token, client=...)`): pylekto sends its
+  requests with it and leaves it open.
+- **Errors raise.** Each subclass of `LektoError` says what went wrong; a refusal carries Lekto's
+  problem details with a reason code. pylekto repeats nothing: whether to try again is up to you.
+- **One Lekto release.** pylekto speaks the API of `pylekto.LEKTO_VERSION`; its models are
+  generated from that release's OpenAPI description. While Lekto is in beta, each release may
+  change its API, so connecting to another version warns (`LektoVersionWarning`).
 
 ## Requirements
 
