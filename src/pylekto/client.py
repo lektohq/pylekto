@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Self
 
 import httpx2
 
-from pylekto._http import Http
+from pylekto._http import TIMEOUT, Http
 from pylekto._lekto import LEKTO_VERSION
 from pylekto.exceptions import LektoVersionWarning
 from pylekto.resources import (
@@ -40,9 +40,6 @@ if TYPE_CHECKING:
     from types import TracebackType
 
     from pylekto.models import Me
-
-# Only for the client pylekto makes itself; a client passed in keeps its own settings.
-TIMEOUT = httpx2.Timeout(30.0, connect=10.0)
 
 
 class LektoClient:

@@ -116,5 +116,9 @@ class LektoServerError(LektoApiError):
     """5xx: Lekto, or a proxy in front of it, failed."""
 
 
+class WebhookVerificationError(LektoError):
+    """A request to a webhook is not signed with its secret, or too old: do not trust it."""
+
+
 class LektoVersionWarning(UserWarning):
     """Lekto runs another version than the one whose API pylekto speaks."""

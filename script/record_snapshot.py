@@ -1097,11 +1097,186 @@ RECORDINGS: list[Recording] = [
 ]
 
 
+def record_webhook_requests(recorder: Recorder, receiver: str, log: Path) -> None:
+    """Record what Lekto sends to a webhook: a rule's question, what it sends, an event.
+
+    A signed webhook at ``receiver`` (an address Lekto reaches, whose requests a server writes
+    to ``log`` as JSON lines: path, headers, body) gets ``document.filed``. A rule on arrival by
+    the API asks it and then sends to it (a question runs on arrival only). The script uploads a
+    PDF, answers the task at its callback and confirms the document, which then is filed. Each
+    request becomes ``tests/snapshot/webhooks/<kind>.json`` with the webhook's secret, which
+    holds for nothing once the webhook is deleted at the end, with the rule and the document.
+    """
+    log.write_text("", encoding="utf-8")
+    created = recorder.call(
+        "POST",
+        "/webhooks",
+        json={
+            "name": "Muster Receiver",
+            "url": receiver,
+            "event_types": ["document.filed"],
+            "signed": True,
+            "body": "full",
+        },
+    )
+    hook, secret = str(created["id"]), str(created["secret"])
+    rule: str | None = None
+    document: str | None = None
+    try:
+        rule = str(
+            recorder.call(
+                "POST",
+                "/rules",
+                json={
+                    "name": "Muster Question",
+                    "scope": "global",
+                    "triggers": ["ingest"],
+                    "conditions": {"all": [{"field": "channel", "op": "is", "value": "api"}]},
+                    "actions": [
+                        {"type": "ask_webhook", "name": "muster", "webhook_id": hook},
+                        {"type": "send_webhook", "webhook_id": hook},
+                    ],
+                },
+            )["id"]
+        )
+        content = pdf(f"Muster Frage {time.time_ns()}")
+        files = [("file", ("question.pdf", content, "application/octet-stream"))]
+        document = str(recorder.call("POST", "/documents", files=files)["id"])
+        answered: set[str] = set()
+        _wait_for(log, "rule.ask")
+        _answer_tasks(recorder, log, answered)
+        recorder.settle(document)
+        changes = {
+            "title": "Muster Frage",
+            "contact_id": recorder.value("contact"),
+            "document_type_id": recorder.value("document_type"),
+            "document_date": "2026-10-01",
+        }
+        recorder.call("POST", f"/documents/{document}/confirm", json={"changes": changes})
+        # Confirming runs the rules again, so the rule asks again before the document is filed.
+        for _ in range(180):
+            _answer_tasks(recorder, log, answered)
+            kinds = {_kind(request) for request in _requests(log)}
+            if {"rule.send", "document.filed"} <= kinds:
+                break
+            time.sleep(1)
+        else:
+            message = "rule.send or document.filed did not reach the receiver"
+            raise SystemExit(message)
+    finally:
+        if rule is not None:
+            recorder.call("DELETE", f"/rules/{rule}")
+        recorder.call("DELETE", f"/webhooks/{hook}")
+        if document is not None:
+            recorder.call("DELETE", f"/documents/{document}")
+    _record_model_call(recorder, receiver, log)
+    folder = SNAPSHOT / "webhooks"
+    folder.mkdir(exist_ok=True)
+    model_secret = (log.parent / "model_call_secret").read_text(encoding="utf-8")
+    for line in log.read_text(encoding="utf-8").splitlines():
+        request = json.loads(line)
+        kind = _kind(request)
+        signed_with = model_secret if kind.startswith("external.") else secret
+        written = json.dumps(
+            {"lekto_version": LEKTO_VERSION, "secret": signed_with, **request},
+            indent=2,
+            ensure_ascii=False,
+        )
+        name = kind.replace(".", "_")
+        # As it came: the signature covers the body, so not even the address is replaced.
+        (folder / f"{name}.json").write_text(written + "\n", encoding="utf-8")
+        sys.stdout.write(f"recorded {kind}\n")
+
+
+def _record_model_call(recorder: Recorder, receiver: str, log: Path) -> None:
+    """Have a webhook serve as the model call that proposes, and record its request.
+
+    This webhook has a secret of its own; the files of its requests carry it. A PDF is
+    uploaded; the task is answered with an error, so the document turns red, and is deleted with
+    the webhook.
+    """
+    created = recorder.call(
+        "POST",
+        "/webhooks",
+        json={
+            "name": "Muster Model",
+            "url": receiver,
+            "signed": True,
+            "model_call": {"kind": "propose"},
+        },
+    )
+    hook = str(created["id"])
+    (log.parent / "model_call_secret").write_text(str(created["secret"]), encoding="utf-8")
+    document: str | None = None
+    try:
+        content = pdf(f"Muster Vorschlag {time.time_ns()}")
+        files = [("file", ("proposal.pdf", content, "application/octet-stream"))]
+        document = str(recorder.call("POST", "/documents", files=files)["id"])
+        proposal = _wait_for(log, "external.propose")
+        task = {name.lower(): value for name, value in proposal["headers"].items()}
+        response = recorder.client.post(
+            task["lekto-callback"],
+            json={"status": "error", "producer": "pylekto snapshot", "reason": "made up"},
+            headers={"Authorization": f"Bearer {task['lekto-task-token']}"},
+        )
+        sys.stdout.write(f"{response.status_code} model call answered\n")
+        recorder.settle(document)
+    finally:
+        recorder.call("DELETE", f"/webhooks/{hook}")
+        if document is not None:
+            recorder.call("DELETE", f"/documents/{document}")
+
+
+def _requests(log: Path) -> list[dict[str, Any]]:
+    """Return the requests the receiver wrote so far."""
+    return [json.loads(line) for line in log.read_text(encoding="utf-8").splitlines()]
+
+
+def _answer_tasks(recorder: Recorder, log: Path, answered: set[str]) -> None:
+    """Answer every task the receiver got that is not answered yet."""
+    answer = {"status": "ok", "producer": "pylekto snapshot", "answer": {"checked": True}}
+    for request in _requests(log):
+        task = {name.lower(): value for name, value in request["headers"].items()}
+        if "lekto-task-id" not in task or task["lekto-task-id"] in answered:
+            continue
+        response = recorder.client.post(
+            task["lekto-callback"],
+            json=answer,
+            headers={"Authorization": f"Bearer {task['lekto-task-token']}"},
+        )
+        answered.add(task["lekto-task-id"])
+        sys.stdout.write(f"{response.status_code} task answered\n")
+
+
+def _kind(request: dict[str, Any]) -> str:
+    """Return the kind of a request: its body's type, or the kind of its model call's task."""
+    content = json.loads(request["body"])
+    if "type" in content:
+        return str(content["type"])
+    return str(content["task"]["kind"])
+
+
+def _wait_for(log: Path, kind: str) -> dict[str, Any]:
+    """Wait until the receiver's log holds a request of a kind (at most two minutes)."""
+    for _ in range(120):
+        for request in _requests(log):
+            if _kind(request) == kind:
+                return request
+        time.sleep(1)
+    message = f"no {kind} request reached the receiver"
+    raise SystemExit(message)
+
+
 def main() -> None:
     """Record the named recordings, or all of them."""
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--url", required=True, help="the throwaway Lekto instance")
     parser.add_argument("names", nargs="*", help="the recordings to make (default: all)")
+    parser.add_argument(
+        "--receiver",
+        help="record the requests of a webhook at this address, as Lekto reaches it",
+    )
+    parser.add_argument("--receiver-log", type=Path, help="where the receiver writes its requests")
     arguments = parser.parse_args()
     token = os.environ.get("PYLEKTO_SNAPSHOT_TOKEN")
     if not token:
@@ -1121,6 +1296,8 @@ def main() -> None:
     for recording in chosen:
         status = recorder.record(recording)
         sys.stdout.write(f"{status} {recording.name}\n")
+    if arguments.receiver and arguments.receiver_log:
+        record_webhook_requests(recorder, arguments.receiver, arguments.receiver_log)
 
 
 if __name__ == "__main__":
