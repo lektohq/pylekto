@@ -1,0 +1,19 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/inbox/summary",
+  "path": "/inbox/summary",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "new": 0,
+    "review": 0,
+    "intervene": 2,
+    "processing": 0,
+    "done": 0,
+    "open": 2,
+    "worst_lane": "red"
+  }
+}

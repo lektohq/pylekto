@@ -1,0 +1,346 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/inbox",
+  "path": "/inbox",
+  "params": {
+    "tab": "intervene",
+    "limit": 5
+  },
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "items": [
+      {
+        "document": {
+          "id": "01a1f0a0-2bcb-79a6-967a-bc1882e41a8e",
+          "title": "SCN_20251102_161136",
+          "original_filename": "SCN_20251102_161136.pdf",
+          "media_type": "application/pdf",
+          "channel": "migration",
+          "sha256": "30b40193a12a77cce8c686875f63b8ff78cdce0b373d09d82e54f925bb747b9f",
+          "uploaded_by": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+          "space_id": "01a1f09e-e2c4-7eab-8db4-6012e58e96e6",
+          "access": "edit",
+          "contact_id": null,
+          "document_type_id": null,
+          "topic_id": null,
+          "tag_ids": [],
+          "document_date": null,
+          "fields": {},
+          "lane": "red",
+          "first_lane": "red",
+          "page_count": 1,
+          "confirmed_at": null,
+          "space_confirmed_at": null,
+          "processing": {
+            "status": "failed",
+            "run": 1,
+            "nodes": [
+              {
+                "node": "receive",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-18T21:46:31.237319Z",
+                "finished_at": "2026-11-18T21:46:31.237319Z",
+                "deadline": null
+              },
+              {
+                "node": "separate",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-18T21:46:33.833658Z",
+                "finished_at": "2026-11-18T21:46:33.849024Z",
+                "deadline": null
+              },
+              {
+                "node": "ocr",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-18T21:47:15.533800Z",
+                "finished_at": "2026-11-18T21:47:17.753658Z",
+                "deadline": null
+              },
+              {
+                "node": "pages",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-18T21:47:16.896379Z",
+                "finished_at": "2026-11-18T21:47:17.053880Z",
+                "deadline": null
+              },
+              {
+                "node": "parse",
+                "status": "done",
+                "outcome": "failed",
+                "started_at": "2026-11-18T21:47:36.824823Z",
+                "finished_at": "2026-11-18T21:47:36.847341Z",
+                "deadline": null
+              },
+              {
+                "node": "signal_llm",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "signal_classifier",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "signal_neighbours",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "signal_facts",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "judge",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "fields",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "relate",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "apply_rules",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "file",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              }
+            ],
+            "vision": false
+          },
+          "created_at": "2026-11-18T21:46:31.237319Z",
+          "updated_at": "2026-11-18T21:47:36.847341Z"
+        },
+        "tab": "intervene",
+        "open": [
+          {
+            "node": "parse",
+            "outcome": "failed",
+            "reason": "no text recognised: the pages are blank or hold only pictures",
+            "reasons": [
+              {
+                "code": "no_text",
+                "params": {},
+                "subject": null,
+                "rule": null,
+                "field": null
+              }
+            ],
+            "fields": []
+          }
+        ],
+        "done": null
+      },
+      {
+        "document": {
+          "id": "01a1f0a0-28d4-7b72-abd8-2fc086c95580",
+          "title": "IMG-20241229-WA0050",
+          "original_filename": "IMG-20241229-WA0050.jpg",
+          "media_type": "image/jpeg",
+          "channel": "migration",
+          "sha256": "9f70d6859c04f9ba0365ea19f52de394bb8901e74ff4daa25a1a2468fcd0e888",
+          "uploaded_by": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+          "space_id": "01a1f09e-e2c4-7eab-8db4-6012e58e96e6",
+          "access": "edit",
+          "contact_id": null,
+          "document_type_id": null,
+          "topic_id": null,
+          "tag_ids": [],
+          "document_date": null,
+          "fields": {},
+          "lane": "red",
+          "first_lane": "red",
+          "page_count": 1,
+          "confirmed_at": null,
+          "space_confirmed_at": null,
+          "processing": {
+            "status": "failed",
+            "run": 1,
+            "nodes": [
+              {
+                "node": "receive",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-18T21:46:30.480905Z",
+                "finished_at": "2026-11-18T21:46:30.480905Z",
+                "deadline": null
+              },
+              {
+                "node": "separate",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-18T21:46:33.156068Z",
+                "finished_at": "2026-11-18T21:46:33.168353Z",
+                "deadline": null
+              },
+              {
+                "node": "ocr",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-18T21:46:52.313547Z",
+                "finished_at": "2026-11-18T21:46:55.825356Z",
+                "deadline": null
+              },
+              {
+                "node": "pages",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-18T21:46:52.344622Z",
+                "finished_at": "2026-11-18T21:46:52.500174Z",
+                "deadline": null
+              },
+              {
+                "node": "parse",
+                "status": "done",
+                "outcome": "failed",
+                "started_at": "2026-11-18T21:47:35.371291Z",
+                "finished_at": "2026-11-18T21:47:35.384649Z",
+                "deadline": null
+              },
+              {
+                "node": "signal_llm",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "signal_classifier",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "signal_neighbours",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "signal_facts",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "judge",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "fields",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "relate",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "apply_rules",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              },
+              {
+                "node": "file",
+                "status": "waiting",
+                "outcome": null,
+                "started_at": null,
+                "finished_at": null,
+                "deadline": null
+              }
+            ],
+            "vision": false
+          },
+          "created_at": "2026-11-18T21:46:30.480905Z",
+          "updated_at": "2026-11-18T21:47:35.384649Z"
+        },
+        "tab": "intervene",
+        "open": [
+          {
+            "node": "parse",
+            "outcome": "failed",
+            "reason": "no text recognised: the pages are blank or hold only pictures",
+            "reasons": [
+              {
+                "code": "no_text",
+                "params": {},
+                "subject": null,
+                "rule": null,
+                "field": null
+              }
+            ],
+            "fields": []
+          }
+        ],
+        "done": null
+      }
+    ],
+    "next_cursor": null
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/rules/{id}/versions",
+  "path": "/rules/01a1f0bb-971d-73d0-9add-0b5f250dff4d/versions",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": [
+    {
+      "name": "Muster Rule",
+      "priority": 100,
+      "triggers": [
+        "change",
+        "ingest"
+      ],
+      "conditions": {
+        "all": [
+          {
+            "field": "text",
+            "op": "contains",
+            "value": "Muster",
+            "field_id": null,
+            "path": null,
+            "case_sensitive": false,
+            "fact_kind": null,
+            "fact_role": null
+          }
+        ],
+        "not": false
+      },
+      "actions": [
+        {
+          "type": "add_tags",
+          "tag_ids": [
+            "01a1f0bb-9713-7151-b07e-214a2859c814"
+          ]
+        }
+      ],
+      "rule_id": "01a1f0bb-971d-73d0-9add-0b5f250dff4d",
+      "version": 1,
+      "scope": "global",
+      "space_id": null,
+      "created_at": "2026-11-18T22:16:28.189731Z",
+      "created_by": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a"
+    },
+    {
+      "name": "Muster Rule",
+      "priority": 90,
+      "triggers": [
+        "change",
+        "ingest"
+      ],
+      "conditions": {
+        "all": [
+          {
+            "field": "text",
+            "op": "contains",
+            "value": "Muster",
+            "field_id": null,
+            "path": null,
+            "case_sensitive": false,
+            "fact_kind": null,
+            "fact_role": null
+          }
+        ],
+        "not": false
+      },
+      "actions": [
+        {
+          "type": "add_tags",
+          "tag_ids": [
+            "01a1f0bb-9713-7151-b07e-214a2859c814"
+          ]
+        }
+      ],
+      "rule_id": "01a1f0bb-971d-73d0-9add-0b5f250dff4d",
+      "version": 2,
+      "scope": "global",
+      "space_id": null,
+      "created_at": "2026-11-18T22:16:28.221929Z",
+      "created_by": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a"
+    }
+  ]
+}

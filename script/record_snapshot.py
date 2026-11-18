@@ -281,6 +281,15 @@ def _created(name: str, path: str, key: str, value: str) -> Lookup:
     return lookup
 
 
+def _rule_tag(recorder: Recorder) -> str:
+    """Look up the tag the recorded rule adds, made on the first run."""
+    for tag in recorder.call("GET", "/tags"):
+        if tag["name"] == "Muster Rule Tag":
+            return str(tag["id"])
+    tag = {"name": "Muster Rule Tag", "scope": "document"}
+    return str(recorder.call("POST", "/tags", json=tag)["id"])
+
+
 def _open(part: str) -> Lookup:
     """Look up a part of the first open identifier that has a contact."""
 
@@ -313,6 +322,19 @@ LOOKUPS: dict[str, Lookup] = {
     "new_field": _created("fields_create", "/fields", "name", "Muster Number"),
     "new_type": _created("document_types_create", "/document-types", "name", "Muster Policy"),
     "new_tag": _created("tags_create", "/tags", "name", "Muster Tag"),
+    "new_lens": _created("lenses_create", "/lenses", "name", "Muster Lens"),
+    "new_rule": _created("rules_create", "/rules?include_disabled=true", "name", "Muster Rule"),
+    "rule_tag": _rule_tag,
+    "application": _answer("rules_apply"),
+}
+
+RULE = {
+    "name": "Muster Rule",
+    "priority": 100,
+    "scope": "global",
+    "triggers": ["ingest", "change"],
+    "conditions": {"all": [{"field": "text", "op": "contains", "value": "Muster"}]},
+    "actions": [{"type": "add_tags", "tag_ids": ["{rule_tag}"]}],
 }
 
 DOCUMENT = "/documents/{document}"
@@ -725,6 +747,73 @@ RECORDINGS: list[Recording] = [
     Recording("tags_get", "GET", "/tags/{new_tag}", "/tags/{id}"),
     Recording("tags_update", "PATCH", "/tags/{new_tag}", "/tags/{id}", json={"color": "#0d6b6b"}),
     Recording("tags_delete", "DELETE", "/tags/{new_tag}", "/tags/{id}"),
+    # Inbox and expected documents.
+    Recording("inbox_page", "GET", "/inbox", "/inbox", params={"tab": "intervene", "limit": 5}),
+    Recording("inbox_summary", "GET", "/inbox/summary", "/inbox/summary"),
+    Recording("inbox_mark_seen", "POST", "/inbox/seen", "/inbox/seen"),
+    Recording("expected_list", "GET", "/expected", "/expected", params={"tz": "Europe/Berlin"}),
+    # Lenses.
+    Recording("lenses_create", "POST", "/lenses", "/lenses", json={"name": "Muster Lens"}),
+    Recording("lenses_list", "GET", "/lenses", "/lenses"),
+    Recording("lenses_get", "GET", "/lenses/{new_lens}", "/lenses/{id}"),
+    Recording(
+        "lenses_update",
+        "PATCH",
+        "/lenses/{new_lens}",
+        "/lenses/{id}",
+        json={"query": "Muster", "layout": "list"},
+    ),
+    Recording(
+        "lenses_order", "PUT", "/lenses/order", "/lenses/order", json={"ids": ["{new_lens}"]}
+    ),
+    Recording("lenses_delete", "DELETE", "/lenses/{new_lens}", "/lenses/{id}"),
+    # Rules and templates.
+    Recording("rules_create", "POST", "/rules", "/rules", json=RULE),
+    Recording("rules_list", "GET", "/rules", "/rules", params={"include_disabled": "true"}),
+    Recording("rules_get", "GET", "/rules/{new_rule}", "/rules/{id}"),
+    Recording(
+        "rules_replace",
+        "PUT",
+        "/rules/{new_rule}",
+        "/rules/{id}",
+        json={**RULE, "priority": 90},
+    ),
+    Recording("rules_versions", "GET", "/rules/{new_rule}/versions", "/rules/{id}/versions"),
+    Recording(
+        "rules_version", "GET", "/rules/{new_rule}/versions/1", "/rules/{id}/versions/{number}"
+    ),
+    Recording(
+        "rules_preview_apply",
+        "POST",
+        "/rules/{new_rule}/apply/preview",
+        "/rules/{id}/apply/preview",
+        json={"limit": 5},
+    ),
+    Recording(
+        "rules_hits",
+        "GET",
+        "/rules/{new_rule}/apply/hits/{document}",
+        "/rules/{id}/apply/hits/{document_id}",
+    ),
+    Recording(
+        "rules_apply",
+        "POST",
+        "/rules/{new_rule}/apply",
+        "/rules/{id}/apply",
+        json={"version": 2, "document_ids": ["{document}"], "accept_conflicts": []},
+    ),
+    Recording(
+        "rules_application", "GET", "/rule-applications/{application}", "/rule-applications/{id}"
+    ),
+    Recording("rules_update", "PATCH", "/rules/{new_rule}", "/rules/{id}", json={"enabled": False}),
+    Recording("rules_delete", "DELETE", "/rules/{new_rule}", "/rules/{id}"),
+    Recording(
+        "templates_preview",
+        "POST",
+        "/templates/preview",
+        "/templates/preview",
+        json={"template": "{{ title }} ({{ document_date }})", "document_id": "{document}"},
+    ),
 ]
 
 

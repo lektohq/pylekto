@@ -13,10 +13,14 @@ from pylekto.resources import (
     ContactsResource,
     DocumentsResource,
     DocumentTypesResource,
+    ExpectedResource,
     FieldsResource,
     HealthResource,
     IdentifiersResource,
+    InboxResource,
+    LensesResource,
     RelationsResource,
+    RulesResource,
     SearchResource,
     SpacesResource,
     TagsResource,
@@ -62,10 +66,14 @@ class LektoClient:
         self.contacts = ContactsResource(http)
         self.document_types = DocumentTypesResource(http)
         self.documents = DocumentsResource(http)
+        self.expected = ExpectedResource(http)
         self.fields = FieldsResource(http)
         self.health = HealthResource(http)
         self.identifiers = IdentifiersResource(http)
+        self.inbox = InboxResource(http)
+        self.lenses = LensesResource(http)
         self.relations = RelationsResource(http)
+        self.rules = RulesResource(http)
         self.search = SearchResource(http)
         self.spaces = SpacesResource(http)
         self.tags = TagsResource(http)
