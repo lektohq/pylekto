@@ -1,0 +1,155 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/documents/{id}/files",
+  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/files",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "added": "2026-11-18T21:46:30.163242Z",
+    "modified": "2026-11-18T22:03:57.556327Z",
+    "original_filename": "Bestellbestaetigung_BG-7781234.pdf",
+    "media_type": "application/pdf",
+    "page_count": 1,
+    "original": {
+      "size": 2325,
+      "sha256": "9ac72005dfe062deb0c45f70ee2f98857016e89941c7555dc109d1a65a9a9d2d",
+      "metadata": {
+        "format": "PDF",
+        "pdf_version": "1.3",
+        "pdfa": null,
+        "pages": 1,
+        "width": null,
+        "height": null,
+        "dpi": null,
+        "entries": [
+          {
+            "source": "info",
+            "key": "CreationDate",
+            "value": "D:20260203201723+01'00'"
+          },
+          {
+            "source": "info",
+            "key": "Creator",
+            "value": "Versandhaus Bergmann GmbH"
+          },
+          {
+            "source": "info",
+            "key": "ModDate",
+            "value": "D:20260203201723+01'00'"
+          },
+          {
+            "source": "info",
+            "key": "Producer",
+            "value": "Lekto example documents"
+          }
+        ]
+      }
+    },
+    "archive": {
+      "size": 15356,
+      "sha256": "6e0f03ebe6780f26edf8499159d08d9bff794e0e83214229d7a23495e29b0016",
+      "metadata": {
+        "format": "PDF",
+        "pdf_version": "1.7",
+        "pdfa": "2B",
+        "pages": 1,
+        "width": null,
+        "height": null,
+        "dpi": null,
+        "entries": [
+          {
+            "source": "info",
+            "key": "CreationDate",
+            "value": "D:20260203201723+01'00"
+          },
+          {
+            "source": "info",
+            "key": "Creator",
+            "value": "OCRmyPDF 17.13.0 / OCRmyPDF fpdf2 + Tesseract OCR 5.5.0"
+          },
+          {
+            "source": "info",
+            "key": "ModDate",
+            "value": "D:20261118214646+00'00"
+          },
+          {
+            "source": "info",
+            "key": "Producer",
+            "value": "pikepdf 10.16.0"
+          },
+          {
+            "source": "xmp",
+            "key": "pdf:Producer",
+            "value": "pikepdf 10.16.0"
+          },
+          {
+            "source": "xmp",
+            "key": "xmp:ModifyDate",
+            "value": "2026-11-18T21:46:46+00:00"
+          },
+          {
+            "source": "xmp",
+            "key": "xmp:CreateDate",
+            "value": "2026-02-03T20:17:23+01:00"
+          },
+          {
+            "source": "xmp",
+            "key": "xmp:MetadataDate",
+            "value": "2026-11-18T21:46:46.113100+00:00"
+          },
+          {
+            "source": "xmp",
+            "key": "xmp:CreatorTool",
+            "value": "OCRmyPDF 17.13.0 / OCRmyPDF fpdf2 + Tesseract OCR 5.5.0"
+          },
+          {
+            "source": "xmp",
+            "key": "xmpMM:DocumentID",
+            "value": "uuid:19493730-1bb6-11fd-0000-ad0d12165951"
+          },
+          {
+            "source": "xmp",
+            "key": "xmpMM:RenditionClass",
+            "value": "default"
+          },
+          {
+            "source": "xmp",
+            "key": "xmpMM:VersionID",
+            "value": "1"
+          },
+          {
+            "source": "xmp",
+            "key": "dc:format",
+            "value": "application/pdf"
+          },
+          {
+            "source": "xmp",
+            "key": "pdfaid:part",
+            "value": "2"
+          },
+          {
+            "source": "xmp",
+            "key": "pdfaid:conformance",
+            "value": "B"
+          }
+        ]
+      }
+    },
+    "versions": [
+      {
+        "number": 1,
+        "current": true,
+        "original_filename": "Bestellbestaetigung_BG-7781234.pdf",
+        "media_type": "application/pdf",
+        "kind": "received",
+        "created_at": "2026-11-18T21:46:30.163242Z",
+        "created_by": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+        "detail": {},
+        "origin": null
+      }
+    ]
+  }
+}

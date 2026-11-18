@@ -2,11 +2,13 @@
 
 import json
 from collections.abc import AsyncIterator, Awaitable, Callable, Collection, Mapping, Sequence
+from datetime import date
 from http import HTTPStatus
-from typing import Any, Protocol
+from typing import IO, Any, Protocol, TypedDict, Unpack
+from uuid import UUID
 
 import httpx2
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, TypeAdapter, ValidationError
 
 from pylekto.exceptions import (
     LektoApiError,
@@ -25,7 +27,11 @@ from pylekto.models import Problem
 
 API_PATH = "/api/v1"
 
-type Params = Mapping[str, str | int | float | bool | Sequence[str] | None]
+type Params = Mapping[str, str | Sequence[str]]
+type Upload = bytes | IO[bytes]
+# A multipart part: a file (name, content, type) or a form field (None, its text).
+type Part = tuple[str, Upload, str] | tuple[None, str]
+type Files = Sequence[tuple[str, Part]]
 
 _ERRORS: dict[int, type[LektoApiError]] = {
     HTTPStatus.UNAUTHORIZED: LektoAuthenticationError,
@@ -34,6 +40,19 @@ _ERRORS: dict[int, type[LektoApiError]] = {
     HTTPStatus.CONFLICT: LektoConflictError,
     HTTPStatus.UNPROCESSABLE_ENTITY: LektoValidationError,
 }
+
+
+class Send(TypedDict, total=False):
+    """What a request carries besides method and path.
+
+    ``files`` makes a ``multipart/form-data`` body; form fields go in it as ``(None, text)``,
+    because Lekto reads them only there.
+    """
+
+    params: Params
+    json: Any
+    files: Files
+    accept: Collection[int]
 
 
 class Http:
@@ -49,19 +68,16 @@ class Http:
         self._headers = {"Authorization": f"Bearer {token}"}
         self._client = client
 
-    async def request(
-        self,
-        method: str,
-        path: str,
-        *,
-        params: Params | None = None,
-        json: Any = None,
-        accept: Collection[int] = (),
-    ) -> httpx2.Response:
+    async def request(self, method: str, path: str, **send: Unpack[Send]) -> httpx2.Response:
         """Send a request below ``/api/v1``; an error status raises, unless it is in ``accept``."""
         try:
             response = await self._client.request(
-                method, self._api + path, params=params, json=json, headers=self._headers
+                method,
+                self._api + path,
+                params=send.get("params"),
+                json=send.get("json"),
+                files=send.get("files"),
+                headers=self._headers,
             )
         except httpx2.TimeoutException as error:
             message = f"Lekto did not answer {method} {path} in time"
@@ -69,20 +85,63 @@ class Http:
         except httpx2.TransportError as error:
             message = f"Lekto is not reachable: {type(error).__name__}"
             raise LektoConnectionError(message) from error
-        if response.is_error and response.status_code not in accept:
+        if response.is_error and response.status_code not in send.get("accept", ()):
             raise api_error(response)
         return response
 
-    async def get[M: BaseModel](
-        self,
-        path: str,
-        model: type[M],
-        *,
-        params: Params | None = None,
-        accept: Collection[int] = (),
-    ) -> M:
+    async def get[M: BaseModel](self, path: str, model: type[M], **send: Unpack[Send]) -> M:
         """GET a JSON answer as a model."""
-        return parse(await self.request("GET", path, params=params, accept=accept), model)
+        return parse(await self.request("GET", path, **send), model)
+
+    async def call[M: BaseModel](
+        self, method: str, path: str, model: type[M], **send: Unpack[Send]
+    ) -> M:
+        """Send a request and read its JSON answer as a model."""
+        return parse(await self.request(method, path, **send), model)
+
+    async def call_as[T](
+        self, method: str, path: str, answer: TypeAdapter[T], **send: Unpack[Send]
+    ) -> T:
+        """Send a request and read its JSON answer as a type that is no model: a list, a union."""
+        return parse_as(await self.request(method, path, **send), answer)
+
+    async def call_empty(self, method: str, path: str, **send: Unpack[Send]) -> None:
+        """Send a request whose answer has no body (204, or 202 without one)."""
+        await self.request(method, path, **send)
+
+    async def download(self, path: str, **send: Unpack[Send]) -> bytes:
+        """GET the bytes of a file."""
+        return (await self.request("GET", path, **send)).content
+
+
+def query(**values: object) -> dict[str, str | list[str]]:
+    """Turn query values into what Lekto reads: ids, dates and flags as text; None is left out."""
+    params: dict[str, str | list[str]] = {}
+    for name, value in values.items():
+        if value is None:
+            continue
+        if isinstance(value, Sequence) and not isinstance(value, str):
+            params[name] = [_text(item) for item in value]
+        else:
+            params[name] = _text(value)
+    return params
+
+
+def _text(value: object) -> str:
+    """Write one query value as Lekto reads it."""
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    if isinstance(value, date):
+        return value.isoformat()
+    if isinstance(value, UUID | str | int | float):
+        return str(value)
+    message = f"no query value: {value!r}"
+    raise TypeError(message)
+
+
+def body(model: BaseModel) -> Any:
+    """Return the JSON of a request body: only the values set, so a change sends no others."""
+    return model.model_dump(mode="json", by_alias=True, exclude_unset=True)
 
 
 def parse[M: BaseModel](response: httpx2.Response, model: type[M]) -> M:
@@ -92,6 +151,16 @@ def parse[M: BaseModel](response: httpx2.Response, model: type[M]) -> M:
     except ValidationError as error:
         request = response.request
         message = f"Lekto's answer to {request.method} {request.url.path} is no {model.__name__}"
+        raise LektoResponseError(message) from error
+
+
+def parse_as[T](response: httpx2.Response, answer: TypeAdapter[T]) -> T:
+    """Read a JSON answer as a type; one that does not fit raises :class:`LektoResponseError`."""
+    try:
+        return answer.validate_json(response.content)
+    except ValidationError as error:
+        request = response.request
+        message = f"Lekto's answer to {request.method} {request.url.path} does not fit"
         raise LektoResponseError(message) from error
 
 

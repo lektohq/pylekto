@@ -1,0 +1,11 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/documents/search/warm",
+  "path": "/documents/search/warm",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 204,
+  "body": null
+}

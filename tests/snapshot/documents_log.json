@@ -1,0 +1,537 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/documents/{id}/log",
+  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/log",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": [
+    {
+      "node": "receive",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": null,
+      "input": {},
+      "output": {
+        "sha256": "9ac72005dfe062deb0c45f70ee2f98857016e89941c7555dc109d1a65a9a9d2d",
+        "size": 2325,
+        "media_type": "application/pdf",
+        "imported": {
+          "title": "Bestellbestätigung BG-7781234",
+          "contact_id": "01a1f0a0-261b-7455-8a87-2fc5bc48ac4f",
+          "document_type_id": "01a1f0a0-2642-7ce2-96d5-0d10ad2addaa",
+          "tag_ids": [],
+          "document_date": "2026-02-02",
+          "fields": {
+            "01a1f0a0-269e-7c5c-a5a8-80694fe8e738": {
+              "amount": "319.87",
+              "currency": "EUR"
+            },
+            "01a1f0a0-26c7-7915-b2bd-c6ded32f099c": "7700 4521"
+          },
+          "created_at": null,
+          "review": []
+        }
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:46:30.142394Z",
+      "duration_ms": 20.848
+    },
+    {
+      "node": "separate",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": null,
+      "input": {},
+      "output": {
+        "not_looked": "migration"
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:46:32.857558Z",
+      "duration_ms": 13.958
+    },
+    {
+      "node": "ocr",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "ocrmypdf 17.13.0, tesseract 5.5.0",
+      "input": {
+        "original": "originals/9ac72005dfe062deb0c45f70ee2f98857016e89941c7555dc109d1a65a9a9d2d"
+      },
+      "output": {
+        "archive": "documents/01a1f0a0-2797-7197-8560-bfd323a73977/archive.pdf",
+        "pages": 1,
+        "pdfa": true
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:46:44.094964Z",
+      "duration_ms": 2169.314
+    },
+    {
+      "node": "pages",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "pdfium 8076",
+      "input": {
+        "original": "originals/9ac72005dfe062deb0c45f70ee2f98857016e89941c7555dc109d1a65a9a9d2d"
+      },
+      "output": {
+        "pages": 1,
+        "first_page": "documents/01a1f0a0-2797-7197-8560-bfd323a73977/pages/1.webp",
+        "preview": "documents/01a1f0a0-2797-7197-8560-bfd323a73977/preview.webp"
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:46:46.307686Z",
+      "duration_ms": 194.248
+    },
+    {
+      "node": "parse",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "layout 1, pypdfium2 5.14.0",
+      "input": {
+        "archive": "documents/01a1f0a0-2797-7197-8560-bfd323a73977/archive.pdf"
+      },
+      "output": {
+        "text": "documents/01a1f0a0-2797-7197-8560-bfd323a73977/content.txt",
+        "structure": "documents/01a1f0a0-2797-7197-8560-bfd323a73977/content.json",
+        "pages": 1,
+        "characters": 1838
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:47:34.506510Z",
+      "duration_ms": 74.759
+    },
+    {
+      "node": "signal_classifier",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "imported",
+      "input": {},
+      "output": {
+        "abstained": "taken over from the source system",
+        "abstained_reason": {
+          "code": "taken_over",
+          "params": {}
+        }
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:47:38.097194Z",
+      "duration_ms": 17.715
+    },
+    {
+      "node": "signal_neighbours",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "imported",
+      "input": {},
+      "output": {
+        "abstained": "taken over from the source system",
+        "abstained_reason": {
+          "code": "taken_over",
+          "params": {}
+        }
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:47:38.205326Z",
+      "duration_ms": 20.292
+    },
+    {
+      "node": "signal_llm",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "imported",
+      "input": {},
+      "output": {
+        "abstained": "taken over from the source system",
+        "abstained_reason": {
+          "code": "taken_over",
+          "params": {}
+        }
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:47:38.175507Z",
+      "duration_ms": 68.245
+    },
+    {
+      "node": "signal_facts",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "imported",
+      "input": {},
+      "output": {
+        "abstained": "taken over from the source system",
+        "abstained_reason": {
+          "code": "taken_over",
+          "params": {}
+        }
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:47:38.249182Z",
+      "duration_ms": 45.979
+    },
+    {
+      "node": "judge",
+      "run": 1,
+      "outcome": "ok",
+      "reason": "taken over from the source system",
+      "reasons": [
+        {
+          "code": "taken_over",
+          "params": {},
+          "subject": null,
+          "rule": null,
+          "field": null
+        }
+      ],
+      "confidence": null,
+      "model_version": "imported",
+      "input": {},
+      "output": {
+        "imported": {
+          "title": "Bestellbestätigung BG-7781234",
+          "contact_id": "01a1f0a0-261b-7455-8a87-2fc5bc48ac4f",
+          "document_type_id": "01a1f0a0-2642-7ce2-96d5-0d10ad2addaa",
+          "tag_ids": [],
+          "document_date": "2026-02-02",
+          "fields": {
+            "01a1f0a0-269e-7c5c-a5a8-80694fe8e738": {
+              "amount": "319.87",
+              "currency": "EUR"
+            },
+            "01a1f0a0-26c7-7915-b2bd-c6ded32f099c": "7700 4521"
+          },
+          "created_at": null,
+          "review": []
+        }
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:47:44.312634Z",
+      "duration_ms": 21.44
+    },
+    {
+      "node": "fields",
+      "run": 1,
+      "outcome": "ok",
+      "reason": "taken over from the source system",
+      "reasons": [
+        {
+          "code": "taken_over",
+          "params": {},
+          "subject": null,
+          "rule": null,
+          "field": null
+        }
+      ],
+      "confidence": null,
+      "model_version": "imported",
+      "input": {},
+      "output": {
+        "fields": 2
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:47:46.459754Z",
+      "duration_ms": 17.534000000000002
+    },
+    {
+      "node": "relate",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "relate-1",
+      "input": {},
+      "output": {
+        "relations": []
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:47:48.084131Z",
+      "duration_ms": 5.603000000000001
+    },
+    {
+      "node": "apply_rules",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "rules",
+      "input": {
+        "trigger": "ingest",
+        "rules": []
+      },
+      "output": {},
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:47:49.538243Z",
+      "duration_ms": 19.659
+    },
+    {
+      "node": "file",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": null,
+      "input": {},
+      "output": {},
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:47:51.073590Z",
+      "duration_ms": 10.267
+    },
+    {
+      "node": "apply_rules",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "rules:change",
+      "input": {
+        "trigger": "change",
+        "actor": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+        "via_token": {
+          "id": "01a1f09f-3e33-713f-9bdf-4c08da9396e0",
+          "name": "snapshot"
+        },
+        "changed": [
+          "title"
+        ],
+        "tags_added": [],
+        "tags_removed": [],
+        "corrected": [
+          "title"
+        ]
+      },
+      "output": {},
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:56:31.725949Z",
+      "duration_ms": 0.0
+    },
+    {
+      "node": "relate",
+      "run": 2,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "relate-1",
+      "input": {},
+      "output": {
+        "relations": []
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:56:33.016335Z",
+      "duration_ms": 9.932
+    },
+    {
+      "node": "apply_rules",
+      "run": 2,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "rules",
+      "input": {
+        "trigger": "ingest",
+        "rules": []
+      },
+      "output": {},
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:56:33.091292Z",
+      "duration_ms": 23.566
+    },
+    {
+      "node": "file",
+      "run": 2,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": null,
+      "input": {},
+      "output": {},
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T21:56:33.160497Z",
+      "duration_ms": 5.229
+    },
+    {
+      "node": "apply_rules",
+      "run": 2,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "rules:change",
+      "input": {
+        "trigger": "change",
+        "actor": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+        "via_token": {
+          "id": "01a1f09f-3e33-713f-9bdf-4c08da9396e0",
+          "name": "snapshot"
+        },
+        "changed": [
+          "title"
+        ],
+        "tags_added": [],
+        "tags_removed": [],
+        "corrected": []
+      },
+      "output": {},
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T22:03:13.327800Z",
+      "duration_ms": 0.0
+    },
+    {
+      "node": "relate",
+      "run": 3,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "relate-1",
+      "input": {},
+      "output": {
+        "relations": []
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T22:03:15.304510Z",
+      "duration_ms": 15.642
+    },
+    {
+      "node": "apply_rules",
+      "run": 3,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "rules",
+      "input": {
+        "trigger": "ingest",
+        "rules": []
+      },
+      "output": {},
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T22:03:15.392941Z",
+      "duration_ms": 23.543000000000003
+    },
+    {
+      "node": "file",
+      "run": 3,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": null,
+      "input": {},
+      "output": {},
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T22:03:15.467089Z",
+      "duration_ms": 10.091
+    },
+    {
+      "node": "apply_rules",
+      "run": 3,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "rules:change",
+      "input": {
+        "trigger": "change",
+        "actor": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+        "via_token": {
+          "id": "01a1f09f-3e33-713f-9bdf-4c08da9396e0",
+          "name": "snapshot"
+        },
+        "changed": [
+          "title"
+        ],
+        "tags_added": [],
+        "tags_removed": [],
+        "corrected": []
+      },
+      "output": {},
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T22:03:57.002891Z",
+      "duration_ms": 0.0
+    },
+    {
+      "node": "relate",
+      "run": 4,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "relate-1",
+      "input": {},
+      "output": {
+        "relations": []
+      },
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T22:03:57.392649Z",
+      "duration_ms": 29.842
+    },
+    {
+      "node": "apply_rules",
+      "run": 4,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "rules",
+      "input": {
+        "trigger": "ingest",
+        "rules": []
+      },
+      "output": {},
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T22:03:57.479824Z",
+      "duration_ms": 23.222
+    },
+    {
+      "node": "file",
+      "run": 4,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": null,
+      "input": {},
+      "output": {},
+      "pipeline_version": "0.15.5",
+      "started_at": "2026-11-18T22:03:57.542558Z",
+      "duration_ms": 13.769
+    }
+  ]
+}

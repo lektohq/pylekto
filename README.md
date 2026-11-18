@@ -4,7 +4,8 @@ Async Python client for the [Lekto](https://github.com/lektohq/lekto) DMS REST A
 
 > [!NOTE]
 > pylekto is at its beginning: the client stands, the areas of the API follow one by one. So far
-> it covers `auth` (who calls) and `health`.
+> it covers `auth` (who calls), `health`, `documents` (with uploads, downloads, facts, page
+> edits, changes of many documents), `search` and `relations`.
 
 ```python
 import asyncio
@@ -15,8 +16,13 @@ from pylekto import LektoClient
 async def main() -> None:
     async with LektoClient("https://lekto.example.com", "lekto_…") as lekto:
         me = await lekto.auth.me()
-        health = await lekto.health.get()
-        print(me.user.username, me.token_scope, health.status)
+        print(me.user.username, me.token_scope)
+
+        async for document in lekto.documents.list(lane=["red"]):
+            print(document.title)
+
+        result = await lekto.search.page("electricity bill", limit=5)
+        print([hit.document.title for hit in result.items])
 
 
 asyncio.run(main())

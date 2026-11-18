@@ -1,0 +1,200 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/documents/{id}/review",
+  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/review",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "document": {
+      "id": "01a1f0a0-2797-7197-8560-bfd323a73977",
+      "title": "Stromabrechnung 2023/2024",
+      "original_filename": "Bestellbestaetigung_BG-7781234.pdf",
+      "media_type": "application/pdf",
+      "channel": "migration",
+      "sha256": "9ac72005dfe062deb0c45f70ee2f98857016e89941c7555dc109d1a65a9a9d2d",
+      "uploaded_by": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+      "space_id": "01a1f09e-e2c4-7eab-8db4-6012e58e96e6",
+      "access": "edit",
+      "contact_id": "01a1f0a0-261b-7455-8a87-2fc5bc48ac4f",
+      "document_type_id": "01a1f0a0-2642-7ce2-96d5-0d10ad2addaa",
+      "topic_id": null,
+      "tag_ids": [],
+      "document_date": "2026-02-02",
+      "fields": {
+        "01a1f0a0-269e-7c5c-a5a8-80694fe8e738": {
+          "amount": "319.87",
+          "currency": "EUR"
+        },
+        "01a1f0a0-26c7-7915-b2bd-c6ded32f099c": "7700 4521"
+      },
+      "lane": "green",
+      "first_lane": "green",
+      "page_count": 1,
+      "confirmed_at": "2026-11-18T21:47:44.334074Z",
+      "space_confirmed_at": "2026-11-18T21:47:44.334074Z",
+      "processing": {
+        "status": "completed",
+        "run": 4,
+        "nodes": [
+          {
+            "node": "receive",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T21:46:30.163242Z",
+            "finished_at": "2026-11-18T21:46:30.163242Z",
+            "deadline": null
+          },
+          {
+            "node": "separate",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T21:46:32.857558Z",
+            "finished_at": "2026-11-18T21:46:32.871516Z",
+            "deadline": null
+          },
+          {
+            "node": "ocr",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T21:46:44.094964Z",
+            "finished_at": "2026-11-18T21:46:46.264278Z",
+            "deadline": null
+          },
+          {
+            "node": "pages",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T21:46:46.307686Z",
+            "finished_at": "2026-11-18T21:46:46.501934Z",
+            "deadline": null
+          },
+          {
+            "node": "parse",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T21:47:34.506510Z",
+            "finished_at": "2026-11-18T21:47:34.581269Z",
+            "deadline": null
+          },
+          {
+            "node": "signal_llm",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T21:47:38.175507Z",
+            "finished_at": "2026-11-18T21:47:38.243752Z",
+            "deadline": null
+          },
+          {
+            "node": "signal_classifier",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T21:47:38.097194Z",
+            "finished_at": "2026-11-18T21:47:38.114909Z",
+            "deadline": null
+          },
+          {
+            "node": "signal_neighbours",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T21:47:38.205326Z",
+            "finished_at": "2026-11-18T21:47:38.225618Z",
+            "deadline": null
+          },
+          {
+            "node": "signal_facts",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T21:47:38.249182Z",
+            "finished_at": "2026-11-18T21:47:38.295161Z",
+            "deadline": null
+          },
+          {
+            "node": "judge",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T21:47:44.312634Z",
+            "finished_at": "2026-11-18T21:47:44.334074Z",
+            "deadline": null
+          },
+          {
+            "node": "fields",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T21:47:46.459754Z",
+            "finished_at": "2026-11-18T21:47:46.477288Z",
+            "deadline": null
+          },
+          {
+            "node": "relate",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T22:03:57.392649Z",
+            "finished_at": "2026-11-18T22:03:57.422491Z",
+            "deadline": null
+          },
+          {
+            "node": "apply_rules",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T22:03:57.479824Z",
+            "finished_at": "2026-11-18T22:03:57.503046Z",
+            "deadline": null
+          },
+          {
+            "node": "file",
+            "status": "done",
+            "outcome": "ok",
+            "started_at": "2026-11-18T22:03:57.542558Z",
+            "finished_at": "2026-11-18T22:03:57.556327Z",
+            "deadline": null
+          }
+        ],
+        "vision": false
+      },
+      "created_at": "2026-11-18T21:46:30.163242Z",
+      "updated_at": "2026-11-18T22:03:57.556327Z"
+    },
+    "open": [],
+    "nodes": [
+      {
+        "node": "judge",
+        "run": 1,
+        "outcome": "ok",
+        "reason": "taken over from the source system",
+        "reasons": [
+          {
+            "code": "taken_over",
+            "params": {},
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        ],
+        "model_version": "imported",
+        "truncated": null,
+        "fields": []
+      },
+      {
+        "node": "fields",
+        "run": 1,
+        "outcome": "ok",
+        "reason": "taken over from the source system",
+        "reasons": [
+          {
+            "code": "taken_over",
+            "params": {},
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        ],
+        "model_version": "imported",
+        "truncated": null,
+        "fields": []
+      }
+    ]
+  }
+}

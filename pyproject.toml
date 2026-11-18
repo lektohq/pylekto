@@ -66,9 +66,9 @@ ignore = [
     "ISC001",
 ]
 
-# pydantic reads the annotations of a model at run time.
+# pydantic reads the annotations of a model at run time; get_type_hints those of a TypedDict.
 [tool.ruff.lint.flake8-type-checking]
-runtime-evaluated-base-classes = ["pydantic.BaseModel"]
+runtime-evaluated-base-classes = ["pydantic.BaseModel", "typing.TypedDict"]
 
 [tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
@@ -99,8 +99,9 @@ fail_under = 95
 show_missing = true
 
 [tool.typos.files]
-# Lekto's OpenAPI description and the models generated from it hold Lekto's text and examples.
-extend-exclude = ["uv.lock", "openapi.json", "src/pylekto/models.py"]
+# Lekto's OpenAPI description, the models generated from it and the recorded answers hold Lekto's
+# text: its examples and the German of its synthetic documents.
+extend-exclude = ["uv.lock", "openapi.json", "src/pylekto/models.py", "tests/snapshot/"]
 
 # The models from Lekto's OpenAPI description: `uv run datamodel-codegen` writes them again,
 # script/update_openapi.py fetches the description of another Lekto release first.

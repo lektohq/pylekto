@@ -1,0 +1,278 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/documents/facets",
+  "path": "/documents/facets",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "total": 40,
+    "contacts": [
+      {
+        "id": "01a1f0a0-24db-72f8-998c-aff72f87037a",
+        "count": 6
+      },
+      {
+        "id": "01a1f0a0-25db-7ef6-b553-a59140395ec0",
+        "count": 6
+      },
+      {
+        "id": "01a1f0a0-256d-79ba-b7de-f7ad245197b3",
+        "count": 4
+      },
+      {
+        "id": "01a1f0a0-254a-7606-934e-371971906690",
+        "count": 2
+      },
+      {
+        "id": "01a1f0a0-258e-7399-ad86-a85145bc6db8",
+        "count": 2
+      },
+      {
+        "id": "01a1f0a0-25ed-7ccc-b5ca-f7570ad04c69",
+        "count": 2
+      },
+      {
+        "id": "01a1f0a0-260c-7ce0-af23-8be2978263ef",
+        "count": 2
+      },
+      {
+        "id": null,
+        "count": 2
+      },
+      {
+        "id": "01a1f0a0-24d2-793e-8aec-0b7686854864",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-24ec-7036-8d87-7c93b514695a",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-24fa-7250-bee5-fdeb0991819a",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-250d-77d3-a3b2-c69143877b6e",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-2527-7e84-a5b7-849c9f557834",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-2538-721f-8a8d-0b0c5769f48d",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-255b-7e07-85ef-ffb9fcbf039d",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-257e-71df-b20c-1211b0acff8d",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-25a0-7b91-97ea-19a655d833af",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-25b5-7fe1-bea6-33a00c74f17d",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-25c1-72ce-afef-4536048e063c",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-25ce-7a3e-9520-f35c1334ab09",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-25fe-7a21-8947-8534569b685a",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-261b-7455-8a87-2fc5bc48ac4f",
+        "count": 1
+      }
+    ],
+    "document_types": [
+      {
+        "id": "01a1f0a0-264a-71bd-9645-2664e885f021",
+        "count": 7
+      },
+      {
+        "id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
+        "count": 7
+      },
+      {
+        "id": "01a1f0a0-2670-7f16-b551-abf98167f8f6",
+        "count": 6
+      },
+      {
+        "id": "01a1f0a0-2661-7674-a4c0-df10ba50d9ad",
+        "count": 5
+      },
+      {
+        "id": "01a1f0a0-2633-73c1-8945-0b3c57dfa934",
+        "count": 2
+      },
+      {
+        "id": "01a1f0a0-263b-77bd-bccb-edf3c4283b75",
+        "count": 2
+      },
+      {
+        "id": "01a1f0a0-2659-743f-bbe0-f20845f82be9",
+        "count": 2
+      },
+      {
+        "id": "01a1f0a0-2668-7826-ba23-5b7f6c485c73",
+        "count": 2
+      },
+      {
+        "id": null,
+        "count": 2
+      },
+      {
+        "id": "01a1f0a0-262a-799a-baa4-751ddb0b4a32",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-2642-7ce2-96d5-0d10ad2addaa",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-267a-7fb2-9c05-fecb33c2675a",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-2684-7e10-b89f-6348f20ebd5a",
+        "count": 1
+      },
+      {
+        "id": "01a1f0a0-268d-7377-a3d1-f76c7786b363",
+        "count": 1
+      }
+    ],
+    "contact_groups": [],
+    "document_type_groups": [],
+    "topics": [],
+    "tags": [],
+    "years": [
+      {
+        "year": 2026,
+        "count": 17,
+        "months": [
+          {
+            "month": "2026-10",
+            "count": 1
+          },
+          {
+            "month": "2026-09",
+            "count": 1
+          },
+          {
+            "month": "2026-08",
+            "count": 3
+          },
+          {
+            "month": "2026-06",
+            "count": 3
+          },
+          {
+            "month": "2026-05",
+            "count": 2
+          },
+          {
+            "month": "2026-03",
+            "count": 3
+          },
+          {
+            "month": "2026-02",
+            "count": 1
+          },
+          {
+            "month": "2026-01",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "year": 2025,
+        "count": 12,
+        "months": [
+          {
+            "month": "2025-12",
+            "count": 1
+          },
+          {
+            "month": "2025-11",
+            "count": 1
+          },
+          {
+            "month": "2025-10",
+            "count": 2
+          },
+          {
+            "month": "2025-09",
+            "count": 1
+          },
+          {
+            "month": "2025-08",
+            "count": 1
+          },
+          {
+            "month": "2025-07",
+            "count": 1
+          },
+          {
+            "month": "2025-04",
+            "count": 1
+          },
+          {
+            "month": "2025-02",
+            "count": 2
+          },
+          {
+            "month": "2025-01",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "year": 2024,
+        "count": 9,
+        "months": [
+          {
+            "month": "2024-07",
+            "count": 1
+          },
+          {
+            "month": "2024-06",
+            "count": 3
+          },
+          {
+            "month": "2024-04",
+            "count": 1
+          },
+          {
+            "month": "2024-03",
+            "count": 2
+          },
+          {
+            "month": "2024-02",
+            "count": 1
+          },
+          {
+            "month": "2024-01",
+            "count": 1
+          }
+        ]
+      }
+    ],
+    "undated": 2
+  }
+}

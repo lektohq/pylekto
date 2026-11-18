@@ -5,12 +5,14 @@
   "path": "/health",
   "params": {},
   "json": null,
+  "data": {},
   "status": 200,
   "body": {
     "status": "ok",
     "checks": {
       "database": "ok",
-      "object_store": "ok"
+      "object_store": "ok",
+      "search": "ok"
     }
   }
 }

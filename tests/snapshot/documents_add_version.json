@@ -1,0 +1,153 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/documents/{id}/versions",
+  "path": "/documents/01a1f0b0-b391-70f0-8961-4a85b1919857/versions",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 202,
+  "body": {
+    "id": "01a1f0b0-b391-70f0-8961-4a85b1919857",
+    "title": "documents_upload",
+    "original_filename": "documents_add_version.pdf",
+    "media_type": "application/pdf",
+    "channel": "api",
+    "sha256": "399bd7909fc7a961a4c48b8a48272f4e4ddf6524af1c3b46c4db180a65ddeca3",
+    "uploaded_by": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+    "space_id": "01a1f09e-e2c4-7eab-8db4-6012e58e96e6",
+    "access": "edit",
+    "contact_id": null,
+    "document_type_id": null,
+    "topic_id": null,
+    "tag_ids": [],
+    "document_date": null,
+    "fields": {},
+    "lane": null,
+    "first_lane": "yellow",
+    "page_count": null,
+    "confirmed_at": null,
+    "space_confirmed_at": null,
+    "processing": {
+      "status": "processing",
+      "run": 2,
+      "nodes": [
+        {
+          "node": "receive",
+          "status": "done",
+          "outcome": "ok",
+          "started_at": "2026-11-18T22:04:34.568852Z",
+          "finished_at": "2026-11-18T22:04:34.568852Z",
+          "deadline": null
+        },
+        {
+          "node": "separate",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        },
+        {
+          "node": "ocr",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        },
+        {
+          "node": "pages",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        },
+        {
+          "node": "parse",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        },
+        {
+          "node": "signal_llm",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        },
+        {
+          "node": "signal_classifier",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        },
+        {
+          "node": "signal_neighbours",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        },
+        {
+          "node": "signal_facts",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        },
+        {
+          "node": "judge",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        },
+        {
+          "node": "fields",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        },
+        {
+          "node": "relate",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        },
+        {
+          "node": "apply_rules",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        },
+        {
+          "node": "file",
+          "status": "waiting",
+          "outcome": null,
+          "started_at": null,
+          "finished_at": null,
+          "deadline": null
+        }
+      ],
+      "vision": false
+    },
+    "created_at": "2026-11-18T22:04:34.568852Z",
+    "updated_at": "2026-11-18T22:04:37.636141Z"
+  }
+}

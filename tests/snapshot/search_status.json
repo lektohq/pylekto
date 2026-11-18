@@ -1,0 +1,33 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/search/status",
+  "path": "/search/status",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "documents": 40,
+    "index": {
+      "documents": 41,
+      "embedded": 0,
+      "vectors": 0,
+      "indexing": false,
+      "size_bytes": 1699840
+    },
+    "running": 0,
+    "queued": 0,
+    "remaining_ms": 0.0,
+    "embedded_jobs": null,
+    "plain_jobs": {
+      "count": 51,
+      "median_ms": 63.4,
+      "p90_ms": 82.2
+    },
+    "per_section_ms": null,
+    "model": null,
+    "dimensions": null,
+    "since": "2026-11-11T22:03:56.801479Z"
+  }
+}

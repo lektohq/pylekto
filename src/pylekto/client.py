@@ -8,7 +8,13 @@ import httpx2
 from pylekto._http import Http
 from pylekto._lekto import LEKTO_VERSION
 from pylekto.exceptions import LektoVersionWarning
-from pylekto.resources import AuthResource, HealthResource
+from pylekto.resources import (
+    AuthResource,
+    DocumentsResource,
+    HealthResource,
+    RelationsResource,
+    SearchResource,
+)
 
 if TYPE_CHECKING:
     from types import TracebackType
@@ -46,7 +52,10 @@ class LektoClient:
         self._client = httpx2.AsyncClient(timeout=TIMEOUT) if client is None else client
         http = Http(url, token, self._client)
         self.auth = AuthResource(http)
+        self.documents = DocumentsResource(http)
         self.health = HealthResource(http)
+        self.relations = RelationsResource(http)
+        self.search = SearchResource(http)
         self.lekto_version: str | None = None
 
     async def __aenter__(self) -> Self:

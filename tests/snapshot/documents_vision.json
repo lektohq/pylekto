@@ -1,0 +1,20 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/documents/{id}/vision",
+  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/vision",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 409,
+  "body": {
+    "type": "about:blank",
+    "title": "Conflict",
+    "status": 409,
+    "detail": "no vision language model is configured",
+    "reason": {
+      "code": "no_vision_model",
+      "params": {}
+    }
+  }
+}

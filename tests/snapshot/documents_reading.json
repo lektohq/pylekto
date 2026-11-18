@@ -1,0 +1,15 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/documents/{id}/reading",
+  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/reading",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "vision": false,
+    "pages": [],
+    "advice": null
+  }
+}

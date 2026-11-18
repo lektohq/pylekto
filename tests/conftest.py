@@ -43,8 +43,13 @@ class Snapshot:
     path: str
     params: dict[str, Any]
     json: Any
+    data: dict[str, str]
     status: int
     body: Any
+
+    def segment(self, index: int) -> str:
+        """Return a segment of the path: 1 is the first after ``/``."""
+        return self.path.split("/")[index]
 
 
 def snapshot(name: str) -> Snapshot:
@@ -57,6 +62,7 @@ def snapshot(name: str) -> Snapshot:
         path=recorded["path"],
         params=recorded["params"],
         json=recorded["json"],
+        data=recorded.get("data", {}),
         status=recorded["status"],
         body=recorded["body"],
     )
@@ -71,6 +77,7 @@ class Answer:
     content: bytes | None = None
     headers: dict[str, str] = field(default_factory=dict)
     error: Exception | None = None
+    when: dict[str, str] = field(default_factory=dict)
 
 
 class Api:
@@ -78,12 +85,16 @@ class Api:
 
     def __init__(self) -> None:
         """Start without answers."""
-        self.answers: dict[tuple[str, str], Answer] = {}
+        self.answers: dict[tuple[str, str], list[Answer]] = {}
         self.requests: list[httpx2.Request] = []
 
     def answer(self, method: str, path: str, status: int = 200, **answer: Any) -> None:
-        """Answer ``method`` on ``path`` (below ``/api/v1``) with ``status`` and ``answer``."""
-        self.answers[method, "/api/v1" + path] = Answer(status, **answer)
+        """Answer ``method`` on ``path`` (below ``/api/v1``) with ``status`` and ``answer``.
+
+        ``when`` restricts the answer to requests with these query values; the answer added
+        last that fits is given.
+        """
+        self.answers.setdefault((method, "/api/v1" + path), []).append(Answer(status, **answer))
 
     def replay(self, name: str) -> Snapshot:
         """Answer the request of the recording ``name`` as Lekto did; return the recording."""
@@ -94,9 +105,14 @@ class Api:
     def __call__(self, request: httpx2.Request) -> httpx2.Response:
         """Answer a request as told; an unexpected one fails the test."""
         self.requests.append(request)
-        answer = self.answers.get((request.method, request.url.path))
-        if answer is None:
+        fitting = [
+            answer
+            for answer in self.answers.get((request.method, request.url.path), [])
+            if all(request.url.params.get(key) == value for key, value in answer.when.items())
+        ]
+        if not fitting:
             pytest.fail(f"unexpected request: {request.method} {request.url}")
+        answer = fitting[-1]
         if answer.error is not None:
             raise answer.error
         return httpx2.Response(
@@ -120,3 +136,18 @@ def http(api: Api) -> httpx2.AsyncClient:
 def lekto(http: httpx2.AsyncClient) -> LektoClient:
     """Return a LektoClient on the fake API, not connected."""
     return LektoClient(URL, TOKEN, client=http)
+
+
+def assert_sent(api: Api, recorded: Snapshot) -> None:
+    """Assert that the last request is the one of the recording: method, path, query, body."""
+    request = api.requests[-1]
+    assert request.method == recorded.method
+    assert request.url.path == "/api/v1" + recorded.path
+    sent = {key: request.url.params.get_list(key) for key in request.url.params}
+    expected = {
+        key: [str(item) for item in value] if isinstance(value, list) else [str(value)]
+        for key, value in recorded.params.items()
+    }
+    assert sent == expected
+    if recorded.json is not None:
+        assert json.loads(request.content) == recorded.json

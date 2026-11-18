@@ -1,0 +1,35 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/documents/{id}/confirm",
+  "path": "/documents/01a1f0b0-b391-70f0-8961-4a85b1919857/confirm",
+  "params": {},
+  "json": {
+    "changes": {
+      "title": "Muster Versicherung"
+    }
+  },
+  "data": {},
+  "status": 422,
+  "body": {
+    "type": "about:blank",
+    "title": "Unprocessable Content",
+    "status": 422,
+    "detail": "decide the open fields first: contact, document_type, document_date",
+    "open_fields": [
+      "contact",
+      "document_type",
+      "document_date"
+    ],
+    "reason": {
+      "code": "open_fields",
+      "params": {
+        "fields": [
+          "contact",
+          "document_type",
+          "document_date"
+        ]
+      }
+    }
+  }
+}

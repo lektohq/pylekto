@@ -5,6 +5,7 @@
   "path": "/auth/me",
   "params": {},
   "json": null,
+  "data": {},
   "status": 200,
   "body": {
     "user": {
