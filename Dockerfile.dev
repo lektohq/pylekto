@@ -1,0 +1,58 @@
+# The devcontainer of pylekto (.devcontainer/devcontainer.json): Python 3.14, uv, gh, Claude Code.
+FROM ghcr.io/astral-sh/uv:0.11.33 AS uv
+
+FROM mcr.microsoft.com/devcontainers/python:3-3.14
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# The image's own linters and type checker would shadow the versions the project locks.
+RUN pipx uninstall pydocstyle \
+    && pipx uninstall pycodestyle \
+    && pipx uninstall mypy
+
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends gh \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=uv /uv /uvx /usr/local/bin/
+
+USER vscode
+
+# The virtual environment lives outside the bind-mounted workspace, so that a `.venv` made on the
+# host (e.g. macOS) does not clash with it. uv uses the image's Python and never downloads one.
+ENV VIRTUAL_ENV=/home/vscode/.local/dev-venv \
+    UV_PROJECT_ENVIRONMENT=/home/vscode/.local/dev-venv \
+    UV_PYTHON_DOWNLOADS=never \
+    UV_LINK_MODE=copy \
+    PATH="/home/vscode/.local/dev-venv/bin:/home/vscode/.local/bin:$PATH"
+
+# Mount targets of the volumes in devcontainer.json, created as vscode: a fresh named volume takes
+# over their owner, otherwise Docker creates them for root and Claude Code and uv cannot write.
+RUN mkdir -p /home/vscode/.claude /home/vscode/.cache/uv
+
+# Claude Code CLI for the terminal (~/.local/bin/claude); the VS Code extension brings its own
+# binary, and both share the login stored in the claude-config volume. Pinned: the release's
+# binary, checked against the checksum of its manifest, installs itself. Renovate raises the
+# version.
+# renovate: datasource=npm depName=@anthropic-ai/claude-code
+ARG CLAUDE_CODE_VERSION=2.1.312
+RUN set -eu; \
+    case "$(uname -m)" in \
+      aarch64) platform=linux-arm64 ;; \
+      x86_64) platform=linux-x64 ;; \
+      *) echo "no Claude Code for $(uname -m)" >&2; exit 1 ;; \
+    esac; \
+    release="https://downloads.claude.ai/claude-code-releases/${CLAUDE_CODE_VERSION}"; \
+    checksum="$(curl -fsSL "$release/manifest.json" | python3 -c \
+      'import json, sys; print(json.load(sys.stdin)["platforms"][sys.argv[1]]["checksum"])' \
+      "$platform")"; \
+    curl -fsSL "$release/$platform/claude" -o /tmp/claude; \
+    echo "$checksum  /tmp/claude" | sha256sum -c -; \
+    chmod +x /tmp/claude; \
+    /tmp/claude install "${CLAUDE_CODE_VERSION}"; \
+    rm /tmp/claude
+
+ENV CLAUDE_CONFIG_DIR=/home/vscode/.claude
+
+WORKDIR /workspaces

@@ -1,0 +1,10 @@
+#!/bin/sh
+# Install the locked dependencies into the virtual environment (on every start of the
+# devcontainer).
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+echo "Installing the dependencies..."
+uv sync --locked
