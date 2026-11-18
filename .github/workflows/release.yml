@@ -1,0 +1,37 @@
+name: Release
+
+# Publishing a release on GitHub builds the package with the version from its tag and uploads it
+# to PyPI. PyPI trusts this workflow in the environment `release` (Trusted Publishing); no token.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  pypi:
+    name: Release to PyPI
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: release
+      url: https://pypi.org/p/pylekto
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+      - name: Set the version from the tag
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version="${TAG,,}"
+          version="${version#v}"
+          sed -i "s/^version = .*/version = \"${version}\"/" pyproject.toml
+          grep -qx "version = \"${version}\"" pyproject.toml
+      - run: uv build
+      - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+        with:
+          print-hash: true

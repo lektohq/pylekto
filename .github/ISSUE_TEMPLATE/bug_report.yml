@@ -1,0 +1,65 @@
+---
+name: Bug report
+description: Report a bug in pylekto
+title: "[BUG] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        pylekto is a side project, so a reply can take a while, but every issue gets one.
+        A pull request with a fix speeds things up a lot.
+
+        Please use made-up values in examples and logs: no real names, IBANs, addresses or
+        tokens.
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the bug
+      description: What happens?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: To reproduce
+      description: Steps or a short code example
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: What should happen instead?
+    validations:
+      required: true
+
+  - type: input
+    id: pylekto-version
+    attributes:
+      label: pylekto version
+      placeholder: e.g. 0.1.0
+    validations:
+      required: true
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python version
+      placeholder: e.g. 3.14.2
+    validations:
+      required: true
+
+  - type: input
+    id: lekto-version
+    attributes:
+      label: Lekto version
+      placeholder: e.g. 0.15.5
+    validations:
+      required: true
