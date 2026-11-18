@@ -1,0 +1,12 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/events",
+  "path": "/events",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": null,
+  "text": ": ready\n\nevent: document.updated\ndata: {\"type\": \"document.updated\", \"occurred_at\": \"2026-11-18T22:30:01.471308+00:00\", \"id\": \"01a1f0c7-ffff-7083-950f-ae5723e6c125\", \"document_id\": \"01a1f0a0-2797-7197-8560-bfd323a73977\", \"fields\": [\"title\"]}\nid: 01a1f0c7-ffff-7083-950f-ae5723e6c125\n\n"
+}

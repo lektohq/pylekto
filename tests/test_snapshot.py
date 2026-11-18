@@ -56,6 +56,16 @@ def test_recording_fits_its_model(name: str) -> None:
     recorded = snapshot(name)
     raw = json.loads((SNAPSHOT / f"{name}.json").read_text(encoding="utf-8"))
     assert raw["lekto_version"] == LEKTO_VERSION
+    if recorded.text is not None:
+        events = [
+            line[len("data: ") :]
+            for line in recorded.text.splitlines()
+            if line.startswith("data: ")
+        ]
+        assert events
+        for data in events:
+            models.EventMessage.model_validate_json(data)
+        return
     if recorded.body is None:
         return
     if recorded.status >= HTTPStatus.BAD_REQUEST:

@@ -2,6 +2,7 @@
 
 from pylekto.resources.auth import AuthResource
 from pylekto.resources.documents import DocumentsResource
+from pylekto.resources.events import EventsResource
 from pylekto.resources.health import HealthResource
 from pylekto.resources.identifiers import IdentifiersResource
 from pylekto.resources.inbox import ExpectedResource, InboxResource
@@ -34,6 +35,7 @@ __all__ = [
     "ContactsResource",
     "DocumentTypesResource",
     "DocumentsResource",
+    "EventsResource",
     "ExpectedResource",
     "FieldsResource",
     "HealthResource",

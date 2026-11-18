@@ -47,6 +47,7 @@ class Snapshot:
     data: dict[str, str]
     status: int
     body: Any
+    text: str | None
 
     def segment(self, index: int) -> str:
         """Return a segment of the path: 1 is the first after ``/``."""
@@ -66,6 +67,7 @@ def snapshot(name: str) -> Snapshot:
         data=recorded.get("data", {}),
         status=recorded["status"],
         body=recorded["body"],
+        text=recorded.get("text"),
     )
 
 
@@ -100,7 +102,14 @@ class Api:
     def replay(self, name: str) -> Snapshot:
         """Answer the request of the recording ``name`` as Lekto did; return the recording."""
         recorded = snapshot(name)
-        self.answer(recorded.method, recorded.path, recorded.status, json=recorded.body)
+        if recorded.text is not None:
+            headers = {"Content-Type": "text/event-stream"}
+            content = recorded.text.encode()
+            self.answer(
+                recorded.method, recorded.path, recorded.status, content=content, headers=headers
+            )
+        else:
+            self.answer(recorded.method, recorded.path, recorded.status, json=recorded.body)
         return recorded
 
     def __call__(self, request: httpx2.Request) -> httpx2.Response:
