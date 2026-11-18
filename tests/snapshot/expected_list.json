@@ -1,0 +1,40 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/expected",
+  "path": "/expected",
+  "params": {
+    "tz": "Europe/Berlin"
+  },
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": [
+    {
+      "contact": {
+        "id": "01a1f0a0-25db-7ef6-b553-a59140395ec0",
+        "name": "Sparkasse Musterstadt"
+      },
+      "document_type": {
+        "id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
+        "name": "Kontoauszug"
+      },
+      "number": {
+        "kind": "mandate_reference",
+        "value": "SWM2004771801"
+      },
+      "cadence": "half_yearly",
+      "interval_days": 183,
+      "spread_days": 2,
+      "documents": 3,
+      "last": {
+        "id": "01a1f0a0-2998-703a-b506-b89db3fa12c6",
+        "title": "Kontoauszug 1/2025",
+        "document_date": "2025-01-31"
+      },
+      "next_date": "2025-07-31",
+      "next_period": null,
+      "state": "ended"
+    }
+  ]
+}

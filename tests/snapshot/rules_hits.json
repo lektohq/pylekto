@@ -1,0 +1,18 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/rules/{id}/apply/hits/{document_id}",
+  "path": "/rules/01a1f0bb-971d-73d0-9add-0b5f250dff4d/apply/hits/01a1f0a0-2797-7197-8560-bfd323a73977",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "hits": [
+      {
+        "value": "Muster",
+        "occurrences": []
+      }
+    ]
+  }
+}

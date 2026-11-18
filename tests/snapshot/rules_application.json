@@ -1,0 +1,24 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "GET",
+  "operation": "/rule-applications/{id}",
+  "path": "/rule-applications/01a1f0bb-9b08-7505-9ab1-b57dbfa11fd7",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "id": "01a1f0bb-9b08-7505-9ab1-b57dbfa11fd7",
+    "rule_id": "01a1f0bb-971d-73d0-9add-0b5f250dff4d",
+    "version": 2,
+    "status": "queued",
+    "total": 1,
+    "done": 0,
+    "applied": 0,
+    "unchanged": 0,
+    "skipped": [],
+    "error": null,
+    "created_at": "2026-11-18T22:16:29.192721Z",
+    "finished_at": null
+  }
+}

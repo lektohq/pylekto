@@ -1,0 +1,48 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/templates/preview",
+  "path": "/templates/preview",
+  "params": {},
+  "json": {
+    "template": "{{ title }} ({{ document_date }})",
+    "document_id": "01a1f0a0-2797-7197-8560-bfd323a73977"
+  },
+  "data": {},
+  "status": 200,
+  "body": {
+    "used": [
+      "document_date",
+      "title"
+    ],
+    "rendered": "Stromabrechnung 2023/2024 (2026-02-02)",
+    "missing": null,
+    "error": null,
+    "values": {
+      "title": "Stromabrechnung 2023/2024",
+      "filename": "Bestellbestaetigung_BG-7781234",
+      "original_filename": "Bestellbestaetigung_BG-7781234.pdf",
+      "contact": "Versandhaus Bergmann GmbH",
+      "document_type": "Bestellbestätigung",
+      "document_date": "2026-02-02",
+      "added": "2026-11-18",
+      "tags": "",
+      "contact_groups": "",
+      "document_type_groups": "",
+      "space": "admin",
+      "uploaded_by": "admin",
+      "channel": "migration",
+      "pages": "1",
+      "field.betrag": "319,87 EUR",
+      "field.kundennummer": "7700 4521",
+      "facts.customer_number": "7700 4521",
+      "facts.order_number": "BG-7781234",
+      "facts.commercial_register": "HRB 10077",
+      "facts.email_domain": "bergmann-versand.example",
+      "facts.iban": "DE07 3004 0000 0777 1234 56",
+      "facts.vat_id": "DE 771 234 989"
+    },
+    "read": null,
+    "unreadable": false
+  }
+}

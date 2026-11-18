@@ -103,3 +103,9 @@ type TagScope = Literal["document", "contact", "document_type", "topic"]
 
 # Where an open identifier comes from: learned from confirmed documents, or suggested.
 type OpenSource = Literal["learned", "suggested"]
+
+# Whether a rule acts in every space or in one.
+type RuleScope = Literal["global", "space"]
+
+# A tab of the inbox.
+type InboxTab = Literal["new", "review", "intervene", "processing", "done"]

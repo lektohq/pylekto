@@ -1,0 +1,13 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/inbox/seen",
+  "path": "/inbox/seen",
+  "params": {},
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "marked": 0
+  }
+}

@@ -158,6 +158,8 @@ def plain(answer: object) -> object:
     """Return an answer as JSON values, to compare it with the recorded body."""
     if isinstance(answer, BaseModel):
         return answer.model_dump(mode="json", by_alias=True)
+    if isinstance(answer, list):
+        return [plain(item) for item in answer]
     return TypeAdapter(type(answer)).dump_python(answer, mode="json")
 
 

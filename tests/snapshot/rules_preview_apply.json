@@ -1,0 +1,20 @@
+{
+  "lekto_version": "0.15.5",
+  "method": "POST",
+  "operation": "/rules/{id}/apply/preview",
+  "path": "/rules/01a1f0bb-971d-73d0-9add-0b5f250dff4d/apply/preview",
+  "params": {},
+  "json": {
+    "limit": 5
+  },
+  "data": {},
+  "status": 200,
+  "body": {
+    "rule_id": "01a1f0bb-971d-73d0-9add-0b5f250dff4d",
+    "version": 2,
+    "items": [],
+    "next_cursor": null,
+    "looked_at": 40,
+    "total": 40
+  }
+}

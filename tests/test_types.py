@@ -8,8 +8,10 @@ from pylekto.types import (
     DocumentFilter,
     EditPart,
     IdentifierKind,
+    InboxTab,
     OpenSource,
     PagePick,
+    RuleScope,
     TagScope,
 )
 
@@ -44,11 +46,13 @@ def test_edit_parts_are_the_ones_of_the_form() -> None:
 
 
 def test_literals_are_the_descriptions_choices() -> None:
-    """``IdentifierKind``, ``TagScope`` and ``OpenSource`` hold the choices of the description."""
+    """The literal types written by hand hold the choices of the description."""
     schemas = DESCRIPTION["components"]["schemas"]
     for alias, schema in [
         (IdentifierKind, "IdentifierKind"),
         (TagScope, "TagScope"),
         (OpenSource, "OpenSource"),
+        (RuleScope, "RuleScope"),
+        (InboxTab, "InboxTab"),
     ]:
         assert list(get_args(alias.__value__)) == schemas[schema]["enum"]
