@@ -23,8 +23,8 @@ class LektoTimeoutError(LektoConnectionError):
 class LektoResponseError(LektoError):
     """Lekto answered with something pylekto's models do not describe.
 
-    Most likely Lekto runs another version than the one whose API pylekto speaks
-    (:data:`pylekto.LEKTO_VERSION`).
+    Most likely Lekto speaks another version of its API than pylekto
+    (:data:`pylekto.API_VERSION`).
     """
 
 
@@ -121,4 +121,4 @@ class WebhookVerificationError(LektoError):
 
 
 class LektoVersionWarning(UserWarning):
-    """Lekto runs another version than the one whose API pylekto speaks."""
+    """Lekto speaks a version of its API whose requests or answers may differ from pylekto's."""

@@ -66,8 +66,10 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
   (`Recording.listen`, with a request that triggers events).
 - `models.py` is generated; a test fails if it differs from what datamodel-codegen writes from
   `openapi.json`. Ruff and typos leave it out; mypy checks it.
-- While Lekto is in beta, connecting to another version than `LEKTO_VERSION` warns
-  (`LektoVersionWarning`).
+- Connecting compares the version of Lekto's API (`api_version` of `GET /auth/me`) with
+  `API_VERSION` and warns (`LektoVersionWarning`) when it may not fit: during the beta (`0.x`)
+  every other MINOR, from `1.0` on another MAJOR or a smaller MINOR of the server; a Lekto
+  without an API version as well. Lekto's own version is not compared.
 - Ruff (`select = ["ALL"]`) and mypy (`strict`) report nothing on new or changed code.
 - No suppressions (`# noqa`, `# type: ignore` and the like): fix the cause. Only `# noqa: F401` on
   a re-export in an `__init__.py` is allowed without asking.

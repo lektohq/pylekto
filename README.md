@@ -40,9 +40,10 @@ asyncio.run(main())
   requests with it and leaves it open.
 - **Errors raise.** Each subclass of `LektoError` says what went wrong; a refusal carries Lekto's
   problem details with a reason code. pylekto repeats nothing: whether to try again is up to you.
-- **One Lekto release.** pylekto speaks the API of `pylekto.LEKTO_VERSION`; its models are
-  generated from that release's OpenAPI description. While Lekto is in beta, each release may
-  change its API, so connecting to another version warns (`LektoVersionWarning`).
+- **One version of the API.** pylekto speaks the API `pylekto.API_VERSION` of Lekto
+  `pylekto.LEKTO_VERSION`; its models are generated from that release's OpenAPI description.
+  Connecting to a Lekto whose API may differ warns (`LektoVersionWarning`): during the beta
+  (`0.x`) every other MINOR, from `1.0` on another MAJOR or a smaller MINOR.
 
 ### Receiving webhooks
 
