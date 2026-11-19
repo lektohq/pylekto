@@ -250,7 +250,6 @@ def _problem(response: httpx2.Response) -> Problem:
         return Problem.model_validate_json(response.content)
     except ValidationError:
         pass
-    # A newer Lekto may send a reason code the models do not know: keep what reads plainly.
     title = response.reason_phrase or "Error"
     detail = None
     try:

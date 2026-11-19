@@ -20,6 +20,7 @@ from pylekto import (
     LektoServerError,
     LektoTimeoutError,
     LektoValidationError,
+    Unknown,
 )
 from pylekto._http import _reveal, body, cursor_items, offset_items
 from pylekto.models import DocumentPatch, MailboxPatch
@@ -94,8 +95,8 @@ async def test_error_without_problem_details(api: Api, lekto: LektoClient) -> No
     assert raised.value.reason is None
 
 
-async def test_error_with_unknown_reason_keeps_its_text(api: Api, lekto: LektoClient) -> None:
-    """Problem details with a reason the models do not know keep their title and detail."""
+async def test_error_with_unknown_reason_keeps_it(api: Api, lekto: LektoClient) -> None:
+    """Problem details with a reason the models do not know keep it as an ``Unknown``."""
     problem = {
         "title": "Bad Request",
         "status": 400,
@@ -106,6 +107,17 @@ async def test_error_with_unknown_reason_keeps_its_text(api: Api, lekto: LektoCl
     with pytest.raises(LektoApiError) as raised:
         await lekto.auth.me()
     assert str(raised.value) == "400 Bad Request: something new"
+    assert raised.value.reason is not None
+    assert raised.value.reason.code == "made_up_code"
+    assert isinstance(raised.value.reason.code, Unknown)
+
+
+async def test_error_with_other_json_keeps_its_text(api: Api, lekto: LektoClient) -> None:
+    """JSON that holds no problem details (a proxy's) keeps its title and detail."""
+    api.answer("GET", "/auth/me", 502, json={"title": "Muster Gateway", "detail": "no answer"})
+    with pytest.raises(LektoServerError) as raised:
+        await lekto.auth.me()
+    assert str(raised.value) == "502 Muster Gateway: no answer"
     assert raised.value.reason is None
 
 

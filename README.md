@@ -40,6 +40,9 @@ asyncio.run(main())
   requests with it and leaves it open.
 - **Errors raise.** Each subclass of `LektoError` says what went wrong; a refusal carries Lekto's
   problem details with a reason code. pylekto repeats nothing: whether to try again is up to you.
+- **New values read.** A choice in the models is `Literal[...] | Unknown`: a value that a newer
+  Lekto sends and this pylekto does not know arrives as `pylekto.Unknown` (a `str`) instead of
+  failing; `case Unknown():` matches it.
 - **One version of the API.** pylekto speaks the API `pylekto.API_VERSION` of Lekto
   `pylekto.LEKTO_VERSION`; its models are generated from that release's OpenAPI description.
   Connecting to a Lekto whose API may differ warns (`LektoVersionWarning`): during the beta

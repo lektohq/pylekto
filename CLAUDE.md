@@ -11,10 +11,10 @@ decided in `.knowledge/decisions/2026-11-18-pylekto-architecture.md`, the order 
 | --- | --- |
 | `src/pylekto/` | The package (typed: `py.typed`): `client.py` (`LektoClient`), `_http.py` (requests, problem details as exceptions, pages), `exceptions.py`, `resources/` (one module per area of the API) |
 | `src/pylekto/webhooks.py` | Receiving webhooks: `verify` (Standard Webhooks), `read_*` for each body, `task`, `answer`, `download` |
-| `src/pylekto/models.py` | The models, generated from `openapi.json` by datamodel-codegen (settings in `pyproject.toml`); never edited by hand |
+| `src/pylekto/models.py` | The models, generated from `openapi.json` by `script/generate_models.py` (datamodel-codegen, settings in `pyproject.toml`); never edited by hand |
 | `openapi.json`, `src/pylekto/_lekto.py` | Lekto's OpenAPI description of the release `LEKTO_VERSION`, that version and the version of its API (`API_VERSION`, `info.version`) |
 | `tests/` | pytest; `tests/ruff.toml` adjusts the rules for tests; `tests/snapshot/` the recorded answers of a Lekto instance, one JSON file per request |
-| `script/` | `setup` (once: dependencies, Git hooks), `bootstrap` (every start of the devcontainer: dependencies), `update_openapi.py` (the description of another Lekto release), `record_snapshot.py` (the snapshot) |
+| `script/` | `setup` (once: dependencies, Git hooks), `bootstrap` (every start of the devcontainer: dependencies), `generate_models.py` (the models), `update_openapi.py` (the description of another Lekto release), `record_snapshot.py` (the snapshot) |
 | `.devcontainer/`, `Dockerfile.dev` | Devcontainer: Python 3.14, uv, gh, Claude Code; the virtual environment lives in `/home/vscode/.local/dev-venv` |
 | `.github/` | Workflows (`ci.yml`, `release.yml`, Release Drafter, labels, stale, lock), labels, templates, `scripts/` (the test of the action pins) |
 | `.knowledge/` | The knowledge in German as small notes with frontmatter; start with `INDEX.md` and `README.md`. A checkout of the private repository `lektohq/lekto-knowledge`, shared with lekto and ignored by this one (see "Working style") |
@@ -30,7 +30,7 @@ uv run typos
 uv run yamllint .
 uv run prek run --all-files      # every hook at once, as before each commit
 python3 -m unittest discover -s .github/scripts   # every action is pinned to a commit
-uv run datamodel-codegen         # the models from openapi.json again
+uv run python script/generate_models.py   # the models from openapi.json again
 uv run python script/update_openapi.py v0.16.0   # another Lekto release: description, version, models
 ```
 
@@ -64,8 +64,12 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
 - Streams (`GET /events`) are read line by line without a read timeout (`Http.lines`) and parsed by
   `_sse.py` as the HTML standard says; a recording of a stream holds its text
   (`Recording.listen`, with a request that triggers events).
-- `models.py` is generated; a test fails if it differs from what datamodel-codegen writes from
-  `openapi.json`. Ruff and typos leave it out; mypy checks it.
+- `models.py` is generated; a test fails if it differs from what `script/generate_models.py`
+  writes from `openapi.json`. Ruff and typos leave it out; mypy checks it.
+- Every choice (an `enum` of strings, in the models and in `types.py`) is `Literal[...] | Unknown`:
+  a value a newer Lekto sends and pylekto does not know reads as `pylekto.Unknown` (a `str`)
+  instead of failing, and goes back to Lekto as a filter. A plain `str` is no `Unknown`, so type
+  checkers keep requests to the known values. Unions with a discriminator stay closed.
 - Connecting compares the version of Lekto's API (`api_version` of `GET /auth/me`) with
   `API_VERSION` and warns (`LektoVersionWarning`) when it may not fit: during the beta (`0.x`)
   every other MINOR, from `1.0` on another MAJOR or a smaller MINOR of the server; a Lekto

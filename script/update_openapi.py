@@ -3,17 +3,17 @@
     uv run python script/update_openapi.py v0.16.0
 
 Writes ``openapi.json`` (with the release's version as ``info.x-lekto-version``; ``info.version``
-is the version of the API), ``src/pylekto/_lekto.py`` and, through datamodel-codegen with the
-settings in ``pyproject.toml``, ``src/pylekto/models.py``.
+is the version of the API), ``src/pylekto/_lekto.py`` and, through ``generate_models.py``,
+``src/pylekto/models.py``.
 """
 
 import json
-import os
 import sys
 from pathlib import Path
 
 import httpx2
-from datamodel_code_generator.__main__ import Exit, main
+
+from generate_models import generate
 
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = "https://raw.githubusercontent.com/lektohq/lekto/{tag}/web/openapi.json"
@@ -43,9 +43,7 @@ def update(tag: str) -> None:
         LEKTO_MODULE.format(version=version, api_version=description["info"]["version"]),
         encoding="utf-8",
     )
-    # datamodel-codegen reads its settings from the pyproject.toml of the working directory.
-    os.chdir(ROOT)
-    if main([]) != Exit.OK:
+    if not generate():
         message = "datamodel-codegen failed"
         raise SystemExit(message)
 

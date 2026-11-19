@@ -1,10 +1,10 @@
 """Tests that the models are the ones generated from the OpenAPI description in the repository."""
 
 import json
+import runpy
 from pathlib import Path
 
 import pytest
-from datamodel_code_generator.__main__ import Exit, main
 from pydantic import BaseModel
 
 from pylekto import API_VERSION, LEKTO_VERSION, models
@@ -12,13 +12,25 @@ from pylekto import API_VERSION, LEKTO_VERSION, models
 ROOT = Path(__file__).resolve().parent.parent
 
 
-def test_models_match_the_description(monkeypatch: pytest.MonkeyPatch) -> None:
-    """``src/pylekto/models.py`` is what datamodel-codegen writes from ``openapi.json``.
+GENERATOR = runpy.run_path(str(ROOT / "script" / "generate_models.py"))
 
-    If this fails, run ``uv run datamodel-codegen`` and commit the result.
+
+def test_models_match_the_description(monkeypatch: pytest.MonkeyPatch) -> None:
+    """``src/pylekto/models.py`` is what ``script/generate_models.py`` writes from ``openapi.json``.
+
+    If this fails, run ``uv run python script/generate_models.py`` and commit the result.
     """
     monkeypatch.chdir(ROOT)
-    assert main(["--check"]) == Exit.OK
+    assert GENERATOR["generate"](check=True)
+
+
+def test_choices_are_opened_but_not_examples() -> None:
+    """Every enum of strings admits ``Unknown``; examples stay, though one may hold a schema."""
+    choice = {"type": "string", "enum": ["a", "b"]}
+    schema = {"type": "object", "properties": {"examples": choice}, "examples": [choice]}
+    opened = GENERATOR["opened"](schema)
+    assert opened["properties"]["examples"] == {"anyOf": [choice, GENERATOR["UNKNOWN"]]}
+    assert opened["examples"] == [choice]
 
 
 def test_versions_are_the_descriptions() -> None:

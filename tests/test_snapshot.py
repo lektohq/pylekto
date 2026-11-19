@@ -25,9 +25,14 @@ def answer_schema(method: str, operation: str, status: int) -> dict[str, Any]:
 
 
 def validate(schema: dict[str, Any], value: object) -> None:
-    """Validate a value against a schema of the description, by the models it names."""
+    """Validate a value against a schema of the description, by the models it names.
+
+    Strictly: a recording holds only values the description lists, so none may become
+    ``Unknown`` (which takes a value only in lax mode).
+    """
     if "$ref" in schema:
-        getattr(models, schema["$ref"].rsplit("/", 1)[-1]).model_validate(value)
+        model = getattr(models, schema["$ref"].rsplit("/", 1)[-1])
+        model.model_validate_json(json.dumps(value), strict=True)
     elif "anyOf" in schema:
         failures = []
         for option in schema["anyOf"]:
@@ -64,11 +69,11 @@ def test_recording_fits_its_model(name: str) -> None:
         ]
         assert events
         for data in events:
-            models.EventMessage.model_validate_json(data)
+            models.EventMessage.model_validate_json(data, strict=True)
         return
     if recorded.body is None:
         return
     if recorded.status >= HTTPStatus.BAD_REQUEST:
-        models.Problem.model_validate(recorded.body)
+        models.Problem.model_validate_json(json.dumps(recorded.body), strict=True)
         return
     validate(answer_schema(recorded.method, recorded.operation, recorded.status), recorded.body)
