@@ -7,12 +7,14 @@ from typing import TYPE_CHECKING, Any
 
 import httpx2
 import pytest
+from pydantic import BaseModel
 
 from pylekto import (
     LektoAuthenticationError,
     LektoConflictError,
     LektoResponseError,
     WebhookVerificationError,
+    models,
     webhooks,
 )
 from pylekto.models import TaskAnswer
@@ -142,6 +144,20 @@ def test_bodies_read_as_their_models() -> None:
     assert asked.task.token.startswith("lkt_")
     proposal = webhooks.read_propose(recorded("external_propose")["body"])
     assert proposal.task.kind == "external.propose"
+
+
+@pytest.mark.parametrize(
+    ("name", "model"),
+    [
+        ("document_filed", models.EventBody),
+        ("rule_send", models.RuleSendBody),
+        ("rule_ask", models.RuleAskBody),
+        ("external_propose", models.ProposeContext),
+    ],
+)
+def test_bodies_hold_only_listed_values(name: str, model: type[BaseModel]) -> None:
+    """What Lekto sent holds only values its description lists: it reads strictly, no Unknown."""
+    model.model_validate_json(recorded(name)["body"], strict=True)
 
 
 def test_extract_reads_as_its_model() -> None:
