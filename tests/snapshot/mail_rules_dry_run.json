@@ -1,13 +1,13 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "POST",
   "operation": "/mail-rules/dry-run",
   "path": "/mail-rules/dry-run",
   "params": {},
   "json": {
-    "mailbox_id": "01a1f2a0-9366-7684-911a-19f21d868a88",
+    "mailbox_id": "01a1f505-4901-75c5-ae58-bd3fde1b30b9",
     "name": "Muster Mail Rule",
-    "user_id": "01a1f29c-598a-760e-a697-589027bc4eb9",
+    "user_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
     "conditions": {
       "all": [
         {

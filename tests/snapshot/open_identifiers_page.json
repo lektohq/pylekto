@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/identifiers/open",
   "path": "/identifiers/open",
@@ -14,12 +14,12 @@
       {
         "kind": "iban",
         "value": "DE30250500000123456789",
-        "ref": "ARcU0RB0k6JYlmHi4JtT4AgDkLP7SEGbyLT-x5szroKfeSaBH6pw",
+        "ref": "ASHf2-D3QXICZdX1wrE72ISloqdCAnJNX9CUFykLg4FhooinuJCJ",
         "written": "DE30 2505 0000 0123\n4567 89",
         "source": "suggested",
         "contacts": [],
         "person": {
-          "id": "01a1f29c-598a-760e-a697-589027bc4eb9",
+          "id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
           "name": "admin"
         },
         "documents": 15,
@@ -39,14 +39,72 @@
         }
       },
       {
+        "kind": "contract_number",
+        "value": "FNV778812",
+        "ref": "AdUB9vJDsmbsr47tUkgfC_mwXgw0yPN4ZY4",
+        "written": "FN-V-778812",
+        "source": "learned",
+        "contacts": [
+          {
+            "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
+            "name": "FernNetz Telekommunikation GmbH"
+          }
+        ],
+        "person": null,
+        "documents": 9,
+        "last": "2026-07-05",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm",
+            "params": {
+              "count": 9,
+              "name": "FernNetz Telekommunikation GmbH"
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      },
+      {
+        "kind": "customer_number",
+        "value": "40012345",
+        "ref": "AZPoBSgFRTI-1yfE3l1IbCF-VvC853dlIw",
+        "written": "40012345",
+        "source": "learned",
+        "contacts": [
+          {
+            "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
+            "name": "FernNetz Telekommunikation GmbH"
+          }
+        ],
+        "person": null,
+        "documents": 9,
+        "last": "2026-07-05",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm",
+            "params": {
+              "count": 9,
+              "name": "FernNetz Telekommunikation GmbH"
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      },
+      {
         "kind": "email_domain",
         "value": "fernnetz.example",
-        "ref": "AfhagG2Yr1UjnAy8uj5pX3PfJLloDPbyuxp-YOGpDisG",
+        "ref": "AS-0pXol82vxdbqe_jf7a9wGcSgGc8tsLD-MS8yhnzLI",
         "written": "fernnetz.example",
         "source": "suggested",
         "contacts": [
           {
-            "id": "01a1f29c-9876-73f0-9fd7-5c0bd0a4a1b2",
+            "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
             "name": "FernNetz Telekommunikation GmbH"
           }
         ],
@@ -70,12 +128,12 @@
       {
         "kind": "email_domain",
         "value": "sparkasse-musterstadt.example",
-        "ref": "ATOd7Lw85HrMwkt5TqdvMa4GuyHBerImwH-H6JiEWE1CYb7a1N9VyHXHrgIaNw",
+        "ref": "AfXFSywmcPGzUX6UCgqU1gF7QagM-dX9Aq4ukjwrg_kQeWXG2MM6QOAIAjGaeQ",
         "written": "sparkasse-musterstadt.example",
         "source": "suggested",
         "contacts": [
           {
-            "id": "01a1f29c-9984-7c57-a405-ac3d2635e8a5",
+            "id": "01a1f4f8-33dd-7fa7-b61e-8d46a712c5bd",
             "name": "Sparkasse Musterstadt"
           }
         ],
@@ -95,76 +153,20 @@
             "field": null
           }
         }
-      },
-      {
-        "kind": "email_domain",
-        "value": "cloudberry-hosting.example",
-        "ref": "AS67Lhq9y1RiCHRrLJA4iGnUWx-2uTH9PpaVbmqHWDr-GD7xtUninohusA",
-        "written": "cloudberry-hosting.example",
-        "source": "suggested",
-        "contacts": [
-          {
-            "id": "01a1f29c-9844-754b-a753-8ab9a743b337",
-            "name": "Cloudberry Hosting Inc."
-          }
-        ],
-        "person": null,
-        "documents": 5,
-        "last": "2026-09-01",
-        "recommendation": {
-          "action": "confirm",
-          "reason": {
-            "code": "recommend_confirm_named",
-            "params": {
-              "count": 5,
-              "name": "Cloudberry Hosting Inc."
-            },
-            "subject": null,
-            "rule": null,
-            "field": null
-          }
-        }
-      },
-      {
-        "kind": "email_domain",
-        "value": "hansebank.example",
-        "ref": "AfseoQf0NWSFWWFsY6DIZTCHpCczv7nfapyYdRCTPbL0Zg",
-        "written": "hansebank.example",
-        "source": "suggested",
-        "contacts": [
-          {
-            "id": "01a1f29c-98e5-7fd3-9c9f-b9b950a444a3",
-            "name": "Hansebank AG"
-          }
-        ],
-        "person": null,
-        "documents": 4,
-        "last": "2026-08-31",
-        "recommendation": {
-          "action": "confirm",
-          "reason": {
-            "code": "recommend_confirm_named",
-            "params": {
-              "count": 4,
-              "name": "Hansebank AG"
-            },
-            "subject": null,
-            "rule": null,
-            "field": null
-          }
-        }
       }
     ],
-    "total": 14,
+    "total": 20,
     "counts": {
-      "learned": 0,
+      "learned": 6,
       "suggested": 14
     },
     "kinds": {
+      "contract_number": 1,
+      "customer_number": 5,
       "email_domain": 13,
       "iban": 1
     },
-    "recommended": 8,
-    "to_confirm": 8
+    "recommended": 14,
+    "to_confirm": 14
   }
 }

@@ -23,7 +23,6 @@ from pylekto.models import (
     PushSettingsOut,
     PushTestOut,
     QueuedOut,
-    ReparseOut,
     SignalsOut,
 )
 from pylekto.resources._base import Resource
@@ -141,7 +140,7 @@ class PipelineResource(Resource):
         """
         return await self._http.get("/pipeline", PipelineOut)
 
-    async def reparse(self) -> ReparseOut:
+    async def reparse(self) -> QueuedOut:
         """Read the text of every document again, in the background.
 
         Example::
@@ -149,7 +148,7 @@ class PipelineResource(Resource):
             queued = await lekto.pipeline.reparse()
 
         """
-        return await self._http.call("POST", "/pipeline/reparse", ReparseOut)
+        return await self._http.call("POST", "/pipeline/reparse", QueuedOut)
 
     async def relate(self) -> QueuedOut:
         """Find the relations of every document again, in the background.

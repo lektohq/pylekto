@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "POST",
   "operation": "/tags",
   "path": "/tags",
@@ -11,9 +11,9 @@
   "data": {},
   "status": 201,
   "body": {
-    "id": "01a1f2a0-8784-745e-a0ea-d1af453de13c",
+    "id": "01a1f505-3fd5-719a-9358-2aabb3cfcf9e",
     "name": "Muster Tag",
-    "created_at": "2026-11-19T07:06:09.156035Z",
+    "created_at": "2026-11-19T18:15:24.373927Z",
     "document_count": null,
     "scope": "document",
     "parent_id": null,

@@ -64,14 +64,16 @@ class ApplyRequest(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    version: Annotated[int, Field(ge=1, title="Version")]
+    version: Annotated[int, Field(ge=1, le=2147483647, title="Version")]
     """
     The rule version to apply (from the preview).
     """
     document_ids: Annotated[
         list[UUID], Field(max_length=100000, min_length=1, title="Document Ids")
     ]
-    accept_conflicts: Annotated[list[UUID] | None, Field(title="Accept Conflicts")] = None
+    accept_conflicts: Annotated[
+        list[UUID] | None, Field(max_length=100000, title="Accept Conflicts")
+    ] = None
     """
     Selected documents where the rule's value replaces a different one.
     """
@@ -220,19 +222,16 @@ class CodeIn(BaseModel):
     """
 
 
-class CodePlaceOut(BaseModel):
-    """
-    Where a code stands on a page of the archive.
-    """
+type Value = Annotated[list[str], Field(max_length=100, title="Value")]
+"""
+None for `present` and `missing`, a list for `in`, otherwise one value: an id, a channel, a text or pattern, a date `YYYY-MM-DD` (also for `gt` and `lt` of a period field), a field value as in `fields` of a document, or (for `step`) a text, a number or true/false.
+"""
 
-    page: Annotated[int, Field(title="Page")]
-    """
-    From 1.
-    """
-    boxes: Annotated[list[BoxOut], Field(title="Boxes")]
-    """
-    One per copy of the code on the page.
-    """
+
+type Value1 = Annotated[list[str | bool | int | float], Field(max_length=100, title="Value")]
+"""
+None for `present` and `missing`, a list for `in`, otherwise one value: an id, a channel, a text or pattern, a date `YYYY-MM-DD` (also for `gt` and `lt` of a period field), a field value as in `fields` of a document, or (for `step`) a text, a number or true/false.
+"""
 
 
 type Path = Annotated[str, Field(examples=["accounting.paid"], max_length=200, title="Path")]
@@ -270,11 +269,6 @@ type TopicIds = Annotated[list[UUID], Field(max_length=100, title="Topic Ids")]
 """
 The topics it enables (tags of scope `topic`): its documents carry one of them at most, and its identifiers may point to one. Taking one away is a conflict (409) while a document of the contact carries it; its identifiers lose it.
 """
-
-
-class DeliveryDocumentOut(BaseModel):
-    id: Annotated[UUID, Field(title="Id")]
-    title: Annotated[str, Field(title="Title")]
 
 
 class DeliverySummaryOut(BaseModel):
@@ -354,7 +348,7 @@ class DocumentOutOfReach(BaseModel):
 type Title = Annotated[str, Field(max_length=500, min_length=1, title="Title")]
 
 
-type TagIds = Annotated[list[UUID], Field(max_length=500, title="Tag Ids")]
+type TagIds = Annotated[list[UUID], Field(max_length=50, title="Tag Ids")]
 
 
 class DocumentPatch(BaseModel):
@@ -554,6 +548,12 @@ class FieldAssignmentsIn(BaseModel):
     """
 
 
+type DocumentTypeIds = Annotated[list[UUID], Field(max_length=1000, title="Document Type Ids")]
+"""
+null: global; otherwise only for these document types.
+"""
+
+
 type Choice = Annotated[str, Field(max_length=200, min_length=1)]
 
 
@@ -573,6 +573,20 @@ What belongs in the field, for the language model (the field's name is often an 
 type Choices = Annotated[list[Choice], Field(max_length=200, title="Choices")]
 """
 All choices; removing one that documents use is a conflict (409).
+"""
+
+
+type DocumentTypeIds1 = Annotated[list[UUID], Field(max_length=1000, title="Document Type Ids")]
+"""
+null: global. Narrowing is a conflict (409) while documents outside the new scope have values; the types it is required for narrow with it.
+"""
+
+
+type RequiredDocumentTypeIds = Annotated[
+    list[UUID], Field(max_length=1000, title="Required Document Type Ids")
+]
+"""
+A typed field: the document types (of its own) it is required for; for the others it is optional. Extraction must find a required field; an optional one may stay empty, but a value it gives must be shown by the text.
 """
 
 
@@ -596,13 +610,13 @@ class FieldPatch(BaseModel):
     """
     All choices; removing one that documents use is a conflict (409).
     """
-    document_type_ids: Annotated[list[UUID] | None, Field(title="Document Type Ids")] = None
+    document_type_ids: Annotated[DocumentTypeIds1 | None, Field(title="Document Type Ids")] = None
     """
     null: global. Narrowing is a conflict (409) while documents outside the new scope have values; the types it is required for narrow with it.
     """
     required: Annotated[bool | None, Field(title="Required")] = None
     required_document_type_ids: Annotated[
-        list[UUID] | None, Field(title="Required Document Type Ids")
+        RequiredDocumentTypeIds | None, Field(title="Required Document Type Ids")
     ] = None
     description: Annotated[Description2 | None, Field(title="Description")] = None
     assignment: Literal["auto", "manual"] | None = None
@@ -646,7 +660,7 @@ class HeaderIn(BaseModel):
     """
 
 
-type Value = Annotated[str, Field(max_length=4096, min_length=1, title="Value")]
+type Value2 = Annotated[str, Field(max_length=4096, min_length=1, title="Value")]
 """
 Left out or null: the header keeps the value it has (a new header needs one).
 """
@@ -659,7 +673,7 @@ class HeaderPatch(BaseModel):
     name: Annotated[
         str, Field(examples=["Authorization"], max_length=100, min_length=1, title="Name")
     ]
-    value: Annotated[Value | None, Field(title="Value")] = None
+    value: Annotated[Value2 | None, Field(title="Value")] = None
     """
     Left out or null: the header keeps the value it has (a new header needs one).
     """
@@ -757,11 +771,6 @@ class IndexStatsOut(BaseModel):
     """
     Its size on disk, if the index tells.
     """
-
-
-class JobDocumentOut(BaseModel):
-    id: Annotated[UUID, Field(title="Id")]
-    title: Annotated[str, Field(title="Title")]
 
 
 class JobTimesOut(BaseModel):
@@ -866,7 +875,7 @@ class LensOrder(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    ids: Annotated[list[UUID], Field(title="Ids")]
+    ids: Annotated[list[UUID], Field(max_length=1000, title="Ids")]
     """
     Each of the caller's lenses once, in the new order.
     """
@@ -958,7 +967,7 @@ class ListedSpace(BaseModel):
 
 class LocationOut(BaseModel):
     """
-    Where a quote stands in the archive PDF.
+    Where something stands on a page of the archive PDF: a quote, a code, a fact (RA-12).
     """
 
     page: Annotated[int, Field(title="Page")]
@@ -967,7 +976,7 @@ class LocationOut(BaseModel):
     """
     boxes: Annotated[list[BoxOut], Field(title="Boxes")]
     """
-    One per line the quote covers.
+    What it covers on the page.
     """
 
 
@@ -1014,7 +1023,7 @@ class LogoFailureOut(BaseModel):
     """
 
 
-type Value1 = Annotated[str, Field(max_length=1000, title="Value")]
+type Value3 = Annotated[str, Field(max_length=1000, title="Value")]
 
 
 type Priority = Annotated[int, Field(ge=0, le=1000, title="Priority")]
@@ -1047,7 +1056,7 @@ class MailStepBody(BaseModel):
     list of them): marked read or unread, flagged in a colour or not, a keyword added or
     removed; then at most one that ends it, moved to a folder or to the trash.
     """
-    value: Annotated[Value1 | None, Field(title="Value")] = None
+    value: Annotated[Value3 | None, Field(title="Value")] = None
 
 
 class MailWaitingOut(BaseModel):
@@ -1282,6 +1291,9 @@ class ModelCallTask(BaseModel):
 
 
 class MoneyValue(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
     amount: Annotated[str, Field(examples=["12.50"], title="Amount")]
     """
     Decimal number as text, exact.
@@ -1327,6 +1339,10 @@ class Named(BaseModel):
 
 
 class NamedOut(BaseModel):
+    """
+    Something by its id and its name (RA-12).
+    """
+
     id: Annotated[UUID, Field(title="Id")]
     name: Annotated[str, Field(title="Name")]
 
@@ -1351,17 +1367,15 @@ class OidcInfo(BaseModel):
     display_name: Annotated[str | None, Field(examples=["Single sign-on"], title="Display Name")]
 
 
-class OpenContactOut(BaseModel):
-    id: Annotated[UUID, Field(title="Id")]
-    name: Annotated[str, Field(title="Name")]
-
-
 class OpenCountsOut(BaseModel):
     learned: Annotated[int, Field(title="Learned")]
     suggested: Annotated[int, Field(title="Suggested")]
 
 
 class OpenDecisionIn(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
     kind: Annotated[
         Literal[
             "iban",
@@ -1395,9 +1409,9 @@ class OpenDecisionIn(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
-    value: Annotated[str, Field(title="Value")]
+    value: Annotated[str, Field(max_length=200, title="Value")]
     """
     Normalised, as the list gives it.
     """
@@ -1412,20 +1426,12 @@ class OpenDecisionIn(BaseModel):
 
 
 class OpenDecisionsIn(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
     decisions: Annotated[
         list[OpenDecisionIn], Field(max_length=200, min_length=1, title="Decisions")
     ]
-
-
-class OpenPersonOut(BaseModel):
-    id: Annotated[UUID, Field(title="Id")]
-    """
-    The user.
-    """
-    name: Annotated[str, Field(title="Name")]
-    """
-    Their display name, else the username.
-    """
 
 
 class OpenSearchIn(BaseModel):
@@ -1498,6 +1504,9 @@ class PasswordReset(BaseModel):
 
 
 class PeriodValue(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
     start: Annotated[date_aliased, Field(examples=["2026-09-01"], title="Start")]
     """
     First day, included.
@@ -1550,49 +1559,7 @@ class PersonIdentifierIn(BaseModel):
     """
     `iban`, `tax_id` (11 digits with check digit), `social_security_number`, `health_insurance_number` (a letter and nine digits) or `email_address`; other kinds are a contact's (422).
     """
-    value: Annotated[str, Field(max_length=100, min_length=1, title="Value")]
-
-
-class PersonIdentifierOut(BaseModel):
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ],
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
-    """
-    value: Annotated[str, Field(title="Value")]
-    """
-    Normalised.
-    """
+    value: Annotated[str, Field(max_length=200, min_length=1, title="Value")]
 
 
 class PlaceOut(BaseModel):
@@ -1631,7 +1598,7 @@ Unique across users regardless of case, also against their aliases (409).
 type Alias2 = Annotated[str, Field(max_length=150, min_length=1)]
 
 
-type Email = Annotated[str, Field(max_length=254, title="Email")]
+type Email = Annotated[str, Field(max_length=200, title="Email")]
 
 
 class ProposeContext(BaseModel):
@@ -1688,6 +1655,9 @@ class PushDeviceOut(BaseModel):
 
 
 class PushKeysIn(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
     p256dh: Annotated[str, Field(max_length=200, title="P256Dh")]
     """
     The browser's public key (base64url).
@@ -1704,7 +1674,7 @@ class PushPreferencesBody(BaseModel):
     )
     kinds: Annotated[
         list[Literal["waiting", "mailbox_failed", "webhook_disabled", "job_failed"]],
-        Field(title="Kinds"),
+        Field(max_length=4, title="Kinds"),
     ]
     """
     What the caller is told about: `waiting` (documents wait in their inbox), `webhook_disabled` (one of their webhooks was switched off), and for admins `mailbox_failed` (a mailbox fails to fetch) and `job_failed` (a job was given up).
@@ -1758,6 +1728,7 @@ class ReasonOut(BaseModel):
             "only_identifier",
             "contact_is_recipient",
             "contact_identifiers_several",
+            "contact_identifier_of_other",
             "contact_new_proposed",
             "contact_none",
             "contact_none_no_model",
@@ -1859,9 +1830,13 @@ class ReasonOut(BaseModel):
             "pdf_encrypted",
             "pdf_unreadable",
             "pdf_unreadable_detail",
+            "pdf_too_complex",
             "image_unreadable",
             "image_unreadable_detail",
+            "image_too_large",
             "document_no_pages",
+            "document_too_many_pages",
+            "preview_too_many_pages",
             "ocr_failed",
             "text_unreadable",
             "signature_dropped",
@@ -1929,6 +1904,7 @@ class ReasonOut(BaseModel):
             "tag_used_by_rules",
             "field_used_by_patterns",
             "field_used_by_rules",
+            "field_used_by_webhooks",
             "field_key_taken",
             "identifier_of_person",
             "identifier_of_contact",
@@ -1988,6 +1964,10 @@ class ReasonOut(BaseModel):
             "code_invalid",
             "read_only_token",
             "upload_only_token",
+            "upload_only_token_fields",
+            "token_lacks_right",
+            "token_rights_empty",
+            "token_admin_rights",
             "push_off",
             "push_endpoint_refused",
             "push_keys_invalid",
@@ -2151,6 +2131,8 @@ class ReasonOut(BaseModel):
             "mail_folder_missing",
             "mail_server_error",
             "mail_password_unreadable",
+            "mail_fetch_failed",
+            "mail_password_again",
             "mailbox_paused",
             "mail_too_large",
             "mail_step_failed",
@@ -2165,6 +2147,7 @@ class ReasonOut(BaseModel):
             "delivery_owner_no_admin",
             "delivery_webhook_deleted",
             "delivery_secret_unusable",
+            "webhook_headers_again",
             "mail_rule_unreadable",
         ],
         Field(title="ReasonCode"),
@@ -2246,7 +2229,7 @@ class RefIn(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
     value: Annotated[str, Field(max_length=200, min_length=1, title="Value")]
     """
@@ -2288,7 +2271,7 @@ class RefOut(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
     value: Annotated[str, Field(title="Value")]
     """
@@ -2324,6 +2307,15 @@ class RelatedDocumentOut(BaseModel):
     document_date: Annotated[date_aliased | None, Field(title="Document Date")]
 
 
+class ReleaseOut(BaseModel):
+    version: Annotated[str, Field(examples=["0.16.0"], title="Version")]
+    published_at: Annotated[AwareDatetime, Field(title="Published At")]
+    url: Annotated[str, Field(title="Url")]
+    """
+    The release's page on GitHub, with its notes.
+    """
+
+
 class RemoveTagsAction(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
@@ -2334,13 +2326,6 @@ class RemoveTagsAction(BaseModel):
 
 class Removed(BaseModel):
     removed: Annotated[int, Field(title="Removed")]
-
-
-class ReparseOut(BaseModel):
-    queued: Annotated[int, Field(title="Queued")]
-    """
-    Documents whose text is read again (not those queued already).
-    """
 
 
 class ReprocessRequest(BaseModel):
@@ -2554,48 +2539,6 @@ class SentTask(BaseModel):
     One-time token (`lkt_…`).
     """
     deadline: Annotated[AwareDatetime, Field(title="Deadline")]
-
-
-class SeriesNumberOut(BaseModel):
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ],
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
-    """
-    value: Annotated[str, Field(title="Value")]
-    """
-    Normalised, as Lekto compares it.
-    """
 
 
 class SessionsEnded(BaseModel):
@@ -3127,7 +3070,7 @@ class UserRemovalIn(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    spaces: Annotated[list[SpaceSettlementIn] | None, Field(title="Spaces")] = None
+    spaces: Annotated[list[SpaceSettlementIn] | None, Field(max_length=1000, title="Spaces")] = None
     """
     Each space once.
     """
@@ -3168,11 +3111,30 @@ class VerdictsOut(BaseModel):
     """
 
 
-class VersionOriginOut(BaseModel):
-    id: Annotated[UUID, Field(title="Id")]
-    title: Annotated[str, Field(title="Title")]
+class VersionOut(BaseModel):
+    lekto_version: Annotated[str, Field(title="Lekto Version")]
     """
-    Its title now.
+    The version of Lekto that answers (its release).
+    """
+    api_version: Annotated[str, Field(title="Api Version")]
+    """
+    The version of this API (`info.version`).
+    """
+    update_check: Annotated[bool, Field(title="Update Check")]
+    """
+    Whether this instance looks for releases (`LEKTO_UPDATE_CHECK`, and not a development state).
+    """
+    checked_at: Annotated[AwareDatetime | None, Field(title="Checked At")]
+    """
+    The last look; null before the first.
+    """
+    latest: ReleaseOut | None
+    """
+    The newest release that was news at the last look: newer, and stable if the running version is; null if there was none.
+    """
+    update_available: Annotated[bool, Field(title="Update Available")]
+    """
+    Whether `latest` is newer than the running one.
     """
 
 
@@ -3271,6 +3233,12 @@ type Name8 = Annotated[str, Field(max_length=100, min_length=1, title="Name")]
 type Url = Annotated[str, Field(max_length=2000, title="Url")]
 
 
+type EventTypes = Annotated[list[str], Field(max_length=13, title="Event Types")]
+"""
+Event types: `document.confirmed`, `document.deleted`, `document.filed`, `document.lane_changed`, `document.moved`, `document.node_completed`, `document.node_deferred`, `document.node_delegated`, `document.node_started`, `document.received`, `document.review_required`, `document.updated`, or `*` for all, also future ones. Empty: the webhook serves rules only.
+"""
+
+
 type Headers = Annotated[list[HeaderPatch], Field(max_length=20, title="Headers")]
 """
 All of the webhook's own headers from now on (empty: none). Headers of the webhook's own, sent with every request (at most 20), e.g. `Authorization` for a token the receiver checks. Lekto sets `content-type`, `content-length`, `host`, `connection`, `transfer-encoding` and the headers beginning with `webhook-` or `lekto-` itself; those are refused. The values are stored encrypted and never shown again; the names are.
@@ -3299,7 +3267,7 @@ class WebhookPatch(BaseModel):
     )
     name: Annotated[Name8 | None, Field(title="Name")] = None
     url: Annotated[Url | None, Field(title="Url")] = None
-    event_types: Annotated[list[str] | None, Field(title="Event Types")] = None
+    event_types: Annotated[EventTypes | None, Field(title="Event Types")] = None
     """
     Event types: `document.confirmed`, `document.deleted`, `document.filed`, `document.lane_changed`, `document.moved`, `document.node_completed`, `document.node_deferred`, `document.node_delegated`, `document.node_started`, `document.received`, `document.review_required`, `document.updated`, or `*` for all, also future ones. Empty: the webhook serves rules only.
     """
@@ -3446,7 +3414,7 @@ class Problem(BaseModel):
     """
     errors: Annotated[list[InputErrorOut] | None, Field(title="Errors")] = None
     """
-    A request that does not fit (422): what is wrong with each part.
+    A request that does not fit (422): what is wrong with each part, the first 50; `detail` then says how many there are.
     """
 
 
@@ -3572,7 +3540,7 @@ class BulkOperationOut(BaseModel):
         ],
         Field(title="BulkKind"),
     ]
-    status: Annotated[Literal["queued", "running", "done", "failed"], Field(title="BulkStatus")]
+    status: Annotated[Literal["queued", "running", "done", "failed"], Field(title="ProgressStatus")]
     total: Annotated[int, Field(title="Total")]
     """
     Selected documents.
@@ -3741,15 +3709,7 @@ class ConditionSchema(BaseModel):
         Field(title="Operator"),
     ]
     value: Annotated[
-        str
-        | bool
-        | int
-        | float
-        | MoneyValue
-        | PeriodValue
-        | list[str]
-        | list[str | bool | int | float]
-        | None,
+        str | bool | int | float | MoneyValue | PeriodValue | Value | Value1 | None,
         Field(title="Value"),
     ] = None
     """
@@ -3874,7 +3834,8 @@ class ConnectionTestOut(BaseModel):
 
 class ContactNumberIn(BaseModel):
     """
-    A customer or personnel number of the user at a contact, written as in documents.
+    A customer, contract or personnel number of the user at a contact, written as in
+    documents.
     """
 
     model_config = ConfigDict(
@@ -3915,7 +3876,7 @@ class ContactNumberIn(BaseModel):
     """
     `customer_number` (also a contract or policy number) or `personnel_number`; other kinds name nobody (422).
     """
-    value: Annotated[str, Field(max_length=100, min_length=1, title="Value")]
+    value: Annotated[str, Field(max_length=200, min_length=1, title="Value")]
     topic_id: Annotated[UUID | None, Field(title="Topic Id")] = None
     """
     One of the contact's topics it points to (a personnel number to work).
@@ -3957,7 +3918,7 @@ class ContactNumberOut(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
     value: Annotated[str, Field(title="Value")]
     """
@@ -4004,7 +3965,7 @@ class DeliveryOut(BaseModel):
     Why Lekto did not send it, with its code (`delivery_webhook_off`, `delivery_owner_inactive`, `delivery_document_unavailable`, `delivery_owner_no_admin`, `delivery_webhook_deleted`, `delivery_secret_unusable`); null for an answer or a transport error (`error` says it).
     """
     next_attempt_at: Annotated[AwareDatetime | None, Field(title="Next Attempt At")]
-    document: DeliveryDocumentOut | None
+    document: DocumentRefOut | None
     """
     The document of the event, if the caller may read it.
     """
@@ -4112,7 +4073,7 @@ class DocumentVersionOut(BaseModel):
     media_type: Annotated[str, Field(title="Media Type")]
     kind: Annotated[
         Literal["received", "replaced", "edited", "split", "separated", "merged"],
-        Field(title="VersionKindOut"),
+        Field(title="VersionKind"),
     ]
     """
     `received`: how the document came in; `replaced`: a person put another file in its place; `edited`: a person edited its pages; `split`: the first version, pages split off another document (by a person, or at a separator sheet); `separated`: the first part of the stack the document came in as, split at its separator sheets; `merged`: a person merged other documents into it. A version that came from another document in a merge keeps its kind.
@@ -4123,7 +4084,7 @@ class DocumentVersionOut(BaseModel):
     """
     What it was made from. `edited` and `split`: `pages`, each with its `source` (0 the edited version, 1, 2, … the files in `added`, by name), `page` and `rotate`; `edited` also `from`, the version edited, and `split_off`, the documents split off in the same edit; `split` also `document`, `title` and `version`, the document it was split off (which may be gone since) and its version then (source 0), and `sheets` and `stack_pages` (the stack's pages) where it was split at separator sheets. `separated`: `pages` (source 0, the stack), `from`, `sheets`, the pages that were separator sheets, and `split_off`, the documents made of the other parts. `merged`: as `edited`, the sources after the files are the other documents, and `documents` names every document merged, the edited one first, with its `title` and the `version` its file is here; `from` is the edited one's. A part split off in a merge names the target, and `documents` as its merged version does. A version taken over in a merge: `moved`, the `document`, `title` and `version` it was there.
     """
-    origin: VersionOriginOut | None
+    origin: DocumentRefOut | None
     """
     `split`: the document it was split off as it is now (`detail.title` is its title then); null where it is gone, the caller may not read it, or for another kind.
     """
@@ -4229,52 +4190,10 @@ class ExpectedNextOut(BaseModel):
     """
     state: Annotated[Literal["overdue", "soon", "later", "ended"], Field(title="SeriesState")]
     cadence: Annotated[
-        Literal["weekly", "monthly", "quarterly", "half_yearly", "yearly", "days"],
+        Literal["weekly", "monthly", "bimonthly", "quarterly", "half_yearly", "yearly", "days"],
         Field(title="Cadence"),
     ]
     spread_days: Annotated[int, Field(title="Spread Days")]
-
-
-class ExpectedOut(BaseModel):
-    """
-    A series and the document it expects next.
-    """
-
-    contact: NamedOut
-    document_type: NamedOut
-    number: SeriesNumberOut | None
-    """
-    The contract or customer number the series follows, if its documents show one.
-    """
-    cadence: Annotated[
-        Literal["weekly", "monthly", "quarterly", "half_yearly", "yearly", "days"],
-        Field(title="Cadence"),
-    ]
-    """
-    A calendar step (`weekly` to `yearly`) or `days` (see `interval_days`).
-    """
-    interval_days: Annotated[int, Field(title="Interval Days")]
-    """
-    The median gap between its documents.
-    """
-    spread_days: Annotated[int, Field(title="Spread Days")]
-    """
-    How far a document may come off its step (± days).
-    """
-    documents: Annotated[int, Field(title="Documents")]
-    """
-    How many documents the series has (one per period).
-    """
-    last: LastDocumentOut
-    next_date: Annotated[date_aliased, Field(title="Next Date")]
-    next_period: Annotated[str | None, Field(title="Next Period")]
-    """
-    The period the next document is for, in ISO notation (`2026-11`), where the series carries one.
-    """
-    state: Annotated[Literal["overdue", "soon", "later", "ended"], Field(title="SeriesState")]
-    """
-    `overdue` (its date and spread are over), `soon` (in the next 30 days), `later`, or `ended` (two dates missed).
-    """
 
 
 class ExtractContext(BaseModel):
@@ -4306,6 +4225,9 @@ class FactDecisionIn(BaseModel):
     A person's decision about a fact of the document.
     """
 
+    model_config = ConfigDict(
+        extra="forbid",
+    )
     action: Annotated[Literal["add", "correct", "reject", "withdraw"], Field(title="FactAction")]
     """
     `add` a fact the sources did not find (`value` as written, `role` required); `correct` the fact of `kind` and `value` (its role, and with `new_value` its value: the old one is then rejected); `reject` it (it is no fact of the document); `withdraw` a decision (a fact a source found is as found again, one only a person gave goes).
@@ -4343,7 +4265,7 @@ class FactDecisionIn(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
     value: Annotated[str, Field(max_length=200, min_length=1, title="Value")]
     """
@@ -4468,7 +4390,7 @@ class FieldCreate(BaseModel):
         Literal["text", "number", "amount", "date", "boolean", "choice", "link", "period"],
         Field(title="FieldType"),
     ]
-    document_type_ids: Annotated[list[UUID] | None, Field(title="Document Type Ids")] = None
+    document_type_ids: Annotated[DocumentTypeIds | None, Field(title="Document Type Ids")] = None
     """
     null: global; otherwise only for these document types.
     """
@@ -4481,7 +4403,7 @@ class FieldCreate(BaseModel):
     A global field: whether every document needs a value (read by the model, or entered by hand for a field set by hand).
     """
     required_document_type_ids: Annotated[
-        list[UUID] | None, Field(title="Required Document Type Ids")
+        list[UUID] | None, Field(max_length=1000, title="Required Document Type Ids")
     ] = None
     """
     A typed field: the document types (of its own) it is required for; for the others it is optional. Extraction must find a required field; an optional one may stay empty, but a value it gives must be shown by the text.
@@ -4514,7 +4436,9 @@ class FieldOut(BaseModel):
     """
     A global field: whether every document needs a value (read by the model, or entered by hand for a field set by hand).
     """
-    required_document_type_ids: Annotated[list[UUID], Field(title="Required Document Type Ids")]
+    required_document_type_ids: Annotated[
+        list[UUID], Field(max_length=1000, title="Required Document Type Ids")
+    ]
     """
     A typed field: the document types (of its own) it is required for; for the others it is optional. Extraction must find a required field; an optional one may stay empty, but a value it gives must be shown by the text.
     """
@@ -4719,7 +4643,7 @@ class HolderCaseOut(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
     value: Annotated[str, Field(title="Value")]
     """
@@ -4805,7 +4729,7 @@ class HolderKindOut(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
 
 
@@ -4839,45 +4763,6 @@ class HoldersOut(BaseModel):
     """
     The open list's recommendation, every kind.
     """
-
-
-class IdentifierFoundOut(BaseModel):
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ],
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
-    """
-    value: Annotated[str, Field(title="Value")]
 
 
 class IdentifierIn(BaseModel):
@@ -4922,12 +4807,12 @@ class IdentifierIn(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
     value: Annotated[
         str,
         Field(
-            examples=["DE89 3704 0044 0532 0130 00"], max_length=100, min_length=1, title="Value"
+            examples=["DE89 3704 0044 0532 0130 00"], max_length=200, min_length=1, title="Value"
         ),
     ]
     topic_id: Annotated[UUID | None, Field(title="Topic Id")] = None
@@ -4936,7 +4821,53 @@ class IdentifierIn(BaseModel):
     """
     user_id: Annotated[UUID | None, Field(title="User Id")] = None
     """
-    The user a customer or personnel number belongs to (Anna's contract): found in a document, it is hard evidence for whose it is. Not for other kinds, not for a rejected one.
+    The user a customer, contract or personnel number belongs to (Erika's contract): found in a document, it is hard evidence for whose it is. Not for other kinds, not for a rejected one.
+    """
+
+
+class IdentifierKeyOut(BaseModel):
+    """
+    An identifier by its kind and its value (RA-12).
+    """
+
+    kind: Annotated[
+        Literal[
+            "iban",
+            "vat_id",
+            "customer_number",
+            "personnel_number",
+            "email_domain",
+            "tax_id",
+            "social_security_number",
+            "health_insurance_number",
+            "email_address",
+            "creditor_id",
+            "commercial_register",
+            "tax_number",
+            "contract_number",
+            "meter_number",
+            "mandate_reference",
+            "license_plate",
+            "invoice_number",
+            "credit_note_number",
+            "order_number",
+            "file_reference",
+            "our_reference",
+            "claim_number",
+            "ticket_number",
+            "your_reference",
+            "letter_date",
+            "child_benefit_number",
+        ],
+        Field(title="IdentifierKind"),
+    ]
+    """
+    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
+    `.knowledge/architecture/fact-roles.md`).
+    """
+    value: Annotated[str, Field(title="Value")]
+    """
+    Normalised, as Lekto compares it.
     """
 
 
@@ -4974,7 +4905,7 @@ class IdentifierOut(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
     value: Annotated[str, Field(examples=["DE89370400440532013000"], title="Value")]
     source: Annotated[Literal["manual", "learned", "rejected"], Field(title="IdentifierSource")]
@@ -4987,7 +4918,7 @@ class IdentifierOut(BaseModel):
     """
     user_id: Annotated[UUID | None, Field(title="User Id")] = None
     """
-    The user a customer or personnel number belongs to: entered by hand, or found by training when all its documents are surely theirs alone.
+    The user a customer, contract or personnel number belongs to: entered by hand, or found by training when all its documents are surely theirs alone.
     """
 
 
@@ -5051,7 +4982,7 @@ class JobOut(BaseModel):
     """
     When it was done or given up.
     """
-    document: JobDocumentOut | None
+    document: DocumentRefOut | None
     """
     The document it works on, if the caller may read it.
     """
@@ -5152,19 +5083,19 @@ class LensFilterBody(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    contact_ids: Annotated[list[UUID] | None, Field(max_length=200, title="Contact Ids")] = None
+    contact_ids: Annotated[list[UUID] | None, Field(max_length=50, title="Contact Ids")] = None
     document_type_ids: Annotated[
-        list[UUID] | None, Field(max_length=200, title="Document Type Ids")
+        list[UUID] | None, Field(max_length=50, title="Document Type Ids")
     ] = None
     contact_group_ids: Annotated[
-        list[UUID] | None, Field(max_length=200, title="Contact Group Ids")
+        list[UUID] | None, Field(max_length=50, title="Contact Group Ids")
     ] = None
     document_type_group_ids: Annotated[
-        list[UUID] | None, Field(max_length=200, title="Document Type Group Ids")
+        list[UUID] | None, Field(max_length=50, title="Document Type Group Ids")
     ] = None
-    topic_ids: Annotated[list[UUID] | None, Field(max_length=200, title="Topic Ids")] = None
-    tag_ids: Annotated[list[UUID] | None, Field(max_length=200, title="Tag Ids")] = None
-    space_ids: Annotated[list[UUID] | None, Field(max_length=200, title="Space Ids")] = None
+    topic_ids: Annotated[list[UUID] | None, Field(max_length=50, title="Topic Ids")] = None
+    tag_ids: Annotated[list[UUID] | None, Field(max_length=50, title="Tag Ids")] = None
+    space_ids: Annotated[list[UUID] | None, Field(max_length=50, title="Space Ids")] = None
     field_id: Annotated[UUID | None, Field(title="Field Id")] = None
     document_date_from: Annotated[date_aliased | None, Field(title="Document Date From")] = None
     document_date_to: Annotated[date_aliased | None, Field(title="Document Date To")] = None
@@ -5387,7 +5318,7 @@ class MailConditionBody(BaseModel):
         Literal["contains", "is", "starts_with", "ends_with", "present", "missing"],
         Field(title="MailOperator"),
     ]
-    value: Annotated[Value1 | None, Field(title="Value")] = None
+    value: Annotated[Value3 | None, Field(title="Value")] = None
 
 
 class MailOriginOut(BaseModel):
@@ -5546,7 +5477,40 @@ class Me(BaseModel):
     session_expires_at: Annotated[AwareDatetime | None, Field(title="Session Expires At")]
     token_scope: Literal["read", "read_write", "upload"] | None
     """
-    With an API token: its scope.
+    With an API token: the preset its rights match; null for rights chosen one by one.
+    """
+    rights: Annotated[
+        list[
+            Literal[
+                "documents:count",
+                "documents:read",
+                "documents:write",
+                "documents:upload",
+                "master_data:read",
+                "master_data:write",
+                "rules:read",
+                "rules:write",
+                "spaces:read",
+                "spaces:write",
+                "webhooks:read",
+                "webhooks:write",
+                "lenses:read",
+                "lenses:write",
+                "push:read",
+                "push:write",
+                "system:read",
+                "system:write",
+                "admin:count_all",
+                "admin:documents_all",
+                "admin:mailboxes",
+                "admin:private_webhooks",
+                "admin:manage",
+            ]
+        ],
+        Field(title="Rights"),
+    ]
+    """
+    What the caller may: with an API token its rights (an admin right only while the user is an active admin), with a session every right of the user.
     """
     has_password: Annotated[bool, Field(title="Has Password")]
     totp_enabled: Annotated[bool, Field(title="Totp Enabled")]
@@ -5554,6 +5518,14 @@ class Me(BaseModel):
     lekto_version: Annotated[str, Field(title="Lekto Version")]
     """
     The version of Lekto that answers (its release).
+    """
+    api_version: Annotated[str, Field(title="Api Version")]
+    """
+    The version of this API, `MAJOR.MINOR` (as `info.version` of the OpenAPI document). During the beta `0.MINOR`, raised with every change; from the first release without beta MAJOR rises with a change that breaks a client, MINOR with one that adds.
+    """
+    instance_id: Annotated[UUID, Field(title="Instance Id")]
+    """
+    The id of this instance: random, made once, kept in the database (a restore keeps it). Tells instances apart, e.g. for Home Assistant.
     """
     shortcut_url: Annotated[str | None, Field(title="Shortcut Url")]
     """
@@ -5708,7 +5680,7 @@ class OpenIdentifierOut(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
     value: Annotated[str, Field(title="Value")]
     """
@@ -5726,10 +5698,10 @@ class OpenIdentifierOut(BaseModel):
     """
     `learned`: training found it at `contacts[0]`; `suggested`: an e-mail domain whose name fits `contacts[0]`, the contact of its documents, which has none entered, or an IBAN its documents give to the person in `person`.
     """
-    contacts: Annotated[list[OpenContactOut], Field(title="Contacts")]
-    person: OpenPersonOut | None = None
+    contacts: Annotated[list[NamedOut], Field(title="Contacts")]
+    person: NamedOut | None = None
     """
-    A suggestion for this person's profile.
+    A suggestion for this person's profile: the user, by their display name, else the username.
     """
     documents: Annotated[int, Field(title="Documents")]
     """
@@ -5844,7 +5816,7 @@ class OutcomeOut(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
     value: Annotated[str, Field(title="Value")]
     done: Annotated[bool, Field(title="Done")]
@@ -5909,7 +5881,7 @@ class ProfileOut(BaseModel):
     """
     Also counts as an identifier.
     """
-    identifiers: Annotated[list[PersonIdentifierOut], Field(title="Identifiers")]
+    identifiers: Annotated[list[IdentifierKeyOut], Field(title="Identifiers")]
     numbers: Annotated[list[ContactNumberOut], Field(title="Numbers")]
     """
     The user's customer and personnel numbers at contacts, by contact: found in a document, they are evidence for the contact and for the user. Only the user and admins see them, here and at the contact.
@@ -6036,9 +6008,7 @@ class RuleApplicationOut(BaseModel):
     id: Annotated[UUID, Field(title="Id")]
     rule_id: Annotated[UUID, Field(title="Rule Id")]
     version: Annotated[int, Field(title="Version")]
-    status: Annotated[
-        Literal["queued", "running", "done", "failed"], Field(title="ApplicationStatus")
-    ]
+    status: Annotated[Literal["queued", "running", "done", "failed"], Field(title="ProgressStatus")]
     total: Annotated[int, Field(title="Total")]
     """
     Selected documents.
@@ -6299,15 +6269,53 @@ class TagOut(BaseModel):
     """
 
 
+type Rights = Annotated[
+    list[
+        Literal[
+            "documents:count",
+            "documents:read",
+            "documents:write",
+            "documents:upload",
+            "master_data:read",
+            "master_data:write",
+            "rules:read",
+            "rules:write",
+            "spaces:read",
+            "spaces:write",
+            "webhooks:read",
+            "webhooks:write",
+            "lenses:read",
+            "lenses:write",
+            "push:read",
+            "push:write",
+            "system:read",
+            "system:write",
+            "admin:count_all",
+            "admin:documents_all",
+            "admin:mailboxes",
+            "admin:private_webhooks",
+            "admin:manage",
+        ]
+    ],
+    Field(max_length=23, title="Rights"),
+]
+"""
+The rights one by one; admin rights only for an admin. Either this or `scope`.
+"""
+
+
 class TokenCreate(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
     name: Annotated[str, Field(examples=["scanner"], max_length=100, min_length=1, title="Name")]
-    scope: Annotated[Literal["read", "read_write", "upload"], Field(title="TokenScope")]
+    scope: Literal["read", "read_write", "upload"] | None = None
     """
-    What an API token may do: read, read and write, or only upload documents (a shortcut
-    on a phone that sends shared files; it reads nothing, not even what it uploaded).
+    A preset of rights: `read`, `read_write` (for an admin with every admin right) or `upload`. Either this or `rights`.
+    """
+    rights: Annotated[Rights | None, Field(title="Rights")] = None
+    """
+    The rights one by one; admin rights only for an admin. Either this or `scope`.
     """
     expires_at: Annotated[AwareDatetime | None, Field(title="Expires At")] = None
 
@@ -6315,11 +6323,40 @@ class TokenCreate(BaseModel):
 class TokenCreated(BaseModel):
     id: Annotated[UUID, Field(title="Id")]
     name: Annotated[str, Field(title="Name")]
-    scope: Annotated[Literal["read", "read_write", "upload"], Field(title="TokenScope")]
+    scope: Literal["read", "read_write", "upload"] | None
     """
-    What an API token may do: read, read and write, or only upload documents (a shortcut
-    on a phone that sends shared files; it reads nothing, not even what it uploaded).
+    The preset the rights match; null for rights chosen one by one.
     """
+    rights: Annotated[
+        list[
+            Literal[
+                "documents:count",
+                "documents:read",
+                "documents:write",
+                "documents:upload",
+                "master_data:read",
+                "master_data:write",
+                "rules:read",
+                "rules:write",
+                "spaces:read",
+                "spaces:write",
+                "webhooks:read",
+                "webhooks:write",
+                "lenses:read",
+                "lenses:write",
+                "push:read",
+                "push:write",
+                "system:read",
+                "system:write",
+                "admin:count_all",
+                "admin:documents_all",
+                "admin:mailboxes",
+                "admin:private_webhooks",
+                "admin:manage",
+            ]
+        ],
+        Field(title="Rights"),
+    ]
     created_at: Annotated[AwareDatetime, Field(title="Created At")]
     expires_at: Annotated[AwareDatetime | None, Field(title="Expires At")]
     last_used_at: Annotated[AwareDatetime | None, Field(title="Last Used At")]
@@ -6332,11 +6369,40 @@ class TokenCreated(BaseModel):
 class TokenOut(BaseModel):
     id: Annotated[UUID, Field(title="Id")]
     name: Annotated[str, Field(title="Name")]
-    scope: Annotated[Literal["read", "read_write", "upload"], Field(title="TokenScope")]
+    scope: Literal["read", "read_write", "upload"] | None
     """
-    What an API token may do: read, read and write, or only upload documents (a shortcut
-    on a phone that sends shared files; it reads nothing, not even what it uploaded).
+    The preset the rights match; null for rights chosen one by one.
     """
+    rights: Annotated[
+        list[
+            Literal[
+                "documents:count",
+                "documents:read",
+                "documents:write",
+                "documents:upload",
+                "master_data:read",
+                "master_data:write",
+                "rules:read",
+                "rules:write",
+                "spaces:read",
+                "spaces:write",
+                "webhooks:read",
+                "webhooks:write",
+                "lenses:read",
+                "lenses:write",
+                "push:read",
+                "push:write",
+                "system:read",
+                "system:write",
+                "admin:count_all",
+                "admin:documents_all",
+                "admin:mailboxes",
+                "admin:private_webhooks",
+                "admin:manage",
+            ]
+        ],
+        Field(title="Rights"),
+    ]
     created_at: Annotated[AwareDatetime, Field(title="Created At")]
     expires_at: Annotated[AwareDatetime | None, Field(title="Expires At")]
     last_used_at: Annotated[AwareDatetime | None, Field(title="Last Used At")]
@@ -6366,7 +6432,7 @@ class WebhookCreate(BaseModel):
     """
     Where Lekto sends the events (POST). `http` or `https`; targets in the own network are fine. Redirects are not followed.
     """
-    event_types: Annotated[list[str] | None, Field(title="Event Types")] = []
+    event_types: Annotated[list[str] | None, Field(max_length=13, title="Event Types")] = []
     """
     Event types: `document.confirmed`, `document.deleted`, `document.filed`, `document.lane_changed`, `document.moved`, `document.node_completed`, `document.node_deferred`, `document.node_delegated`, `document.node_started`, `document.received`, `document.review_required`, `document.updated`, or `*` for all, also future ones. None: the webhook serves rules only.
     """
@@ -6566,15 +6632,15 @@ class CodeOut(BaseModel):
     """
     What it holds, as it holds it; someone else's text.
     """
-    places: Annotated[list[CodePlaceOut], Field(title="Places")]
+    places: Annotated[list[LocationOut], Field(title="Places")]
     """
-    The pages it stands on, in order.
+    The pages it stands on, in order, a box per copy of the code on the page.
     """
     giro: GiroCodeOut | None
     """
     A GiroCode, read as its credit transfer.
     """
-    identifiers: Annotated[list[IdentifierFoundOut], Field(title="Identifiers")]
+    identifiers: Annotated[list[IdentifierKeyOut], Field(title="Identifiers")]
     fields: Annotated[list[UUID], Field(title="Fields")]
     """
     Amount fields of the document with the GiroCode's amount as their value.
@@ -6868,7 +6934,7 @@ class DocumentNumberOut(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
     value: Annotated[str, Field(title="Value")]
     """
@@ -6939,6 +7005,48 @@ class EditedDocuments(BaseModel):
     """
 
 
+class ExpectedOut(BaseModel):
+    """
+    A series and the document it expects next.
+    """
+
+    contact: NamedOut
+    document_type: NamedOut
+    number: IdentifierKeyOut | None
+    """
+    The contract or customer number the series follows, if its documents show one.
+    """
+    cadence: Annotated[
+        Literal["weekly", "monthly", "bimonthly", "quarterly", "half_yearly", "yearly", "days"],
+        Field(title="Cadence"),
+    ]
+    """
+    A calendar step (`weekly` to `yearly`) or `days` (see `interval_days`).
+    """
+    interval_days: Annotated[int, Field(title="Interval Days")]
+    """
+    The median gap between its documents.
+    """
+    spread_days: Annotated[int, Field(title="Spread Days")]
+    """
+    How far a document may come off its step (± days).
+    """
+    documents: Annotated[int, Field(title="Documents")]
+    """
+    How many documents the series has (one per period).
+    """
+    last: LastDocumentOut
+    next_date: Annotated[date_aliased, Field(title="Next Date")]
+    next_period: Annotated[str | None, Field(title="Next Period")]
+    """
+    The period the next document is for, in ISO notation (`2026-11`), where the series carries one.
+    """
+    state: Annotated[Literal["overdue", "soon", "later", "ended"], Field(title="SeriesState")]
+    """
+    `overdue` (its date and spread are over), `soon` (in the next 30 days), `later`, or `ended` (two dates missed).
+    """
+
+
 class FieldCheckOut(BaseModel):
     """
     A field the model proposed, and its check.
@@ -6990,7 +7098,7 @@ class FieldCheckOut(BaseModel):
     """
     locations: Annotated[list[LocationOut] | None, Field(title="Locations")] = None
     """
-    Where the quote stands in the archive PDF: at most a few places, in page order; empty if it was not found there or the check is older than this.
+    Where the quote stands in the archive PDF, a box per line it covers: at most a few places, in page order; empty if it was not found there or the check is older than this.
     """
     candidates: Annotated[list[CandidateOut] | None, Field(title="Candidates")] = None
     """
@@ -7066,7 +7174,7 @@ class FoundIdentifierOut(BaseModel):
     ]
     """
     The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.idea/fakten.md`, the catalog by role).
+    `.knowledge/architecture/fact-roles.md`).
     """
     value: Annotated[str, Field(title="Value")]
     """
@@ -7543,6 +7651,12 @@ class SearchResultPage(BaseModel):
     """
 
 
+type Members = Annotated[list[SpaceMember], Field(max_length=1000, title="Members")]
+"""
+Who else is a member, with their role. The caller always edits a space they create; an admin may give the members alone (one of them must edit).
+"""
+
+
 class SpaceCreate(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
@@ -7551,7 +7665,7 @@ class SpaceCreate(BaseModel):
         str, Field(examples=["ACME Energy"], max_length=200, min_length=1, title="Name")
     ]
     description: Annotated[Description4 | None, Field(title="Description")] = None
-    members: Annotated[list[SpaceMember] | None, Field(title="Members")] = None
+    members: Annotated[Members | None, Field(title="Members")] = None
     """
     Who else is a member, with their role. The caller always edits a space they create; an admin may give the members alone (one of them must edit).
     """
@@ -7705,7 +7819,7 @@ class FactsOut(BaseModel):
     """
     persons: Annotated[list[FoundPersonOut] | None, Field(title="Persons")] = None
     """
-    The users the document names, the surest first: for the editors of its space and admins; null for readers. What is private about a person (aliases, birth date, identifiers, a contact's number that names them) finds them only for admins and that person: anyone else sees another user only where the text has their display name (that a number is Anna's tax ID is Anna's).
+    The users the document names, the surest first: for the editors of its space and admins; null for readers. What is private about a person (aliases, birth date, identifiers, a contact's number that names them) finds them only for admins and that person: anyone else sees another user only where the text has their display name (that a number is Erika's tax ID is Erika's).
     """
 
 
@@ -8030,7 +8144,8 @@ class RuleChange(BaseModel):
     Higher first; the order of the log and of suggestions. Conflicts are never decided by priority.
     """
     triggers: Annotated[
-        list[Literal["ingest", "change"]] | None, Field(min_length=1, title="Triggers")
+        list[Literal["ingest", "change"]] | None,
+        Field(max_length=2, min_length=1, title="Triggers"),
     ] = None
     """
     `ingest`: when a document arrives; `change`: when a person changes it. A rule with a step that asks a webhook: `ingest` only.
@@ -8088,7 +8203,8 @@ class RuleCreate(BaseModel):
     Higher first; the order of the log and of suggestions. Conflicts are never decided by priority.
     """
     triggers: Annotated[
-        list[Literal["ingest", "change"]] | None, Field(min_length=1, title="Triggers")
+        list[Literal["ingest", "change"]] | None,
+        Field(max_length=2, min_length=1, title="Triggers"),
     ] = None
     """
     `ingest`: when a document arrives; `change`: when a person changes it. A rule with a step that asks a webhook: `ingest` only.

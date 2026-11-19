@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/webhooks/{id}/deliveries",
-  "path": "/webhooks/01a1f2a0-93f4-7615-8160-f8716d349543/deliveries",
+  "path": "/webhooks/01a1f505-499b-7509-bc96-e465917a683b/deliveries",
   "params": {
     "limit": 5
   },
@@ -12,13 +12,13 @@
   "body": {
     "items": [
       {
-        "id": "01a1f2a0-941d-75ca-b8e8-81b42a707435",
-        "webhook_id": "01a1f2a0-93f4-7615-8160-f8716d349543",
-        "event_id": "01a1f2a0-9416-766f-b44b-5b1e36249724",
+        "id": "01a1f505-49c6-7cf3-86f2-230a05a57021",
+        "webhook_id": "01a1f505-499b-7509-bc96-e465917a683b",
+        "event_id": "01a1f505-49bf-76f6-88a2-6d2790e8ea4c",
         "event_type": "webhook.test",
         "document_id": null,
         "attempt": 1,
-        "started_at": "2026-11-19T07:06:12.374104Z",
+        "started_at": "2026-11-19T18:15:26.911776Z",
         "duration_ms": 5,
         "outcome": "gave_up",
         "status_code": null,

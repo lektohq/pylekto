@@ -12,7 +12,7 @@ decided in `.knowledge/decisions/2026-11-18-pylekto-architecture.md`, the order 
 | `src/pylekto/` | The package (typed: `py.typed`): `client.py` (`LektoClient`), `_http.py` (requests, problem details as exceptions, pages), `exceptions.py`, `resources/` (one module per area of the API) |
 | `src/pylekto/webhooks.py` | Receiving webhooks: `verify` (Standard Webhooks), `read_*` for each body, `task`, `answer`, `download` |
 | `src/pylekto/models.py` | The models, generated from `openapi.json` by datamodel-codegen (settings in `pyproject.toml`); never edited by hand |
-| `openapi.json`, `src/pylekto/_lekto.py` | Lekto's OpenAPI description of the release `LEKTO_VERSION`, and that version |
+| `openapi.json`, `src/pylekto/_lekto.py` | Lekto's OpenAPI description of the release `LEKTO_VERSION`, that version and the version of its API (`API_VERSION`, `info.version`) |
 | `tests/` | pytest; `tests/ruff.toml` adjusts the rules for tests; `tests/snapshot/` the recorded answers of a Lekto instance, one JSON file per request |
 | `script/` | `setup` (once: dependencies, Git hooks), `bootstrap` (every start of the devcontainer: dependencies), `update_openapi.py` (the description of another Lekto release), `record_snapshot.py` (the snapshot) |
 | `.devcontainer/`, `Dockerfile.dev` | Devcontainer: Python 3.14, uv, gh, Claude Code; the virtual environment lives in `/home/vscode/.local/dev-venv` |
@@ -31,7 +31,7 @@ uv run yamllint .
 uv run prek run --all-files      # every hook at once, as before each commit
 python3 -m unittest discover -s .github/scripts   # every action is pinned to a commit
 uv run datamodel-codegen         # the models from openapi.json again
-uv run python script/update_openapi.py v0.15.6   # another Lekto release: description, version, models
+uv run python script/update_openapi.py v0.16.0   # another Lekto release: description, version, models
 ```
 
 Run all checks before every commit; `script/setup` installs them as a Git hook (`prek install`).

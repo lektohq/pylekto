@@ -2,8 +2,9 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Lekto DMS API",
-    "description": "Lekto is a headless document management system; this API is the only way in.\n\nErrors are problem details (RFC 9457, `application/problem+json`).\n\nAuthentication: a session cookie from `POST /auth/login` (web UI; changing requests also send\nthe header `X-CSRF-Token`) or a personal API token as `Authorization: Bearer lekto_…`. Every\nendpoint needs one of them (401 without), except health, the sign-in endpoints (`POST\n/auth/login` and, below `/auth/oidc`, information, start and callback) and the answer to a task\n(`/external/tasks/{id}/result`, with the task's own token).\n\nAn API token has a scope:\n\n- `read`: reading only, that is GET and the POSTs marked `x-reads` (a search with its words in\n  the body, a dry run, a preview, a check). Anything else answers 403.\n- `upload`: only the upload marked `x-uploads` (`POST /documents`). Anything else answers 403,\n  reading too.\n- `read_write`: everything except what needs a session.\n\nA session is needed, and a token gets 403, for the own account (profile, password, sessions,\nTOTP, API tokens, provider links) and, for admins, for creating a user with a password or the\nrole admin, resetting a user's sign-in and deleting a user. Documents and spaces the caller may\nnot see are \"not found\" (404), the same as ones that do not exist.\n\nThe same services are available to AI clients over MCP (Streamable HTTP, stateless) at\n`/api/v1/mcp`, with the same API tokens as bearer; it is not part of this OpenAPI document.\nTools are named `<area>_<verb>` (such as `documents_search` or `inbox_confirm`) and come in two\nclasses: `read`, and `write`, which needs a `read_write` token. Some are for admins only.\n`tools/list` names the tools the caller may use.\n",
-    "version": "0.15.5"
+    "description": "Lekto is a headless document management system; this API is the only way in.\n\nErrors are problem details (RFC 9457, `application/problem+json`).\n\nAuthentication: a session cookie from `POST /auth/login` (web UI; changing requests also send\nthe header `X-CSRF-Token`) or a personal API token as `Authorization: Bearer lekto_…`. Every\nendpoint needs one of them (401 without), except health, the sign-in endpoints (`POST\n/auth/login` and, below `/auth/oidc`, information, start and callback) and the answer to a task\n(`/external/tasks/{id}/result`, with the task's own token).\n\nAn API token carries rights: the read and write right of each area (`documents`,\n`master_data`, `rules`, `spaces`, `webhooks`, `lenses`, `push`, `system`), `documents:upload`,\n`documents:count` (the numbers alone), and for an admin's token the admin rights one by one\n(`admin:count_all`, `admin:documents_all`, `admin:mailboxes`, `admin:private_webhooks`,\n`admin:manage`), which count only while the user is an active admin. Each operation names the\nright it needs as `x-right` (`any`: every token; `session`: no token); without it a token gets\n403 (`token_lacks_right`). The presets `read`, `read_write` and `upload` give a token the rights\nit had as a scope (`POST /auth/tokens`).\n\nA session is needed, and a token gets 403, for the own account (profile, password, sessions,\nTOTP, API tokens, provider links) and, for admins, for creating a user with a password or the\nrole admin, resetting a user's sign-in and deleting a user. Documents and spaces the caller may\nnot see are \"not found\" (404), the same as ones that do not exist.\n\nThe same services are available to AI clients over MCP (Streamable HTTP, stateless) at\n`/api/v1/mcp`, with the same API tokens as bearer; it is not part of this OpenAPI document.\nTools are named `<area>_<verb>` (such as `documents_search` or `inbox_confirm`); each needs the\nright of its area, a tool for admins also an admin right. `tools/list` names the tools the\ncaller may use.\n",
+    "version": "0.2",
+    "x-lekto-version": "0.16.0"
   },
   "paths": {
     "/api/v1/auth/login": {
@@ -286,7 +287,7 @@
           "auth"
         ],
         "summary": "Return from the identity provider",
-        "description": "The provider sends the browser here. Signs in (new session cookie; a session the browser had ends) or completes a link, then redirects to the path given at the start. If that fails, the browser goes to the web UI instead: `/ui/login?error=<code>` (while linking: `/ui/settings?error=<code>`) with `denied` (the provider did not sign the user in), `failed` (the flow expired or does not match, or no account is linked to this sign-in), `conflict` (the provider's account is linked to another user) or `provider` (the provider cannot be reached or answered wrongly).",
+        "description": "The provider sends the browser here. Signs in (new session cookie; a session the browser had ends) or completes a link, then redirects to the path given at the start. If that fails, the browser goes to the web UI instead: `/ui/login?error=<code>` (while linking: `/ui/settings?error=<code>`) with `denied` (the provider did not sign the user in), `failed` (the flow expired or does not match, no account is linked to this sign-in, or none can be made of it), `conflict` (the provider's account is linked to another user) or `provider` (the provider cannot be reached or answered wrongly).",
         "operationId": "oidc_callback_api_v1_auth_oidc_callback_get",
         "parameters": [
           {
@@ -458,6 +459,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -517,6 +519,7 @@
             }
           }
         },
+        "x-right": "any",
         "security": [
           {
             "session": []
@@ -595,6 +598,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -742,6 +746,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -755,7 +760,7 @@
           "auth"
         ],
         "summary": "Change the own password",
-        "description": "Ends all sessions and starts a new one for the caller (new cookie and CSRF token). API tokens stay unless `revoke_tokens`. Needs a session; API tokens are refused (403).",
+        "description": "Ends all sessions and starts a new one for the caller (new cookie and CSRF token). The caller's known devices are forgotten; this browser is known again by a new device cookie. API tokens stay unless `revoke_tokens`. Needs a session; API tokens are refused (403).",
         "operationId": "change_password_api_v1_auth_password_post",
         "requestBody": {
           "content": {
@@ -875,6 +880,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -950,6 +956,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -1041,6 +1048,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -1174,6 +1182,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -1316,6 +1325,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -1465,6 +1475,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -1544,6 +1555,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -1555,7 +1567,7 @@
           "auth"
         ],
         "summary": "Create an API token",
-        "description": "`read` allows reading only; `read_write` everything the caller may do, except managing the own sign-in. The token is shown only now. Needs a session; API tokens are refused (403).",
+        "description": "With the rights of a preset (`scope`) or chosen one by one (`rights`); each operation names the right it needs (`x-right`). `read` allows reading only; `read_write` everything the caller may do, except managing the own sign-in; `upload` only uploading. An admin's `read` and `read_write` carry every admin right. 422 without rights, and for admin rights of a user who is no admin. The token is shown only now. Needs a session; API tokens are refused (403).",
         "operationId": "create_token_api_v1_auth_tokens_post",
         "requestBody": {
           "content": {
@@ -1659,6 +1671,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -1672,7 +1685,7 @@
           "auth"
         ],
         "summary": "Revoke an API token",
-        "description": "Needs a session; API tokens are refused (403).",
+        "description": "Also deletes the webhooks created through it. Needs a session; API tokens are refused (403).",
         "operationId": "revoke_token_api_v1_auth_tokens__id__delete",
         "parameters": [
           {
@@ -1771,6 +1784,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -1915,6 +1929,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -2020,6 +2035,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -2083,6 +2099,7 @@
             }
           }
         },
+        "x-right": "spaces:read",
         "security": [
           {
             "session": []
@@ -2217,6 +2234,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -2331,6 +2349,7 @@
             }
           }
         },
+        "x-right": "spaces:read",
         "security": [
           {
             "session": []
@@ -2493,6 +2512,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -2655,6 +2675,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -2774,6 +2795,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -2936,6 +2958,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -3077,6 +3100,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -3189,6 +3213,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -3308,6 +3333,7 @@
             }
           }
         },
+        "x-right": "session",
         "security": [
           {
             "session": []
@@ -3427,6 +3453,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -3551,6 +3578,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -3701,6 +3729,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -3806,6 +3835,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -3968,6 +3998,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -4097,6 +4128,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -4191,6 +4223,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -4355,6 +4388,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -4545,6 +4579,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -4658,6 +4693,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -4763,6 +4799,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -4910,6 +4947,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -5034,6 +5072,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -5184,6 +5223,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -5289,6 +5329,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -5451,6 +5492,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -5580,6 +5622,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -5748,6 +5791,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -5888,6 +5932,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -6038,6 +6083,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -6143,6 +6189,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -6305,6 +6352,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -6434,6 +6482,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -6558,6 +6607,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -6708,6 +6758,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -6813,6 +6864,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -6975,6 +7027,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -7104,6 +7157,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -7171,6 +7225,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 2147483647,
               "minimum": 0,
               "default": 0,
               "title": "Offset"
@@ -7265,6 +7320,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -7332,6 +7388,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 2147483647,
               "minimum": 0,
               "default": 0,
               "title": "Offset"
@@ -7453,6 +7510,7 @@
           }
         },
         "x-reads": true,
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -7531,6 +7589,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -7661,6 +7720,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -7785,6 +7845,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -7867,6 +7928,7 @@
             }
           }
         },
+        "x-right": "master_data:write",
         "security": [
           {
             "session": []
@@ -7988,6 +8050,7 @@
           }
         },
         "x-reads": true,
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -8102,6 +8165,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -8216,6 +8280,7 @@
             }
           }
         },
+        "x-right": "master_data:read",
         "security": [
           {
             "session": []
@@ -8328,6 +8393,7 @@
             }
           }
         },
+        "x-right": "spaces:read",
         "security": [
           {
             "session": []
@@ -8478,6 +8544,7 @@
             }
           }
         },
+        "x-right": "spaces:write",
         "security": [
           {
             "session": []
@@ -8583,6 +8650,7 @@
             }
           }
         },
+        "x-right": "spaces:read",
         "security": [
           {
             "session": []
@@ -8745,6 +8813,7 @@
             }
           }
         },
+        "x-right": "spaces:write",
         "security": [
           {
             "session": []
@@ -8874,6 +8943,7 @@
             }
           }
         },
+        "x-right": "spaces:write",
         "security": [
           {
             "session": []
@@ -9032,6 +9102,7 @@
             }
           }
         },
+        "x-right": "spaces:write",
         "security": [
           {
             "session": []
@@ -9165,6 +9236,7 @@
             }
           }
         },
+        "x-right": "spaces:write",
         "security": [
           {
             "session": []
@@ -9320,6 +9392,7 @@
             }
           }
         },
+        "x-right": "rules:read",
         "security": [
           {
             "session": []
@@ -9454,6 +9527,7 @@
             }
           }
         },
+        "x-right": "rules:write",
         "security": [
           {
             "session": []
@@ -9560,6 +9634,7 @@
             }
           }
         },
+        "x-right": "rules:read",
         "security": [
           {
             "session": []
@@ -9722,6 +9797,7 @@
             }
           }
         },
+        "x-right": "rules:write",
         "security": [
           {
             "session": []
@@ -9884,6 +9960,7 @@
             }
           }
         },
+        "x-right": "rules:write",
         "security": [
           {
             "session": []
@@ -10013,6 +10090,7 @@
             }
           }
         },
+        "x-right": "rules:write",
         "security": [
           {
             "session": []
@@ -10123,6 +10201,7 @@
             }
           }
         },
+        "x-right": "rules:read",
         "security": [
           {
             "session": []
@@ -10158,6 +10237,8 @@
             "required": true,
             "schema": {
               "type": "integer",
+              "maximum": 2147483647,
+              "minimum": 1,
               "title": "Number"
             }
           }
@@ -10238,6 +10319,7 @@
             }
           }
         },
+        "x-right": "rules:read",
         "security": [
           {
             "session": []
@@ -10387,6 +10469,7 @@
           }
         },
         "x-reads": true,
+        "x-right": "rules:read",
         "security": [
           {
             "session": []
@@ -10519,6 +10602,7 @@
             }
           }
         },
+        "x-right": "rules:read",
         "security": [
           {
             "session": []
@@ -10667,6 +10751,7 @@
             }
           }
         },
+        "x-right": "rules:write",
         "security": [
           {
             "session": []
@@ -10773,6 +10858,7 @@
             }
           }
         },
+        "x-right": "rules:read",
         "security": [
           {
             "session": []
@@ -10910,6 +10996,7 @@
           }
         },
         "x-reads": true,
+        "x-right": "rules:read",
         "security": [
           {
             "session": []
@@ -11365,6 +11452,7 @@
           }
         },
         "x-reads": true,
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -11530,6 +11618,7 @@
           }
         },
         "x-reads": true,
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -11617,6 +11706,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -11704,6 +11794,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -11782,6 +11873,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -11877,6 +11969,7 @@
           }
         },
         "x-reads": true,
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -12305,6 +12398,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -12411,6 +12505,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -12759,6 +12854,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -12837,6 +12933,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -12919,6 +13016,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -13022,6 +13120,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -13249,7 +13348,7 @@
             }
           }
         },
-        "x-uploads": true,
+        "x-right": "documents:upload",
         "security": [
           {
             "session": []
@@ -13332,6 +13431,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 2147483647,
               "minimum": 0,
               "description": "Skip so many documents (pages by number); with `cursor`, after it.",
               "default": 0,
@@ -13690,6 +13790,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -13896,6 +13997,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -13912,7 +14014,7 @@
           "documents"
         ],
         "summary": "Show the pages of a file to add to an edit",
-        "description": "Editors of the document's space and admins, before they add a file to an edit of the document's pages (`POST /documents/{id}/edit`): its pages as images, as large as a document's page images (`GET /documents/{id}/pages/{number}`). Nothing is stored. 415 for a file that is no PDF or image; 422 for one whose pages cannot be read.",
+        "description": "Editors of the document's space and admins, before they add a file to an edit of the document's pages (`POST /documents/{id}/edit`): its pages as images, as large as a document's page images (`GET /documents/{id}/pages/{number}`). Nothing is stored. 415 for a file that is no PDF or image; 422 for one whose pages cannot be read, or of more than 200 pages.",
         "operationId": "preview_pages_api_v1_documents__id__edit_pages_post",
         "parameters": [
           {
@@ -14086,6 +14188,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -14379,6 +14482,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -14749,6 +14853,7 @@
             }
           }
         },
+        "x-right": "documents:count",
         "security": [
           {
             "session": []
@@ -15119,6 +15224,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -15225,6 +15331,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -15407,6 +15514,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -15520,6 +15628,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -15697,6 +15806,7 @@
           }
         },
         "x-reads": true,
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -15854,6 +15964,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -15961,6 +16072,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -15996,6 +16108,7 @@
             "required": true,
             "schema": {
               "type": "integer",
+              "maximum": 2147483647,
               "minimum": 1,
               "title": "Number"
             }
@@ -16078,6 +16191,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -16185,6 +16299,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -16292,6 +16407,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -16409,6 +16525,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -16563,6 +16680,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -16685,6 +16803,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -16819,6 +16938,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -16945,6 +17065,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -17083,6 +17204,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -17221,6 +17343,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -17343,6 +17466,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -17483,6 +17607,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -17647,6 +17772,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -17753,6 +17879,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -17875,6 +18002,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -18039,6 +18167,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -18154,6 +18283,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -18267,6 +18397,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -18389,6 +18520,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -18561,6 +18693,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -18718,6 +18851,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -18826,6 +18960,7 @@
             }
           }
         },
+        "x-right": "documents:count",
         "security": [
           {
             "session": []
@@ -18934,6 +19069,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -18996,6 +19132,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -19020,7 +19157,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ReparseOut"
+                  "$ref": "#/components/schemas/QueuedOut"
                 }
               }
             }
@@ -19074,6 +19211,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -19152,6 +19290,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -19230,6 +19369,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -19308,6 +19448,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -19450,6 +19591,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -19553,6 +19695,7 @@
             }
           }
         },
+        "x-right": "webhooks:read",
         "security": [
           {
             "session": []
@@ -19567,7 +19710,7 @@
           "webhooks"
         ],
         "summary": "Create a webhook",
-        "description": "Lekto sends a request to the URL for each event of the chosen types on documents within the reach of the webhook's owner: every document in the spaces they edit, the green ones in the spaces they read (an admin's webhooks too; the rights of an admin do not widen them). A signed webhook's answer holds the secret, shown only once. A user has at most as many webhooks as `LEKTO_WEBHOOKS_PER_USER` allows (409).",
+        "description": "Lekto sends a request to the URL for each event of the chosen types on documents within the reach of the webhook's owner: every document in the spaces they edit, the green ones in the spaces they read (an admin's webhooks too; the rights of an admin do not widen them). A signed webhook's answer holds the secret, shown only once. A user has at most as many webhooks as `LEKTO_WEBHOOKS_PER_USER` allows (409). Created through an API token, it goes with the token: revoking the token deletes it. An address that is not public needs, through a token, `admin:private_webhooks`.",
         "operationId": "create_webhook_api_v1_webhooks_post",
         "requestBody": {
           "required": true,
@@ -19687,6 +19830,7 @@
             }
           }
         },
+        "x-right": "webhooks:write",
         "security": [
           {
             "session": []
@@ -19793,6 +19937,7 @@
             }
           }
         },
+        "x-right": "webhooks:read",
         "security": [
           {
             "session": []
@@ -19955,6 +20100,7 @@
             }
           }
         },
+        "x-right": "webhooks:write",
         "security": [
           {
             "session": []
@@ -20068,6 +20214,7 @@
             }
           }
         },
+        "x-right": "webhooks:write",
         "security": [
           {
             "session": []
@@ -20190,6 +20337,7 @@
             }
           }
         },
+        "x-right": "webhooks:write",
         "security": [
           {
             "session": []
@@ -20310,6 +20458,7 @@
             }
           }
         },
+        "x-right": "webhooks:write",
         "security": [
           {
             "session": []
@@ -20383,6 +20532,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 2147483647,
               "minimum": 0,
               "default": 0,
               "title": "Offset"
@@ -20477,6 +20627,7 @@
             }
           }
         },
+        "x-right": "webhooks:read",
         "security": [
           {
             "session": []
@@ -20600,6 +20751,7 @@
             }
           }
         },
+        "x-right": "webhooks:read",
         "security": [
           {
             "session": []
@@ -20738,6 +20890,7 @@
             }
           }
         },
+        "x-right": "webhooks:write",
         "security": [
           {
             "session": []
@@ -21088,6 +21241,7 @@
             }
           }
         },
+        "x-right": "lenses:read",
         "security": [
           {
             "session": []
@@ -21222,6 +21376,7 @@
             }
           }
         },
+        "x-right": "lenses:write",
         "security": [
           {
             "session": []
@@ -21362,6 +21517,7 @@
             }
           }
         },
+        "x-right": "lenses:write",
         "security": [
           {
             "session": []
@@ -21468,6 +21624,7 @@
             }
           }
         },
+        "x-right": "lenses:read",
         "security": [
           {
             "session": []
@@ -21630,6 +21787,7 @@
             }
           }
         },
+        "x-right": "lenses:write",
         "security": [
           {
             "session": []
@@ -21743,6 +21901,7 @@
             }
           }
         },
+        "x-right": "lenses:write",
         "security": [
           {
             "session": []
@@ -21805,6 +21964,7 @@
             }
           }
         },
+        "x-right": "push:read",
         "security": [
           {
             "session": []
@@ -21871,6 +22031,7 @@
             }
           }
         },
+        "x-right": "push:read",
         "security": [
           {
             "session": []
@@ -22005,6 +22166,7 @@
             }
           }
         },
+        "x-right": "push:write",
         "security": [
           {
             "session": []
@@ -22120,6 +22282,7 @@
             }
           }
         },
+        "x-right": "push:write",
         "security": [
           {
             "session": []
@@ -22258,6 +22421,7 @@
             }
           }
         },
+        "x-right": "push:write",
         "security": [
           {
             "session": []
@@ -22320,6 +22484,7 @@
             }
           }
         },
+        "x-right": "push:read",
         "security": [
           {
             "session": []
@@ -22454,6 +22619,7 @@
             }
           }
         },
+        "x-right": "push:write",
         "security": [
           {
             "session": []
@@ -22536,6 +22702,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -22670,6 +22837,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -22806,6 +22974,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -22926,6 +23095,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -23001,6 +23171,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 2147483647,
               "minimum": 0,
               "default": 0,
               "title": "Offset"
@@ -23111,6 +23282,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -23252,6 +23424,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -23374,6 +23547,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -23536,6 +23710,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -23649,6 +23824,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -23731,6 +23907,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -23865,6 +24042,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -24006,6 +24184,7 @@
           }
         },
         "x-reads": true,
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -24128,6 +24307,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -24290,6 +24470,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -24403,6 +24584,7 @@
             }
           }
         },
+        "x-right": "system:write",
         "security": [
           {
             "session": []
@@ -24509,6 +24691,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -24615,6 +24798,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -24777,6 +24961,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -24925,6 +25110,7 @@
             }
           }
         },
+        "x-right": "documents:write",
         "security": [
           {
             "session": []
@@ -25053,6 +25239,7 @@
             }
           }
         },
+        "x-right": "documents:read",
         "security": [
           {
             "session": []
@@ -25115,6 +25302,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -25178,6 +25366,7 @@
             "required": false,
             "schema": {
               "type": "integer",
+              "maximum": 2147483647,
               "minimum": 0,
               "default": 0,
               "title": "Offset"
@@ -25256,6 +25445,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -25318,6 +25508,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -25456,6 +25647,86 @@
             }
           }
         },
+        "x-right": "system:write",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/v1/version": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "The version and whether a newer one is out",
+        "description": "The running versions of Lekto and of this API, and what the last look at Lekto's releases found (the worker asks GitHub every hour unless `LEKTO_UPDATE_CHECK` is off).",
+        "operationId": "version_api_v1_version_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VersionOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Unauthorized",
+                  "status": 401,
+                  "detail": "authentication is required"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Forbidden",
+                  "status": 403,
+                  "detail": "only editors and admins control the processing of this document"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                },
+                "example": {
+                  "type": "about:blank",
+                  "title": "Internal Server Error",
+                  "status": 500,
+                  "detail": "an unexpected error occurred"
+                }
+              }
+            }
+          }
+        },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -25582,6 +25853,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -25708,6 +25980,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -25786,6 +26059,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -25907,6 +26181,7 @@
             }
           }
         },
+        "x-right": "system:read",
         "security": [
           {
             "session": []
@@ -26645,16 +26920,6 @@
         ],
         "title": "AnyGroup[MailConditionBody]"
       },
-      "ApplicationStatus": {
-        "type": "string",
-        "enum": [
-          "queued",
-          "running",
-          "done",
-          "failed"
-        ],
-        "title": "ApplicationStatus"
-      },
       "ApplyOutcomeOut": {
         "properties": {
           "space_id": {
@@ -26909,6 +27174,7 @@
         "properties": {
           "version": {
             "type": "integer",
+            "maximum": 2147483647.0,
             "minimum": 1.0,
             "title": "Version",
             "description": "The rule version to apply (from the preview)."
@@ -26929,6 +27195,7 @@
               "format": "uuid"
             },
             "type": "array",
+            "maxItems": 100000,
             "title": "Accept Conflicts",
             "description": "Selected documents where the rule's value replaces a different one."
           }
@@ -27408,7 +27675,7 @@
             "$ref": "#/components/schemas/BulkKind"
           },
           "status": {
-            "$ref": "#/components/schemas/BulkStatus"
+            "$ref": "#/components/schemas/ProgressStatus"
           },
           "total": {
             "type": "integer",
@@ -27543,21 +27810,12 @@
           }
         ]
       },
-      "BulkStatus": {
-        "type": "string",
-        "enum": [
-          "queued",
-          "running",
-          "done",
-          "failed"
-        ],
-        "title": "BulkStatus"
-      },
       "Cadence": {
         "type": "string",
         "enum": [
           "weekly",
           "monthly",
+          "bimonthly",
           "quarterly",
           "half_yearly",
           "yearly",
@@ -27933,11 +28191,11 @@
           },
           "places": {
             "items": {
-              "$ref": "#/components/schemas/CodePlaceOut"
+              "$ref": "#/components/schemas/LocationOut"
             },
             "type": "array",
             "title": "Places",
-            "description": "The pages it stands on, in order."
+            "description": "The pages it stands on, in order, a box per copy of the code on the page."
           },
           "giro": {
             "anyOf": [
@@ -27952,7 +28210,7 @@
           },
           "identifiers": {
             "items": {
-              "$ref": "#/components/schemas/IdentifierFoundOut"
+              "$ref": "#/components/schemas/IdentifierKeyOut"
             },
             "type": "array",
             "title": "Identifiers"
@@ -27978,30 +28236,6 @@
         ],
         "title": "CodeOut",
         "description": "A code once for its format and text, however often the pages show it."
-      },
-      "CodePlaceOut": {
-        "properties": {
-          "page": {
-            "type": "integer",
-            "title": "Page",
-            "description": "From 1."
-          },
-          "boxes": {
-            "items": {
-              "$ref": "#/components/schemas/BoxOut"
-            },
-            "type": "array",
-            "title": "Boxes",
-            "description": "One per copy of the code on the page."
-          }
-        },
-        "type": "object",
-        "required": [
-          "page",
-          "boxes"
-        ],
-        "title": "CodePlaceOut",
-        "description": "Where a code stands on a page of the archive."
       },
       "ConditionField": {
         "type": "string",
@@ -28063,7 +28297,8 @@
                 "items": {
                   "type": "string"
                 },
-                "type": "array"
+                "type": "array",
+                "maxItems": 100
               },
               {
                 "items": {
@@ -28082,7 +28317,8 @@
                     }
                   ]
                 },
-                "type": "array"
+                "type": "array",
+                "maxItems": 100
               },
               {
                 "type": "null"
@@ -28493,7 +28729,7 @@
           },
           "value": {
             "type": "string",
-            "maxLength": 100,
+            "maxLength": 200,
             "minLength": 1,
             "title": "Value"
           },
@@ -28519,7 +28755,7 @@
           "value"
         ],
         "title": "ContactNumberIn",
-        "description": "A customer or personnel number of the user at a contact, written as in documents.",
+        "description": "A customer, contract or personnel number of the user at a contact, written as in\ndocuments.",
         "examples": [
           {
             "contact_id": "6f1c2a4e-0000-4000-8000-000000000001",
@@ -28810,25 +29046,6 @@
         "title": "Decider",
         "description": "Who would decide a mail now."
       },
-      "DeliveryDocumentOut": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Id"
-          },
-          "title": {
-            "type": "string",
-            "title": "Title"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "title"
-        ],
-        "title": "DeliveryDocumentOut"
-      },
       "DeliveryOut": {
         "properties": {
           "id": {
@@ -28931,7 +29148,7 @@
           "document": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/DeliveryDocumentOut"
+                "$ref": "#/components/schemas/DocumentRefOut"
               },
               {
                 "type": "null"
@@ -30075,7 +30292,7 @@
                   "format": "uuid"
                 },
                 "type": "array",
-                "maxItems": 500
+                "maxItems": 50
               },
               {
                 "type": "null"
@@ -30601,7 +30818,7 @@
             "title": "Media Type"
           },
           "kind": {
-            "$ref": "#/components/schemas/VersionKindOut",
+            "$ref": "#/components/schemas/VersionKind",
             "description": "`received`: how the document came in; `replaced`: a person put another file in its place; `edited`: a person edited its pages; `split`: the first version, pages split off another document (by a person, or at a separator sheet); `separated`: the first part of the stack the document came in as, split at its separator sheets; `merged`: a person merged other documents into it. A version that came from another document in a merge keeps its kind."
           },
           "created_at": {
@@ -30630,7 +30847,7 @@
           "origin": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/VersionOriginOut"
+                "$ref": "#/components/schemas/DocumentRefOut"
               },
               {
                 "type": "null"
@@ -30948,7 +31165,7 @@
           "number": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/SeriesNumberOut"
+                "$ref": "#/components/schemas/IdentifierKeyOut"
               },
               {
                 "type": "null"
@@ -31127,6 +31344,7 @@
             "default": false
           }
         },
+        "additionalProperties": false,
         "type": "object",
         "required": [
           "action",
@@ -31147,7 +31365,7 @@
             "at_contact": true,
             "kind": "customer_number",
             "new_value": "2004 7719",
-            "value": "20047718"
+            "value": "12345678"
           },
           {
             "action": "add",
@@ -31370,7 +31588,7 @@
               }
             ],
             "title": "Persons",
-            "description": "The users the document names, the surest first: for the editors of its space and admins; null for readers. What is private about a person (aliases, birth date, identifiers, a contact's number that names them) finds them only for admins and that person: anyone else sees another user only where the text has their display name (that a number is Anna's tax ID is Anna's)."
+            "description": "The users the document names, the surest first: for the editors of its space and admins; null for readers. What is private about a person (aliases, birth date, identifiers, a contact's number that names them) finds them only for admins and that person: anyone else sees another user only where the text has their display name (that a number is Erika's tax ID is Erika's)."
           }
         },
         "type": "object",
@@ -31415,7 +31633,7 @@
                     "start": 412
                   }
                 ],
-                "value": "20047718"
+                "value": "12345678"
               }
             ],
             "named": []
@@ -31586,7 +31804,7 @@
             },
             "type": "array",
             "title": "Locations",
-            "description": "Where the quote stands in the archive PDF: at most a few places, in page order; empty if it was not found there or the check is older than this."
+            "description": "Where the quote stands in the archive PDF, a box per line it covers: at most a few places, in page order; empty if it was not found there or the check is older than this."
           },
           "candidates": {
             "items": {
@@ -31663,7 +31881,8 @@
                   "type": "string",
                   "format": "uuid"
                 },
-                "type": "array"
+                "type": "array",
+                "maxItems": 1000
               },
               {
                 "type": "null"
@@ -31695,6 +31914,7 @@
               "format": "uuid"
             },
             "type": "array",
+            "maxItems": 1000,
             "title": "Required Document Type Ids",
             "description": "A typed field: the document types (of its own) it is required for; for the others it is optional. Extraction must find a required field; an optional one may stay empty, but a value it gives must be shown by the text."
           },
@@ -31798,6 +32018,7 @@
               "format": "uuid"
             },
             "type": "array",
+            "maxItems": 1000,
             "title": "Required Document Type Ids",
             "description": "A typed field: the document types (of its own) it is required for; for the others it is optional. Extraction must find a required field; an optional one may stay empty, but a value it gives must be shown by the text."
           },
@@ -31916,7 +32137,8 @@
                   "type": "string",
                   "format": "uuid"
                 },
-                "type": "array"
+                "type": "array",
+                "maxItems": 1000
               },
               {
                 "type": "null"
@@ -31945,6 +32167,7 @@
                   "format": "uuid"
                 },
                 "type": "array",
+                "maxItems": 1000,
                 "description": "A typed field: the document types (of its own) it is required for; for the others it is optional. Extraction must find a required field; an optional one may stay empty, but a value it gives must be shown by the text."
               },
               {
@@ -32899,23 +33122,6 @@
         ],
         "title": "HoldersOut"
       },
-      "IdentifierFoundOut": {
-        "properties": {
-          "kind": {
-            "$ref": "#/components/schemas/IdentifierKind"
-          },
-          "value": {
-            "type": "string",
-            "title": "Value"
-          }
-        },
-        "type": "object",
-        "required": [
-          "kind",
-          "value"
-        ],
-        "title": "IdentifierFoundOut"
-      },
       "IdentifierIn": {
         "properties": {
           "kind": {
@@ -32923,7 +33129,7 @@
           },
           "value": {
             "type": "string",
-            "maxLength": 100,
+            "maxLength": 200,
             "minLength": 1,
             "title": "Value",
             "examples": [
@@ -32954,7 +33160,7 @@
               }
             ],
             "title": "User Id",
-            "description": "The user a customer or personnel number belongs to (Anna's contract): found in a document, it is hard evidence for whose it is. Not for other kinds, not for a rejected one."
+            "description": "The user a customer, contract or personnel number belongs to (Erika's contract): found in a document, it is hard evidence for whose it is. Not for other kinds, not for a rejected one."
           }
         },
         "additionalProperties": false,
@@ -32968,9 +33174,28 @@
         "examples": [
           {
             "kind": "customer_number",
-            "value": "2004-7718"
+            "value": "1234-5678"
           }
         ]
+      },
+      "IdentifierKeyOut": {
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/IdentifierKind"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "Normalised, as Lekto compares it."
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "value"
+        ],
+        "title": "IdentifierKeyOut",
+        "description": "An identifier by its kind and its value (RA-12)."
       },
       "IdentifierKind": {
         "type": "string",
@@ -33003,7 +33228,7 @@
           "child_benefit_number"
         ],
         "title": "IdentifierKind",
-        "description": "The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;\n`.idea/fakten.md`, the catalog by role)."
+        "description": "The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;\n`.knowledge/architecture/fact-roles.md`)."
       },
       "IdentifierOut": {
         "properties": {
@@ -33045,7 +33270,7 @@
               }
             ],
             "title": "User Id",
-            "description": "The user a customer or personnel number belongs to: entered by hand, or found by training when all its documents are surely theirs alone."
+            "description": "The user a customer, contract or personnel number belongs to: entered by hand, or found by training when all its documents are surely theirs alone."
           }
         },
         "type": "object",
@@ -33356,25 +33581,6 @@
         ],
         "title": "IndexStatsOut"
       },
-      "JobDocumentOut": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Id"
-          },
-          "title": {
-            "type": "string",
-            "title": "Title"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "title"
-        ],
-        "title": "JobDocumentOut"
-      },
       "JobDurationsOut": {
         "properties": {
           "kinds": {
@@ -33457,7 +33663,7 @@
           "document": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/JobDocumentOut"
+                "$ref": "#/components/schemas/DocumentRefOut"
               },
               {
                 "type": "null"
@@ -33986,7 +34192,7 @@
               "format": "uuid"
             },
             "type": "array",
-            "maxItems": 200,
+            "maxItems": 50,
             "title": "Contact Ids"
           },
           "document_type_ids": {
@@ -33995,7 +34201,7 @@
               "format": "uuid"
             },
             "type": "array",
-            "maxItems": 200,
+            "maxItems": 50,
             "title": "Document Type Ids"
           },
           "contact_group_ids": {
@@ -34004,7 +34210,7 @@
               "format": "uuid"
             },
             "type": "array",
-            "maxItems": 200,
+            "maxItems": 50,
             "title": "Contact Group Ids"
           },
           "document_type_group_ids": {
@@ -34013,7 +34219,7 @@
               "format": "uuid"
             },
             "type": "array",
-            "maxItems": 200,
+            "maxItems": 50,
             "title": "Document Type Group Ids"
           },
           "topic_ids": {
@@ -34022,7 +34228,7 @@
               "format": "uuid"
             },
             "type": "array",
-            "maxItems": 200,
+            "maxItems": 50,
             "title": "Topic Ids"
           },
           "tag_ids": {
@@ -34031,7 +34237,7 @@
               "format": "uuid"
             },
             "type": "array",
-            "maxItems": 200,
+            "maxItems": 50,
             "title": "Tag Ids"
           },
           "space_ids": {
@@ -34040,7 +34246,7 @@
               "format": "uuid"
             },
             "type": "array",
-            "maxItems": 200,
+            "maxItems": 50,
             "title": "Space Ids"
           },
           "field_id": {
@@ -34243,6 +34449,7 @@
               "format": "uuid"
             },
             "type": "array",
+            "maxItems": 1000,
             "title": "Ids",
             "description": "Each of the caller's lenses once, in the new order."
           }
@@ -34995,7 +35202,7 @@
             },
             "type": "array",
             "title": "Boxes",
-            "description": "One per line the quote covers."
+            "description": "What it covers on the page."
           }
         },
         "type": "object",
@@ -35004,7 +35211,7 @@
           "boxes"
         ],
         "title": "LocationOut",
-        "description": "Where a quote stands in the archive PDF."
+        "description": "Where something stands on a page of the archive PDF: a quote, a code, a fact (RA-12)."
       },
       "LogEntry": {
         "properties": {
@@ -37146,7 +37353,15 @@
                 "type": "null"
               }
             ],
-            "description": "With an API token: its scope."
+            "description": "With an API token: the preset its rights match; null for rights chosen one by one."
+          },
+          "rights": {
+            "items": {
+              "$ref": "#/components/schemas/TokenRight"
+            },
+            "type": "array",
+            "title": "Rights",
+            "description": "What the caller may: with an API token its rights (an admin right only while the user is an active admin), with a session every right of the user."
           },
           "has_password": {
             "type": "boolean",
@@ -37168,6 +37383,17 @@
             "title": "Lekto Version",
             "description": "The version of Lekto that answers (its release)."
           },
+          "api_version": {
+            "type": "string",
+            "title": "Api Version",
+            "description": "The version of this API, `MAJOR.MINOR` (as `info.version` of the OpenAPI document). During the beta `0.MINOR`, raised with every change; from the first release without beta MAJOR rises with a change that breaks a client, MINOR with one that adds."
+          },
+          "instance_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Instance Id",
+            "description": "The id of this instance: random, made once, kept in the database (a restore keeps it). Tells instances apart, e.g. for Home Assistant."
+          },
           "shortcut_url": {
             "anyOf": [
               {
@@ -37188,19 +37414,28 @@
           "csrf_token",
           "session_expires_at",
           "token_scope",
+          "rights",
           "has_password",
           "totp_enabled",
           "linked_accounts",
           "lekto_version",
+          "api_version",
+          "instance_id",
           "shortcut_url"
         ],
         "title": "Me",
         "examples": [
           {
+            "api_version": "0.2",
             "authenticated_with": "token",
             "has_password": true,
+            "instance_id": "6f1c2a9e-3b4d-4e8f-9a1b-2c3d4e5f6a7b",
             "lekto_version": "0.8.0",
             "linked_accounts": [],
+            "rights": [
+              "documents:count",
+              "documents:read"
+            ],
             "shortcut_url": "https://www.icloud.com/shortcuts/8d752558e38f4f64bf9c61faa4694a75",
             "token_scope": "read",
             "totp_enabled": false,
@@ -37555,6 +37790,7 @@
             ]
           }
         },
+        "additionalProperties": false,
         "type": "object",
         "required": [
           "amount",
@@ -37706,7 +37942,8 @@
           "id",
           "name"
         ],
-        "title": "NamedOut"
+        "title": "NamedOut",
+        "description": "Something by its id and its name (RA-12)."
       },
       "Node": {
         "type": "string",
@@ -37959,25 +38196,6 @@
         ],
         "title": "OpenAction"
       },
-      "OpenContactOut": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Id"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "name"
-        ],
-        "title": "OpenContactOut"
-      },
       "OpenCountsOut": {
         "properties": {
           "learned": {
@@ -38003,6 +38221,7 @@
           },
           "value": {
             "type": "string",
+            "maxLength": 200,
             "title": "Value",
             "description": "Normalised, as the list gives it."
           },
@@ -38024,6 +38243,7 @@
             "description": "Where; without one, the learned one's contact or the one contact its documents name (to confirm one whose documents name several, give it)."
           }
         },
+        "additionalProperties": false,
         "type": "object",
         "required": [
           "kind",
@@ -38044,6 +38264,7 @@
             "title": "Decisions"
           }
         },
+        "additionalProperties": false,
         "type": "object",
         "required": [
           "decisions"
@@ -38055,7 +38276,7 @@
               {
                 "action": "confirm",
                 "kind": "customer_number",
-                "value": "20047718"
+                "value": "12345678"
               },
               {
                 "action": "reject",
@@ -38113,7 +38334,7 @@
           },
           "contacts": {
             "items": {
-              "$ref": "#/components/schemas/OpenContactOut"
+              "$ref": "#/components/schemas/NamedOut"
             },
             "type": "array",
             "title": "Contacts"
@@ -38121,13 +38342,13 @@
           "person": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/OpenPersonOut"
+                "$ref": "#/components/schemas/NamedOut"
               },
               {
                 "type": "null"
               }
             ],
-            "description": "A suggestion for this person's profile."
+            "description": "A suggestion for this person's profile: the user, by their display name, else the username."
           },
           "documents": {
             "type": "integer",
@@ -38271,27 +38492,6 @@
         ],
         "title": "OpenPageOut"
       },
-      "OpenPersonOut": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Id",
-            "description": "The user."
-          },
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "description": "Their display name, else the username."
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "name"
-        ],
-        "title": "OpenPersonOut"
-      },
       "OpenSearchIn": {
         "properties": {
           "q": {
@@ -38310,7 +38510,7 @@
         "title": "OpenSearchIn",
         "examples": [
           {
-            "q": "2004 7718"
+            "q": "1234 5678"
           }
         ]
       },
@@ -38586,6 +38786,7 @@
             ]
           }
         },
+        "additionalProperties": false,
         "type": "object",
         "required": [
           "start",
@@ -38601,7 +38802,7 @@
           },
           "value": {
             "type": "string",
-            "maxLength": 100,
+            "maxLength": 200,
             "minLength": 1,
             "title": "Value"
           }
@@ -38620,24 +38821,6 @@
             "value": "..."
           }
         ]
-      },
-      "PersonIdentifierOut": {
-        "properties": {
-          "kind": {
-            "$ref": "#/components/schemas/IdentifierKind"
-          },
-          "value": {
-            "type": "string",
-            "title": "Value",
-            "description": "Normalised."
-          }
-        },
-        "type": "object",
-        "required": [
-          "kind",
-          "value"
-        ],
-        "title": "PersonIdentifierOut"
       },
       "PipelineOut": {
         "properties": {
@@ -38885,7 +39068,7 @@
           },
           "identifiers": {
             "items": {
-              "$ref": "#/components/schemas/PersonIdentifierOut"
+              "$ref": "#/components/schemas/IdentifierKeyOut"
             },
             "type": "array",
             "title": "Identifiers"
@@ -38952,7 +39135,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "maxLength": 254
+                "maxLength": 200
               },
               {
                 "type": "null"
@@ -38995,12 +39178,22 @@
         "examples": [
           {
             "aliases": [
-              "Anna Sample"
+              "E. Mustermann"
             ],
             "birth_date": "1980-06-15",
-            "display_name": "Anna Example"
+            "display_name": "Erika Mustermann"
           }
         ]
+      },
+      "ProgressStatus": {
+        "type": "string",
+        "enum": [
+          "queued",
+          "running",
+          "done",
+          "failed"
+        ],
+        "title": "ProgressStatus"
       },
       "ProposeContext": {
         "properties": {
@@ -39199,6 +39392,7 @@
             "description": "The browser's auth secret (base64url)."
           }
         },
+        "additionalProperties": false,
         "type": "object",
         "required": [
           "p256dh",
@@ -39228,6 +39422,7 @@
               ]
             },
             "type": "array",
+            "maxItems": 4,
             "title": "Kinds",
             "description": "What the caller is told about: `waiting` (documents wait in their inbox), `webhook_disabled` (one of their webhooks was switched off), and for admins `mailbox_failed` (a mailbox fails to fetch) and `job_failed` (a job was given up)."
           },
@@ -39370,6 +39565,7 @@
           "only_identifier",
           "contact_is_recipient",
           "contact_identifiers_several",
+          "contact_identifier_of_other",
           "contact_new_proposed",
           "contact_none",
           "contact_none_no_model",
@@ -39471,9 +39667,13 @@
           "pdf_encrypted",
           "pdf_unreadable",
           "pdf_unreadable_detail",
+          "pdf_too_complex",
           "image_unreadable",
           "image_unreadable_detail",
+          "image_too_large",
           "document_no_pages",
+          "document_too_many_pages",
+          "preview_too_many_pages",
           "ocr_failed",
           "text_unreadable",
           "signature_dropped",
@@ -39541,6 +39741,7 @@
           "tag_used_by_rules",
           "field_used_by_patterns",
           "field_used_by_rules",
+          "field_used_by_webhooks",
           "field_key_taken",
           "identifier_of_person",
           "identifier_of_contact",
@@ -39600,6 +39801,10 @@
           "code_invalid",
           "read_only_token",
           "upload_only_token",
+          "upload_only_token_fields",
+          "token_lacks_right",
+          "token_rights_empty",
+          "token_admin_rights",
           "push_off",
           "push_endpoint_refused",
           "push_keys_invalid",
@@ -39763,6 +39968,8 @@
           "mail_folder_missing",
           "mail_server_error",
           "mail_password_unreadable",
+          "mail_fetch_failed",
+          "mail_password_again",
           "mailbox_paused",
           "mail_too_large",
           "mail_step_failed",
@@ -39777,6 +39984,7 @@
           "delivery_owner_no_admin",
           "delivery_webhook_deleted",
           "delivery_secret_unusable",
+          "webhook_headers_again",
           "mail_rule_unreadable"
         ],
         "title": "ReasonCode"
@@ -40146,6 +40354,34 @@
         "title": "RelativePeriod",
         "description": "A period that moves with the day the lens is opened (the quick picks of the filters)."
       },
+      "ReleaseOut": {
+        "properties": {
+          "version": {
+            "type": "string",
+            "title": "Version",
+            "examples": [
+              "0.16.0"
+            ]
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Published At"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "The release's page on GitHub, with its notes."
+          }
+        },
+        "type": "object",
+        "required": [
+          "version",
+          "published_at",
+          "url"
+        ],
+        "title": "ReleaseOut"
+      },
       "RemoveTagsAction": {
         "properties": {
           "type": {
@@ -40184,20 +40420,6 @@
           "removed"
         ],
         "title": "Removed"
-      },
-      "ReparseOut": {
-        "properties": {
-          "queued": {
-            "type": "integer",
-            "title": "Queued",
-            "description": "Documents whose text is read again (not those queued already)."
-          }
-        },
-        "type": "object",
-        "required": [
-          "queued"
-        ],
-        "title": "ReparseOut"
       },
       "ReprocessNode": {
         "type": "string",
@@ -40306,7 +40528,7 @@
             "title": "Version"
           },
           "status": {
-            "$ref": "#/components/schemas/ApplicationStatus"
+            "$ref": "#/components/schemas/ProgressStatus"
           },
           "total": {
             "type": "integer",
@@ -40469,6 +40691,7 @@
               "$ref": "#/components/schemas/Trigger"
             },
             "type": "array",
+            "maxItems": 2,
             "minItems": 1,
             "title": "Triggers",
             "description": "`ingest`: when a document arrives; `change`: when a person changes it. A rule with a step that asks a webhook: `ingest` only."
@@ -40653,6 +40876,7 @@
               "$ref": "#/components/schemas/Trigger"
             },
             "type": "array",
+            "maxItems": 2,
             "minItems": 1,
             "title": "Triggers",
             "description": "`ingest`: when a document arrives; `change`: when a person changes it. A rule with a step that asks a webhook: `ingest` only."
@@ -41844,24 +42068,6 @@
         "title": "SentTask",
         "description": "A task: answer it at `callback` with `token` as `Authorization: Bearer` by `deadline`\n(`POST /api/v1/external/tasks/{id}/result`)."
       },
-      "SeriesNumberOut": {
-        "properties": {
-          "kind": {
-            "$ref": "#/components/schemas/IdentifierKind"
-          },
-          "value": {
-            "type": "string",
-            "title": "Value",
-            "description": "Normalised, as Lekto compares it."
-          }
-        },
-        "type": "object",
-        "required": [
-          "kind",
-          "value"
-        ],
-        "title": "SeriesNumberOut"
-      },
       "SeriesState": {
         "type": "string",
         "enum": [
@@ -42240,7 +42446,8 @@
                 "items": {
                   "$ref": "#/components/schemas/SpaceMember"
                 },
-                "type": "array"
+                "type": "array",
+                "maxItems": 1000
               },
               {
                 "type": "null"
@@ -43467,7 +43674,31 @@
             ]
           },
           "scope": {
-            "$ref": "#/components/schemas/TokenScope"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TokenScope"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "A preset of rights: `read`, `read_write` (for an admin with every admin right) or `upload`. Either this or `rights`."
+          },
+          "rights": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TokenRight"
+                },
+                "type": "array",
+                "maxItems": 23
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rights",
+            "description": "The rights one by one; admin rights only for an admin. Either this or `scope`."
           },
           "expires_at": {
             "anyOf": [
@@ -43485,8 +43716,7 @@
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "name",
-          "scope"
+          "name"
         ],
         "title": "TokenCreate",
         "examples": [
@@ -43494,6 +43724,13 @@
             "expires_at": "2027-01-01T00:00:00Z",
             "name": "scanner",
             "scope": "read_write"
+          },
+          {
+            "name": "Home Assistant",
+            "rights": [
+              "documents:read",
+              "admin:count_all"
+            ]
           }
         ]
       },
@@ -43509,7 +43746,22 @@
             "title": "Name"
           },
           "scope": {
-            "$ref": "#/components/schemas/TokenScope"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TokenScope"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The preset the rights match; null for rights chosen one by one."
+          },
+          "rights": {
+            "items": {
+              "$ref": "#/components/schemas/TokenRight"
+            },
+            "type": "array",
+            "title": "Rights"
           },
           "created_at": {
             "type": "string",
@@ -43554,6 +43806,7 @@
           "id",
           "name",
           "scope",
+          "rights",
           "created_at",
           "expires_at",
           "last_used_at",
@@ -43566,7 +43819,10 @@
             "expires_at": "2027-01-01T00:00:00Z",
             "id": "01999d5e-6666-7c1e-b6a3-2f4d5e6f7a8b",
             "name": "scanner",
-            "scope": "read_write",
+            "rights": [
+              "documents:upload"
+            ],
+            "scope": "upload",
             "token": "lekto_<token shown once>"
           }
         ]
@@ -43583,7 +43839,22 @@
             "title": "Name"
           },
           "scope": {
-            "$ref": "#/components/schemas/TokenScope"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TokenScope"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The preset the rights match; null for rights chosen one by one."
+          },
+          "rights": {
+            "items": {
+              "$ref": "#/components/schemas/TokenRight"
+            },
+            "type": "array",
+            "title": "Rights"
           },
           "created_at": {
             "type": "string",
@@ -43620,6 +43891,7 @@
           "id",
           "name",
           "scope",
+          "rights",
           "created_at",
           "expires_at",
           "last_used_at"
@@ -43632,9 +43904,41 @@
             "id": "01999d5e-6666-7c1e-b6a3-2f4d5e6f7a8b",
             "last_used_at": "2026-04-02T07:30:00Z",
             "name": "scanner",
-            "scope": "read_write"
+            "rights": [
+              "documents:upload"
+            ],
+            "scope": "upload"
           }
         ]
+      },
+      "TokenRight": {
+        "type": "string",
+        "enum": [
+          "documents:count",
+          "documents:read",
+          "documents:write",
+          "documents:upload",
+          "master_data:read",
+          "master_data:write",
+          "rules:read",
+          "rules:write",
+          "spaces:read",
+          "spaces:write",
+          "webhooks:read",
+          "webhooks:write",
+          "lenses:read",
+          "lenses:write",
+          "push:read",
+          "push:write",
+          "system:read",
+          "system:write",
+          "admin:count_all",
+          "admin:documents_all",
+          "admin:mailboxes",
+          "admin:private_webhooks",
+          "admin:manage"
+        ],
+        "title": "TokenRight"
       },
       "TokenScope": {
         "type": "string",
@@ -43644,7 +43948,7 @@
           "upload"
         ],
         "title": "TokenScope",
-        "description": "What an API token may do: read, read and write, or only upload documents (a shortcut\non a phone that sends shared files; it reads nothing, not even what it uploaded)."
+        "description": "A preset of rights for an API token (`rights`): read, read and write, or only upload\ndocuments (a shortcut on a phone that sends shared files; it reads nothing, not even what it\nuploaded). What a token may is its rights; the scope is how they were chosen, or the preset\nthey match."
       },
       "TotpSetupOut": {
         "properties": {
@@ -43858,6 +44162,7 @@
               "$ref": "#/components/schemas/SpaceSettlementIn"
             },
             "type": "array",
+            "maxItems": 1000,
             "title": "Spaces",
             "description": "Each space once."
           }
@@ -43957,7 +44262,7 @@
         ],
         "title": "VerdictsOut"
       },
-      "VersionKindOut": {
+      "VersionKind": {
         "type": "string",
         "enum": [
           "received",
@@ -43967,27 +44272,79 @@
           "separated",
           "merged"
         ],
-        "title": "VersionKindOut"
+        "title": "VersionKind"
       },
-      "VersionOriginOut": {
+      "VersionOut": {
         "properties": {
-          "id": {
+          "lekto_version": {
             "type": "string",
-            "format": "uuid",
-            "title": "Id"
+            "title": "Lekto Version",
+            "description": "The version of Lekto that answers (its release)."
           },
-          "title": {
+          "api_version": {
             "type": "string",
-            "title": "Title",
-            "description": "Its title now."
+            "title": "Api Version",
+            "description": "The version of this API (`info.version`)."
+          },
+          "update_check": {
+            "type": "boolean",
+            "title": "Update Check",
+            "description": "Whether this instance looks for releases (`LEKTO_UPDATE_CHECK`, and not a development state)."
+          },
+          "checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checked At",
+            "description": "The last look; null before the first."
+          },
+          "latest": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReleaseOut"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The newest release that was news at the last look: newer, and stable if the running version is; null if there was none."
+          },
+          "update_available": {
+            "type": "boolean",
+            "title": "Update Available",
+            "description": "Whether `latest` is newer than the running one."
           }
         },
         "type": "object",
         "required": [
-          "id",
-          "title"
+          "lekto_version",
+          "api_version",
+          "update_check",
+          "checked_at",
+          "latest",
+          "update_available"
         ],
-        "title": "VersionOriginOut"
+        "title": "VersionOut",
+        "examples": [
+          {
+            "api_version": "0.2",
+            "checked_at": "2026-11-19T21:00:00Z",
+            "latest": {
+              "published_at": "2026-11-19T20:12:00Z",
+              "url": "https://github.com/lektohq/lekto/releases/tag/v0.16.0",
+              "version": "0.16.0"
+            },
+            "lekto_version": "0.15.6",
+            "update_available": true,
+            "update_check": true
+          }
+        ]
       },
       "VisibilityOut": {
         "properties": {
@@ -44061,6 +44418,7 @@
               "type": "string"
             },
             "type": "array",
+            "maxItems": 13,
             "title": "Event Types",
             "description": "Event types: `document.confirmed`, `document.deleted`, `document.filed`, `document.lane_changed`, `document.moved`, `document.node_completed`, `document.node_deferred`, `document.node_delegated`, `document.node_started`, `document.received`, `document.review_required`, `document.updated`, or `*` for all, also future ones. None: the webhook serves rules only.",
             "default": []
@@ -44525,7 +44883,8 @@
                 "items": {
                   "type": "string"
                 },
-                "type": "array"
+                "type": "array",
+                "maxItems": 13
               },
               {
                 "type": "null"
@@ -44924,7 +45283,7 @@
               }
             ],
             "default": null,
-            "description": "A request that does not fit (422): what is wrong with each part.",
+            "description": "A request that does not fit (422): what is wrong with each part, the first 50; `detail` then says how many there are.",
             "title": "Errors"
           }
         },
@@ -44946,7 +45305,7 @@
       "token": {
         "type": "http",
         "scheme": "bearer",
-        "description": "Personal API token (`lekto_…`); scope `read` allows reading only: GET, and the POST operations marked `x-reads` (a search with its words in the body, a dry run, a preview, a check); scope `upload` allows only the operation marked `x-uploads` (`POST /documents`)."
+        "description": "Personal API token (`lekto_…`) with its rights: each operation names the right it needs as `x-right` (`session`: no token reaches it; `any`: every token). An admin right also needs an active admin; an admin token without one acts as a user with the same spaces."
       },
       "taskToken": {
         "type": "http",
@@ -44984,6 +45343,9 @@
       "contact": "text"
     },
     "contact_identifiers_several": {},
+    "contact_identifier_of_other": {
+      "other": "text"
+    },
     "contact_new_proposed": {
       "sender": "text"
     },
@@ -45212,11 +45574,24 @@
     "pdf_unreadable_detail": {
       "detail": "text"
     },
+    "pdf_too_complex": {},
     "image_unreadable": {},
     "image_unreadable_detail": {
       "detail": "text"
     },
+    "image_too_large": {
+      "pixels": "number",
+      "max": "number"
+    },
     "document_no_pages": {},
+    "document_too_many_pages": {
+      "pages": "number",
+      "max": "number"
+    },
+    "preview_too_many_pages": {
+      "pages": "number",
+      "max": "number"
+    },
     "ocr_failed": {
       "problem": "reason",
       "detail": "text"
@@ -45359,6 +45734,10 @@
       "key": "text",
       "rules": "list"
     },
+    "field_used_by_webhooks": {
+      "key": "text",
+      "webhooks": "list"
+    },
     "field_key_taken": {
       "field": "text",
       "key": "text",
@@ -45487,10 +45866,20 @@
     "code_invalid": {},
     "read_only_token": {},
     "upload_only_token": {},
+    "upload_only_token_fields": {
+      "fields": "list"
+    },
+    "token_lacks_right": {
+      "right": "text"
+    },
+    "token_rights_empty": {},
+    "token_admin_rights": {},
     "push_off": {},
     "push_endpoint_refused": {},
     "push_keys_invalid": {},
-    "push_devices_limit": {},
+    "push_devices_limit": {
+      "max": "number"
+    },
     "csrf_missing": {
       "header": "text"
     },
@@ -45611,7 +46000,9 @@
       "value": "text"
     },
     "not_customer_number": {
-      "value": "text"
+      "value": "text",
+      "min": "number",
+      "max": "number"
     },
     "not_of_kind": {
       "value": "text",
@@ -45659,7 +46050,9 @@
       "kind": "identifier_kind"
     },
     "not_personnel_number": {
-      "value": "text"
+      "value": "text",
+      "min": "number",
+      "max": "number"
     },
     "not_domain": {
       "value": "text"
@@ -45877,6 +46270,8 @@
       "detail": "text"
     },
     "mail_password_unreadable": {},
+    "mail_fetch_failed": {},
+    "mail_password_again": {},
     "mailbox_paused": {},
     "mail_too_large": {
       "subject": "text",
@@ -45899,6 +46294,7 @@
     "delivery_owner_no_admin": {},
     "delivery_webhook_deleted": {},
     "delivery_secret_unusable": {},
+    "webhook_headers_again": {},
     "mail_rule_unreadable": {
       "detail": "text"
     }

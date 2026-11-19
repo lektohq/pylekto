@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/jobs",
   "path": "/jobs",
@@ -12,15 +12,30 @@
   "body": {
     "items": [
       {
-        "id": "01a1f2a0-948a-7833-8966-a6c1afa0d444",
+        "id": "01a1f505-48ba-7d7d-b69b-b892c4d55c4b",
+        "kind": "rules.apply",
+        "state": "due",
+        "attempts": 0,
+        "run_at": "2026-11-19T18:15:26.650722Z",
+        "started_at": null,
+        "finished_at": null,
+        "document": null,
+        "document_hidden": false,
+        "node": null,
+        "contact": null,
+        "error": null,
+        "retry": null
+      },
+      {
+        "id": "01a1f505-4a55-7bb1-a0d1-2171a865f1d1",
         "kind": "pipeline.reparse",
-        "state": "running",
-        "attempts": 1,
-        "run_at": "2026-11-19T07:06:12.490517Z",
-        "started_at": "2026-11-19T07:06:12.836188Z",
+        "state": "due",
+        "attempts": 0,
+        "run_at": "2026-11-19T18:15:27.061423Z",
+        "started_at": null,
         "finished_at": null,
         "document": {
-          "id": "01a1f29c-bbd4-74ab-b695-0faf0541f042",
+          "id": "01a1f4f8-4ce3-7636-affe-a7675619aac6",
           "title": "Jahresabrechnung Strom 2023/2024"
         },
         "document_hidden": false,
@@ -30,15 +45,15 @@
         "retry": null
       },
       {
-        "id": "01a1f2a0-948b-7cee-b9c8-7a152895396c",
+        "id": "01a1f505-4a57-7577-989e-32d3fa2e89b1",
         "kind": "pipeline.reparse",
         "state": "due",
         "attempts": 0,
-        "run_at": "2026-11-19T07:06:12.491770Z",
+        "run_at": "2026-11-19T18:15:27.063168Z",
         "started_at": null,
         "finished_at": null,
         "document": {
-          "id": "01a1f29c-bbac-7882-8ff5-15ac8368fc42",
+          "id": "01a1f4f8-4cab-7d05-bd62-bf12bc0a2322",
           "title": "Bausparvertrag Jahresauszug 2024"
         },
         "document_hidden": false,
@@ -48,15 +63,15 @@
         "retry": null
       },
       {
-        "id": "01a1f2a0-948c-7f05-93ee-7170ae177966",
+        "id": "01a1f505-4a58-728b-96ec-7d6173b94a9a",
         "kind": "pipeline.reparse",
         "state": "due",
         "attempts": 0,
-        "run_at": "2026-11-19T07:06:12.492469Z",
+        "run_at": "2026-11-19T18:15:27.064262Z",
         "started_at": null,
         "finished_at": null,
         "document": {
-          "id": "01a1f29c-bb7c-761e-99b6-8abecac515f1",
+          "id": "01a1f4f8-4c61-7e0b-96df-25d02eb833f6",
           "title": "Kontoauszug 11/2024"
         },
         "document_hidden": false,
@@ -66,34 +81,16 @@
         "retry": null
       },
       {
-        "id": "01a1f2a0-948d-7dc4-b326-584d925939d1",
+        "id": "01a1f505-4a59-72b4-b41a-c24513eed246",
         "kind": "pipeline.reparse",
         "state": "due",
         "attempts": 0,
-        "run_at": "2026-11-19T07:06:12.493052Z",
+        "run_at": "2026-11-19T18:15:27.065172Z",
         "started_at": null,
         "finished_at": null,
         "document": {
-          "id": "01a1f29c-bb60-7168-8750-ae1e252471ea",
+          "id": "01a1f4f8-4c3a-75d9-93e7-7e818aa04ade",
           "title": "Gehaltsabrechnung September 2024"
-        },
-        "document_hidden": false,
-        "node": "parse",
-        "contact": null,
-        "error": null,
-        "retry": null
-      },
-      {
-        "id": "01a1f2a0-948d-7e41-a535-69151d7423f9",
-        "kind": "pipeline.reparse",
-        "state": "due",
-        "attempts": 0,
-        "run_at": "2026-11-19T07:06:12.493644Z",
-        "started_at": null,
-        "finished_at": null,
-        "document": {
-          "id": "01a1f29c-bb44-7ef8-b877-960e4163cb5b",
-          "title": "Kontoauszug 7/2024"
         },
         "document_hidden": false,
         "node": "parse",
@@ -102,7 +99,7 @@
         "retry": null
       }
     ],
-    "total": 300,
+    "total": 303,
     "next_offset": 5
   }
 }

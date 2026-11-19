@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "POST",
   "operation": "/identifiers/open/decisions",
   "path": "/identifiers/open/decisions",
@@ -7,10 +7,10 @@
   "json": {
     "decisions": [
       {
-        "kind": "email_domain",
-        "value": "fernnetz.example",
+        "kind": "contract_number",
+        "value": "FNV778812",
         "action": "confirm",
-        "contact_id": "01a1f29c-9876-73f0-9fd7-5c0bd0a4a1b2"
+        "contact_id": "01a1f4f8-32e7-73d8-9661-4058e704231d"
       }
     ]
   },
@@ -18,8 +18,8 @@
   "status": 200,
   "body": [
     {
-      "kind": "email_domain",
-      "value": "fernnetz.example",
+      "kind": "contract_number",
+      "value": "FNV778812",
       "done": true,
       "reason": null
     }

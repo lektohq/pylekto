@@ -7,7 +7,7 @@ import pytest
 from datamodel_code_generator.__main__ import Exit, main
 from pydantic import BaseModel
 
-from pylekto import LEKTO_VERSION, models
+from pylekto import API_VERSION, LEKTO_VERSION, models
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -21,10 +21,11 @@ def test_models_match_the_description(monkeypatch: pytest.MonkeyPatch) -> None:
     assert main(["--check"]) == Exit.OK
 
 
-def test_version_is_the_descriptions() -> None:
-    """``LEKTO_VERSION`` names the Lekto release of ``openapi.json``."""
+def test_versions_are_the_descriptions() -> None:
+    """``LEKTO_VERSION`` names the Lekto release of ``openapi.json``, ``API_VERSION`` its API."""
     description = json.loads((ROOT / "openapi.json").read_text(encoding="utf-8"))
-    assert description["info"]["version"] == LEKTO_VERSION
+    assert description["info"]["x-lekto-version"] == LEKTO_VERSION
+    assert description["info"]["version"] == API_VERSION
 
 
 def test_every_model_builds() -> None:

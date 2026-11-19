@@ -1,18 +1,18 @@
 {
-  "lekto_version": "0.15.5",
-  "secret": "whsec_q8YRD8w4KYCpF654n7NETd08bfqbWsNgFyZbnekSvzY=",
+  "lekto_version": "0.16.0",
+  "secret": "whsec_JbayIUVM7rBqVGhGw8xRTulUFG7632Dy2DmyhCnCHuw=",
   "path": "/hook",
   "headers": {
-    "Host": "hook-snap:8080",
+    "Host": "hook16:8080",
     "Accept": "*/*",
     "Accept-Encoding": "gzip, deflate, br",
     "Connection": "keep-alive",
-    "User-Agent": "Lekto/0.15.5",
+    "User-Agent": "Lekto/0.16.0",
     "Content-Type": "application/json",
-    "webhook-id": "01a1f2a1-3183-750a-aca3-88ab969cd999",
-    "webhook-timestamp": "1795072012",
-    "webhook-signature": "v1,8MGp6G8gsLD516vQDB0xR6b52i6DIpFp8Q2QyHNYIvk=",
+    "webhook-id": "01a1f506-6477-7ec8-a4a1-67bd8650b16a",
+    "webhook-timestamp": "1795112199",
+    "webhook-signature": "v1,41x+n2/SiDym98E7+pVCarcadiMhkR6svRi82fRXn0E=",
     "Content-Length": "724"
   },
-  "body": "{\"id\":\"01a1f2a1-3183-750a-aca3-88ab969cd999\",\"type\":\"document.filed\",\"occurred_at\":\"2026-11-19T07:06:52Z\",\"document_id\":\"01a1f2a1-0b7a-745e-9461-867e68454a4f\",\"document\":{\"id\":\"01a1f2a1-0b7a-745e-9461-867e68454a4f\",\"title\":\"Muster Frage\",\"original_filename\":\"question.pdf\",\"contact\":{\"id\":\"01a1f29c-99e2-7a74-aa8b-a54a6e606298\",\"name\":\"Volkshochschule Musterstadt\"},\"document_type\":{\"id\":\"01a1f29c-9a53-7671-a8cf-dc1a2a5d9442\",\"name\":\"Rechnung\"},\"topic\":null,\"tags\":[],\"document_date\":\"2026-10-01\",\"added\":\"2026-11-19\",\"space\":{\"id\":\"01a1f29c-598e-7ebc-b45c-e3e87384b217\",\"name\":\"admin\"},\"lane\":\"green\",\"channel\":\"api\",\"pages\":1,\"fields\":{},\"link\":\"http://127.0.0.1:18000/ui/documents/01a1f2a1-0b7a-745e-9461-867e68454a4f\"}}"
+  "body": "{\"id\":\"01a1f506-6477-7ec8-a4a1-67bd8650b16a\",\"type\":\"document.filed\",\"occurred_at\":\"2026-11-19T18:16:39Z\",\"document_id\":\"01a1f506-35c6-797f-82b5-94328950d763\",\"document\":{\"id\":\"01a1f506-35c6-797f-82b5-94328950d763\",\"title\":\"Muster Frage\",\"original_filename\":\"question.pdf\",\"contact\":{\"id\":\"01a1f4f8-344c-7d2e-85a3-7f9f677ad121\",\"name\":\"Volkshochschule Musterstadt\"},\"document_type\":{\"id\":\"01a1f4f8-34d4-7776-b81a-07666079e5ca\",\"name\":\"Rechnung\"},\"topic\":null,\"tags\":[],\"document_date\":\"2026-10-01\",\"added\":\"2026-11-19\",\"space\":{\"id\":\"01a1f4f7-f06c-7f96-9c58-47c7ca1a56cf\",\"name\":\"admin\"},\"lane\":\"green\",\"channel\":\"api\",\"pages\":1,\"fields\":{},\"link\":\"http://127.0.0.1:18000/ui/documents/01a1f506-35c6-797f-82b5-94328950d763\"}}"
 }

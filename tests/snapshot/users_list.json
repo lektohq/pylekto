@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/users",
   "path": "/users",
@@ -9,12 +9,12 @@
   "status": 200,
   "body": [
     {
-      "id": "01a1f29c-598a-760e-a697-589027bc4eb9",
+      "id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
       "username": "admin",
-      "personal_space_id": "01a1f29c-598e-7ebc-b45c-e3e87384b217",
+      "personal_space_id": "01a1f4f7-f06c-7f96-9c58-47c7ca1a56cf",
       "role": "admin",
       "active": true,
-      "created_at": "2026-11-19T07:01:35.240054Z"
+      "created_at": "2026-11-19T18:00:52.071280Z"
     }
   ]
 }

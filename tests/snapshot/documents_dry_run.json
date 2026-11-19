@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "POST",
   "operation": "/documents/{id}/dry-run",
-  "path": "/documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/dry-run",
+  "path": "/documents/01a1f4f8-386f-7969-a144-5267299f8374/dry-run",
   "params": {},
   "json": {
     "title": "Stromabrechnung 2023/2024"
@@ -11,32 +11,32 @@
   "status": 200,
   "body": {
     "document": {
-      "id": "01a1f29c-9dee-73ca-8f76-b6b968c3aa2c",
+      "id": "01a1f4f8-386f-7969-a144-5267299f8374",
       "title": "Stromabrechnung 2023/2024",
       "original_filename": "Anmeldebestaetigung_26F-3104.pdf",
       "media_type": "application/pdf",
       "channel": "migration",
       "sha256": "21a50ee4921723c103a8b7dcfd9bd0565fc4266d402c4ad76ad092e5849513da",
-      "uploaded_by": "01a1f29c-598a-760e-a697-589027bc4eb9",
-      "space_id": "01a1f29c-598e-7ebc-b45c-e3e87384b217",
+      "uploaded_by": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
+      "space_id": "01a1f4f7-f06c-7f96-9c58-47c7ca1a56cf",
       "access": "edit",
-      "contact_id": "01a1f29c-99e2-7a74-aa8b-a54a6e606298",
-      "document_type_id": "01a1f29c-9a53-7671-a8cf-dc1a2a5d9442",
+      "contact_id": "01a1f4f8-344c-7d2e-85a3-7f9f677ad121",
+      "document_type_id": "01a1f4f8-34d4-7776-b81a-07666079e5ca",
       "topic_id": null,
       "tag_ids": [],
       "document_date": "2026-01-10",
       "fields": {
-        "01a1f29c-9a99-7194-8f5e-efad4a935e49": {
+        "01a1f4f8-3526-7f21-9c80-5148ed2bd1b3": {
           "amount": "132.00",
           "currency": "EUR"
         },
-        "01a1f29c-9aca-75e5-9fdc-a6aa3039c8ff": "VHS-2026-01877"
+        "01a1f4f8-3565-7ac6-873e-2b43a8dd3bf7": "VHS-2026-01877"
       },
       "lane": "green",
       "first_lane": "green",
       "page_count": 1,
-      "confirmed_at": "2026-11-19T07:04:50.986640Z",
-      "space_confirmed_at": "2026-11-19T07:04:50.986640Z",
+      "confirmed_at": "2026-11-19T18:05:19.169069Z",
+      "space_confirmed_at": "2026-11-19T18:05:19.169069Z",
       "processing": {
         "status": "completed",
         "run": 1,
@@ -45,129 +45,129 @@
             "node": "receive",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:01:52.744981Z",
-            "finished_at": "2026-11-19T07:01:52.744981Z",
+            "started_at": "2026-11-19T18:01:10.506141Z",
+            "finished_at": "2026-11-19T18:01:10.506141Z",
             "deadline": null
           },
           {
             "node": "separate",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:02:02.282797Z",
-            "finished_at": "2026-11-19T07:02:02.287546Z",
+            "started_at": "2026-11-19T18:01:12.179877Z",
+            "finished_at": "2026-11-19T18:01:12.205428Z",
             "deadline": null
           },
           {
             "node": "ocr",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:02:13.745740Z",
-            "finished_at": "2026-11-19T07:02:15.917838Z",
+            "started_at": "2026-11-19T18:01:32.753108Z",
+            "finished_at": "2026-11-19T18:01:34.757803Z",
             "deadline": null
           },
           {
             "node": "pages",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:02:14.191306Z",
-            "finished_at": "2026-11-19T07:02:14.385333Z",
+            "started_at": "2026-11-19T18:01:32.874915Z",
+            "finished_at": "2026-11-19T18:01:33.711542Z",
             "deadline": null
           },
           {
             "node": "parse",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:04:22.742156Z",
-            "finished_at": "2026-11-19T07:04:22.814450Z",
+            "started_at": "2026-11-19T18:02:46.558590Z",
+            "finished_at": "2026-11-19T18:02:47.217048Z",
             "deadline": null
           },
           {
             "node": "signal_llm",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:04:36.122042Z",
-            "finished_at": "2026-11-19T07:04:36.130185Z",
+            "started_at": "2026-11-19T18:04:53.777503Z",
+            "finished_at": "2026-11-19T18:04:53.804272Z",
             "deadline": null
           },
           {
             "node": "signal_classifier",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:04:36.146270Z",
-            "finished_at": "2026-11-19T07:04:36.154160Z",
+            "started_at": "2026-11-19T18:04:53.900981Z",
+            "finished_at": "2026-11-19T18:04:53.920631Z",
             "deadline": null
           },
           {
             "node": "signal_neighbours",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:04:36.176303Z",
-            "finished_at": "2026-11-19T07:04:36.194103Z",
+            "started_at": "2026-11-19T18:04:53.840975Z",
+            "finished_at": "2026-11-19T18:04:53.853986Z",
             "deadline": null
           },
           {
             "node": "signal_facts",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:04:36.212999Z",
-            "finished_at": "2026-11-19T07:04:36.228138Z",
+            "started_at": "2026-11-19T18:04:53.966817Z",
+            "finished_at": "2026-11-19T18:04:53.999916Z",
             "deadline": null
           },
           {
             "node": "judge",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:04:50.972466Z",
-            "finished_at": "2026-11-19T07:04:50.986640Z",
+            "started_at": "2026-11-19T18:05:19.151515Z",
+            "finished_at": "2026-11-19T18:05:19.169069Z",
             "deadline": null
           },
           {
             "node": "fields",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:04:55.444359Z",
-            "finished_at": "2026-11-19T07:04:55.454330Z",
+            "started_at": "2026-11-19T18:05:31.921080Z",
+            "finished_at": "2026-11-19T18:05:31.938817Z",
             "deadline": null
           },
           {
             "node": "relate",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:04:59.287071Z",
-            "finished_at": "2026-11-19T07:04:59.292635Z",
+            "started_at": "2026-11-19T18:05:37.575362Z",
+            "finished_at": "2026-11-19T18:05:37.590794Z",
             "deadline": null
           },
           {
             "node": "apply_rules",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:05:03.011470Z",
-            "finished_at": "2026-11-19T07:05:03.020267Z",
+            "started_at": "2026-11-19T18:05:42.465217Z",
+            "finished_at": "2026-11-19T18:05:42.480524Z",
             "deadline": null
           },
           {
             "node": "file",
             "status": "done",
             "outcome": "ok",
-            "started_at": "2026-11-19T07:05:06.823513Z",
-            "finished_at": "2026-11-19T07:05:06.836411Z",
+            "started_at": "2026-11-19T18:05:47.254785Z",
+            "finished_at": "2026-11-19T18:05:47.261006Z",
             "deadline": null
           }
         ],
         "vision": false
       },
-      "created_at": "2026-11-19T07:01:52.744981Z",
-      "updated_at": "2026-11-19T07:05:54.007844Z"
+      "created_at": "2026-11-19T18:01:10.506141Z",
+      "updated_at": "2026-11-19T18:15:05.279161Z"
     },
     "changed": [
       "title"
     ],
     "rules": null,
     "visibility": {
-      "space_id": "01a1f29c-598e-7ebc-b45c-e3e87384b217",
+      "space_id": "01a1f4f7-f06c-7f96-9c58-47c7ca1a56cf",
       "members": [
         {
-          "user_id": "01a1f29c-598a-760e-a697-589027bc4eb9",
+          "user_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
           "role": "edit"
         }
       ]

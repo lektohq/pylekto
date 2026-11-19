@@ -34,6 +34,7 @@ from pylekto.resources import (
     SpacesResource,
     TagsResource,
     UsersResource,
+    VersionResource,
     WebhooksResource,
 )
 
@@ -94,6 +95,7 @@ class LektoClient:
         self.spaces = SpacesResource(http)
         self.tags = TagsResource(http)
         self.users = UsersResource(http)
+        self.version = VersionResource(http)
         self.webhooks = WebhooksResource(http)
         self.lekto_version: str | None = None
 

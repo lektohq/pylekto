@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/identifiers/refs/{kind}/{ref}",
-  "path": "/identifiers/refs/customer_number/AWeIqArvbMsqVBObeMCgLlCWLMDSDimA",
+  "path": "/identifiers/refs/customer_number/AWk7mkL-x9K3EqEd5KYxEHEbF3wcE9BY",
   "params": {},
   "json": null,
   "data": {},
@@ -10,6 +10,6 @@
   "body": {
     "kind": "customer_number",
     "value": "T208811",
-    "ref": "AWeIqArvbMsqVBObeMCgLlCWLMDSDimA"
+    "ref": "AWk7mkL-x9K3EqEd5KYxEHEbF3wcE9BY"
   }
 }

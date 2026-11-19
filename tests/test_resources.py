@@ -1,8 +1,8 @@
-"""Tests of the areas of the API that the first version covers: auth and health."""
+"""Tests of who calls, the health of Lekto and its version."""
 
 from typing import TYPE_CHECKING
 
-from pylekto import LEKTO_VERSION, LektoClient
+from pylekto import API_VERSION, LEKTO_VERSION, LektoClient
 
 if TYPE_CHECKING:
     from .conftest import Api
@@ -15,7 +15,10 @@ async def test_me(api: Api, lekto: LektoClient) -> None:
     assert str(answer.user.id) == recorded.body["user"]["id"]
     assert answer.user.role == "admin"
     assert answer.token_scope == "read_write"
+    assert "admin:count_all" in answer.rights
+    assert str(answer.instance_id) == recorded.body["instance_id"]
     assert answer.lekto_version == LEKTO_VERSION
+    assert answer.api_version == API_VERSION
 
 
 async def test_health(api: Api, lekto: LektoClient) -> None:
@@ -33,3 +36,12 @@ async def test_health_unavailable(api: Api, lekto: LektoClient) -> None:
     health = await lekto.health.get()
     assert health.status == "degraded"
     assert health.checks == checks
+
+
+async def test_version(api: Api, lekto: LektoClient) -> None:
+    """``version.get`` reads the versions of Lekto and its API and the newest release."""
+    api.replay("version_get")
+    version = await lekto.version.get()
+    assert version.lekto_version == LEKTO_VERSION
+    assert version.api_version == API_VERSION
+    assert not version.update_available

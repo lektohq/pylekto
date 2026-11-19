@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "DELETE",
   "operation": "/tags/{id}",
-  "path": "/tags/01a1f2a0-8784-745e-a0ea-d1af453de13c",
+  "path": "/tags/01a1f505-3fd5-719a-9358-2aabb3cfcf9e",
   "params": {},
   "json": null,
   "data": {},

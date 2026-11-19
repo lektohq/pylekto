@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/mailboxes/{id}/mails",
-  "path": "/mailboxes/01a1f2a0-9366-7684-911a-19f21d868a88/mails",
+  "path": "/mailboxes/01a1f505-4901-75c5-ae58-bd3fde1b30b9/mails",
   "params": {
     "limit": 5
   },

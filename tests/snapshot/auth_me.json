@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/auth/me",
   "path": "/auth/me",
@@ -9,22 +9,49 @@
   "status": 200,
   "body": {
     "user": {
-      "id": "01a1f29c-598a-760e-a697-589027bc4eb9",
+      "id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
       "username": "admin",
       "display_name": null,
       "personal_space_id": null,
       "role": "admin",
       "active": true,
-      "created_at": "2026-11-19T07:01:35.240054Z"
+      "created_at": "2026-11-19T18:00:52.071280Z"
     },
     "authenticated_with": "token",
     "csrf_token": null,
     "session_expires_at": null,
     "token_scope": "read_write",
+    "rights": [
+      "admin:count_all",
+      "admin:documents_all",
+      "admin:mailboxes",
+      "admin:manage",
+      "admin:private_webhooks",
+      "documents:count",
+      "documents:read",
+      "documents:upload",
+      "documents:write",
+      "lenses:read",
+      "lenses:write",
+      "master_data:read",
+      "master_data:write",
+      "push:read",
+      "push:write",
+      "rules:read",
+      "rules:write",
+      "spaces:read",
+      "spaces:write",
+      "system:read",
+      "system:write",
+      "webhooks:read",
+      "webhooks:write"
+    ],
     "has_password": true,
     "totp_enabled": false,
     "linked_accounts": [],
-    "lekto_version": "0.15.5",
+    "lekto_version": "0.16.0",
+    "api_version": "0.2",
+    "instance_id": "da62bd6d-91ff-442b-8353-dc134c71f2ee",
     "shortcut_url": null
   }
 }
