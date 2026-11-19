@@ -50,7 +50,8 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
 - Every area of the API is a class in `resources/` with explicit methods (`get`, `list`, `create`,
   …) that take and return the generated models under their OpenAPI names. A list that comes in
   pages has `page(...)` (one page, as Lekto answers it) and `list(...)` (an async iterator over
-  every item, `_http.cursor_items` or `_http.offset_items`). A body that is a single required
+  every item: `_http.cursor_items`, `_http.offset_items`, or `_http.total_items` for a page that
+  gives only its total). A body that is a single required
   value (`SearchIn.q`, `MoveRequest.space_id`, `RelateIn.document_id`) is passed as that value.
   Path ids are named for what they are (`document_id`, not `id`) and take `UUID` or `str`
   (`types.Id`). Query filters the description gives no model are `TypedDict`s in `types.py`

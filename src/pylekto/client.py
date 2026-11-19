@@ -25,6 +25,7 @@ from pylekto.resources import (
     LensesResource,
     MailboxesResource,
     MailRulesResource,
+    OpenIdentifiersResource,
     PipelineResource,
     PushResource,
     RelationsResource,
@@ -84,6 +85,7 @@ class LektoClient:
         self.lenses = LensesResource(http)
         self.mail_rules = MailRulesResource(http)
         self.mailboxes = MailboxesResource(http)
+        self.open_identifiers = OpenIdentifiersResource(http)
         self.pipeline = PipelineResource(http)
         self.push = PushResource(http)
         self.relations = RelationsResource(http)
