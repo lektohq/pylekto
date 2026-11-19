@@ -2,6 +2,7 @@
 
 from pylekto import webhooks
 from pylekto._lekto import API_VERSION, LEKTO_VERSION
+from pylekto._unknown import Unknown
 from pylekto.client import LektoClient
 from pylekto.exceptions import (
     LektoApiError,
@@ -37,6 +38,7 @@ __all__ = [
     "LektoTimeoutError",
     "LektoValidationError",
     "LektoVersionWarning",
+    "Unknown",
     "WebhookVerificationError",
     "webhooks",
 ]
