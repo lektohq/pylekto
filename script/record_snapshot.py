@@ -134,8 +134,23 @@ class Recorder:
         message = f"document {document_id} is still in processing"
         raise SystemExit(message)
 
+    def idle(self) -> None:
+        """Wait until Lekto runs no job and has none due (at most five minutes)."""
+        for _ in range(300):
+            kinds = self.call("GET", "/jobs/summary")["kinds"]
+            if not any(kind["running"] or kind["due"] for kind in kinds):
+                return
+            time.sleep(1)
+        message = "Lekto still has jobs running or due"
+        raise SystemExit(message)
+
     def listen(self, recording: Recording, path: str, params: Any) -> tuple[int, str]:
-        """Record a stream of events around its trigger; return the status and the text."""
+        """Record a stream of events around its trigger; return the status and the text.
+
+        The stream opens once Lekto is idle: jobs still at work (a classifier trained just
+        before re-files every document) would fill it with events of their own.
+        """
+        self.idle()
         seconds = recording.listen or 0.0
         timeout = httpx2.Timeout(seconds, connect=10.0)
         lines: list[str] = []
