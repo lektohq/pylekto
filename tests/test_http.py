@@ -25,7 +25,7 @@ from pylekto import (
 from pylekto._http import _reveal, body, cursor_items, offset_items
 from pylekto.models import DocumentPatch, MailboxPatch
 
-from .conftest import DOCUMENT_ID, Api
+from .conftest import DOCUMENT_ID, TOKEN, URL, Api
 
 
 @pytest.mark.parametrize(
@@ -152,6 +152,30 @@ async def test_transport_failure(
         await lekto.auth.me()
     assert type(raised.value) is error
     assert raised.value.__cause__ is failure
+
+
+async def test_answer_that_cannot_be_decoded(api: Api, lekto: LektoClient) -> None:
+    """A body that does not match its ``Content-Encoding`` raises a connection error."""
+    api.answer("GET", "/auth/me", content=b"no gzip", headers={"Content-Encoding": "gzip"})
+    with pytest.raises(
+        LektoConnectionError, match=r"GET /api/v1/auth/me could not be read"
+    ) as raised:
+        await lekto.auth.me()
+    assert type(raised.value) is LektoConnectionError
+    assert isinstance(raised.value.__cause__, httpx2.DecodingError)
+
+
+async def test_redirects_in_a_circle(api: Api) -> None:
+    """A client passed in that follows redirects raises a connection error on a loop of them."""
+    api.answer("GET", "/auth/me", 302, headers={"Location": f"{URL}/api/v1/auth/me"})
+    async with httpx2.AsyncClient(
+        transport=httpx2.MockTransport(api), follow_redirects=True
+    ) as http:
+        lekto = LektoClient(URL, TOKEN, client=http)
+        with pytest.raises(LektoConnectionError, match=r"could not be read") as raised:
+            await lekto.auth.me()
+    assert type(raised.value) is LektoConnectionError
+    assert isinstance(raised.value.__cause__, httpx2.TooManyRedirects)
 
 
 async def test_answer_the_models_do_not_describe(api: Api, lekto: LektoClient) -> None:

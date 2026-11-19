@@ -119,12 +119,8 @@ class Http:
                     raise api_error(response)
                 async for line in response.aiter_lines():
                     yield line
-        except httpx2.TimeoutException as error:
-            message = f"Lekto did not answer GET {path} in time"
-            raise LektoTimeoutError(message) from error
-        except httpx2.TransportError as error:
-            message = f"Lekto is not reachable: {type(error).__name__}"
-            raise LektoConnectionError(message) from error
+        except httpx2.RequestError as error:
+            raise _request_error(error, "GET", path) from error
 
 
 async def exchange(
@@ -144,15 +140,25 @@ async def exchange(
             files=send.get("files"),
             headers=headers,
         )
-    except httpx2.TimeoutException as error:
-        message = f"Lekto did not answer {method} {httpx2.URL(url).path} in time"
-        raise LektoTimeoutError(message) from error
-    except httpx2.TransportError as error:
-        message = f"Lekto is not reachable: {type(error).__name__}"
-        raise LektoConnectionError(message) from error
+    except httpx2.RequestError as error:
+        raise _request_error(error, method, httpx2.URL(url).path) from error
     if response.is_error and response.status_code not in send.get("accept", ()):
         raise api_error(response)
     return response
+
+
+def _request_error(error: httpx2.RequestError, method: str, path: str) -> LektoConnectionError:
+    """Return the exception for a request that failed in httpx2.
+
+    A body it cannot decode, or a loop of redirects, is no ``TransportError`` but fails it too.
+    """
+    if isinstance(error, httpx2.TimeoutException):
+        return LektoTimeoutError(f"Lekto did not answer {method} {path} in time")
+    if isinstance(error, httpx2.TransportError):
+        return LektoConnectionError(f"Lekto is not reachable: {type(error).__name__}")
+    return LektoConnectionError(
+        f"Lekto's answer to {method} {path} could not be read: {type(error).__name__}"
+    )
 
 
 @asynccontextmanager

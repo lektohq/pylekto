@@ -69,6 +69,16 @@ async def test_listen_fails(
     assert type(raised.value) is error
 
 
+async def test_listen_to_a_stream_that_cannot_be_decoded(api: Api, lekto: LektoClient) -> None:
+    """A stream whose bytes do not match its ``Content-Encoding`` raises a connection error."""
+    headers = {"Content-Type": "text/event-stream", "Content-Encoding": "gzip"}
+    api.answer("GET", "/events", content=b": ready\n\n", headers=headers)
+    with pytest.raises(LektoConnectionError, match=r"GET /events could not be read") as raised:
+        [event async for event in lekto.events.listen()]
+    assert type(raised.value) is LektoConnectionError
+    assert isinstance(raised.value.__cause__, httpx2.DecodingError)
+
+
 async def test_events_are_read_as_the_standard_says() -> None:
     """Comments are skipped, data lines joined, the id kept, an event without data dropped."""
     events = await read(
