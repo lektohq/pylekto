@@ -80,6 +80,8 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
   `lekto/examples/documents` (its docstring says how); a new area adds its `Recording`s there.
   In a test, `api.replay(name)` answers the request as Lekto did; `tests/test_snapshot.py` checks
   every recording against the model the OpenAPI description names for its answer.
+  `tests/test_description.py` fails when an operation a token may use has no method, or neither a
+  recording nor an entry in its `UNRECORDED` with the reason (a new Lekto release adds one).
 - This repository will be public: every value in code, tests, fixtures, commits and pull requests
   is made up. No real names, companies, IBANs, addresses, numbers, hosts or tokens. The one
   exception: the webhook recordings (`tests/snapshot/webhooks/`) keep the signing secret and task
