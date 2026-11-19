@@ -2,7 +2,7 @@
 # configuration. `uv run yamllint .`; prek runs it before every commit, CI in the job `lint`.
 extends: default
 
-# Whatever git ignores is not ours to lint (the virtual environment, caches, `.idea`).
+# Whatever git ignores is not ours to lint (the virtual environment, caches, `.knowledge`).
 ignore-from-file: [.gitignore]
 
 rules:

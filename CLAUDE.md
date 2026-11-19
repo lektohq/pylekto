@@ -2,8 +2,8 @@
 
 pylekto (technical name `pylekto`, on PyPI) is the async Python client of the Lekto DMS REST API
 (`lektohq/lekto`). Python 3.14 only, because Home Assistant requires it. The architecture is
-decided in `.idea/decisions/2026-11-18-pylekto-architecture.md`, the order of the work in
-`.idea/plans/pylekto-library.md`.
+decided in `.knowledge/decisions/2026-11-18-pylekto-architecture.md`, the order of the work in
+`.knowledge/plans/pylekto-library.md`.
 
 ## Layout
 
@@ -17,7 +17,7 @@ decided in `.idea/decisions/2026-11-18-pylekto-architecture.md`, the order of th
 | `script/` | `setup` (once: dependencies, Git hooks), `bootstrap` (every start of the devcontainer: dependencies), `update_openapi.py` (the description of another Lekto release), `record_snapshot.py` (the snapshot) |
 | `.devcontainer/`, `Dockerfile.dev` | Devcontainer: Python 3.14, uv, gh, Claude Code; the virtual environment lives in `/home/vscode/.local/dev-venv` |
 | `.github/` | Workflows (`ci.yml`, `release.yml`, Release Drafter, labels, stale, lock), labels, templates, `scripts/` (the test of the action pins) |
-| `.idea/` | The knowledge in German as small notes with frontmatter; start with `INDEX.md` and `README.md`. A checkout of the private repository `lektohq/lekto-knowledge`, shared with lekto and ignored by this one (see "Working style") |
+| `.knowledge/` | The knowledge in German as small notes with frontmatter; start with `INDEX.md` and `README.md`. A checkout of the private repository `lektohq/lekto-knowledge`, shared with lekto and ignored by this one (see "Working style") |
 
 ## Commands
 
@@ -110,19 +110,19 @@ sentence on what changes for them; it stands under the title in the release note
 ## Language
 
 Code, comments, commit messages and documentation (README, docstrings) are English. The notes in
-`.idea/` are German.
+`.knowledge/` are German.
 
 ## Working style
 
-- Plan first: read the notes in `.idea/` (`INDEX.md` first, area `pylekto`), propose a plan, wait
-  for approval.
+- Plan first: read the notes in `.knowledge/` (`INDEX.md` first, area `pylekto`), propose a plan,
+  wait for approval.
 - Decisions, plans, open points, working rules and history live only in the private repository
-  `lektohq/lekto-knowledge`, checked out at `.idea/` (after a fresh clone:
-  `git clone https://github.com/lektohq/lekto-knowledge.git .idea`). lekto has its own checkout of
-  it: `git pull` before working, and commit and push every change straight to its `main`
+  `lektohq/lekto-knowledge`, checked out at `.knowledge/` (after a fresh clone:
+  `git clone https://github.com/lektohq/lekto-knowledge.git .knowledge`). lekto has its own checkout
+  of it: `git pull` before working, and commit and push every change straight to its `main`
   (`uv run tools/index.py` checks the notes and writes the index); nothing stays only local, and
   none of it goes into this repository. Notes about pylekto carry the area `pylekto` and their
-  `code:` paths the prefix `pylekto/`. Docstrings point at notes as `.idea/<folder>/<name>.md`.
+  `code:` paths the prefix `pylekto/`. Docstrings point at notes as `.knowledge/<folder>/<name>.md`.
 - If something is unclear or a decision is missing, ask before implementing. Do not deviate from
-  the decisions in `.idea/decisions/` on your own.
+  the decisions in `.knowledge/decisions/` on your own.
 - Small, thematically separate commits. Keep answers short and precise.
