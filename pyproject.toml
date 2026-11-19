@@ -99,8 +99,12 @@ fail_under = 95
 show_missing = true
 
 [tool.typos.default]
-# Keys and tokens (a push subscription's key): long runs of base64url, no words.
-extend-ignore-re = ["[A-Za-z0-9_-]{24,}"]
+# Keys and tokens (a push subscription's key): runs of base64url with a capital and a digit, which
+# words and snake_case names have not.
+extend-ignore-re = [
+  "[A-Za-z0-9_-]*[A-Z][A-Za-z0-9_-]*[0-9][A-Za-z0-9_-]*",
+  "[A-Za-z0-9_-]*[0-9][A-Za-z0-9_-]*[A-Z][A-Za-z0-9_-]*",
+]
 
 [tool.typos.files]
 # Lekto's OpenAPI description, the models generated from it and the recorded answers hold Lekto's
