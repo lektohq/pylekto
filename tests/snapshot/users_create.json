@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "POST",
   "operation": "/users",
   "path": "/users",
@@ -12,12 +12,12 @@
   "data": {},
   "status": 201,
   "body": {
-    "id": "01a1f2a0-85c5-72f1-8636-4c0bfdeba205",
+    "id": "01a1f505-3e07-72ce-a799-8980bbfeb3cb",
     "username": "jane",
     "display_name": "Jane Doe",
     "personal_space_id": null,
     "role": "user",
     "active": true,
-    "created_at": "2026-11-19T07:06:08.708632Z"
+    "created_at": "2026-11-19T18:15:23.910836Z"
   }
 }

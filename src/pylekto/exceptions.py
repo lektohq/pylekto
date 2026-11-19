@@ -70,7 +70,7 @@ class LektoAuthenticationError(LektoApiError):
 
 
 class LektoForbiddenError(LektoApiError):
-    """403: the token's scope or the user's role does not allow the request."""
+    """403: the token's rights or the user's role do not allow the request."""
 
 
 class LektoNotFoundError(LektoApiError):

@@ -1,14 +1,14 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/events",
   "path": "/events",
   "params": {
-    "document_id": "01a1f29c-9dee-73ca-8f76-b6b968c3aa2c"
+    "document_id": "01a1f4f8-386f-7969-a144-5267299f8374"
   },
   "json": null,
   "data": {},
   "status": 200,
   "body": null,
-  "text": ": ready\n\nevent: document.updated\ndata: {\"type\": \"document.updated\", \"occurred_at\": \"2026-11-19T07:07:48.938100+00:00\", \"id\": \"01a1f2a2-0d4a-7217-8188-e8475eebe4bf\", \"document_id\": \"01a1f29c-9dee-73ca-8f76-b6b968c3aa2c\", \"fields\": [\"title\"]}\nid: 01a1f2a2-0d4a-7217-8188-e8475eebe4bf\n\n"
+  "text": ": ready\n\nevent: document.updated\ndata: {\"type\": \"document.updated\", \"occurred_at\": \"2026-11-19T18:17:36.594260+00:00\", \"id\": \"01a1f507-4452-7e0b-b2d0-24c9c720688b\", \"document_id\": \"01a1f4f8-386f-7969-a144-5267299f8374\", \"fields\": [\"title\"]}\nid: 01a1f507-4452-7e0b-b2d0-24c9c720688b\n\n"
 }

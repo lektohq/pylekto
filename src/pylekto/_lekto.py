@@ -1,3 +1,7 @@
-"""The Lekto release whose API pylekto speaks; script/update_openapi.py writes this file."""
+"""The Lekto release whose API pylekto speaks, and the version of that API.
 
-LEKTO_VERSION = "0.15.5"
+script/update_openapi.py writes this file.
+"""
+
+LEKTO_VERSION = "0.16.0"
+API_VERSION = "0.2"

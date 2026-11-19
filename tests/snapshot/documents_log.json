@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/documents/{id}/log",
-  "path": "/documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/log",
+  "path": "/documents/01a1f4f8-386f-7969-a144-5267299f8374/log",
   "params": {},
   "json": null,
   "data": {},
@@ -23,24 +23,24 @@
         "media_type": "application/pdf",
         "imported": {
           "title": "VHS Spanisch A2",
-          "contact_id": "01a1f29c-99e2-7a74-aa8b-a54a6e606298",
-          "document_type_id": "01a1f29c-9a53-7671-a8cf-dc1a2a5d9442",
+          "contact_id": "01a1f4f8-344c-7d2e-85a3-7f9f677ad121",
+          "document_type_id": "01a1f4f8-34d4-7776-b81a-07666079e5ca",
           "tag_ids": [],
           "document_date": "2026-01-10",
           "fields": {
-            "01a1f29c-9a99-7194-8f5e-efad4a935e49": {
+            "01a1f4f8-3526-7f21-9c80-5148ed2bd1b3": {
               "amount": "132.00",
               "currency": "EUR"
             },
-            "01a1f29c-9aca-75e5-9fdc-a6aa3039c8ff": "VHS-2026-01877"
+            "01a1f4f8-3565-7ac6-873e-2b43a8dd3bf7": "VHS-2026-01877"
           },
           "created_at": null,
           "review": []
         }
       },
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:01:52.727869Z",
-      "duration_ms": 17.112
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:01:10.490881Z",
+      "duration_ms": 15.26
     },
     {
       "node": "separate",
@@ -54,9 +54,9 @@
       "output": {
         "not_looked": "migration"
       },
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:02:02.282797Z",
-      "duration_ms": 4.749
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:01:12.179877Z",
+      "duration_ms": 25.551000000000002
     },
     {
       "node": "pages",
@@ -71,12 +71,12 @@
       },
       "output": {
         "pages": 1,
-        "first_page": "documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/pages/1.webp",
-        "preview": "documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/preview.webp"
+        "first_page": "documents/01a1f4f8-386f-7969-a144-5267299f8374/pages/1.webp",
+        "preview": "documents/01a1f4f8-386f-7969-a144-5267299f8374/preview.webp"
       },
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:02:14.191306Z",
-      "duration_ms": 194.02700000000002
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:01:32.874915Z",
+      "duration_ms": 836.627
     },
     {
       "node": "ocr",
@@ -90,13 +90,13 @@
         "original": "originals/21a50ee4921723c103a8b7dcfd9bd0565fc4266d402c4ad76ad092e5849513da"
       },
       "output": {
-        "archive": "documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/archive.pdf",
+        "archive": "documents/01a1f4f8-386f-7969-a144-5267299f8374/archive.pdf",
         "pages": 1,
         "pdfa": true
       },
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:02:13.745740Z",
-      "duration_ms": 2172.098
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:01:32.753108Z",
+      "duration_ms": 2004.695
     },
     {
       "node": "parse",
@@ -107,17 +107,17 @@
       "confidence": null,
       "model_version": "layout 1, pypdfium2 5.14.0",
       "input": {
-        "archive": "documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/archive.pdf"
+        "archive": "documents/01a1f4f8-386f-7969-a144-5267299f8374/archive.pdf"
       },
       "output": {
-        "text": "documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/content.txt",
-        "structure": "documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/content.json",
+        "text": "documents/01a1f4f8-386f-7969-a144-5267299f8374/content.txt",
+        "structure": "documents/01a1f4f8-386f-7969-a144-5267299f8374/content.json",
         "pages": 1,
         "characters": 1585
       },
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:04:22.742156Z",
-      "duration_ms": 72.294
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:02:46.558590Z",
+      "duration_ms": 658.458
     },
     {
       "node": "signal_llm",
@@ -135,29 +135,9 @@
           "params": {}
         }
       },
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:04:36.122042Z",
-      "duration_ms": 8.142999999999999
-    },
-    {
-      "node": "signal_classifier",
-      "run": 1,
-      "outcome": "ok",
-      "reason": null,
-      "reasons": [],
-      "confidence": null,
-      "model_version": "imported",
-      "input": {},
-      "output": {
-        "abstained": "taken over from the source system",
-        "abstained_reason": {
-          "code": "taken_over",
-          "params": {}
-        }
-      },
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:04:36.146270Z",
-      "duration_ms": 7.89
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:04:53.777503Z",
+      "duration_ms": 26.769000000000002
     },
     {
       "node": "signal_neighbours",
@@ -175,9 +155,29 @@
           "params": {}
         }
       },
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:04:36.176303Z",
-      "duration_ms": 17.8
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:04:53.840975Z",
+      "duration_ms": 13.011
+    },
+    {
+      "node": "signal_classifier",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "imported",
+      "input": {},
+      "output": {
+        "abstained": "taken over from the source system",
+        "abstained_reason": {
+          "code": "taken_over",
+          "params": {}
+        }
+      },
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:04:53.900981Z",
+      "duration_ms": 19.650000000000002
     },
     {
       "node": "signal_facts",
@@ -195,9 +195,9 @@
           "params": {}
         }
       },
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:04:36.212999Z",
-      "duration_ms": 15.139
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:04:53.966817Z",
+      "duration_ms": 33.099000000000004
     },
     {
       "node": "judge",
@@ -219,24 +219,24 @@
       "output": {
         "imported": {
           "title": "VHS Spanisch A2",
-          "contact_id": "01a1f29c-99e2-7a74-aa8b-a54a6e606298",
-          "document_type_id": "01a1f29c-9a53-7671-a8cf-dc1a2a5d9442",
+          "contact_id": "01a1f4f8-344c-7d2e-85a3-7f9f677ad121",
+          "document_type_id": "01a1f4f8-34d4-7776-b81a-07666079e5ca",
           "tag_ids": [],
           "document_date": "2026-01-10",
           "fields": {
-            "01a1f29c-9a99-7194-8f5e-efad4a935e49": {
+            "01a1f4f8-3526-7f21-9c80-5148ed2bd1b3": {
               "amount": "132.00",
               "currency": "EUR"
             },
-            "01a1f29c-9aca-75e5-9fdc-a6aa3039c8ff": "VHS-2026-01877"
+            "01a1f4f8-3565-7ac6-873e-2b43a8dd3bf7": "VHS-2026-01877"
           },
           "created_at": null,
           "review": []
         }
       },
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:04:50.972466Z",
-      "duration_ms": 14.174000000000001
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:05:19.151515Z",
+      "duration_ms": 17.554
     },
     {
       "node": "fields",
@@ -258,9 +258,9 @@
       "output": {
         "fields": 2
       },
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:04:55.444359Z",
-      "duration_ms": 9.971
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:05:31.921080Z",
+      "duration_ms": 17.737
     },
     {
       "node": "relate",
@@ -274,9 +274,9 @@
       "output": {
         "relations": []
       },
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:04:59.287071Z",
-      "duration_ms": 5.564
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:05:37.575362Z",
+      "duration_ms": 15.432
     },
     {
       "node": "apply_rules",
@@ -291,9 +291,9 @@
         "rules": []
       },
       "output": {},
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:05:03.011470Z",
-      "duration_ms": 8.796999999999999
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:05:42.465217Z",
+      "duration_ms": 15.306999999999999
     },
     {
       "node": "file",
@@ -305,9 +305,9 @@
       "model_version": null,
       "input": {},
       "output": {},
-      "pipeline_version": "0.15.5",
-      "started_at": "2026-11-19T07:05:06.823513Z",
-      "duration_ms": 12.898
+      "pipeline_version": "0.16.0",
+      "started_at": "2026-11-19T18:05:47.254785Z",
+      "duration_ms": 6.221
     }
   ]
 }

@@ -27,6 +27,7 @@ from pylekto.resources.rules import RulesResource
 from pylekto.resources.search import SearchResource
 from pylekto.resources.spaces import SpacesResource
 from pylekto.resources.users import UsersResource
+from pylekto.resources.version import VersionResource
 from pylekto.resources.webhooks import WebhooksResource
 
 __all__ = [
@@ -55,5 +56,6 @@ __all__ = [
     "SpacesResource",
     "TagsResource",
     "UsersResource",
+    "VersionResource",
     "WebhooksResource",
 ]

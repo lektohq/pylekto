@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "POST",
   "operation": "/documents/{id}/search-places",
-  "path": "/documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/search-places",
+  "path": "/documents/01a1f4f8-386f-7969-a144-5267299f8374/search-places",
   "params": {},
   "json": {
     "q": "Strom"

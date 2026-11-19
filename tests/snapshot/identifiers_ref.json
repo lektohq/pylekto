@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "POST",
   "operation": "/identifiers/refs",
   "path": "/identifiers/refs",
@@ -13,6 +13,6 @@
   "body": {
     "kind": "customer_number",
     "value": "T208811",
-    "ref": "AWeIqArvbMsqVBObeMCgLlCWLMDSDimA"
+    "ref": "AWk7mkL-x9K3EqEd5KYxEHEbF3wcE9BY"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/inbox",
   "path": "/inbox",
@@ -14,14 +14,14 @@
     "items": [
       {
         "document": {
-          "id": "01a1f29c-b65f-7d0c-89ac-c840605caf5f",
+          "id": "01a1f4f8-469e-710a-9499-199ca4ef0c1c",
           "title": "SCN_20251102_161136",
           "original_filename": "SCN_20251102_161136.pdf",
           "media_type": "application/pdf",
           "channel": "migration",
           "sha256": "30b40193a12a77cce8c686875f63b8ff78cdce0b373d09d82e54f925bb747b9f",
-          "uploaded_by": "01a1f29c-598a-760e-a697-589027bc4eb9",
-          "space_id": "01a1f29c-598e-7ebc-b45c-e3e87384b217",
+          "uploaded_by": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
+          "space_id": "01a1f4f7-f06c-7f96-9c58-47c7ca1a56cf",
           "access": "edit",
           "contact_id": null,
           "document_type_id": null,
@@ -42,40 +42,40 @@
                 "node": "receive",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-19T07:01:59.003412Z",
-                "finished_at": "2026-11-19T07:01:59.003412Z",
+                "started_at": "2026-11-19T18:01:14.134588Z",
+                "finished_at": "2026-11-19T18:01:14.134588Z",
                 "deadline": null
               },
               {
                 "node": "separate",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-19T07:02:08.595985Z",
-                "finished_at": "2026-11-19T07:02:08.627153Z",
+                "started_at": "2026-11-19T18:02:12.565865Z",
+                "finished_at": "2026-11-19T18:02:12.586929Z",
                 "deadline": null
               },
               {
                 "node": "ocr",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-19T07:03:31.105530Z",
-                "finished_at": "2026-11-19T07:03:33.599841Z",
+                "started_at": "2026-11-19T18:03:39.640519Z",
+                "finished_at": "2026-11-19T18:03:42.572301Z",
                 "deadline": null
               },
               {
                 "node": "pages",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-19T07:03:32.348967Z",
-                "finished_at": "2026-11-19T07:03:32.512837Z",
+                "started_at": "2026-11-19T18:03:40.026886Z",
+                "finished_at": "2026-11-19T18:03:40.882111Z",
                 "deadline": null
               },
               {
                 "node": "parse",
                 "status": "done",
                 "outcome": "failed",
-                "started_at": "2026-11-19T07:04:31.270091Z",
-                "finished_at": "2026-11-19T07:04:31.313737Z",
+                "started_at": "2026-11-19T18:05:05.703931Z",
+                "finished_at": "2026-11-19T18:05:06.349222Z",
                 "deadline": null
               },
               {
@@ -153,8 +153,8 @@
             ],
             "vision": false
           },
-          "created_at": "2026-11-19T07:01:59.003412Z",
-          "updated_at": "2026-11-19T07:04:31.313737Z"
+          "created_at": "2026-11-19T18:01:14.134588Z",
+          "updated_at": "2026-11-19T18:05:06.349222Z"
         },
         "tab": "intervene",
         "open": [
@@ -178,14 +178,14 @@
       },
       {
         "document": {
-          "id": "01a1f29c-a1d4-703c-afa2-4ee23167b14d",
+          "id": "01a1f4f8-3be5-7789-a22d-6e1fb3707195",
           "title": "IMG-20241229-WA0050",
           "original_filename": "IMG-20241229-WA0050.jpg",
           "media_type": "image/jpeg",
           "channel": "migration",
           "sha256": "9f70d6859c04f9ba0365ea19f52de394bb8901e74ff4daa25a1a2468fcd0e888",
-          "uploaded_by": "01a1f29c-598a-760e-a697-589027bc4eb9",
-          "space_id": "01a1f29c-598e-7ebc-b45c-e3e87384b217",
+          "uploaded_by": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
+          "space_id": "01a1f4f7-f06c-7f96-9c58-47c7ca1a56cf",
           "access": "edit",
           "contact_id": null,
           "document_type_id": null,
@@ -206,40 +206,40 @@
                 "node": "receive",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-19T07:01:53.745591Z",
-                "finished_at": "2026-11-19T07:01:53.745591Z",
+                "started_at": "2026-11-19T18:01:11.392375Z",
+                "finished_at": "2026-11-19T18:01:11.392375Z",
                 "deadline": null
               },
               {
                 "node": "separate",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-19T07:02:07.053659Z",
-                "finished_at": "2026-11-19T07:02:07.061410Z",
+                "started_at": "2026-11-19T18:01:13.854151Z",
+                "finished_at": "2026-11-19T18:01:13.874528Z",
                 "deadline": null
               },
               {
                 "node": "ocr",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-19T07:02:33.071351Z",
-                "finished_at": "2026-11-19T07:02:36.217451Z",
+                "started_at": "2026-11-19T18:02:02.920219Z",
+                "finished_at": "2026-11-19T18:02:06.396207Z",
                 "deadline": null
               },
               {
                 "node": "pages",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-19T07:02:35.487041Z",
-                "finished_at": "2026-11-19T07:02:35.689970Z",
+                "started_at": "2026-11-19T18:02:02.645980Z",
+                "finished_at": "2026-11-19T18:02:02.893474Z",
                 "deadline": null
               },
               {
                 "node": "parse",
                 "status": "done",
                 "outcome": "failed",
-                "started_at": "2026-11-19T07:04:24.769442Z",
-                "finished_at": "2026-11-19T07:04:24.798125Z",
+                "started_at": "2026-11-19T18:03:34.470246Z",
+                "finished_at": "2026-11-19T18:03:35.103948Z",
                 "deadline": null
               },
               {
@@ -317,8 +317,8 @@
             ],
             "vision": false
           },
-          "created_at": "2026-11-19T07:01:53.745591Z",
-          "updated_at": "2026-11-19T07:04:24.798125Z"
+          "created_at": "2026-11-19T18:01:11.392375Z",
+          "updated_at": "2026-11-19T18:03:35.103948Z"
         },
         "tab": "intervene",
         "open": [
@@ -342,14 +342,14 @@
       },
       {
         "document": {
-          "id": "01a1f29c-9f40-70db-a929-8988593e150f",
+          "id": "01a1f4f8-39ba-7f63-b587-d66d531ee973",
           "title": "Dokument 2025-01-25 073257",
           "original_filename": "Dokument 2025-01-25 073257.pdf",
           "media_type": "application/pdf",
           "channel": "migration",
           "sha256": "a6f65e75a8ab7924747a5cfe89469a938ca84a942d2072b226d6fb31494a9fd3",
-          "uploaded_by": "01a1f29c-598a-760e-a697-589027bc4eb9",
-          "space_id": "01a1f29c-598e-7ebc-b45c-e3e87384b217",
+          "uploaded_by": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
+          "space_id": "01a1f4f7-f06c-7f96-9c58-47c7ca1a56cf",
           "access": "edit",
           "contact_id": null,
           "document_type_id": null,
@@ -370,40 +370,40 @@
                 "node": "receive",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-19T07:01:53.085314Z",
-                "finished_at": "2026-11-19T07:01:53.085314Z",
+                "started_at": "2026-11-19T18:01:10.838669Z",
+                "finished_at": "2026-11-19T18:01:10.838669Z",
                 "deadline": null
               },
               {
                 "node": "separate",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-19T07:02:06.575553Z",
-                "finished_at": "2026-11-19T07:02:06.583823Z",
+                "started_at": "2026-11-19T18:01:12.985082Z",
+                "finished_at": "2026-11-19T18:01:13.105568Z",
                 "deadline": null
               },
               {
                 "node": "ocr",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-19T07:02:19.727977Z",
-                "finished_at": "2026-11-19T07:02:22.066999Z",
+                "started_at": "2026-11-19T18:01:45.431717Z",
+                "finished_at": "2026-11-19T18:01:48.444069Z",
                 "deadline": null
               },
               {
                 "node": "pages",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-19T07:02:22.145487Z",
-                "finished_at": "2026-11-19T07:02:22.392422Z",
+                "started_at": "2026-11-19T18:01:45.747399Z",
+                "finished_at": "2026-11-19T18:01:46.899678Z",
                 "deadline": null
               },
               {
                 "node": "parse",
                 "status": "done",
                 "outcome": "failed",
-                "started_at": "2026-11-19T07:04:23.806445Z",
-                "finished_at": "2026-11-19T07:04:23.839705Z",
+                "started_at": "2026-11-19T18:03:07.329476Z",
+                "finished_at": "2026-11-19T18:03:07.916646Z",
                 "deadline": null
               },
               {
@@ -481,8 +481,8 @@
             ],
             "vision": false
           },
-          "created_at": "2026-11-19T07:01:53.085314Z",
-          "updated_at": "2026-11-19T07:04:23.839705Z"
+          "created_at": "2026-11-19T18:01:10.838669Z",
+          "updated_at": "2026-11-19T18:03:07.916646Z"
         },
         "tab": "intervene",
         "open": [

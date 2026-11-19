@@ -3,7 +3,8 @@ r"""Record the answers of a Lekto instance as the snapshot the tests replay.
     uv run python script/record_snapshot.py --url http://127.0.0.1:18000 [NAME ...]
 
 The token comes from the environment variable ``PYLEKTO_SNAPSHOT_TOKEN``: an admin's API token
-with the scope ``read_write``. Without names, every recording is made again, in their order.
+with the preset ``read_write`` (every right). Without names, every recording is made again, in
+their order.
 
 Never point it at an instance with real documents: the snapshot is public. Use a throwaway Lekto
 of the release ``LEKTO_VERSION`` names, filled with the synthetic documents of Lekto's
@@ -17,7 +18,7 @@ repository::
       -e LEKTO_COOKIE_SECURE=false -e LEKTO_MEILISEARCH_URL=http://meili-snapshot:7700 \
       -e LEKTO_MEILISEARCH_API_KEY=... -e LEKTO_PUBLIC_URL=http://127.0.0.1:18000 \
       -e LEKTO_PUSH_VAPID_PRIVATE_KEY=... -e LEKTO_PUSH_SUBJECT=mailto:jane@example.com \
-      ghcr.io/lektohq/lekto:0.15.5
+      ghcr.io/lektohq/lekto:0.16.0
     # the push key: docker exec lekto-snapshot lekto-run lekto vapid-key (first line); tasks
     # need the public URL, the address the script answers them at
     # an API token: sign in at http://127.0.0.1:18000/ui, Settings, API tokens (read_write)
@@ -448,6 +449,7 @@ UPLOADED = "/documents/{uploaded}"
 RECORDINGS: list[Recording] = [
     Recording("auth_me", "GET", "/auth/me", "/auth/me"),
     Recording("health", "GET", "/health", "/health"),
+    Recording("version_get", "GET", "/version", "/version"),
     # Documents: reading.
     Recording("documents_page", "GET", "/documents", "/documents", params={"limit": 5}),
     Recording("documents_count", "GET", "/documents/count", "/documents/count"),

@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "DELETE",
   "operation": "/mail-rules/{id}",
-  "path": "/mail-rules/01a1f2a0-93ba-7d79-89d3-383b1e1060f7",
+  "path": "/mail-rules/01a1f505-4958-7689-9d98-7467b5dcc8c0",
   "params": {},
   "json": null,
   "data": {},

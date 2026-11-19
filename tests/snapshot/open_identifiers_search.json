@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "POST",
   "operation": "/identifiers/open/search",
   "path": "/identifiers/open/search",
@@ -14,14 +14,72 @@
   "body": {
     "items": [
       {
+        "kind": "contract_number",
+        "value": "FNV778812",
+        "ref": "AdUB9vJDsmbsr47tUkgfC_mwXgw0yPN4ZY4",
+        "written": "FN-V-778812",
+        "source": "learned",
+        "contacts": [
+          {
+            "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
+            "name": "FernNetz Telekommunikation GmbH"
+          }
+        ],
+        "person": null,
+        "documents": 9,
+        "last": "2026-07-05",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm",
+            "params": {
+              "count": 9,
+              "name": "FernNetz Telekommunikation GmbH"
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      },
+      {
+        "kind": "customer_number",
+        "value": "40012345",
+        "ref": "AZPoBSgFRTI-1yfE3l1IbCF-VvC853dlIw",
+        "written": "40012345",
+        "source": "learned",
+        "contacts": [
+          {
+            "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
+            "name": "FernNetz Telekommunikation GmbH"
+          }
+        ],
+        "person": null,
+        "documents": 9,
+        "last": "2026-07-05",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm",
+            "params": {
+              "count": 9,
+              "name": "FernNetz Telekommunikation GmbH"
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      },
+      {
         "kind": "email_domain",
         "value": "fernnetz.example",
-        "ref": "AfhagG2Yr1UjnAy8uj5pX3PfJLloDPbyuxp-YOGpDisG",
+        "ref": "AS-0pXol82vxdbqe_jf7a9wGcSgGc8tsLD-MS8yhnzLI",
         "written": "fernnetz.example",
         "source": "suggested",
         "contacts": [
           {
-            "id": "01a1f29c-9876-73f0-9fd7-5c0bd0a4a1b2",
+            "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
             "name": "FernNetz Telekommunikation GmbH"
           }
         ],
@@ -43,15 +101,17 @@
         }
       }
     ],
-    "total": 1,
+    "total": 3,
     "counts": {
-      "learned": 0,
+      "learned": 2,
       "suggested": 1
     },
     "kinds": {
+      "contract_number": 1,
+      "customer_number": 1,
       "email_domain": 1
     },
-    "recommended": 1,
-    "to_confirm": 8
+    "recommended": 3,
+    "to_confirm": 14
   }
 }

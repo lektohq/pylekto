@@ -9,13 +9,26 @@ import httpx2
 import pytest
 from pydantic import BaseModel, TypeAdapter
 
-from pylekto import LEKTO_VERSION, LektoClient
+from pylekto import API_VERSION, LEKTO_VERSION, LektoClient
 
 SNAPSHOT = Path(__file__).resolve().parent / "snapshot"
 URL = "https://lekto.example.com"
 TOKEN = "lekto_0123456789abcdef"
 USER_ID = "0199a3c4-0000-7000-8000-000000000001"
 DOCUMENT_ID = "0199a3c4-0000-7000-8000-000000000002"
+INSTANCE_ID = "0199a3c4-0000-7000-8000-000000000003"
+# The rights of the preset read for a user who is no admin.
+READ_RIGHTS = [
+    "documents:count",
+    "documents:read",
+    "master_data:read",
+    "rules:read",
+    "spaces:read",
+    "webhooks:read",
+    "lenses:read",
+    "push:read",
+    "system:read",
+]
 
 
 def me(**changes: Any) -> dict[str, Any]:
@@ -26,10 +39,13 @@ def me(**changes: Any) -> dict[str, Any]:
         "csrf_token": None,
         "session_expires_at": None,
         "token_scope": "read",
+        "rights": READ_RIGHTS,
         "has_password": True,
         "totp_enabled": False,
         "linked_accounts": [],
         "lekto_version": LEKTO_VERSION,
+        "api_version": API_VERSION,
+        "instance_id": INSTANCE_ID,
         "shortcut_url": None,
     } | changes
 

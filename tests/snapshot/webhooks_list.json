@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/webhooks",
   "path": "/webhooks",
@@ -9,8 +9,8 @@
   "status": 200,
   "body": [
     {
-      "id": "01a1f2a0-93f4-7615-8160-f8716d349543",
-      "owner_id": "01a1f29c-598a-760e-a697-589027bc4eb9",
+      "id": "01a1f505-499b-7509-bc96-e465917a683b",
+      "owner_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
       "name": "Muster Hook",
       "url": "https://hooks.example.com/lekto",
       "event_types": [
@@ -27,8 +27,8 @@
       "disabled_reasons": [],
       "failed_streak": 0,
       "previous_secret_valid_until": null,
-      "created_at": "2026-11-19T07:06:12.340356Z",
-      "updated_at": "2026-11-19T07:06:12.340356Z"
+      "created_at": "2026-11-19T18:15:26.875680Z",
+      "updated_at": "2026-11-19T18:15:26.875680Z"
     }
   ]
 }

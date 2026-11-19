@@ -47,6 +47,8 @@ class WebhooksResource(Resource):
     async def create(self, webhook: WebhookCreate) -> WebhookCreated:
         """Create a webhook; the answer holds its secret, which Lekto never shows again.
 
+        The webhook belongs to the token that creates it: revoking the token deletes it.
+
         Args:
             webhook: The name, address, events, whether it is signed, headers and body.
 

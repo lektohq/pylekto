@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/documents/facets",
   "path": "/documents/facets",
@@ -11,51 +11,51 @@
     "total": 100,
     "contacts": [
       {
-        "id": "01a1f29c-980d-7d97-8995-fa0342dacde3",
+        "id": "01a1f4f8-3262-7bcd-a435-da853c658c52",
         "count": 13
       },
       {
-        "id": "01a1f29c-9984-7c57-a405-ac3d2635e8a5",
+        "id": "01a1f4f8-33dd-7fa7-b61e-8d46a712c5bd",
         "count": 13
       },
       {
-        "id": "01a1f29c-9876-73f0-9fd7-5c0bd0a4a1b2",
+        "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
         "count": 11
       },
       {
-        "id": "01a1f29c-9844-754b-a753-8ab9a743b337",
+        "id": "01a1f4f8-329c-7492-9df0-4c7c987b72f8",
         "count": 5
       },
       {
-        "id": "01a1f29c-9990-7a0a-966f-91d6ca718cb3",
+        "id": "01a1f4f8-33ec-777a-af35-f870a06c2b14",
         "count": 5
       },
       {
-        "id": "01a1f29c-9891-7312-83d4-1e148c70b2e7",
+        "id": "01a1f4f8-3308-71aa-8d4e-f0102529b667",
         "count": 4
       },
       {
-        "id": "01a1f29c-98e5-7fd3-9c9f-b9b950a444a3",
+        "id": "01a1f4f8-335d-7fac-9072-4b24a4973c18",
         "count": 4
       },
       {
-        "id": "01a1f29c-999e-7614-8cce-83075f3c0fa7",
+        "id": "01a1f4f8-33fb-7592-9c49-51a25da44c2f",
         "count": 4
       },
       {
-        "id": "01a1f29c-9850-75ee-9363-c7a939a6e6f4",
+        "id": "01a1f4f8-32af-77ab-8a27-1363a21246cd",
         "count": 3
       },
       {
-        "id": "01a1f29c-9883-7044-9f29-ad1265ce96d7",
+        "id": "01a1f4f8-32f8-70f7-a97c-eeca40393117",
         "count": 3
       },
       {
-        "id": "01a1f29c-991c-75e8-a4e6-19eaa319a7b0",
+        "id": "01a1f4f8-338c-739a-b913-029c96f9f22e",
         "count": 3
       },
       {
-        "id": "01a1f29c-99b9-73af-9dfd-9419f9d974a6",
+        "id": "01a1f4f8-3418-78cf-bbc0-5a9127dc3ae4",
         "count": 3
       },
       {
@@ -63,129 +63,129 @@
         "count": 3
       },
       {
-        "id": "01a1f29c-97e2-77db-b382-b7a0d43edcb8",
+        "id": "01a1f4f8-3225-7505-8ca7-6352bfb54aab",
         "count": 2
       },
       {
-        "id": "01a1f29c-9868-74ba-baa3-be6f6e129f4f",
+        "id": "01a1f4f8-32d6-75b6-ae7e-486415097e44",
         "count": 2
       },
       {
-        "id": "01a1f29c-98d1-7c6b-b2be-af27af6034e2",
+        "id": "01a1f4f8-334e-705b-b599-f10b406fef37",
         "count": 2
       },
       {
-        "id": "01a1f29c-97d3-7eed-a06f-b3b2ec9ce68c",
+        "id": "01a1f4f8-3213-7a46-a494-bec2c1444639",
         "count": 1
       },
       {
-        "id": "01a1f29c-97f3-75d7-8e50-626d682739d6",
+        "id": "01a1f4f8-323d-7f31-99a2-cb307fcbabb0",
         "count": 1
       },
       {
-        "id": "01a1f29c-97fe-795b-80e5-f77797136c1f",
+        "id": "01a1f4f8-324f-7648-8c69-e4078bb5a05d",
         "count": 1
       },
       {
-        "id": "01a1f29c-981c-795b-a197-d1043204c3fc",
+        "id": "01a1f4f8-3277-7d19-a410-155c66aa6e6d",
         "count": 1
       },
       {
-        "id": "01a1f29c-9837-7152-86ba-d9a51dca39c9",
+        "id": "01a1f4f8-328c-77b6-b297-a83a18bd17d5",
         "count": 1
       },
       {
-        "id": "01a1f29c-985c-77ab-92a6-11a1558af7b2",
+        "id": "01a1f4f8-32c4-7c7e-8e0b-950282f56277",
         "count": 1
       },
       {
-        "id": "01a1f29c-98ae-708f-afd1-0ecdf23939ff",
+        "id": "01a1f4f8-332d-7fdf-82cd-407420fe69ae",
         "count": 1
       },
       {
-        "id": "01a1f29c-98bd-7cd2-a295-f65c802ca405",
+        "id": "01a1f4f8-3340-7548-853e-951845ef320e",
         "count": 1
       },
       {
-        "id": "01a1f29c-98f9-76c3-94bb-b44cd7ffc79c",
+        "id": "01a1f4f8-336d-79ed-b274-b723b63bbaae",
         "count": 1
       },
       {
-        "id": "01a1f29c-990f-7885-a2e5-326b421a1314",
+        "id": "01a1f4f8-337d-722e-9ece-2f33e92eda8f",
         "count": 1
       },
       {
-        "id": "01a1f29c-992d-7188-8e59-b2200ca0b8d2",
+        "id": "01a1f4f8-339c-7a18-86f4-11a0cb6fa428",
         "count": 1
       },
       {
-        "id": "01a1f29c-9944-7058-8594-140095cbce99",
+        "id": "01a1f4f8-33ac-7899-a8f2-1e98fabb2168",
         "count": 1
       },
       {
-        "id": "01a1f29c-995c-7318-a4e8-c9ee33ac3f13",
+        "id": "01a1f4f8-33bd-75c8-bf0a-865a718cecb7",
         "count": 1
       },
       {
-        "id": "01a1f29c-9970-7141-af67-daadc01ab1cf",
+        "id": "01a1f4f8-33cc-7ff3-ab04-86021aefd991",
         "count": 1
       },
       {
-        "id": "01a1f29c-99ab-7d8b-bfb3-830e8446d823",
+        "id": "01a1f4f8-340a-7340-80ca-f26c6c9f3f6d",
         "count": 1
       },
       {
-        "id": "01a1f29c-99c6-7876-b26a-a456161ba668",
+        "id": "01a1f4f8-3428-7048-af1b-90ac558c6649",
         "count": 1
       },
       {
-        "id": "01a1f29c-99d3-7f4b-8eb6-2698ce09038d",
+        "id": "01a1f4f8-3439-7a54-b249-040ebba17084",
         "count": 1
       },
       {
-        "id": "01a1f29c-99e2-7a74-aa8b-a54a6e606298",
+        "id": "01a1f4f8-344c-7d2e-85a3-7f9f677ad121",
         "count": 1
       },
       {
-        "id": "01a1f29c-99ee-75a3-a127-df161e909a8f",
+        "id": "01a1f4f8-345c-7106-8052-fb121ee9abfc",
         "count": 1
       },
       {
-        "id": "01a1f29c-99fd-7289-9537-cf30cbff6e54",
+        "id": "01a1f4f8-3476-791b-b09b-091727010c00",
         "count": 1
       }
     ],
     "document_types": [
       {
-        "id": "01a1f29c-9a53-7671-a8cf-dc1a2a5d9442",
+        "id": "01a1f4f8-34d4-7776-b81a-07666079e5ca",
         "count": 26
       },
       {
-        "id": "01a1f29c-9a28-794a-bd9f-48d3e489aa8d",
+        "id": "01a1f4f8-34a9-7e26-b4f3-89e22cecdc1a",
         "count": 16
       },
       {
-        "id": "01a1f29c-9a36-74ac-bfd7-daabcded95c1",
+        "id": "01a1f4f8-34b7-78ad-beb1-b26570259a87",
         "count": 14
       },
       {
-        "id": "01a1f29c-9a21-702d-9452-6997f3ffe767",
+        "id": "01a1f4f8-34a1-73ad-8bd7-f580f65c3466",
         "count": 10
       },
       {
-        "id": "01a1f29c-9a4c-7104-8660-a325441eb6d6",
+        "id": "01a1f4f8-34cd-7fd7-a159-e700c13cc10d",
         "count": 7
       },
       {
-        "id": "01a1f29c-9a67-774b-a17e-988d70f4d939",
+        "id": "01a1f4f8-34eb-746c-a05f-954d0510aacb",
         "count": 5
       },
       {
-        "id": "01a1f29c-9a2f-7a9d-8093-69c7ca526381",
+        "id": "01a1f4f8-34b0-75cf-9367-27fb759d36a1",
         "count": 4
       },
       {
-        "id": "01a1f29c-9a13-7249-8af7-ef16689cf474",
+        "id": "01a1f4f8-3491-707e-949f-8bf9138580e5",
         "count": 3
       },
       {
@@ -193,43 +193,43 @@
         "count": 3
       },
       {
-        "id": "01a1f29c-9a1a-7878-909f-3efa17e6a4f8",
+        "id": "01a1f4f8-3499-727e-85dc-94f73b3096a7",
         "count": 2
       },
       {
-        "id": "01a1f29c-9a7a-7ca8-aabc-cbe8aae51c5b",
+        "id": "01a1f4f8-34ff-784f-a507-a554ad5d52bd",
         "count": 2
       },
       {
-        "id": "01a1f29c-9a0b-72e7-bf7e-cb145fb39965",
+        "id": "01a1f4f8-3487-752a-8f46-f34712ae0092",
         "count": 1
       },
       {
-        "id": "01a1f29c-9a3f-78e8-b256-ff1db7dfa8d9",
+        "id": "01a1f4f8-34bf-73d5-a30d-79b6f1c252dd",
         "count": 1
       },
       {
-        "id": "01a1f29c-9a45-7a09-94b8-64c56b679126",
+        "id": "01a1f4f8-34c5-72c1-9e91-564f31ed07a9",
         "count": 1
       },
       {
-        "id": "01a1f29c-9a5a-7e32-a62e-9cfda1f8133c",
+        "id": "01a1f4f8-34dc-71a3-9e03-948fcd5a6950",
         "count": 1
       },
       {
-        "id": "01a1f29c-9a61-7d0c-bd3e-dd2acb6124c7",
+        "id": "01a1f4f8-34e4-7973-900d-7e10336ab614",
         "count": 1
       },
       {
-        "id": "01a1f29c-9a6d-7c87-b793-94f5235c7e68",
+        "id": "01a1f4f8-34f2-721b-970c-3fa84e040ddc",
         "count": 1
       },
       {
-        "id": "01a1f29c-9a74-73e0-b39e-ae2d224e3da3",
+        "id": "01a1f4f8-34f9-73d1-a310-b7a9390c7386",
         "count": 1
       },
       {
-        "id": "01a1f29c-9a81-7da7-ab33-3799a4494a3c",
+        "id": "01a1f4f8-3507-7e52-b179-ff28f839285d",
         "count": 1
       }
     ],

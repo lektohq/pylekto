@@ -1,16 +1,16 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "GET",
   "operation": "/contacts/{id}",
-  "path": "/contacts/01a1f2a0-865d-764c-ad56-de56ba87d43c",
+  "path": "/contacts/01a1f505-3ea0-733f-ad2f-177b1e50bc80",
   "params": {},
   "json": null,
   "data": {},
   "status": 200,
   "body": {
-    "id": "01a1f2a0-865d-764c-ad56-de56ba87d43c",
+    "id": "01a1f505-3ea0-733f-ad2f-177b1e50bc80",
     "name": "Muster Bakery",
-    "created_at": "2026-11-19T07:06:08.861315Z",
+    "created_at": "2026-11-19T18:15:24.064443Z",
     "document_count": null,
     "aliases": [
       "Bakery Muster"

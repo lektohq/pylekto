@@ -1,31 +1,31 @@
 {
-  "lekto_version": "0.15.5",
+  "lekto_version": "0.16.0",
   "method": "POST",
   "operation": "/documents/{id}/confirm",
-  "path": "/documents/01a1f2a0-4e39-78ce-8feb-423cf38a4ed0/confirm",
+  "path": "/documents/01a1f504-f7d8-7baa-9537-95bdad02f352/confirm",
   "params": {},
   "json": {
     "changes": {
       "title": "Muster Versicherung",
-      "contact_id": "01a1f29c-99e2-7a74-aa8b-a54a6e606298",
-      "document_type_id": "01a1f29c-9a53-7671-a8cf-dc1a2a5d9442",
+      "contact_id": "01a1f4f8-344c-7d2e-85a3-7f9f677ad121",
+      "document_type_id": "01a1f4f8-34d4-7776-b81a-07666079e5ca",
       "document_date": "2026-10-01"
     }
   },
   "data": {},
   "status": 202,
   "body": {
-    "id": "01a1f2a0-4e39-78ce-8feb-423cf38a4ed0",
+    "id": "01a1f504-f7d8-7baa-9537-95bdad02f352",
     "title": "Muster Versicherung",
     "original_filename": "documents_add_version.pdf",
     "media_type": "application/pdf",
     "channel": "api",
-    "sha256": "2ee08eba05d8cf377633a8f9d4195bef75f2202f3739cbc9df6560d12b7f8325",
-    "uploaded_by": "01a1f29c-598a-760e-a697-589027bc4eb9",
-    "space_id": "01a1f29c-598e-7ebc-b45c-e3e87384b217",
+    "sha256": "bffd7a1162ea8db788851be0514176df184e3ea46a279992cf319a736577eb0d",
+    "uploaded_by": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
+    "space_id": "01a1f4f7-f06c-7f96-9c58-47c7ca1a56cf",
     "access": "edit",
-    "contact_id": "01a1f29c-99e2-7a74-aa8b-a54a6e606298",
-    "document_type_id": "01a1f29c-9a53-7671-a8cf-dc1a2a5d9442",
+    "contact_id": "01a1f4f8-344c-7d2e-85a3-7f9f677ad121",
+    "document_type_id": "01a1f4f8-34d4-7776-b81a-07666079e5ca",
     "topic_id": null,
     "tag_ids": [],
     "document_date": "2026-10-01",
@@ -33,8 +33,8 @@
     "lane": null,
     "first_lane": "yellow",
     "page_count": 1,
-    "confirmed_at": "2026-11-19T07:06:06.038540Z",
-    "space_confirmed_at": "2026-11-19T07:06:06.038540Z",
+    "confirmed_at": "2026-11-19T18:15:22.212582Z",
+    "space_confirmed_at": "2026-11-19T18:15:22.212582Z",
     "processing": {
       "status": "processing",
       "run": 4,
@@ -43,96 +43,96 @@
           "node": "receive",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T07:05:54.485055Z",
-          "finished_at": "2026-11-19T07:05:54.485055Z",
+          "started_at": "2026-11-19T18:15:05.900438Z",
+          "finished_at": "2026-11-19T18:15:05.900438Z",
           "deadline": null
         },
         {
           "node": "separate",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T07:06:03.242928Z",
-          "finished_at": "2026-11-19T07:06:03.261600Z",
+          "started_at": "2026-11-19T18:15:17.162720Z",
+          "finished_at": "2026-11-19T18:15:17.207721Z",
           "deadline": null
         },
         {
           "node": "ocr",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T07:06:03.333602Z",
-          "finished_at": "2026-11-19T07:06:04.485404Z",
+          "started_at": "2026-11-19T18:15:17.262089Z",
+          "finished_at": "2026-11-19T18:15:19.266550Z",
           "deadline": null
         },
         {
           "node": "pages",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T07:06:03.426728Z",
-          "finished_at": "2026-11-19T07:06:03.514697Z",
+          "started_at": "2026-11-19T18:15:17.372063Z",
+          "finished_at": "2026-11-19T18:15:18.173285Z",
           "deadline": null
         },
         {
           "node": "parse",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T07:06:04.521391Z",
-          "finished_at": "2026-11-19T07:06:04.550142Z",
+          "started_at": "2026-11-19T18:15:19.319226Z",
+          "finished_at": "2026-11-19T18:15:19.984945Z",
           "deadline": null
         },
         {
           "node": "signal_llm",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T07:06:04.575022Z",
-          "finished_at": "2026-11-19T07:06:04.582650Z",
+          "started_at": "2026-11-19T18:15:20.040549Z",
+          "finished_at": "2026-11-19T18:15:20.055086Z",
           "deadline": null
         },
         {
           "node": "signal_classifier",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T07:06:04.601818Z",
-          "finished_at": "2026-11-19T07:06:04.609790Z",
+          "started_at": "2026-11-19T18:15:20.080142Z",
+          "finished_at": "2026-11-19T18:15:20.099203Z",
           "deadline": null
         },
         {
           "node": "signal_neighbours",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T07:06:04.626624Z",
-          "finished_at": "2026-11-19T07:06:04.631731Z",
+          "started_at": "2026-11-19T18:15:20.134286Z",
+          "finished_at": "2026-11-19T18:15:20.144975Z",
           "deadline": null
         },
         {
           "node": "signal_facts",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T07:06:04.653473Z",
-          "finished_at": "2026-11-19T07:06:04.773723Z",
+          "started_at": "2026-11-19T18:15:20.138143Z",
+          "finished_at": "2026-11-19T18:15:20.989580Z",
           "deadline": null
         },
         {
           "node": "judge",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T07:06:04.812420Z",
-          "finished_at": "2026-11-19T07:06:04.856486Z",
+          "started_at": "2026-11-19T18:15:21.052840Z",
+          "finished_at": "2026-11-19T18:15:21.118487Z",
           "deadline": null
         },
         {
           "node": "fields",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T07:06:04.876705Z",
-          "finished_at": "2026-11-19T07:06:04.891491Z",
+          "started_at": "2026-11-19T18:15:21.186414Z",
+          "finished_at": "2026-11-19T18:15:21.211399Z",
           "deadline": null
         },
         {
           "node": "relate",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T07:06:04.918780Z",
-          "finished_at": "2026-11-19T07:06:04.930532Z",
+          "started_at": "2026-11-19T18:15:21.272509Z",
+          "finished_at": "2026-11-19T18:15:21.285670Z",
           "deadline": null
         },
         {
@@ -154,7 +154,7 @@
       ],
       "vision": false
     },
-    "created_at": "2026-11-19T07:05:54.485055Z",
-    "updated_at": "2026-11-19T07:06:06.038540Z"
+    "created_at": "2026-11-19T18:15:05.900438Z",
+    "updated_at": "2026-11-19T18:15:22.212582Z"
   }
 }

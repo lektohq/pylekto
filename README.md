@@ -3,12 +3,12 @@
 Async Python client for the [Lekto](https://github.com/lektohq/lekto) DMS REST API.
 
 pylekto reaches every operation of the API an API token may use: `auth` (who calls), `health`,
-`documents` (with uploads, downloads, facts, page edits, changes of many documents), `search`,
-`relations`, the master data (`contacts`, `document_types`, `tags`, `fields`), `spaces`, `users`,
-`identifiers`, the `open_identifiers`, the `inbox`, the `expected` documents, `lenses`, `rules`
-(with templates), `mailboxes`, `mail_rules`, `webhooks`, `push`, the `pipeline`, `jobs`,
-`automation`, the `classifier` and the `events` as they happen. `pylekto.webhooks` receives what
-Lekto sends to a webhook.
+`version` (and whether a newer Lekto is out), `documents` (with uploads, downloads, facts, page
+edits, changes of many documents), `search`, `relations`, the master data (`contacts`,
+`document_types`, `tags`, `fields`), `spaces`, `users`, `identifiers`, the `open_identifiers`, the
+`inbox`, the `expected` documents, `lenses`, `rules` (with templates), `mailboxes`, `mail_rules`,
+`webhooks`, `push`, the `pipeline`, `jobs`, `automation`, the `classifier` and the `events` as they
+happen. `pylekto.webhooks` receives what Lekto sends to a webhook.
 
 ```python
 import asyncio
@@ -34,8 +34,8 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-- **Token only.** A personal API token from Lekto; its scope (`read`, `upload`, `read_write`)
-  decides what the client may do.
+- **Token only.** A personal API token from Lekto; its rights (chosen one by one, or a preset:
+  `read`, `read_write`, `upload`) decide what the client may do, and `lekto.auth.me()` names them.
 - **Your own httpx2 client** if you like (`LektoClient(url, token, client=...)`): pylekto sends its
   requests with it and leaves it open.
 - **Errors raise.** Each subclass of `LektoError` says what went wrong; a refusal carries Lekto's
