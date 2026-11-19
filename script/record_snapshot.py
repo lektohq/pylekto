@@ -614,10 +614,12 @@ RECORDINGS: list[Recording] = [
     Recording("documents_bulk_progress", "GET", "/documents/bulk/{bulk}", "/documents/bulk/{id}"),
     Recording("documents_delete", "DELETE", UPLOADED, "/documents/{id}", settle="uploaded"),
     Recording("search_reindex", "POST", "/search/reindex", "/search/reindex"),
-    # Identifiers.
-    Recording("identifiers_open", "GET", "/identifiers/open", "/identifiers/open", {"limit": 5}),
+    # Open identifiers and references.
     Recording(
-        "identifiers_search_open",
+        "open_identifiers_page", "GET", "/identifiers/open", "/identifiers/open", {"limit": 5}
+    ),
+    Recording(
+        "open_identifiers_search",
         "POST",
         "/identifiers/open/search",
         "/identifiers/open/search",
@@ -625,10 +627,10 @@ RECORDINGS: list[Recording] = [
         json={"q": "FernNetz"},
     ),
     Recording(
-        "identifiers_open_summary", "GET", "/identifiers/open/summary", "/identifiers/open/summary"
+        "open_identifiers_summary", "GET", "/identifiers/open/summary", "/identifiers/open/summary"
     ),
     Recording(
-        "identifiers_open_identifier",
+        "open_identifiers_get",
         "GET",
         "/identifiers/open/{open_kind}/{open_ref}",
         "/identifiers/open/{kind}/{ref}",
@@ -653,7 +655,7 @@ RECORDINGS: list[Recording] = [
         "/identifiers/places/{kind}/{ref}",
     ),
     Recording(
-        "identifiers_decide",
+        "open_identifiers_decide",
         "POST",
         "/identifiers/open/decisions",
         "/identifiers/open/decisions",
@@ -669,7 +671,7 @@ RECORDINGS: list[Recording] = [
         },
     ),
     Recording(
-        "identifiers_confirm_recommended",
+        "open_identifiers_confirm_recommended",
         "POST",
         "/identifiers/open/recommended",
         "/identifiers/open/recommended",

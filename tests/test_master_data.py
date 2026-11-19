@@ -93,19 +93,19 @@ ANSWERS: dict[str, Call] = {
     "fields_update": lambda lekto, r: lekto.fields.update(
         first(r), FieldPatch.model_validate(r.json)
     ),
-    "identifiers_open": lambda lekto, _: lekto.identifiers.open(limit=5),
-    "identifiers_search_open": lambda lekto, r: lekto.identifiers.search_open(r.json["q"], limit=5),
-    "identifiers_open_summary": lambda lekto, _: lekto.identifiers.open_summary(),
-    "identifiers_open_identifier": lambda lekto, r: lekto.identifiers.open_identifier(
-        kind(r), r.segment(4)
-    ),
+    "open_identifiers_page": lambda lekto, _: lekto.open_identifiers.page(limit=5),
+    "open_identifiers_search": lambda lekto, r: lekto.open_identifiers.search(r.json["q"], limit=5),
+    "open_identifiers_summary": lambda lekto, _: lekto.open_identifiers.summary(),
+    "open_identifiers_get": lambda lekto, r: lekto.open_identifiers.get(kind(r), r.segment(4)),
     "identifiers_ref": lambda lekto, r: lekto.identifiers.ref(RefIn.model_validate(r.json)),
     "identifiers_value": lambda lekto, r: lekto.identifiers.value(kind(r), r.segment(4)),
     "identifiers_places": lambda lekto, r: lekto.identifiers.places(kind(r), r.segment(4)),
-    "identifiers_decide": lambda lekto, r: lekto.identifiers.decide(
+    "open_identifiers_decide": lambda lekto, r: lekto.open_identifiers.decide(
         OpenDecisionsIn.model_validate(r.json)
     ),
-    "identifiers_confirm_recommended": lambda lekto, _: lekto.identifiers.confirm_recommended(),
+    "open_identifiers_confirm_recommended": lambda lekto, _: (
+        lekto.open_identifiers.confirm_recommended()
+    ),
 }
 
 EMPTY: dict[str, Call] = {
@@ -194,3 +194,27 @@ async def test_logo(api: Api, lekto: LektoClient) -> None:
     contact = "0199a3c4-0000-7000-8000-0000000000cc"
     api.answer("GET", f"/contacts/{contact}/logo", content=b"RIFF made up WEBP")
     assert await lekto.contacts.logo(contact) == b"RIFF made up WEBP"
+
+
+async def test_open_identifiers_list_follows_the_total(api: Api, lekto: LektoClient) -> None:
+    """``open_identifiers.list`` reads pages until it has as many identifiers as the total."""
+    recorded = api.replay("open_identifiers_page")
+    items = recorded.body["items"]
+    first_page = {**recorded.body, "items": items[:3], "total": 5}
+    last_page = {**recorded.body, "items": items[3:5], "total": 5}
+    api.answer("GET", "/identifiers/open", json=first_page, when={"offset": "0"})
+    api.answer("GET", "/identifiers/open", json=last_page, when={"offset": "3"})
+    found = [item.ref async for item in lekto.open_identifiers.list(kind="iban", page_size=3)]
+    assert found == [item["ref"] for item in items[:5]]
+    assert all(request.url.params.get("kind") == "iban" for request in api.requests)
+    assert all(request.url.params.get("limit") == "3" for request in api.requests)
+
+
+async def test_open_identifiers_list_ends_on_an_empty_page(api: Api, lekto: LektoClient) -> None:
+    """A total that shrank while the pages are read does not loop: an empty page ends the list."""
+    recorded = api.replay("open_identifiers_page")
+    items = recorded.body["items"]
+    api.answer("GET", "/identifiers/open", json=recorded.body, when={"offset": "0"})
+    empty = {**recorded.body, "items": []}
+    api.answer("GET", "/identifiers/open", json=empty, when={"offset": str(len(items))})
+    assert len([item async for item in lekto.open_identifiers.list()]) == len(items)

@@ -299,6 +299,20 @@ class OffsetPage[T](Protocol):
         ...
 
 
+class TotalPage[T](Protocol):
+    """A page of a list that says how many items it holds in all (open identifiers)."""
+
+    @property
+    def items(self) -> Sequence[T]:
+        """The items of this page."""
+        ...
+
+    @property
+    def total(self) -> int:
+        """How many items the list holds in all."""
+        ...
+
+
 async def cursor_items[T](
     fetch: Callable[[str | None], Awaitable[CursorPage[T]]],
 ) -> AsyncIterator[T]:
@@ -323,3 +337,18 @@ async def offset_items[T](fetch: Callable[[int], Awaitable[OffsetPage[T]]]) -> A
         if page.next_offset is None:
             return
         offset = page.next_offset
+
+
+async def total_items[T](fetch: Callable[[int], Awaitable[TotalPage[T]]]) -> AsyncIterator[T]:
+    """Every item of a list that gives its total instead of the next offset (open identifiers).
+
+    An empty page ends it too: the total may shrink while the pages are read.
+    """
+    offset = 0
+    while True:
+        page = await fetch(offset)
+        for item in page.items:
+            yield item
+        offset += len(page.items)
+        if not page.items or offset >= page.total:
+            return

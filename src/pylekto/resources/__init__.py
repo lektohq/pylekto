@@ -14,6 +14,7 @@ from pylekto.resources.master_data import (
     FieldsResource,
     TagsResource,
 )
+from pylekto.resources.open_identifiers import OpenIdentifiersResource
 from pylekto.resources.operations import (
     AutomationResource,
     ClassifierResource,
@@ -45,6 +46,7 @@ __all__ = [
     "LensesResource",
     "MailRulesResource",
     "MailboxesResource",
+    "OpenIdentifiersResource",
     "PipelineResource",
     "PushResource",
     "RelationsResource",
