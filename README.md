@@ -3,12 +3,12 @@
 Async Python client for the [Lekto](https://github.com/lektohq/lekto) DMS REST API.
 
 pylekto reaches every operation of the API an API token may use: `auth` (who calls), `health`,
-`documents` (with uploads, downloads, facts, page edits, changes of many documents), `search`,
-`relations`, the master data (`contacts`, `document_types`, `tags`, `fields`), `spaces`, `users`,
-`identifiers`, the `open_identifiers`, the `inbox`, the `expected` documents, `lenses`, `rules`
-(with templates), `mailboxes`, `mail_rules`, `webhooks`, `push`, the `pipeline`, `jobs`,
-`automation`, the `classifier` and the `events` as they happen. `pylekto.webhooks` receives what
-Lekto sends to a webhook.
+`version` (and whether a newer Lekto is out), `documents` (with uploads, downloads, facts, page
+edits, changes of many documents), `search`, `relations`, the master data (`contacts`,
+`document_types`, `tags`, `fields`), `spaces`, `users`, `identifiers`, the `open_identifiers`, the
+`inbox`, the `expected` documents, `lenses`, `rules` (with templates), `mailboxes`, `mail_rules`,
+`webhooks`, `push`, the `pipeline`, `jobs`, `automation`, the `classifier` and the `events` as they
+happen. `pylekto.webhooks` receives what Lekto sends to a webhook.
 
 ```python
 import asyncio
