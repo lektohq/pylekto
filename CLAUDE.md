@@ -66,10 +66,10 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
   (`Recording.listen`, with a request that triggers events).
 - `models.py` is generated; a test fails if it differs from what `script/generate_models.py`
   writes from `openapi.json`. Ruff and typos leave it out; mypy checks it.
-- Every choice (an `enum` of strings) is `Literal[...] | Unknown`: a value a newer Lekto sends and
-  pylekto does not know reads as `pylekto.Unknown` (a `str`) instead of failing. A plain `str` is
-  no `Unknown`, so type checkers keep requests to the known values. Unions with a discriminator
-  stay closed.
+- Every choice (an `enum` of strings, in the models and in `types.py`) is `Literal[...] | Unknown`:
+  a value a newer Lekto sends and pylekto does not know reads as `pylekto.Unknown` (a `str`)
+  instead of failing, and goes back to Lekto as a filter. A plain `str` is no `Unknown`, so type
+  checkers keep requests to the known values. Unions with a discriminator stay closed.
 - Connecting compares the version of Lekto's API (`api_version` of `GET /auth/me`) with
   `API_VERSION` and warns (`LektoVersionWarning`) when it may not fit: during the beta (`0.x`)
   every other MINOR, from `1.0` on another MAJOR or a smaller MINOR of the server; a Lekto

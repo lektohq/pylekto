@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from typing import get_args, get_type_hints
 
+from pylekto import Unknown
 from pylekto.types import (
     Channel,
     DeliveryOutcome,
@@ -51,7 +52,7 @@ def test_edit_parts_are_the_ones_of_the_form() -> None:
 
 
 def test_literals_are_the_descriptions_choices() -> None:
-    """The literal types written by hand hold the choices of the description."""
+    """The literal types written by hand hold the choices of the description, open as theirs."""
     schemas = DESCRIPTION["components"]["schemas"]
     for alias, schema in [
         (IdentifierKind, "IdentifierKind"),
@@ -65,4 +66,6 @@ def test_literals_are_the_descriptions_choices() -> None:
         (Channel, "Channel"),
         (Period, "Period"),
     ]:
-        assert list(get_args(alias.__value__)) == schemas[schema]["enum"]
+        literal, unknown = get_args(alias.__value__)
+        assert unknown is Unknown
+        assert list(get_args(literal)) == schemas[schema]["enum"]

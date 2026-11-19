@@ -93,6 +93,16 @@ async def test_an_answer_with_a_new_value_reads(api: Api, lekto: LektoClient) ->
     assert document.lane == NEW_VALUE
 
 
+async def test_a_value_read_goes_back_as_a_filter(api: Api, lekto: LektoClient) -> None:
+    """A job state Lekto sent, one this pylekto does not know as well, filters the jobs."""
+    recorded = snapshot("jobs_page")
+    job = recorded.body["items"][0] | {"state": NEW_VALUE}
+    api.answer("GET", "/jobs", json=recorded.body | {"items": [job]})
+    state = (await lekto.jobs.page()).items[0].state
+    await lekto.jobs.page(state=[state])
+    assert api.requests[-1].url.params.get_list("state") == [NEW_VALUE]
+
+
 def test_a_request_sends_an_unknown_as_written() -> None:
     """A value given as ``Unknown`` goes to Lekto as its text."""
     mailbox = models.MailboxCreate.model_validate(
