@@ -81,7 +81,10 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
   In a test, `api.replay(name)` answers the request as Lekto did; `tests/test_snapshot.py` checks
   every recording against the model the OpenAPI description names for its answer.
 - This repository will be public: every value in code, tests, fixtures, commits and pull requests
-  is made up. No real names, companies, IBANs, addresses, numbers, hosts or tokens.
+  is made up. No real names, companies, IBANs, addresses, numbers, hosts or tokens. The one
+  exception: the webhook recordings (`tests/snapshot/webhooks/`) keep the signing secret and task
+  tokens of a deleted webhook on a throwaway instance, and its address `127.0.0.1`, because the
+  signature covers the body and the tests verify Lekto's own.
 - Comments explain *why* (constraints, surprises, workarounds), never *what*; one short line or
   none. No section or divider comments.
 - Keep try clauses minimal: wrap only the statement that can raise, catch only the expected
