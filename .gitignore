@@ -26,10 +26,11 @@ htmlcov/
 
 # Editors
 .vscode/
+.idea/
 *.iml
 
 # The knowledge vault, a checkout of the private repository lektohq/lekto-knowledge
-.idea/
+.knowledge/
 
 # Documentation build and its deployment (Zensical, Cloudflare)
 site/
