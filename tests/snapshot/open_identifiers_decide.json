@@ -7,10 +7,10 @@
   "json": {
     "decisions": [
       {
-        "kind": "contract_number",
-        "value": "FNV778812",
+        "kind": "email_domain",
+        "value": "fernnetz.example",
         "action": "confirm",
-        "contact_id": "01a1f0a0-256d-79ba-b7de-f7ad245197b3"
+        "contact_id": "01a1f29c-9876-73f0-9fd7-5c0bd0a4a1b2"
       }
     ]
   },
@@ -18,8 +18,8 @@
   "status": 200,
   "body": [
     {
-      "kind": "contract_number",
-      "value": "FNV778812",
+      "kind": "email_domain",
+      "value": "fernnetz.example",
       "done": true,
       "reason": null
     }

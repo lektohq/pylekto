@@ -2,7 +2,7 @@
   "lekto_version": "0.15.5",
   "method": "GET",
   "operation": "/documents/{id}/origin",
-  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/origin",
+  "path": "/documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/origin",
   "params": {},
   "json": null,
   "data": {},

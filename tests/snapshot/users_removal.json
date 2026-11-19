@@ -2,7 +2,7 @@
   "lekto_version": "0.15.5",
   "method": "GET",
   "operation": "/users/{id}/removal",
-  "path": "/users/01a1f0b7-cf1f-7dd4-b46c-e161bdc86b90/removal",
+  "path": "/users/01a1f2a0-85c5-72f1-8636-4c0bfdeba205/removal",
   "params": {},
   "json": null,
   "data": {},

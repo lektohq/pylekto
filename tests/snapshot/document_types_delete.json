@@ -2,7 +2,7 @@
   "lekto_version": "0.15.5",
   "method": "DELETE",
   "operation": "/document-types/{id}",
-  "path": "/document-types/01a1f0b8-182a-7552-9d2f-d1896b69da6f",
+  "path": "/document-types/01a1f2a0-8739-757c-9768-0017e0becc05",
   "params": {},
   "json": null,
   "data": {},

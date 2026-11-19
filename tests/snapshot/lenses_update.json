@@ -2,7 +2,7 @@
   "lekto_version": "0.15.5",
   "method": "PATCH",
   "operation": "/lenses/{id}",
-  "path": "/lenses/01a1f0bb-96a7-7c8a-a426-b12c8e5095aa",
+  "path": "/lenses/01a1f2a0-8826-7ef0-8bf9-255416f3784b",
   "params": {},
   "json": {
     "query": "Muster",
@@ -11,7 +11,7 @@
   "data": {},
   "status": 200,
   "body": {
-    "id": "01a1f0bb-96a7-7c8a-a426-b12c8e5095aa",
+    "id": "01a1f2a0-8826-7ef0-8bf9-255416f3784b",
     "name": "Muster Lens",
     "position": 0,
     "filter": {
@@ -35,7 +35,7 @@
     "layout": "list",
     "card_field_ids": [],
     "due_field_id": null,
-    "created_at": "2026-11-18T22:16:28.071142Z",
-    "updated_at": "2026-11-18T22:16:28.133227Z"
+    "created_at": "2026-11-19T07:06:09.318104Z",
+    "updated_at": "2026-11-19T07:06:09.387947Z"
   }
 }

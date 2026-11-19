@@ -2,14 +2,14 @@
   "lekto_version": "0.15.5",
   "method": "GET",
   "operation": "/mail-rules/{id}",
-  "path": "/mail-rules/01a1f0bf-8917-7323-8c33-1f489ab504ce",
+  "path": "/mail-rules/01a1f2a0-93ba-7d79-89d3-383b1e1060f7",
   "params": {},
   "json": null,
   "data": {},
   "status": 200,
   "body": {
-    "id": "01a1f0bf-8917-7323-8c33-1f489ab504ce",
-    "mailbox_id": "01a1f0bf-5435-7684-a492-2d59e9620c37",
+    "id": "01a1f2a0-93ba-7d79-89d3-383b1e1060f7",
+    "mailbox_id": "01a1f2a0-9366-7684-911a-19f21d868a88",
     "name": "Muster Mail Rule",
     "priority": 100,
     "conditions": {
@@ -23,13 +23,13 @@
       "not": false
     },
     "parts": "all",
-    "user_id": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+    "user_id": "01a1f29c-598a-760e-a697-589027bc4eb9",
     "space_id": null,
     "text_type_id": null,
     "after": [],
     "enabled": true,
     "disabled_reason": null,
-    "created_at": "2026-11-18T22:20:46.743460Z",
-    "updated_at": "2026-11-18T22:20:46.743460Z"
+    "created_at": "2026-11-19T07:06:12.282832Z",
+    "updated_at": "2026-11-19T07:06:12.282832Z"
   }
 }

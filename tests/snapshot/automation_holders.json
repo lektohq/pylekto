@@ -10,7 +10,7 @@
   "body": {
     "kinds": [
       {
-        "right": 3,
+        "right": 7,
         "learned_rejected": 0,
         "refused_confirmed": 0,
         "unclear": 0,
@@ -27,7 +27,7 @@
       }
     ],
     "recommendation": {
-      "right": 6,
+      "right": 7,
       "learned_rejected": 0,
       "refused_confirmed": 0,
       "unclear": 0,

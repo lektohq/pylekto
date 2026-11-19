@@ -22,7 +22,7 @@ repository::
     # need the public URL, the address the script answers them at
     # an API token: sign in at http://127.0.0.1:18000/ui, Settings, API tokens (read_write)
     python <lekto>/examples/mcp-eval/seed.py --url http://127.0.0.1:18000 --token ... \
-      --documents 40
+      --documents 100
     # wait until the inbox shows nothing in processing; then read the facts of the documents
     # taken over (POST /api/v1/pipeline/read-facts) and wait again
 
@@ -134,8 +134,23 @@ class Recorder:
         message = f"document {document_id} is still in processing"
         raise SystemExit(message)
 
+    def idle(self) -> None:
+        """Wait until Lekto runs no job and has none due (at most five minutes)."""
+        for _ in range(300):
+            kinds = self.call("GET", "/jobs/summary")["kinds"]
+            if not any(kind["running"] or kind["due"] for kind in kinds):
+                return
+            time.sleep(1)
+        message = "Lekto still has jobs running or due"
+        raise SystemExit(message)
+
     def listen(self, recording: Recording, path: str, params: Any) -> tuple[int, str]:
-        """Record a stream of events around its trigger; return the status and the text."""
+        """Record a stream of events around its trigger; return the status and the text.
+
+        The stream opens once Lekto is idle: jobs still at work (a classifier trained just
+        before re-files every document) would fill it with events of their own.
+        """
+        self.idle()
         seconds = recording.listen or 0.0
         timeout = httpx2.Timeout(seconds, connect=10.0)
         lines: list[str] = []

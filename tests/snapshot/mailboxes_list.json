@@ -9,7 +9,7 @@
   "status": 200,
   "body": [
     {
-      "id": "01a1f0bf-5435-7684-a492-2d59e9620c37",
+      "id": "01a1f2a0-9366-7684-911a-19f21d868a88",
       "name": "Muster Mailbox",
       "host": "imap.example.com",
       "port": 993,
@@ -38,8 +38,8 @@
         "keywords": [],
         "own_keywords": null
       },
-      "created_at": "2026-11-18T22:20:33.204689Z",
-      "updated_at": "2026-11-18T22:20:33.204689Z"
+      "created_at": "2026-11-19T07:06:12.197789Z",
+      "updated_at": "2026-11-19T07:06:12.197789Z"
     }
   ]
 }

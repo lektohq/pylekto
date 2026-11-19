@@ -12,15 +12,15 @@
   "body": {
     "items": [
       {
-        "id": "01a1f0c4-eaf6-75bf-8a41-5554c3f9302b",
+        "id": "01a1f2a0-948a-7833-8966-a6c1afa0d444",
         "kind": "pipeline.reparse",
-        "state": "due",
-        "attempts": 0,
-        "run_at": "2026-11-18T22:26:39.478762Z",
-        "started_at": null,
+        "state": "running",
+        "attempts": 1,
+        "run_at": "2026-11-19T07:06:12.490517Z",
+        "started_at": "2026-11-19T07:06:12.836188Z",
         "finished_at": null,
         "document": {
-          "id": "01a1f0a0-2de5-722d-ae8d-3556494b2962",
+          "id": "01a1f29c-bbd4-74ab-b695-0faf0541f042",
           "title": "Jahresabrechnung Strom 2023/2024"
         },
         "document_hidden": false,
@@ -30,70 +30,70 @@
         "retry": null
       },
       {
-        "id": "01a1f0c4-eaf9-7ecc-8fa2-6df2a725e84d",
+        "id": "01a1f2a0-948b-7cee-b9c8-7a152895396c",
         "kind": "pipeline.reparse",
         "state": "due",
         "attempts": 0,
-        "run_at": "2026-11-18T22:26:39.481302Z",
+        "run_at": "2026-11-19T07:06:12.491770Z",
         "started_at": null,
         "finished_at": null,
         "document": {
-          "id": "01a1f0a0-2db9-7184-801b-0cafa31b43a3",
+          "id": "01a1f29c-bbac-7882-8ff5-15ac8368fc42",
+          "title": "Bausparvertrag Jahresauszug 2024"
+        },
+        "document_hidden": false,
+        "node": "parse",
+        "contact": null,
+        "error": null,
+        "retry": null
+      },
+      {
+        "id": "01a1f2a0-948c-7f05-93ee-7170ae177966",
+        "kind": "pipeline.reparse",
+        "state": "due",
+        "attempts": 0,
+        "run_at": "2026-11-19T07:06:12.492469Z",
+        "started_at": null,
+        "finished_at": null,
+        "document": {
+          "id": "01a1f29c-bb7c-761e-99b6-8abecac515f1",
+          "title": "Kontoauszug 11/2024"
+        },
+        "document_hidden": false,
+        "node": "parse",
+        "contact": null,
+        "error": null,
+        "retry": null
+      },
+      {
+        "id": "01a1f2a0-948d-7dc4-b326-584d925939d1",
+        "kind": "pipeline.reparse",
+        "state": "due",
+        "attempts": 0,
+        "run_at": "2026-11-19T07:06:12.493052Z",
+        "started_at": null,
+        "finished_at": null,
+        "document": {
+          "id": "01a1f29c-bb60-7168-8750-ae1e252471ea",
+          "title": "Gehaltsabrechnung September 2024"
+        },
+        "document_hidden": false,
+        "node": "parse",
+        "contact": null,
+        "error": null,
+        "retry": null
+      },
+      {
+        "id": "01a1f2a0-948d-7e41-a535-69151d7423f9",
+        "kind": "pipeline.reparse",
+        "state": "due",
+        "attempts": 0,
+        "run_at": "2026-11-19T07:06:12.493644Z",
+        "started_at": null,
+        "finished_at": null,
+        "document": {
+          "id": "01a1f29c-bb44-7ef8-b877-960e4163cb5b",
           "title": "Kontoauszug 7/2024"
-        },
-        "document_hidden": false,
-        "node": "parse",
-        "contact": null,
-        "error": null,
-        "retry": null
-      },
-      {
-        "id": "01a1f0c4-eafa-7bc5-82ac-bee6ceb25a8a",
-        "kind": "pipeline.reparse",
-        "state": "due",
-        "attempts": 0,
-        "run_at": "2026-11-18T22:26:39.482185Z",
-        "started_at": null,
-        "finished_at": null,
-        "document": {
-          "id": "01a1f0a0-2d8b-7971-a826-5130625258c2",
-          "title": "Kontoauszug 1/2024"
-        },
-        "document_hidden": false,
-        "node": "parse",
-        "contact": null,
-        "error": null,
-        "retry": null
-      },
-      {
-        "id": "01a1f0c4-eafb-7acb-8741-de14ceb39b3b",
-        "kind": "pipeline.reparse",
-        "state": "due",
-        "attempts": 0,
-        "run_at": "2026-11-18T22:26:39.483038Z",
-        "started_at": null,
-        "finished_at": null,
-        "document": {
-          "id": "01a1f0a0-2d61-7129-b8e0-efa6bb76cf44",
-          "title": "Cloudberry invoice March 2026"
-        },
-        "document_hidden": false,
-        "node": "parse",
-        "contact": null,
-        "error": null,
-        "retry": null
-      },
-      {
-        "id": "01a1f0c4-eafb-7ffd-ae2e-fceee2e9e633",
-        "kind": "pipeline.reparse",
-        "state": "due",
-        "attempts": 0,
-        "run_at": "2026-11-18T22:26:39.483968Z",
-        "started_at": null,
-        "finished_at": null,
-        "document": {
-          "id": "01a1f0a0-2d33-77b6-aad4-904c77df90f8",
-          "title": "Kassenbon Baumarkt 23.10.2026"
         },
         "document_hidden": false,
         "node": "parse",
@@ -102,7 +102,7 @@
         "retry": null
       }
     ],
-    "total": 121,
+    "total": 300,
     "next_offset": 5
   }
 }
