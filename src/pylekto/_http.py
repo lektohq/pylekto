@@ -1,7 +1,15 @@
 """Requests to Lekto's REST API: the token, problem details as exceptions, pages of items."""
 
 import json
-from collections.abc import AsyncIterator, Awaitable, Callable, Collection, Mapping, Sequence
+from collections.abc import (
+    AsyncGenerator,
+    AsyncIterator,
+    Awaitable,
+    Callable,
+    Collection,
+    Mapping,
+    Sequence,
+)
 from contextlib import asynccontextmanager
 from datetime import date
 from http import HTTPStatus
@@ -105,7 +113,7 @@ class Http:
         """GET the bytes of a file."""
         return (await self.request("GET", path, **send)).content
 
-    async def lines(self, path: str, *, params: Params | None = None) -> AsyncIterator[str]:
+    async def lines(self, path: str, *, params: Params | None = None) -> AsyncGenerator[str]:
         """GET a stream and yield its lines as they come, until Lekto ends it.
 
         The stream may stay quiet for long: it waits for each line without a time limit.

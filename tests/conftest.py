@@ -94,6 +94,7 @@ class Answer:
     status: int = 200
     json: Any = None
     content: bytes | None = None
+    stream: httpx2.AsyncByteStream | None = None
     headers: dict[str, str] = field(default_factory=dict)
     error: Exception | None = None
     when: dict[str, str] = field(default_factory=dict)
@@ -142,7 +143,11 @@ class Api:
         if answer.error is not None:
             raise answer.error
         return httpx2.Response(
-            answer.status, json=answer.json, content=answer.content, headers=answer.headers
+            answer.status,
+            json=answer.json,
+            content=answer.content,
+            stream=answer.stream,
+            headers=answer.headers,
         )
 
 

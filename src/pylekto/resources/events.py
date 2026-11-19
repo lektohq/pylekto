@@ -1,9 +1,13 @@
 """``/events``: what happens to documents, as it happens (server-sent events)."""
 
+from contextlib import aclosing
 from typing import TYPE_CHECKING
+
+from pydantic import ValidationError
 
 from pylekto._http import query
 from pylekto._sse import server_sent_events
+from pylekto.exceptions import LektoResponseError
 from pylekto.models import EventMessage
 from pylekto.resources._base import Resource
 
@@ -33,6 +37,14 @@ class EventsResource(Resource):
                     document = await lekto.documents.get(event.document_id)
 
         """
-        lines = self._http.lines("/events", params=query(document_id=document_id))
-        async for event in server_sent_events(lines):
-            yield EventMessage.model_validate_json(event.data)
+        # Closed here, not when the garbage collector finds it: a raise would leave it open.
+        async with aclosing(
+            self._http.lines("/events", params=query(document_id=document_id))
+        ) as lines:
+            async for event in server_sent_events(lines):
+                try:
+                    message = EventMessage.model_validate_json(event.data)
+                except ValidationError as error:
+                    text = f"Lekto's event {event.event} on GET /events is no EventMessage"
+                    raise LektoResponseError(text) from error
+                yield message
