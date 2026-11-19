@@ -103,7 +103,8 @@ builds the release notes from them. Renovate (`renovate.json`, the hosted app) l
 `dependencies`, `dev-deps` (development dependencies, the devcontainer, prek's hooks), `ci`
 (actions); it suggests a version 10 days after its release at the earliest.
 The version bump follows the labels (`breaking-change` or `major`: major; `new-feature` or
-`minor`: minor; else patch). Tobi publishes and tags the release from the draft.
+`minor`: minor; else patch). pylekto is in beta like Lekto and its API: no pull request carries
+`breaking-change`, even one that breaks. Tobi publishes and tags the release from the draft.
 A pull request a user notices fills the section `## Release notes` of its description with one
 sentence on what changes for them; it stands under the title in the release notes.
 
