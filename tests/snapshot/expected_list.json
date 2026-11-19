@@ -12,29 +12,101 @@
   "body": [
     {
       "contact": {
-        "id": "01a1f0a0-25db-7ef6-b553-a59140395ec0",
+        "id": "01a1f29c-980d-7d97-8995-fa0342dacde3",
+        "name": "Brückner Maschinenbau GmbH"
+      },
+      "document_type": {
+        "id": "01a1f29c-9a36-74ac-bfd7-daabcded95c1",
+        "name": "Lohnabrechnung"
+      },
+      "number": null,
+      "cadence": "quarterly",
+      "interval_days": 92,
+      "spread_days": 30,
+      "documents": 8,
+      "last": {
+        "id": "01a1f29c-a161-755e-9df7-0a1f91b61548",
+        "title": "Gehaltsabrechnung Juli 2026",
+        "document_date": "2026-07-25"
+      },
+      "next_date": "2026-10-25",
+      "next_period": null,
+      "state": "soon"
+    },
+    {
+      "contact": {
+        "id": "01a1f29c-9984-7c57-a405-ac3d2635e8a5",
         "name": "Sparkasse Musterstadt"
       },
       "document_type": {
-        "id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
+        "id": "01a1f29c-9a28-794a-bd9f-48d3e489aa8d",
         "name": "Kontoauszug"
       },
       "number": {
         "kind": "mandate_reference",
-        "value": "SWM2004771801"
+        "value": "SWM2004771802"
       },
-      "cadence": "half_yearly",
-      "interval_days": 183,
+      "cadence": "quarterly",
+      "interval_days": 92,
       "spread_days": 2,
+      "documents": 5,
+      "last": {
+        "id": "01a1f29c-af39-7e6c-a701-6533bd914b34",
+        "title": "Kontoauszug 8/2026",
+        "document_date": "2026-08-31"
+      },
+      "next_date": "2026-11-30",
+      "next_period": null,
+      "state": "soon"
+    },
+    {
+      "contact": {
+        "id": "01a1f29c-9844-754b-a753-8ab9a743b337",
+        "name": "Cloudberry Hosting Inc."
+      },
+      "document_type": {
+        "id": "01a1f29c-9a53-7671-a8cf-dc1a2a5d9442",
+        "name": "Rechnung"
+      },
+      "number": {
+        "kind": "customer_number",
+        "value": "CBH88412"
+      },
+      "cadence": "quarterly",
+      "interval_days": 92,
+      "spread_days": 2,
+      "documents": 5,
+      "last": {
+        "id": "01a1f29c-baec-782f-9e20-4cdb66c994cf",
+        "title": "Cloudberry invoice September 2026",
+        "document_date": "2026-09-01"
+      },
+      "next_date": "2026-12-01",
+      "next_period": null,
+      "state": "soon"
+    },
+    {
+      "contact": {
+        "id": "01a1f29c-99b9-73af-9dfd-9419f9d974a6",
+        "name": "Tankstelle Nord GmbH"
+      },
+      "document_type": {
+        "id": "01a1f29c-9a21-702d-9452-6997f3ffe767",
+        "name": "Kassenbon"
+      },
+      "number": null,
+      "cadence": "yearly",
+      "interval_days": 363,
+      "spread_days": 67,
       "documents": 3,
       "last": {
-        "id": "01a1f0a0-2998-703a-b506-b89db3fa12c6",
-        "title": "Kontoauszug 1/2025",
-        "document_date": "2025-01-31"
+        "id": "01a1f29c-b942-7edd-a967-ea1cc1625885",
+        "title": "Tankbeleg 18.03.2026",
+        "document_date": "2026-03-18"
       },
-      "next_date": "2025-07-31",
+      "next_date": "2027-03-18",
       "next_period": null,
-      "state": "ended"
+      "state": "later"
     }
   ]
 }

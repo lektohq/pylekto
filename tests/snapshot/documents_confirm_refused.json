@@ -2,7 +2,7 @@
   "lekto_version": "0.15.5",
   "method": "POST",
   "operation": "/documents/{id}/confirm",
-  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/confirm",
+  "path": "/documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/confirm",
   "params": {},
   "json": {},
   "data": {},
@@ -11,11 +11,11 @@
     "type": "about:blank",
     "title": "Conflict",
     "status": 409,
-    "detail": "document 01a1f0a0-2797-7197-8560-bfd323a73977 is not waiting for confirmation",
+    "detail": "document 01a1f29c-9dee-73ca-8f76-b6b968c3aa2c is not waiting for confirmation",
     "reason": {
       "code": "not_waiting_for_confirmation",
       "params": {
-        "id": "01a1f0a0-2797-7197-8560-bfd323a73977"
+        "id": "01a1f29c-9dee-73ca-8f76-b6b968c3aa2c"
       }
     }
   }

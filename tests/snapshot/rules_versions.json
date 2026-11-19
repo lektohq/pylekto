@@ -2,7 +2,7 @@
   "lekto_version": "0.15.5",
   "method": "GET",
   "operation": "/rules/{id}/versions",
-  "path": "/rules/01a1f0bb-971d-73d0-9add-0b5f250dff4d/versions",
+  "path": "/rules/01a1f2a0-891c-7f79-83a1-54de83a367e2/versions",
   "params": {},
   "json": null,
   "data": {},
@@ -34,16 +34,16 @@
         {
           "type": "add_tags",
           "tag_ids": [
-            "01a1f0bb-9713-7151-b07e-214a2859c814"
+            "01a1f2a0-890f-7e6b-9d30-3cf04588f6f5"
           ]
         }
       ],
-      "rule_id": "01a1f0bb-971d-73d0-9add-0b5f250dff4d",
+      "rule_id": "01a1f2a0-891c-7f79-83a1-54de83a367e2",
       "version": 1,
       "scope": "global",
       "space_id": null,
-      "created_at": "2026-11-18T22:16:28.189731Z",
-      "created_by": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a"
+      "created_at": "2026-11-19T07:06:09.564721Z",
+      "created_by": "01a1f29c-598a-760e-a697-589027bc4eb9"
     },
     {
       "name": "Muster Rule",
@@ -71,16 +71,16 @@
         {
           "type": "add_tags",
           "tag_ids": [
-            "01a1f0bb-9713-7151-b07e-214a2859c814"
+            "01a1f2a0-890f-7e6b-9d30-3cf04588f6f5"
           ]
         }
       ],
-      "rule_id": "01a1f0bb-971d-73d0-9add-0b5f250dff4d",
+      "rule_id": "01a1f2a0-891c-7f79-83a1-54de83a367e2",
       "version": 2,
       "scope": "global",
       "space_id": null,
-      "created_at": "2026-11-18T22:16:28.221929Z",
-      "created_by": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a"
+      "created_at": "2026-11-19T07:06:09.606427Z",
+      "created_by": "01a1f29c-598a-760e-a697-589027bc4eb9"
     }
   ]
 }

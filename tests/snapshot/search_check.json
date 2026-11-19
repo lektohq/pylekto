@@ -8,11 +8,11 @@
   "data": {},
   "status": 200,
   "body": {
-    "current": 40,
+    "current": 100,
     "missing": 0,
     "outdated": 0,
     "other_model": 0,
-    "extra": 1,
-    "took_ms": 63.5
+    "extra": 0,
+    "took_ms": 18.5
   }
 }

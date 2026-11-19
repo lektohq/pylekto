@@ -2,37 +2,37 @@
   "lekto_version": "0.15.5",
   "method": "POST",
   "operation": "/documents/{id}/facts/decisions",
-  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/facts/decisions",
+  "path": "/documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/facts/decisions",
   "params": {},
   "json": {
     "action": "withdraw",
     "kind": "customer_number",
-    "value": "77004521"
+    "value": "T208811"
   },
   "data": {},
   "status": 200,
   "body": {
-    "contact_id": "01a1f0a0-261b-7455-8a87-2fc5bc48ac4f",
+    "contact_id": "01a1f29c-99e2-7a74-aa8b-a54a6e606298",
     "named": [
       {
-        "contact_id": "01a1f0a0-258e-7399-ad86-a85145bc6db8",
-        "name": "Hansebank AG",
+        "contact_id": "01a1f29c-9984-7c57-a405-ac3d2635e8a5",
+        "name": "Sparkasse Musterstadt",
         "alias": false,
         "in_text": true,
         "in_code": false,
         "spans": [
           {
-            "start": 1521,
-            "end": 1530,
+            "start": 1392,
+            "end": 1413,
             "locations": [
               {
                 "page": 1,
                 "boxes": [
                   {
-                    "x": 0.5011,
-                    "y": 0.924,
-                    "width": 0.051,
-                    "height": 0.0068
+                    "x": 0.7245,
+                    "y": 0.9236,
+                    "width": 0.1116,
+                    "height": 0.0074
                   }
                 ]
               }
@@ -41,41 +41,75 @@
         ]
       },
       {
-        "contact_id": "01a1f0a0-261b-7455-8a87-2fc5bc48ac4f",
-        "name": "Versandhaus Bergmann GmbH",
+        "contact_id": "01a1f29c-99e2-7a74-aa8b-a54a6e606298",
+        "name": "Volkshochschule Musterstadt",
         "alias": false,
         "in_text": true,
         "in_code": false,
         "spans": [
           {
-            "start": 338,
-            "end": 358,
+            "start": 37,
+            "end": 64,
             "locations": [
               {
                 "page": 1,
                 "boxes": [
                   {
-                    "x": 0.1191,
-                    "y": 0.1858,
-                    "width": 0.1268,
-                    "height": 0.0079
+                    "x": 0.4144,
+                    "y": 0.06,
+                    "width": 0.3808,
+                    "height": 0.0182
                   }
                 ]
               }
             ]
           },
           {
-            "start": 1463,
-            "end": 1483,
+            "start": 254,
+            "end": 281,
             "locations": [
               {
                 "page": 1,
                 "boxes": [
                   {
                     "x": 0.1191,
-                    "y": 0.924,
-                    "width": 0.1086,
-                    "height": 0.0068
+                    "y": 0.1864,
+                    "width": 0.1365,
+                    "height": 0.0071
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "start": 1287,
+            "end": 1314,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.1527,
+                    "y": 0.5999,
+                    "width": 0.2184,
+                    "height": 0.0114
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "start": 1316,
+            "end": 1343,
+            "locations": [
+              {
+                "page": 1,
+                "boxes": [
+                  {
+                    "x": 0.1191,
+                    "y": 0.9236,
+                    "width": 0.142,
+                    "height": 0.0074
                   }
                 ]
               }
@@ -87,23 +121,23 @@
     "identifiers": [
       {
         "kind": "customer_number",
-        "value": "77004521",
+        "value": "T208811",
         "contact_id": null,
         "topic_id": null,
         "in_text": true,
         "in_code": false,
         "spans": [
           {
-            "start": 328,
-            "end": 337,
+            "start": 346,
+            "end": 354,
             "locations": [
               {
                 "page": 1,
                 "boxes": [
                   {
-                    "x": 0.8373,
-                    "y": 0.1676,
-                    "width": 0.0675,
+                    "x": 0.8436,
+                    "y": 0.1824,
+                    "width": 0.0612,
                     "height": 0.0097
                   }
                 ]
@@ -124,41 +158,41 @@
       },
       {
         "kind": "email_domain",
-        "value": "bergmann-versand.example",
+        "value": "vhs-musterstadt.example",
         "contact_id": null,
         "topic_id": null,
         "in_text": true,
         "in_code": false,
         "spans": [
           {
-            "start": 1622,
-            "end": 1646,
+            "start": 1459,
+            "end": 1482,
             "locations": [
               {
                 "page": 1,
                 "boxes": [
                   {
-                    "x": 0.2801,
-                    "y": 0.9341,
-                    "width": 0.2006,
-                    "height": 0.0069
+                    "x": 0.3992,
+                    "y": 0.9337,
+                    "width": 0.1871,
+                    "height": 0.0074
                   }
                 ]
               }
             ]
           },
           {
-            "start": 1736,
-            "end": 1760,
+            "start": 1562,
+            "end": 1585,
             "locations": [
               {
                 "page": 1,
                 "boxes": [
                   {
-                    "x": 0.2801,
-                    "y": 0.9442,
-                    "width": 0.1501,
-                    "height": 0.0068
+                    "x": 0.3992,
+                    "y": 0.9438,
+                    "width": 0.1487,
+                    "height": 0.0074
                   }
                 ]
               }
@@ -174,7 +208,7 @@
         "rejected_at": null,
         "holder": {
           "kind": "sender",
-          "name": "Versandhaus Bergmann GmbH",
+          "name": "Stadt Musterstadt",
           "source": "rule"
         },
         "other_contacts": 0,
@@ -184,9 +218,9 @@
     "codes": [],
     "numbers": [
       {
-        "kind": "order_number",
-        "value": "BG7781234",
-        "written": "BG-7781234",
+        "kind": "invoice_number",
+        "value": "VHS202601877",
+        "written": "VHS-2026-01877",
         "role": "own",
         "origins": [
           "pattern"
@@ -194,64 +228,17 @@
         "state": "found",
         "spans": [
           {
-            "start": 446,
-            "end": 456,
-            "locations": [
-              {
-                "page": 1,
-                "boxes": [
-                  {
-                    "x": 0.8238,
-                    "y": 0.1824,
-                    "width": 0.081,
-                    "height": 0.0097
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "start": 648,
-            "end": 658,
-            "locations": [
-              {
-                "page": 1,
-                "boxes": [
-                  {
-                    "x": 0.2577,
-                    "y": 0.3371,
-                    "width": 0.1058,
-                    "height": 0.0126
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "holder": null
-      },
-      {
-        "kind": "commercial_register",
-        "value": "HRB10077",
-        "written": "HRB 10077",
-        "role": "contact",
-        "origins": [
-          "pattern"
-        ],
-        "state": "found",
-        "spans": [
-          {
-            "start": 1573,
-            "end": 1582,
+            "start": 440,
+            "end": 454,
             "locations": [
               {
                 "page": 1,
                 "boxes": [
                   {
                     "x": 0.7944,
-                    "y": 0.924,
-                    "width": 0.0521,
-                    "height": 0.0068
+                    "y": 0.1972,
+                    "width": 0.1104,
+                    "height": 0.0097
                   }
                 ]
               }
@@ -262,8 +249,8 @@
       },
       {
         "kind": "iban",
-        "value": "DE07300400000777123456",
-        "written": "DE07 3004 0000 0777 1234 56",
+        "value": "DE50250500000000115400",
+        "written": "DE50 2505 0000 0000 1154 00",
         "role": "contact",
         "origins": [
           "pattern"
@@ -271,17 +258,17 @@
         "state": "found",
         "spans": [
           {
-            "start": 1653,
-            "end": 1680,
+            "start": 1495,
+            "end": 1522,
             "locations": [
               {
                 "page": 1,
                 "boxes": [
                   {
-                    "x": 0.5275,
-                    "y": 0.9341,
-                    "width": 0.1401,
-                    "height": 0.0069
+                    "x": 0.753,
+                    "y": 0.9337,
+                    "width": 0.1518,
+                    "height": 0.0074
                   }
                 ]
               }
@@ -293,43 +280,13 @@
           "name": null,
           "source": "rule"
         }
-      },
-      {
-        "kind": "vat_id",
-        "value": "DE771234989",
-        "written": "DE 771 234 989",
-        "role": "contact",
-        "origins": [
-          "pattern"
-        ],
-        "state": "found",
-        "spans": [
-          {
-            "start": 1692,
-            "end": 1706,
-            "locations": [
-              {
-                "page": 1,
-                "boxes": [
-                  {
-                    "x": 0.7327,
-                    "y": 0.9341,
-                    "width": 0.0729,
-                    "height": 0.0069
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "holder": null
       }
     ],
     "decided": [
       {
         "kind": "email_address",
-        "value": "kundenservice@bergmann-versand.example",
-        "written": "kundenservice@bergmann-versand.example",
+        "value": "anmeldung@vhs-musterstadt.example",
+        "written": "anmeldung@vhs-musterstadt.example",
         "role": "person",
         "origins": [
           "pattern"
@@ -337,17 +294,17 @@
         "state": "found",
         "spans": [
           {
-            "start": 1608,
-            "end": 1646,
+            "start": 1449,
+            "end": 1482,
             "locations": [
               {
                 "page": 1,
                 "boxes": [
                   {
-                    "x": 0.2801,
-                    "y": 0.9341,
-                    "width": 0.2006,
-                    "height": 0.0069
+                    "x": 0.3992,
+                    "y": 0.9337,
+                    "width": 0.1871,
+                    "height": 0.0074
                   }
                 ]
               }

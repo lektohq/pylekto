@@ -8,5 +8,5 @@
   "data": {},
   "status": 200,
   "body": null,
-  "text": ": ready\n\nevent: document.updated\ndata: {\"type\": \"document.updated\", \"occurred_at\": \"2026-11-18T22:30:01.471308+00:00\", \"id\": \"01a1f0c7-ffff-7083-950f-ae5723e6c125\", \"document_id\": \"01a1f0a0-2797-7197-8560-bfd323a73977\", \"fields\": [\"title\"]}\nid: 01a1f0c7-ffff-7083-950f-ae5723e6c125\n\n"
+  "text": ": ready\n\nevent: document.updated\ndata: {\"type\": \"document.updated\", \"occurred_at\": \"2026-11-19T07:07:43.879275+00:00\", \"id\": \"01a1f2a1-f987-70f3-a743-06c56c7b585c\", \"document_id\": \"01a1f29c-9dee-73ca-8f76-b6b968c3aa2c\", \"fields\": [\"title\"]}\nid: 01a1f2a1-f987-70f3-a743-06c56c7b585c\n\n"
 }

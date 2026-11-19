@@ -10,10 +10,10 @@
   "body": {
     "new": 0,
     "review": 0,
-    "intervene": 2,
+    "intervene": 3,
     "processing": 0,
     "done": 0,
-    "open": 2,
+    "open": 3,
     "worst_lane": "red"
   }
 }

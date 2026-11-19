@@ -9,39 +9,39 @@
   "status": 200,
   "body": [
     {
-      "id": "01a1f09e-e2c4-7eab-8db4-6012e58e96e6",
+      "id": "01a1f29c-598e-7ebc-b45c-e3e87384b217",
       "name": "Personal",
-      "personal_of": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+      "personal_of": "01a1f29c-598a-760e-a697-589027bc4eb9",
       "description": null,
       "role": "edit",
       "members": [
         {
-          "user_id": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+          "user_id": "01a1f29c-598a-760e-a697-589027bc4eb9",
           "role": "edit",
           "username": "admin",
           "display_name": null,
           "active": true
         }
       ],
-      "created_at": "2026-11-18T21:45:07.006624Z",
+      "created_at": "2026-11-19T07:01:35.240054Z",
       "version": 1
     },
     {
-      "id": "01a1f0af-9baa-73e6-b1f4-56a4d5936d05",
-      "name": "Muster Archiv",
+      "id": "01a1f2a0-837c-7054-899f-21106b61e2aa",
+      "name": "Muster Archive",
       "personal_of": null,
       "description": null,
       "role": "edit",
       "members": [
         {
-          "user_id": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+          "user_id": "01a1f29c-598a-760e-a697-589027bc4eb9",
           "role": "edit",
           "username": "admin",
           "display_name": null,
           "active": true
         }
       ],
-      "created_at": "2026-11-18T22:03:22.922267Z",
+      "created_at": "2026-11-19T07:06:08.124730Z",
       "version": 1
     }
   ]

@@ -2,7 +2,7 @@
   "lekto_version": "0.15.5",
   "method": "DELETE",
   "operation": "/lenses/{id}",
-  "path": "/lenses/01a1f0bb-96a7-7c8a-a426-b12c8e5095aa",
+  "path": "/lenses/01a1f2a0-8826-7ef0-8bf9-255416f3784b",
   "params": {},
   "json": null,
   "data": {},

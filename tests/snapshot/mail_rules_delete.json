@@ -2,7 +2,7 @@
   "lekto_version": "0.15.5",
   "method": "DELETE",
   "operation": "/mail-rules/{id}",
-  "path": "/mail-rules/01a1f0bf-8917-7323-8c33-1f489ab504ce",
+  "path": "/mail-rules/01a1f2a0-93ba-7d79-89d3-383b1e1060f7",
   "params": {},
   "json": null,
   "data": {},

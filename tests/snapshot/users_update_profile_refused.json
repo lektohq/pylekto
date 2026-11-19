@@ -2,7 +2,7 @@
   "lekto_version": "0.15.5",
   "method": "PATCH",
   "operation": "/users/{id}/profile",
-  "path": "/users/01a1f0b7-cf1f-7dd4-b46c-e161bdc86b90/profile",
+  "path": "/users/01a1f2a0-85c5-72f1-8636-4c0bfdeba205/profile",
   "params": {},
   "json": {
     "aliases": [

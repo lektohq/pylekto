@@ -8,24 +8,9 @@
   "data": {},
   "status": 200,
   "body": {
-    "model": {
-      "number": 1,
-      "trained_at": "2026-11-18T21:55:11.844188Z",
-      "examples": 38,
-      "examples_until": "2026-11-18T21:47:48.125887Z",
-      "classes": {
-        "contact": 7,
-        "document_type": 8,
-        "topic": 0,
-        "space": 0,
-        "tags": 0
-      },
-      "learned_identifiers": 3,
-      "accuracy": null,
-      "method": "scikit-learn 1.9.1 lekto-tfidf-logreg/1"
-    },
-    "confirmed": 38,
-    "since": 0,
+    "model": null,
+    "confirmed": 97,
+    "since": 97,
     "min_examples": 20,
     "retrain_after": 25,
     "threshold": 0.8

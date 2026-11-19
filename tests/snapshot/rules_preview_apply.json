@@ -2,7 +2,7 @@
   "lekto_version": "0.15.5",
   "method": "POST",
   "operation": "/rules/{id}/apply/preview",
-  "path": "/rules/01a1f0bb-971d-73d0-9add-0b5f250dff4d/apply/preview",
+  "path": "/rules/01a1f2a0-891c-7f79-83a1-54de83a367e2/apply/preview",
   "params": {},
   "json": {
     "limit": 5
@@ -10,11 +10,37 @@
   "data": {},
   "status": 200,
   "body": {
-    "rule_id": "01a1f0bb-971d-73d0-9add-0b5f250dff4d",
+    "rule_id": "01a1f2a0-891c-7f79-83a1-54de83a367e2",
     "version": 2,
-    "items": [],
+    "items": [
+      {
+        "document_id": "01a1f29c-a2b5-7d6c-a1d9-2c967480bcea",
+        "title": "Werbung Gewinnspiel",
+        "contact_id": "01a1f29c-98ae-708f-afd1-0ecdf23939ff",
+        "document_type_id": "01a1f29c-9a74-73e0-b39e-ae2d224e3da3",
+        "document_date": "2025-10-14",
+        "created_at": "2026-11-19T07:01:53.968323Z",
+        "page_count": 1,
+        "changes": [
+          {
+            "field": "tags",
+            "old": null,
+            "new": "01a1f2a0-890f-7e6b-9d30-3cf04588f6f5"
+          }
+        ],
+        "conflicts": [],
+        "notes": [],
+        "outcome": {
+          "space_id": "01a1f29c-598e-7ebc-b45c-e3e87384b217",
+          "chain": []
+        },
+        "accepted": null,
+        "sends": [],
+        "sends_refused": []
+      }
+    ],
     "next_cursor": null,
-    "looked_at": 40,
-    "total": 40
+    "looked_at": 100,
+    "total": 100
   }
 }

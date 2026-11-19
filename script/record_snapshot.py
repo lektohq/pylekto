@@ -22,7 +22,7 @@ repository::
     # need the public URL, the address the script answers them at
     # an API token: sign in at http://127.0.0.1:18000/ui, Settings, API tokens (read_write)
     python <lekto>/examples/mcp-eval/seed.py --url http://127.0.0.1:18000 --token ... \
-      --documents 40
+      --documents 100
     # wait until the inbox shows nothing in processing; then read the facts of the documents
     # taken over (POST /api/v1/pipeline/read-facts) and wait again
 

@@ -8,152 +8,228 @@
   "data": {},
   "status": 200,
   "body": {
-    "total": 40,
+    "total": 100,
     "contacts": [
       {
-        "id": "01a1f0a0-24db-72f8-998c-aff72f87037a",
-        "count": 6
+        "id": "01a1f29c-980d-7d97-8995-fa0342dacde3",
+        "count": 13
       },
       {
-        "id": "01a1f0a0-25db-7ef6-b553-a59140395ec0",
-        "count": 6
+        "id": "01a1f29c-9984-7c57-a405-ac3d2635e8a5",
+        "count": 13
       },
       {
-        "id": "01a1f0a0-256d-79ba-b7de-f7ad245197b3",
+        "id": "01a1f29c-9876-73f0-9fd7-5c0bd0a4a1b2",
+        "count": 11
+      },
+      {
+        "id": "01a1f29c-9844-754b-a753-8ab9a743b337",
+        "count": 5
+      },
+      {
+        "id": "01a1f29c-9990-7a0a-966f-91d6ca718cb3",
+        "count": 5
+      },
+      {
+        "id": "01a1f29c-9891-7312-83d4-1e148c70b2e7",
         "count": 4
       },
       {
-        "id": "01a1f0a0-254a-7606-934e-371971906690",
-        "count": 2
+        "id": "01a1f29c-98e5-7fd3-9c9f-b9b950a444a3",
+        "count": 4
       },
       {
-        "id": "01a1f0a0-258e-7399-ad86-a85145bc6db8",
-        "count": 2
+        "id": "01a1f29c-999e-7614-8cce-83075f3c0fa7",
+        "count": 4
       },
       {
-        "id": "01a1f0a0-25ed-7ccc-b5ca-f7570ad04c69",
-        "count": 2
+        "id": "01a1f29c-9850-75ee-9363-c7a939a6e6f4",
+        "count": 3
       },
       {
-        "id": "01a1f0a0-260c-7ce0-af23-8be2978263ef",
-        "count": 2
+        "id": "01a1f29c-9883-7044-9f29-ad1265ce96d7",
+        "count": 3
+      },
+      {
+        "id": "01a1f29c-991c-75e8-a4e6-19eaa319a7b0",
+        "count": 3
+      },
+      {
+        "id": "01a1f29c-99b9-73af-9dfd-9419f9d974a6",
+        "count": 3
       },
       {
         "id": null,
+        "count": 3
+      },
+      {
+        "id": "01a1f29c-97e2-77db-b382-b7a0d43edcb8",
         "count": 2
       },
       {
-        "id": "01a1f0a0-24d2-793e-8aec-0b7686854864",
+        "id": "01a1f29c-9868-74ba-baa3-be6f6e129f4f",
+        "count": 2
+      },
+      {
+        "id": "01a1f29c-98d1-7c6b-b2be-af27af6034e2",
+        "count": 2
+      },
+      {
+        "id": "01a1f29c-97d3-7eed-a06f-b3b2ec9ce68c",
         "count": 1
       },
       {
-        "id": "01a1f0a0-24ec-7036-8d87-7c93b514695a",
+        "id": "01a1f29c-97f3-75d7-8e50-626d682739d6",
         "count": 1
       },
       {
-        "id": "01a1f0a0-24fa-7250-bee5-fdeb0991819a",
+        "id": "01a1f29c-97fe-795b-80e5-f77797136c1f",
         "count": 1
       },
       {
-        "id": "01a1f0a0-250d-77d3-a3b2-c69143877b6e",
+        "id": "01a1f29c-981c-795b-a197-d1043204c3fc",
         "count": 1
       },
       {
-        "id": "01a1f0a0-2527-7e84-a5b7-849c9f557834",
+        "id": "01a1f29c-9837-7152-86ba-d9a51dca39c9",
         "count": 1
       },
       {
-        "id": "01a1f0a0-2538-721f-8a8d-0b0c5769f48d",
+        "id": "01a1f29c-985c-77ab-92a6-11a1558af7b2",
         "count": 1
       },
       {
-        "id": "01a1f0a0-255b-7e07-85ef-ffb9fcbf039d",
+        "id": "01a1f29c-98ae-708f-afd1-0ecdf23939ff",
         "count": 1
       },
       {
-        "id": "01a1f0a0-257e-71df-b20c-1211b0acff8d",
+        "id": "01a1f29c-98bd-7cd2-a295-f65c802ca405",
         "count": 1
       },
       {
-        "id": "01a1f0a0-25a0-7b91-97ea-19a655d833af",
+        "id": "01a1f29c-98f9-76c3-94bb-b44cd7ffc79c",
         "count": 1
       },
       {
-        "id": "01a1f0a0-25b5-7fe1-bea6-33a00c74f17d",
+        "id": "01a1f29c-990f-7885-a2e5-326b421a1314",
         "count": 1
       },
       {
-        "id": "01a1f0a0-25c1-72ce-afef-4536048e063c",
+        "id": "01a1f29c-992d-7188-8e59-b2200ca0b8d2",
         "count": 1
       },
       {
-        "id": "01a1f0a0-25ce-7a3e-9520-f35c1334ab09",
+        "id": "01a1f29c-9944-7058-8594-140095cbce99",
         "count": 1
       },
       {
-        "id": "01a1f0a0-25fe-7a21-8947-8534569b685a",
+        "id": "01a1f29c-995c-7318-a4e8-c9ee33ac3f13",
         "count": 1
       },
       {
-        "id": "01a1f0a0-261b-7455-8a87-2fc5bc48ac4f",
+        "id": "01a1f29c-9970-7141-af67-daadc01ab1cf",
+        "count": 1
+      },
+      {
+        "id": "01a1f29c-99ab-7d8b-bfb3-830e8446d823",
+        "count": 1
+      },
+      {
+        "id": "01a1f29c-99c6-7876-b26a-a456161ba668",
+        "count": 1
+      },
+      {
+        "id": "01a1f29c-99d3-7f4b-8eb6-2698ce09038d",
+        "count": 1
+      },
+      {
+        "id": "01a1f29c-99e2-7a74-aa8b-a54a6e606298",
+        "count": 1
+      },
+      {
+        "id": "01a1f29c-99ee-75a3-a127-df161e909a8f",
+        "count": 1
+      },
+      {
+        "id": "01a1f29c-99fd-7289-9537-cf30cbff6e54",
         "count": 1
       }
     ],
     "document_types": [
       {
-        "id": "01a1f0a0-264a-71bd-9645-2664e885f021",
+        "id": "01a1f29c-9a53-7671-a8cf-dc1a2a5d9442",
+        "count": 26
+      },
+      {
+        "id": "01a1f29c-9a28-794a-bd9f-48d3e489aa8d",
+        "count": 16
+      },
+      {
+        "id": "01a1f29c-9a36-74ac-bfd7-daabcded95c1",
+        "count": 14
+      },
+      {
+        "id": "01a1f29c-9a21-702d-9452-6997f3ffe767",
+        "count": 10
+      },
+      {
+        "id": "01a1f29c-9a4c-7104-8660-a325441eb6d6",
         "count": 7
       },
       {
-        "id": "01a1f0a0-2652-723f-970c-7c25b514b59a",
-        "count": 7
-      },
-      {
-        "id": "01a1f0a0-2670-7f16-b551-abf98167f8f6",
-        "count": 6
-      },
-      {
-        "id": "01a1f0a0-2661-7674-a4c0-df10ba50d9ad",
+        "id": "01a1f29c-9a67-774b-a17e-988d70f4d939",
         "count": 5
       },
       {
-        "id": "01a1f0a0-2633-73c1-8945-0b3c57dfa934",
-        "count": 2
+        "id": "01a1f29c-9a2f-7a9d-8093-69c7ca526381",
+        "count": 4
       },
       {
-        "id": "01a1f0a0-263b-77bd-bccb-edf3c4283b75",
-        "count": 2
-      },
-      {
-        "id": "01a1f0a0-2659-743f-bbe0-f20845f82be9",
-        "count": 2
-      },
-      {
-        "id": "01a1f0a0-2668-7826-ba23-5b7f6c485c73",
-        "count": 2
+        "id": "01a1f29c-9a13-7249-8af7-ef16689cf474",
+        "count": 3
       },
       {
         "id": null,
+        "count": 3
+      },
+      {
+        "id": "01a1f29c-9a1a-7878-909f-3efa17e6a4f8",
         "count": 2
       },
       {
-        "id": "01a1f0a0-262a-799a-baa4-751ddb0b4a32",
+        "id": "01a1f29c-9a7a-7ca8-aabc-cbe8aae51c5b",
+        "count": 2
+      },
+      {
+        "id": "01a1f29c-9a0b-72e7-bf7e-cb145fb39965",
         "count": 1
       },
       {
-        "id": "01a1f0a0-2642-7ce2-96d5-0d10ad2addaa",
+        "id": "01a1f29c-9a3f-78e8-b256-ff1db7dfa8d9",
         "count": 1
       },
       {
-        "id": "01a1f0a0-267a-7fb2-9c05-fecb33c2675a",
+        "id": "01a1f29c-9a45-7a09-94b8-64c56b679126",
         "count": 1
       },
       {
-        "id": "01a1f0a0-2684-7e10-b89f-6348f20ebd5a",
+        "id": "01a1f29c-9a5a-7e32-a62e-9cfda1f8133c",
         "count": 1
       },
       {
-        "id": "01a1f0a0-268d-7377-a3d1-f76c7786b363",
+        "id": "01a1f29c-9a61-7d0c-bd3e-dd2acb6124c7",
+        "count": 1
+      },
+      {
+        "id": "01a1f29c-9a6d-7c87-b793-94f5235c7e68",
+        "count": 1
+      },
+      {
+        "id": "01a1f29c-9a74-73e0-b39e-ae2d224e3da3",
+        "count": 1
+      },
+      {
+        "id": "01a1f29c-9a81-7da7-ab33-3799a4494a3c",
         "count": 1
       }
     ],
@@ -164,7 +240,7 @@
     "years": [
       {
         "year": 2026,
-        "count": 17,
+        "count": 37,
         "months": [
           {
             "month": "2026-10",
@@ -172,99 +248,131 @@
           },
           {
             "month": "2026-09",
-            "count": 1
-          },
-          {
-            "month": "2026-08",
-            "count": 3
-          },
-          {
-            "month": "2026-06",
-            "count": 3
-          },
-          {
-            "month": "2026-05",
             "count": 2
           },
           {
-            "month": "2026-03",
-            "count": 3
+            "month": "2026-08",
+            "count": 5
           },
           {
-            "month": "2026-02",
+            "month": "2026-07",
+            "count": 4
+          },
+          {
+            "month": "2026-06",
+            "count": 4
+          },
+          {
+            "month": "2026-05",
+            "count": 4
+          },
+          {
+            "month": "2026-04",
             "count": 1
           },
           {
-            "month": "2026-01",
+            "month": "2026-03",
+            "count": 5
+          },
+          {
+            "month": "2026-02",
             "count": 3
+          },
+          {
+            "month": "2026-01",
+            "count": 8
           }
         ]
       },
       {
         "year": 2025,
-        "count": 12,
+        "count": 42,
         "months": [
           {
             "month": "2025-12",
-            "count": 1
+            "count": 3
           },
           {
             "month": "2025-11",
-            "count": 1
+            "count": 5
           },
           {
             "month": "2025-10",
-            "count": 2
+            "count": 3
           },
           {
             "month": "2025-09",
-            "count": 1
+            "count": 5
           },
           {
             "month": "2025-08",
-            "count": 1
+            "count": 7
           },
           {
             "month": "2025-07",
-            "count": 1
+            "count": 4
+          },
+          {
+            "month": "2025-06",
+            "count": 2
+          },
+          {
+            "month": "2025-05",
+            "count": 2
           },
           {
             "month": "2025-04",
-            "count": 1
+            "count": 3
+          },
+          {
+            "month": "2025-03",
+            "count": 3
           },
           {
             "month": "2025-02",
-            "count": 2
+            "count": 1
           },
           {
             "month": "2025-01",
-            "count": 2
+            "count": 4
           }
         ]
       },
       {
         "year": 2024,
-        "count": 9,
+        "count": 18,
         "months": [
           {
-            "month": "2024-07",
+            "month": "2024-12",
             "count": 1
           },
           {
-            "month": "2024-06",
-            "count": 3
-          },
-          {
-            "month": "2024-04",
-            "count": 1
-          },
-          {
-            "month": "2024-03",
+            "month": "2024-11",
             "count": 2
           },
           {
-            "month": "2024-02",
+            "month": "2024-10",
             "count": 1
+          },
+          {
+            "month": "2024-09",
+            "count": 2
+          },
+          {
+            "month": "2024-07",
+            "count": 3
+          },
+          {
+            "month": "2024-06",
+            "count": 2
+          },
+          {
+            "month": "2024-03",
+            "count": 3
+          },
+          {
+            "month": "2024-02",
+            "count": 3
           },
           {
             "month": "2024-01",
@@ -273,6 +381,6 @@
         ]
       }
     ],
-    "undated": 2
+    "undated": 3
   }
 }

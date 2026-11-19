@@ -2,14 +2,14 @@
   "lekto_version": "0.15.5",
   "method": "GET",
   "operation": "/identifiers/refs/{kind}/{ref}",
-  "path": "/identifiers/refs/customer_number/Af9djVUO-QXXIXACVV1hdi4lF_18ai28Ww",
+  "path": "/identifiers/refs/customer_number/AWeIqArvbMsqVBObeMCgLlCWLMDSDimA",
   "params": {},
   "json": null,
   "data": {},
   "status": 200,
   "body": {
     "kind": "customer_number",
-    "value": "77004521",
-    "ref": "Af9djVUO-QXXIXACVV1hdi4lF_18ai28Ww"
+    "value": "T208811",
+    "ref": "AWeIqArvbMsqVBObeMCgLlCWLMDSDimA"
   }
 }

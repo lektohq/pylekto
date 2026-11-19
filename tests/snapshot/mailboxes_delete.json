@@ -2,7 +2,7 @@
   "lekto_version": "0.15.5",
   "method": "DELETE",
   "operation": "/mailboxes/{id}",
-  "path": "/mailboxes/01a1f0bf-5435-7684-a492-2d59e9620c37",
+  "path": "/mailboxes/01a1f2a0-9366-7684-911a-19f21d868a88",
   "params": {},
   "json": null,
   "data": {},

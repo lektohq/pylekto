@@ -2,20 +2,20 @@
   "lekto_version": "0.15.5",
   "method": "GET",
   "operation": "/documents/{id}/files",
-  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/files",
+  "path": "/documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/files",
   "params": {},
   "json": null,
   "data": {},
   "status": 200,
   "body": {
-    "added": "2026-11-18T21:46:30.163242Z",
-    "modified": "2026-11-18T22:03:57.556327Z",
-    "original_filename": "Bestellbestaetigung_BG-7781234.pdf",
+    "added": "2026-11-19T07:01:52.744981Z",
+    "modified": "2026-11-19T07:05:06.836411Z",
+    "original_filename": "Anmeldebestaetigung_26F-3104.pdf",
     "media_type": "application/pdf",
     "page_count": 1,
     "original": {
-      "size": 2325,
-      "sha256": "9ac72005dfe062deb0c45f70ee2f98857016e89941c7555dc109d1a65a9a9d2d",
+      "size": 2138,
+      "sha256": "21a50ee4921723c103a8b7dcfd9bd0565fc4266d402c4ad76ad092e5849513da",
       "metadata": {
         "format": "PDF",
         "pdf_version": "1.3",
@@ -28,17 +28,17 @@
           {
             "source": "info",
             "key": "CreationDate",
-            "value": "D:20260203201723+01'00'"
+            "value": "D:20260111114151+01'00'"
           },
           {
             "source": "info",
             "key": "Creator",
-            "value": "Versandhaus Bergmann GmbH"
+            "value": "Volkshochschule Musterstadt"
           },
           {
             "source": "info",
             "key": "ModDate",
-            "value": "D:20260203201723+01'00'"
+            "value": "D:20260111114151+01'00'"
           },
           {
             "source": "info",
@@ -49,8 +49,8 @@
       }
     },
     "archive": {
-      "size": 15356,
-      "sha256": "6e0f03ebe6780f26edf8499159d08d9bff794e0e83214229d7a23495e29b0016",
+      "size": 14842,
+      "sha256": "614be817d002e513fdfd580935ad020bdfd2cbe1a9e9eff895d2eeb292911e23",
       "metadata": {
         "format": "PDF",
         "pdf_version": "1.7",
@@ -63,7 +63,7 @@
           {
             "source": "info",
             "key": "CreationDate",
-            "value": "D:20260203201723+01'00"
+            "value": "D:20260111114151+01'00"
           },
           {
             "source": "info",
@@ -73,7 +73,7 @@
           {
             "source": "info",
             "key": "ModDate",
-            "value": "D:20261118214646+00'00"
+            "value": "D:20261119070215+00'00"
           },
           {
             "source": "info",
@@ -88,17 +88,17 @@
           {
             "source": "xmp",
             "key": "xmp:ModifyDate",
-            "value": "2026-11-18T21:46:46+00:00"
+            "value": "2026-11-19T07:02:15+00:00"
           },
           {
             "source": "xmp",
             "key": "xmp:CreateDate",
-            "value": "2026-02-03T20:17:23+01:00"
+            "value": "2026-01-11T11:41:51+01:00"
           },
           {
             "source": "xmp",
             "key": "xmp:MetadataDate",
-            "value": "2026-11-18T21:46:46.113100+00:00"
+            "value": "2026-11-19T07:02:15.746883+00:00"
           },
           {
             "source": "xmp",
@@ -108,7 +108,7 @@
           {
             "source": "xmp",
             "key": "xmpMM:DocumentID",
-            "value": "uuid:19493730-1bb6-11fd-0000-ad0d12165951"
+            "value": "uuid:b3839d7d-1c03-11fd-0000-3d38a3c7f152"
           },
           {
             "source": "xmp",
@@ -142,11 +142,11 @@
       {
         "number": 1,
         "current": true,
-        "original_filename": "Bestellbestaetigung_BG-7781234.pdf",
+        "original_filename": "Anmeldebestaetigung_26F-3104.pdf",
         "media_type": "application/pdf",
         "kind": "received",
-        "created_at": "2026-11-18T21:46:30.163242Z",
-        "created_by": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+        "created_at": "2026-11-19T07:01:52.744981Z",
+        "created_by": "01a1f29c-598a-760e-a697-589027bc4eb9",
         "detail": {},
         "origin": null
       }

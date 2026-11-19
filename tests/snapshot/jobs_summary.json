@@ -15,14 +15,6 @@
         "due": 0,
         "planned": 1,
         "failed": 0,
-        "done": 5
-      },
-      {
-        "kind": "classifier.train",
-        "running": 0,
-        "due": 0,
-        "planned": 0,
-        "failed": 0,
         "done": 1
       },
       {
@@ -31,7 +23,7 @@
         "due": 0,
         "planned": 0,
         "failed": 0,
-        "done": 2
+        "done": 1
       },
       {
         "kind": "documents.remove_files",
@@ -39,7 +31,7 @@
         "due": 0,
         "planned": 0,
         "failed": 0,
-        "done": 4
+        "done": 1
       },
       {
         "kind": "maintenance.cleanup",
@@ -52,31 +44,31 @@
       {
         "kind": "pipeline.facts",
         "running": 0,
-        "due": 38,
+        "due": 97,
         "planned": 0,
         "failed": 0,
-        "done": 39
+        "done": 97
       },
       {
         "kind": "pipeline.node",
         "running": 0,
         "due": 0,
         "planned": 0,
-        "failed": 2,
-        "done": 622
+        "failed": 3,
+        "done": 1311
       },
       {
         "kind": "pipeline.relate",
         "running": 0,
-        "due": 40,
+        "due": 100,
         "planned": 0,
         "failed": 0,
-        "done": 4
+        "done": 2
       },
       {
         "kind": "pipeline.reparse",
         "running": 0,
-        "due": 40,
+        "due": 100,
         "planned": 0,
         "failed": 0,
         "done": 0
@@ -95,7 +87,7 @@
         "due": 0,
         "planned": 0,
         "failed": 0,
-        "done": 80
+        "done": 211
       },
       {
         "kind": "search.rebuild",
@@ -103,7 +95,7 @@
         "due": 0,
         "planned": 0,
         "failed": 0,
-        "done": 3
+        "done": 1
       },
       {
         "kind": "search.reconcile",
@@ -111,11 +103,11 @@
         "due": 0,
         "planned": 1,
         "failed": 0,
-        "done": 4
+        "done": 2
       }
     ],
-    "last_started_at": "2026-11-18T22:26:05.143440Z",
-    "now": "2026-11-18T22:26:39.622315Z",
-    "kept_since": "2026-11-11T22:26:39.622315Z"
+    "last_started_at": "2026-11-19T07:06:11.784257Z",
+    "now": "2026-11-19T07:06:12.823798Z",
+    "kept_since": "2026-11-12T07:06:12.823798Z"
   }
 }

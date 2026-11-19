@@ -9,18 +9,6 @@
   "status": 200,
   "body": [
     {
-      "kind": "customer_number",
-      "value": "40012345",
-      "done": true,
-      "reason": null
-    },
-    {
-      "kind": "email_domain",
-      "value": "fernnetz.example",
-      "done": true,
-      "reason": null
-    },
-    {
       "kind": "iban",
       "value": "DE30250500000123456789",
       "done": false,
@@ -39,14 +27,32 @@
       "reason": null
     },
     {
-      "kind": "customer_number",
-      "value": "8812447100",
+      "kind": "email_domain",
+      "value": "cloudberry-hosting.example",
       "done": true,
       "reason": null
     },
     {
       "kind": "email_domain",
       "value": "hansebank.example",
+      "done": true,
+      "reason": null
+    },
+    {
+      "kind": "email_domain",
+      "value": "musterstadt.example",
+      "done": true,
+      "reason": null
+    },
+    {
+      "kind": "email_domain",
+      "value": "direktbank-nord.example",
+      "done": true,
+      "reason": null
+    },
+    {
+      "kind": "email_domain",
+      "value": "stadtwerke-musterstadt.example",
       "done": true,
       "reason": null
     }

@@ -2,20 +2,20 @@
   "lekto_version": "0.15.5",
   "method": "GET",
   "operation": "/documents/{id}/places/{kind}/{ref}",
-  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/places/customer_number/Af9djVUO-QXXIXACVV1hdi4lF_18ai28Ww",
+  "path": "/documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/places/customer_number/AWeIqArvbMsqVBObeMCgLlCWLMDSDimA",
   "params": {},
   "json": null,
   "data": {},
   "status": 200,
   "body": {
-    "document_id": "01a1f0a0-2797-7197-8560-bfd323a73977",
-    "title": "Stromabrechnung 2023/2024",
-    "date": "2026-02-02",
+    "document_id": "01a1f29c-9dee-73ca-8f76-b6b968c3aa2c",
+    "title": "VHS Spanisch A2",
+    "date": "2026-01-10",
     "role": "contact",
     "excerpt": {
-      "before": "…Garten Kundennummer ",
-      "match": "7700 4521",
-      "after": " Versandhaus Bergmann GmbH · Versandallee 100 · 33100 Paketstadt Bestellnummer…"
+      "before": "…Volkshochschule Musterstadt · Bildungszentrum, Lernweg 1 · 12345 Musterstadt Kundennummer ",
+      "match": "T-208811",
+      "after": " Rechnungsnummer VHS-2026-01877…"
     },
     "occurrences": [
       {
@@ -25,9 +25,9 @@
             "page": 1,
             "boxes": [
               {
-                "x": 0.8373,
-                "y": 0.1676,
-                "width": 0.0675,
+                "x": 0.8436,
+                "y": 0.1824,
+                "width": 0.0612,
                 "height": 0.0097
               }
             ]

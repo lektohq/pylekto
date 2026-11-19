@@ -5,9 +5,9 @@
   "path": "/mail-rules/dry-run",
   "params": {},
   "json": {
-    "mailbox_id": "01a1f0bf-5435-7684-a492-2d59e9620c37",
+    "mailbox_id": "01a1f2a0-9366-7684-911a-19f21d868a88",
     "name": "Muster Mail Rule",
-    "user_id": "01a1f09e-e2c0-73bc-b877-0f6a9ed7548a",
+    "user_id": "01a1f29c-598a-760e-a697-589027bc4eb9",
     "conditions": {
       "all": [
         {

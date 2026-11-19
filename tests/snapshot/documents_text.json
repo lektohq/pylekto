@@ -2,7 +2,7 @@
   "lekto_version": "0.15.5",
   "method": "GET",
   "operation": "/documents/{id}/text",
-  "path": "/documents/01a1f0a0-2797-7197-8560-bfd323a73977/text",
+  "path": "/documents/01a1f29c-9dee-73ca-8f76-b6b968c3aa2c/text",
   "params": {
     "limit": 400
   },
@@ -10,9 +10,9 @@
   "data": {},
   "status": 200,
   "body": {
-    "text": "                                                                                   Bergmann                     B\n                                                                             Alles für Haus und Garten\n\n                                                                         Kundennummer                         7700 4521\nVersandhaus Bergmann GmbH · Versandallee 100 · 33100 Paketstad",
+    "text": "                                     Volkshochschule Musterstadt\n                                                                  Lernen ein Leben lang\n\n                                                            Kursnummer                     26F-3104\nVolkshochschule Musterstadt · Bildungszentrum, Lernweg 1 · 12345 Musterstadt  Kundennummer  T-208811\n                                             ",
     "offset": 0,
-    "total_length": 1838,
+    "total_length": 1585,
     "next_offset": 400
   }
 }

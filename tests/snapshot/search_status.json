@@ -8,26 +8,26 @@
   "data": {},
   "status": 200,
   "body": {
-    "documents": 40,
+    "documents": 100,
     "index": {
-      "documents": 41,
+      "documents": 100,
       "embedded": 0,
       "vectors": 0,
       "indexing": false,
-      "size_bytes": 1699840
+      "size_bytes": 5091328
     },
     "running": 0,
     "queued": 0,
     "remaining_ms": 0.0,
     "embedded_jobs": null,
     "plain_jobs": {
-      "count": 51,
+      "count": 197,
       "median_ms": 63.4,
-      "p90_ms": 82.2
+      "p90_ms": 77.2
     },
     "per_section_ms": null,
     "model": null,
     "dimensions": null,
-    "since": "2026-11-11T22:03:56.801479Z"
+    "since": "2026-11-12T07:05:54.137684Z"
   }
 }
