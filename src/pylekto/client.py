@@ -52,7 +52,7 @@ class LektoClient:
 
     Args:
         url: The address of the instance, such as ``https://lekto.example.com``.
-        token: A personal API token (``lekto_…``); its scope decides what the client may do.
+        token: A personal API token (``lekto_…``); its rights decide what the client may do.
         client: An httpx2 client to send the requests with, such as one the application shares.
             pylekto never closes it. Without one, pylekto makes its own and closes it in
             :meth:`close`.

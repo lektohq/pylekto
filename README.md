@@ -34,8 +34,8 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-- **Token only.** A personal API token from Lekto; its scope (`read`, `upload`, `read_write`)
-  decides what the client may do.
+- **Token only.** A personal API token from Lekto; its rights (chosen one by one, or a preset:
+  `read`, `read_write`, `upload`) decide what the client may do, and `lekto.auth.me()` names them.
 - **Your own httpx2 client** if you like (`LektoClient(url, token, client=...)`): pylekto sends its
   requests with it and leaves it open.
 - **Errors raise.** Each subclass of `LektoError` says what went wrong; a refusal carries Lekto's
