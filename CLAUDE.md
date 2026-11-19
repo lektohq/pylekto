@@ -61,9 +61,10 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
 - What Lekto sends to a webhook is recorded as it came (`tests/snapshot/webhooks/`, with the secret
   of a webhook deleted at the end): `record_snapshot.py --receiver <url Lekto reaches>
   --receiver-log <file a receiving server writes>`; the tests verify Lekto's real signatures.
-- Streams (`GET /events`) are read line by line without a read timeout (`Http.lines`) and parsed by
-  `_sse.py` as the HTML standard says; a recording of a stream holds its text
-  (`Recording.listen`, with a request that triggers events).
+- Streams (`GET /events`) are read line by line (`Http.lines`) with a read timeout of 30 s
+  (`STREAM`), twice the 15 s after which Lekto sends a keep-alive comment, and parsed by `_sse.py`
+  as the HTML standard says; a recording of a stream holds its text (`Recording.listen`, with a
+  request that triggers events).
 - `models.py` is generated; a test fails if it differs from what `script/generate_models.py`
   writes from `openapi.json`. Ruff and typos leave it out; mypy checks it.
 - Every choice (an `enum` of strings, in the models and in `types.py`) is `Literal[...] | Unknown`:

@@ -37,8 +37,8 @@ from pylekto.models import Problem
 API_PATH = "/api/v1"
 # Only for the clients pylekto makes itself; a client passed in keeps its own settings.
 TIMEOUT = httpx2.Timeout(30.0, connect=10.0)
-# A stream waits for its next line as long as it takes; connecting has its usual limit.
-STREAM = httpx2.Timeout(None, connect=10.0)
+# Also on a client passed in: twice the 15 s after which Lekto sends a comment (": ping").
+STREAM = httpx2.Timeout(None, connect=10.0, read=30.0)
 # Writes ids, dates and the like as JSON (for request bodies).
 _JSON: TypeAdapter[Any] = TypeAdapter(Any)
 # Lekto recognises a file by its content, not by the type a client names.
@@ -116,7 +116,8 @@ class Http:
     async def lines(self, path: str, *, params: Params | None = None) -> AsyncGenerator[str]:
         """GET a stream and yield its lines as they come, until Lekto ends it.
 
-        The stream may stay quiet for long: it waits for each line without a time limit.
+        Lekto may send no event for long but keeps the stream alive with comments: after 30 s
+        without a byte it raises :class:`LektoTimeoutError`.
         """
         try:
             async with self._client.stream(

@@ -21,6 +21,16 @@ if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Iterable
 
 
+class FallsSilent(httpx2.AsyncByteStream):
+    """A stream that starts, then waits for its next byte longer than the read timeout."""
+
+    async def __aiter__(self) -> AsyncIterator[bytes]:
+        """Yield Lekto's first comment, then time out as httpx2 does."""
+        yield b": ready\n\n"
+        message = "no byte within the read timeout"
+        raise httpx2.ReadTimeout(message)
+
+
 class Closes(httpx2.AsyncByteStream):
     """A stream that holds a text and remembers whether it was closed."""
 
@@ -91,6 +101,17 @@ async def test_listen_fails(
     with pytest.raises(LektoConnectionError) as raised:
         [event async for event in lekto.events.listen()]
     assert type(raised.value) is error
+
+
+async def test_listen_to_a_connection_that_falls_silent(api: Api, lekto: LektoClient) -> None:
+    """A stream waits 30 s for a byte, twice the 15 s after which Lekto sends a comment."""
+    api.answer(
+        "GET", "/events", stream=FallsSilent(), headers={"Content-Type": "text/event-stream"}
+    )
+    with pytest.raises(LektoTimeoutError, match=r"GET /events in time"):
+        [event async for event in lekto.events.listen()]
+    timeout = api.requests[-1].extensions["timeout"]
+    assert timeout == {"connect": 10.0, "read": 30.0, "write": None, "pool": None}
 
 
 async def test_listen_to_a_stream_that_cannot_be_decoded(api: Api, lekto: LektoClient) -> None:
