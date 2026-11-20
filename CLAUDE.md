@@ -74,7 +74,9 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
 - Connecting compares the version of Lekto's API (`api_version` of `GET /auth/me`) with
   `API_VERSION` and warns (`LektoVersionWarning`) when it may not fit: during the beta (`0.x`)
   every other MINOR, from `1.0` on another MAJOR or a smaller MINOR of the server; a Lekto
-  without an API version as well. Lekto's own version is not compared.
+  without an API version as well. Lekto's own version is not compared. The rule is public as
+  `api_fit(api_version)`: `"fits"`, `"newer"`, `"older"` or `"unknown"` (no or an unreadable
+  version), so callers such as Home Assistant need not catch the warning.
 - Ruff (`select = ["ALL"]`) and mypy (`strict`) report nothing on new or changed code.
 - No suppressions (`# noqa`, `# type: ignore` and the like): fix the cause. Only `# noqa: F401` on
   a re-export in an `__init__.py` is allowed without asking.
