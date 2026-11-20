@@ -262,6 +262,7 @@ async def test_filters_go_in_the_query(api: Api, lekto: LektoClient) -> None:
     contact = UUID("0199a3c4-0000-7000-8000-0000000000cc")
     answer = await lekto.documents.count(
         all_users=True,
+        in_inbox=False,
         lane=["red", "yellow"],
         contact_id=[contact],
         document_date_from=date(2026, 1, 1),
@@ -272,6 +273,7 @@ async def test_filters_go_in_the_query(api: Api, lekto: LektoClient) -> None:
     assert params.get("contact_id") == str(contact)
     assert params.get("document_date_from") == "2026-01-01"
     assert params.get("all_users") == "true"
+    assert params.get("in_inbox") == "false"
 
 
 def test_query_leaves_none_out_and_refuses_the_unknown() -> None:

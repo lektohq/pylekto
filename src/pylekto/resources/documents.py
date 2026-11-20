@@ -43,7 +43,7 @@ if TYPE_CHECKING:
     import builtins
     from collections.abc import AsyncIterator, Mapping, Sequence
 
-    from pylekto.types import DocumentFilter, EditPart, Id
+    from pylekto.types import DocumentFilter, EditPart, Id, ListedFilter
 
 _CHANGED = TypeAdapter(DocumentChanged | DocumentOutOfReach)
 _CONFIRMED = TypeAdapter(DocumentDetails | DocumentOutOfReach)
@@ -61,7 +61,7 @@ class DocumentsResource(Resource):
         sort: DocumentListSort | None = None,
         sort_field_id: Id | None = None,
         page_size: int | None = None,
-        **filters: Unpack[DocumentFilter],
+        **filters: Unpack[ListedFilter],
     ) -> AsyncIterator[ListedDocument]:
         """Iterate over every document the filters take, page after page.
 
@@ -69,7 +69,7 @@ class DocumentsResource(Resource):
             sort: The order; ``field`` or ``-field`` sorts by ``sort_field_id``.
             sort_field_id: The field to sort by.
             page_size: How many documents each request fetches.
-            **filters: Which documents (:class:`pylekto.types.DocumentFilter`).
+            **filters: Which documents (:class:`pylekto.types.ListedFilter`).
 
         Example::
 
@@ -97,7 +97,7 @@ class DocumentsResource(Resource):
         limit: int | None = None,
         sort: DocumentListSort | None = None,
         sort_field_id: Id | None = None,
-        **filters: Unpack[DocumentFilter],
+        **filters: Unpack[ListedFilter],
     ) -> DocumentPage:
         """Return one page of documents; ``next_cursor`` leads to the next.
 
@@ -107,12 +107,12 @@ class DocumentsResource(Resource):
             limit: How many documents the page holds at most.
             sort: The order; ``field`` or ``-field`` sorts by ``sort_field_id``.
             sort_field_id: The field to sort by.
-            **filters: Which documents (:class:`pylekto.types.DocumentFilter`).
+            **filters: Which documents (:class:`pylekto.types.ListedFilter`).
 
         Example::
 
-            page = await lekto.documents.page(limit=20)
-            more = await lekto.documents.page(cursor=page.next_cursor, limit=20)
+            page = await lekto.documents.page(limit=20, in_inbox=True)
+            more = await lekto.documents.page(cursor=page.next_cursor, limit=20, in_inbox=True)
 
         """
         params = query(
@@ -125,11 +125,11 @@ class DocumentsResource(Resource):
         )
         return await self._http.get("/documents", DocumentPage, params=params)
 
-    async def count(self, **filters: Unpack[DocumentFilter]) -> DocumentCountOut:
+    async def count(self, **filters: Unpack[ListedFilter]) -> DocumentCountOut:
         """Count the documents the filters take.
 
         Args:
-            **filters: Which documents (:class:`pylekto.types.DocumentFilter`).
+            **filters: Which documents (:class:`pylekto.types.ListedFilter`).
 
         Example::
 
@@ -139,11 +139,11 @@ class DocumentsResource(Resource):
         """
         return await self._http.get("/documents/count", DocumentCountOut, params=query(**filters))
 
-    async def facets(self, **filters: Unpack[DocumentFilter]) -> DocumentFacetsOut:
+    async def facets(self, **filters: Unpack[ListedFilter]) -> DocumentFacetsOut:
         """Count the documents per value of each filter, within the filters given.
 
         Args:
-            **filters: Which documents (:class:`pylekto.types.DocumentFilter`).
+            **filters: Which documents (:class:`pylekto.types.ListedFilter`).
 
         Example::
 
