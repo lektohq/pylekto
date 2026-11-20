@@ -3,7 +3,7 @@
 from pylekto import webhooks
 from pylekto._lekto import API_VERSION, LEKTO_VERSION
 from pylekto._unknown import Unknown
-from pylekto.client import LektoClient
+from pylekto.client import ApiFit, LektoClient, api_fit
 from pylekto.exceptions import (
     LektoApiError,
     LektoAuthenticationError,
@@ -24,6 +24,7 @@ from pylekto.exceptions import (
 __all__ = [
     "API_VERSION",
     "LEKTO_VERSION",
+    "ApiFit",
     "LektoApiError",
     "LektoAuthenticationError",
     "LektoClient",
@@ -40,5 +41,6 @@ __all__ = [
     "LektoVersionWarning",
     "Unknown",
     "WebhookVerificationError",
+    "api_fit",
     "webhooks",
 ]

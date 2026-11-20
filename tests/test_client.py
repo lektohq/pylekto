@@ -8,12 +8,14 @@ import pytest
 from pylekto import (
     API_VERSION,
     LEKTO_VERSION,
+    ApiFit,
     LektoAuthenticationError,
     LektoClient,
     LektoResponseError,
     LektoVersionWarning,
+    api_fit,
 )
-from pylekto.client import _fits
+from pylekto.client import _fit
 
 from .conftest import TOKEN, URL, Api, me
 
@@ -72,26 +74,41 @@ async def test_an_answer_that_is_no_json_warns(api: Api, lekto: LektoClient) -> 
 
 
 @pytest.mark.parametrize(
-    ("answered", "spoken", "fits"),
+    ("answered", "spoken", "fit"),
     [
-        ("0.2", "0.2", True),
-        ("0.3", "0.2", False),
-        ("0.1", "0.2", False),
-        ("1.0", "0.2", False),
-        ("0.2", "1.0", False),
-        ("1.0", "1.0", True),
-        ("1.3", "1.1", True),
-        ("1.0", "1.1", False),
-        ("2.0", "1.0", False),
-        ("1.0", "2.0", False),
-        ("1.0.1", "1.0", False),
-        ("v1.0", "1.0", False),
-        ("", "1.0", False),
+        ("0.2", "0.2", "fits"),
+        ("0.3", "0.2", "newer"),
+        ("0.1", "0.2", "older"),
+        ("1.0", "0.2", "newer"),
+        ("0.2", "1.0", "older"),
+        ("1.0", "1.0", "fits"),
+        ("1.3", "1.1", "fits"),
+        ("1.0", "1.1", "older"),
+        ("2.0", "1.0", "newer"),
+        ("2.0", "1.5", "newer"),
+        ("1.0", "2.0", "older"),
+        ("1.9", "2.0", "older"),
+        ("0.10", "0.9", "newer"),
+        ("1.0.1", "1.0", "unknown"),
+        ("v1.0", "1.0", "unknown"),
+        ("", "1.0", "unknown"),
+        ("\u0660.\u0662", "0.2", "unknown"),
+        ("9" * 5000 + ".1", "1.0", "unknown"),
+        (None, "1.0", "unknown"),
     ],
 )
-def test_which_api_versions_fit(answered: str, spoken: str, *, fits: bool) -> None:
+def test_how_api_versions_fit(answered: str | None, spoken: str, fit: ApiFit) -> None:
     """During the beta only the same MINOR fits; from 1.0 the same MAJOR, at least our MINOR."""
-    assert _fits(answered, spoken) is fits
+    assert _fit(answered, spoken) == fit
+
+
+@pytest.mark.parametrize(
+    ("answered", "fit"),
+    [(API_VERSION, "fits"), (None, "unknown"), ("next", "unknown")],
+)
+def test_api_fit_compares_with_the_api_pylekto_speaks(answered: str | None, fit: ApiFit) -> None:
+    """The public rule takes API_VERSION as its side; no version or an unreadable one is unknown."""
+    assert api_fit(answered) == fit
 
 
 @pytest.mark.parametrize("url", [URL, URL + "/"])

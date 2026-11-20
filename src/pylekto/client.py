@@ -3,7 +3,7 @@
 import json
 import re
 import warnings
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING, Literal, Self
 
 import httpx2
 
@@ -44,7 +44,10 @@ from pylekto.resources import (
 if TYPE_CHECKING:
     from types import TracebackType
 
-_API_VERSION = re.compile(r"(\d+)\.(\d+)")
+# ASCII and bounded: int() refuses over 4300 digits, and \d also takes other scripts.
+_API_VERSION = re.compile(r"([0-9]{1,9})\.([0-9]{1,9})")
+
+type ApiFit = Literal["fits", "newer", "older", "unknown"]
 
 
 class LektoClient:
@@ -125,10 +128,9 @@ class LektoClient:
     async def connect(self) -> Me:
         """Ask who calls and compare the version of Lekto's API with the one pylekto speaks.
 
-        A version whose requests or answers may differ gives a
-        :class:`pylekto.LektoVersionWarning`: during the beta (``0.x``) every other MINOR than
-        :data:`pylekto.API_VERSION`, from ``1.0`` on another MAJOR or a smaller MINOR; so does a
-        Lekto that names no version of its API (before 0.16).
+        A version of the API that does not fit (:func:`pylekto.api_fit`) gives a
+        :class:`pylekto.LektoVersionWarning`; so does a Lekto that names no version of its API
+        (before 0.16).
 
         Example::
 
@@ -140,7 +142,7 @@ class LektoClient:
         response = await self._http.request("GET", "/auth/me")
         # Read before the model, which a Lekto without an API version does not fit.
         answered = _field(response, "api_version")
-        if answered is None or not _fits(answered, API_VERSION):
+        if api_fit(answered) != "fits":
             lekto = _field(response, "lekto_version")
             who = f"Lekto {lekto}" if lekto else "Lekto"
             api = f"the API {answered}" if answered else "no API version"
@@ -181,18 +183,46 @@ def _field(response: httpx2.Response, name: str) -> str | None:
     return value if isinstance(value, str) else None
 
 
-def _fits(answered: str, spoken: str) -> bool:
-    """Whether the API ``answered`` takes pylekto's requests and sends what its models read.
+def api_fit(api_version: str | None) -> ApiFit:
+    """Tell whether a version of Lekto's API fits :data:`pylekto.API_VERSION`, and if not, how.
+
+    During the beta (``0.x``) only the same MINOR fits; from ``1.0`` on the same MAJOR with at
+    least pylekto's MINOR. ``"newer"``: Lekto speaks a newer API, pylekto needs an update.
+    ``"older"``: Lekto speaks an older API, Lekto needs an update. ``"unknown"``: no version or
+    one pylekto cannot read, such as from a Lekto before 0.16.
+
+    Args:
+        api_version: The version of Lekto's API, such as :attr:`LektoClient.api_version` or
+            ``api_version`` of ``GET /auth/me``.
+
+    Example::
+
+        match api_fit(lekto.api_version):
+            case "newer":
+                print("Update pylekto")
+            case "older":
+                print("Update Lekto")
+
+    """
+    return _fit(api_version, API_VERSION)
+
+
+def _fit(answered: str | None, spoken: str) -> ApiFit:
+    """Compare against ``spoken`` so the tests reach the rules from 1.0 on.
 
     During the beta every change raises MINOR, breaking or not; from 1.0 on a breaking one raises
     MAJOR (.knowledge/open/api-version-fas.md).
     """
-    server = _API_VERSION.fullmatch(answered)
+    server = _API_VERSION.fullmatch(answered or "")
     ours = _API_VERSION.fullmatch(spoken)
     if server is None or ours is None:
-        return False
-    major, minor = int(server[1]), int(server[2])
-    our_major, our_minor = int(ours[1]), int(ours[2])
-    if major == 0 or our_major == 0:
-        return (major, minor) == (our_major, our_minor)
-    return major == our_major and minor >= our_minor
+        return "unknown"
+    theirs = (int(server[1]), int(server[2]))
+    mine = (int(ours[1]), int(ours[2]))
+    if theirs[0] == 0 or mine[0] == 0:
+        fits = theirs == mine
+    else:
+        fits = theirs[0] == mine[0] and theirs[1] >= mine[1]
+    if fits:
+        return "fits"
+    return "newer" if theirs > mine else "older"
