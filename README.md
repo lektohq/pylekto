@@ -47,6 +47,8 @@ asyncio.run(main())
   `pylekto.LEKTO_VERSION`; its models are generated from that release's OpenAPI description.
   Connecting to a Lekto whose API may differ warns (`LektoVersionWarning`): during the beta
   (`0.x`) every other MINOR, from `1.0` on another MAJOR or a smaller MINOR.
+  `pylekto.api_fit(lekto.api_version)` returns the same rule as `"fits"`, `"newer"` (update
+  pylekto), `"older"` (update Lekto) or `"unknown"` (no or an unreadable version).
 
 ### Receiving webhooks
 
