@@ -1,14 +1,14 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "GET",
   "operation": "/documents/bulk/{id}",
-  "path": "/documents/bulk/01a1f505-3bd0-706f-8b6f-7941b75cbc14",
+  "path": "/documents/bulk/01a1f965-821b-726f-a9d1-2f1c6c997d96",
   "params": {},
   "json": null,
   "data": {},
   "status": 200,
   "body": {
-    "id": "01a1f505-3bd0-706f-8b6f-7941b75cbc14",
+    "id": "01a1f965-821b-726f-a9d1-2f1c6c997d96",
     "kind": "confirm",
     "status": "queued",
     "total": 1,
@@ -17,7 +17,7 @@
     "unchanged": 0,
     "skipped": [],
     "error": null,
-    "created_at": "2026-11-19T18:15:23.344408Z",
+    "created_at": "2026-11-20T14:39:01.659658Z",
     "finished_at": null
   }
 }

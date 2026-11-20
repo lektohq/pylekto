@@ -13,6 +13,7 @@ from pylekto.types import (
     IdentifierKind,
     InboxTab,
     JobState,
+    ListedFilter,
     MailOutcome,
     OpenSource,
     PagePick,
@@ -33,14 +34,22 @@ def query_names(path: str, method: str = "get") -> set[str]:
 
 
 def test_document_filter_is_the_filter_of_each_list() -> None:
-    """``DocumentFilter`` holds the filters that count, facets, stream and bulk take."""
+    """``DocumentFilter`` holds what stream and bulk take, ``ListedFilter`` what a list takes."""
     keys = set(get_type_hints(DocumentFilter))
-    assert keys == query_names("/documents/count")
-    assert keys == query_names("/documents/facets")
     assert keys == query_names("/documents/bulk", "post")
     assert keys - {"ids"} == query_names("/documents/stream")
     assert keys - {"ids"} <= query_names("/documents/search", "post")
-    assert keys <= query_names("/documents")
+    listed = set(get_type_hints(ListedFilter))
+    assert listed - keys == {"in_inbox"}
+    assert listed == query_names("/documents/count")
+    assert listed == query_names("/documents/facets")
+    assert query_names("/documents") - listed == {
+        "cursor",
+        "offset",
+        "limit",
+        "sort",
+        "sort_field_id",
+    }
 
 
 def test_edit_parts_are_the_ones_of_the_form() -> None:

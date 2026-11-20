@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "POST",
   "operation": "/spaces",
   "path": "/spaces",
@@ -11,21 +11,21 @@
   "data": {},
   "status": 201,
   "body": {
-    "id": "01a1f505-3e52-740d-b568-9f38c287e5f0",
+    "id": "01a1f965-8504-76ea-b0ca-1a0d7adde833",
     "name": "Muster Household",
     "personal_of": null,
     "description": "Made up for the snapshot",
     "role": "edit",
     "members": [
       {
-        "user_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
+        "user_id": "01a1f957-3428-782e-9967-e874641f6763",
         "role": "edit",
         "username": "admin",
         "display_name": null,
         "active": true
       }
     ],
-    "created_at": "2026-11-19T18:15:23.986564Z",
+    "created_at": "2026-11-20T14:39:02.404802Z",
     "version": 1
   }
 }

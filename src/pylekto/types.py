@@ -17,9 +17,10 @@ type Id = UUID | str
 
 
 class DocumentFilter(TypedDict, total=False):
-    """Which documents a list, a count, a search or a change of many documents takes.
+    """Which documents the stream, a search or a change of many documents takes.
 
-    Every key narrows the documents; values in a list mean any of them.
+    Every key narrows the documents; values in a list mean any of them. A list, its count and
+    its facets take a :class:`ListedFilter`, which adds to it.
 
     Example::
 
@@ -46,6 +47,25 @@ class DocumentFilter(TypedDict, total=False):
     document_date_to: date
     fact: Sequence[str]
     """Facts the document has, as ``kind:ref:role`` (``ref`` from ``identifiers.ref``)."""
+
+
+class ListedFilter(DocumentFilter, total=False):
+    """Which documents a list, its count or its facets take: a :class:`DocumentFilter` and more.
+
+    The stream, the search and a change of many documents do not take ``in_inbox``.
+
+    Example::
+
+        inbox = await lekto.documents.count(in_inbox=True)
+        print(inbox.total)
+
+    """
+
+    in_inbox: bool
+    """Documents open in the caller's inbox (``True``) or not (``False``), as each document's
+    ``in_inbox`` marks them and ``GET /inbox/summary`` counts them: in processing, to review, to
+    intervene, or new and not seen by the caller since; in the spaces the caller edits, with
+    ``all_users`` in every user's inbox, with the caller's own seen marks."""
 
 
 class PagePick(TypedDict):

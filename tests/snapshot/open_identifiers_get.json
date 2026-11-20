@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "GET",
   "operation": "/identifiers/open/{kind}/{ref}",
-  "path": "/identifiers/open/contract_number/AdUB9vJDsmbsr47tUkgfC_mwXgw0yPN4ZY4",
+  "path": "/identifiers/open/contract_number/Af0X1OjJgvnNaZymc6Y6afxBtBHIpA8OFoQ",
   "params": {},
   "json": null,
   "data": {},
@@ -11,12 +11,12 @@
     "identifier": {
       "kind": "contract_number",
       "value": "FNV778812",
-      "ref": "AdUB9vJDsmbsr47tUkgfC_mwXgw0yPN4ZY4",
+      "ref": "Af0X1OjJgvnNaZymc6Y6afxBtBHIpA8OFoQ",
       "written": "FN-V-778812",
       "source": "learned",
       "contacts": [
         {
-          "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
+          "id": "01a1f957-9152-7a66-a6ee-20655a0fd4cd",
           "name": "FernNetz Telekommunikation GmbH"
         }
       ],
@@ -39,7 +39,7 @@
     },
     "places": [
       {
-        "document_id": "01a1f4f8-443b-7322-aed1-0a701e11b035",
+        "document_id": "01a1f957-9fc0-7355-bf2f-7b722db62183",
         "title": "Telefonrechnung Juli 2026",
         "date": "2026-07-05",
         "role": "target",
@@ -68,7 +68,7 @@
         ]
       },
       {
-        "document_id": "01a1f4f8-43fe-74df-9f3a-73c655fe760f",
+        "document_id": "01a1f957-9fa0-7d7b-bf3f-3d9db068a1b1",
         "title": "Telefonrechnung März 2026",
         "date": "2026-03-05",
         "role": "target",
@@ -97,7 +97,7 @@
         ]
       },
       {
-        "document_id": "01a1f4f8-43b8-781f-b6da-d9e7a8a3c8c7",
+        "document_id": "01a1f957-9f7e-7da9-a32f-54c07184d5ac",
         "title": "Telefonrechnung November 2025",
         "date": "2025-11-05",
         "role": "target",
@@ -126,7 +126,7 @@
         ]
       },
       {
-        "document_id": "01a1f4f8-4390-78ec-8401-4ee39ceb8d73",
+        "document_id": "01a1f957-9f5f-7782-8524-31c4a363e45a",
         "title": "Telefonrechnung Juli 2025",
         "date": "2025-07-05",
         "role": "target",
@@ -155,7 +155,7 @@
         ]
       },
       {
-        "document_id": "01a1f4f8-4372-7976-93f3-62d4f0ba97e3",
+        "document_id": "01a1f957-9f40-7478-bfbc-5b3b4a3eb67a",
         "title": "Telefonrechnung April 2025",
         "date": "2025-04-05",
         "role": "target",

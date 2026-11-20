@@ -31,6 +31,22 @@ ANSWERS: dict[str, Call] = {
     "documents_page": lambda lekto, _: lekto.documents.page(limit=5),
     "documents_count": lambda lekto, _: lekto.documents.count(),
     "documents_facets": lambda lekto, _: lekto.documents.facets(),
+    "documents_page_in_inbox": lambda lekto, _: lekto.documents.page(limit=5, in_inbox=True),
+    "documents_page_in_inbox_all_users": lambda lekto, _: lekto.documents.page(
+        limit=5, in_inbox=True, all_users=True
+    ),
+    "documents_page_not_in_inbox": lambda lekto, _: lekto.documents.page(limit=5, in_inbox=False),
+    "documents_page_not_in_inbox_all_users": lambda lekto, _: lekto.documents.page(
+        limit=5, in_inbox=False, all_users=True
+    ),
+    "documents_count_in_inbox": lambda lekto, _: lekto.documents.count(in_inbox=True),
+    "documents_count_in_inbox_all_users": lambda lekto, _: lekto.documents.count(
+        in_inbox=True, all_users=True
+    ),
+    "documents_count_not_in_inbox": lambda lekto, _: lekto.documents.count(in_inbox=False),
+    "documents_count_not_in_inbox_all_users": lambda lekto, _: lekto.documents.count(
+        in_inbox=False, all_users=True
+    ),
     "documents_stream": lambda lekto, _: lekto.documents.stream(),
     "documents_get": lambda lekto, r: lekto.documents.get(document(r)),
     "documents_text": lambda lekto, r: lekto.documents.text(document(r), limit=400),
@@ -262,6 +278,7 @@ async def test_filters_go_in_the_query(api: Api, lekto: LektoClient) -> None:
     contact = UUID("0199a3c4-0000-7000-8000-0000000000cc")
     answer = await lekto.documents.count(
         all_users=True,
+        in_inbox=False,
         lane=["red", "yellow"],
         contact_id=[contact],
         document_date_from=date(2026, 1, 1),
@@ -272,6 +289,7 @@ async def test_filters_go_in_the_query(api: Api, lekto: LektoClient) -> None:
     assert params.get("contact_id") == str(contact)
     assert params.get("document_date_from") == "2026-01-01"
     assert params.get("all_users") == "true"
+    assert params.get("in_inbox") == "false"
 
 
 def test_query_leaves_none_out_and_refuses_the_unknown() -> None:

@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "POST",
   "operation": "/identifiers/open/decisions",
   "path": "/identifiers/open/decisions",
@@ -10,7 +10,7 @@
         "kind": "contract_number",
         "value": "FNV778812",
         "action": "confirm",
-        "contact_id": "01a1f4f8-32e7-73d8-9661-4058e704231d"
+        "contact_id": "01a1f957-9152-7a66-a6ee-20655a0fd4cd"
       }
     ]
   },

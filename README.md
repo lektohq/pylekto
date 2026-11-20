@@ -24,6 +24,9 @@ async def main() -> None:
         async for document in lekto.documents.list(lane=["red"]):
             print(document.title)
 
+        inbox = await lekto.documents.count(in_inbox=True)
+        print(inbox.total)
+
         result = await lekto.search.page("electricity bill", limit=5)
         print([hit.document.title for hit in result.items])
 

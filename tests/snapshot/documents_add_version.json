@@ -1,21 +1,21 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "POST",
   "operation": "/documents/{id}/versions",
-  "path": "/documents/01a1f504-f7d8-7baa-9537-95bdad02f352/versions",
+  "path": "/documents/01a1f965-3145-7ef6-b688-af4f78ff9d97/versions",
   "params": {},
   "json": null,
   "data": {},
   "status": 202,
   "body": {
-    "id": "01a1f504-f7d8-7baa-9537-95bdad02f352",
+    "id": "01a1f965-3145-7ef6-b688-af4f78ff9d97",
     "title": "documents_upload",
     "original_filename": "documents_add_version.pdf",
     "media_type": "application/pdf",
     "channel": "api",
     "sha256": "399bd7909fc7a961a4c48b8a48272f4e4ddf6524af1c3b46c4db180a65ddeca3",
-    "uploaded_by": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
-    "space_id": "01a1f4f7-f06c-7f96-9c58-47c7ca1a56cf",
+    "uploaded_by": "01a1f957-3428-782e-9967-e874641f6763",
+    "space_id": "01a1f957-342f-798d-8077-6f9a905d9c5c",
     "access": "edit",
     "contact_id": null,
     "document_type_id": null,
@@ -36,8 +36,8 @@
           "node": "receive",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-19T18:15:05.900438Z",
-          "finished_at": "2026-11-19T18:15:05.900438Z",
+          "started_at": "2026-11-20T14:38:40.853759Z",
+          "finished_at": "2026-11-20T14:38:40.853759Z",
           "deadline": null
         },
         {
@@ -147,7 +147,7 @@
       ],
       "vision": false
     },
-    "created_at": "2026-11-19T18:15:05.900438Z",
-    "updated_at": "2026-11-19T18:15:11.040844Z"
+    "created_at": "2026-11-20T14:38:40.853759Z",
+    "updated_at": "2026-11-20T14:38:47.092622Z"
   }
 }

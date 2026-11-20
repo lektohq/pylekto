@@ -1,21 +1,21 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "POST",
   "operation": "/rules/{id}/apply",
-  "path": "/rules/01a1f505-40d7-7239-8916-c7141d52fdf4/apply",
+  "path": "/rules/01a1f965-882a-7ab7-b0f9-d50d99f44ea2/apply",
   "params": {},
   "json": {
     "version": 2,
     "document_ids": [
-      "01a1f4f8-386f-7969-a144-5267299f8374"
+      "01a1f957-95b4-70f6-a8ac-2afde78fea2a"
     ],
     "accept_conflicts": []
   },
   "data": {},
   "status": 202,
   "body": {
-    "id": "01a1f505-48b8-78dc-85f0-d67965e7950f",
-    "rule_id": "01a1f505-40d7-7239-8916-c7141d52fdf4",
+    "id": "01a1f965-915a-7542-a3f1-899b0e422608",
+    "rule_id": "01a1f965-882a-7ab7-b0f9-d50d99f44ea2",
     "version": 2,
     "status": "queued",
     "total": 1,
@@ -24,7 +24,7 @@
     "unchanged": 0,
     "skipped": [],
     "error": null,
-    "created_at": "2026-11-19T18:15:26.648495Z",
+    "created_at": "2026-11-20T14:39:05.562313Z",
     "finished_at": null
   }
 }

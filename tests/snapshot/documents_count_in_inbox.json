@@ -1,0 +1,15 @@
+{
+  "lekto_version": "0.17.0",
+  "method": "GET",
+  "operation": "/documents/count",
+  "path": "/documents/count",
+  "params": {
+    "in_inbox": "true"
+  },
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "total": 3
+  }
+}

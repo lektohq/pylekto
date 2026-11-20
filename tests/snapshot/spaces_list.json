@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "GET",
   "operation": "/spaces",
   "path": "/spaces",
@@ -9,39 +9,39 @@
   "status": 200,
   "body": [
     {
-      "id": "01a1f4f7-f06c-7f96-9c58-47c7ca1a56cf",
+      "id": "01a1f957-342f-798d-8077-6f9a905d9c5c",
       "name": "Personal",
-      "personal_of": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
+      "personal_of": "01a1f957-3428-782e-9967-e874641f6763",
       "description": null,
       "role": "edit",
       "members": [
         {
-          "user_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
+          "user_id": "01a1f957-3428-782e-9967-e874641f6763",
           "role": "edit",
           "username": "admin",
           "display_name": null,
           "active": true
         }
       ],
-      "created_at": "2026-11-19T18:00:52.071280Z",
+      "created_at": "2026-11-20T14:23:24.199207Z",
       "version": 1
     },
     {
-      "id": "01a1f505-3b91-7ef7-b74d-ce87d0ad39ba",
+      "id": "01a1f965-81ce-7b5f-94d0-995b9a794ceb",
       "name": "Muster Archive",
       "personal_of": null,
       "description": null,
       "role": "edit",
       "members": [
         {
-          "user_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
+          "user_id": "01a1f957-3428-782e-9967-e874641f6763",
           "role": "edit",
           "username": "admin",
           "display_name": null,
           "active": true
         }
       ],
-      "created_at": "2026-11-19T18:15:23.281140Z",
+      "created_at": "2026-11-20T14:39:01.582247Z",
       "version": 1
     }
   ]

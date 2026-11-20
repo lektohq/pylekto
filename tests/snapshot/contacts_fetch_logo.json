@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "POST",
   "operation": "/contacts/{id}/logo/fetch",
-  "path": "/contacts/01a1f505-3ea0-733f-ad2f-177b1e50bc80/logo/fetch",
+  "path": "/contacts/01a1f965-856a-7773-a0d2-7ce3ec57306e/logo/fetch",
   "params": {},
   "json": null,
   "data": {},

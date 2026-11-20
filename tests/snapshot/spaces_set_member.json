@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "PUT",
   "operation": "/spaces/{id}/members/{user_id}",
-  "path": "/spaces/01a1f505-3e52-740d-b568-9f38c287e5f0/members/01a1f505-3e07-72ce-a799-8980bbfeb3cb",
+  "path": "/spaces/01a1f965-8504-76ea-b0ca-1a0d7adde833/members/01a1f965-84b1-7558-8b39-d5b7993876fe",
   "params": {},
   "json": {
     "role": "edit"
@@ -10,28 +10,28 @@
   "data": {},
   "status": 200,
   "body": {
-    "id": "01a1f505-3e52-740d-b568-9f38c287e5f0",
+    "id": "01a1f965-8504-76ea-b0ca-1a0d7adde833",
     "name": "Muster Household",
     "personal_of": null,
     "description": "Shared documents",
     "role": "edit",
     "members": [
       {
-        "user_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
+        "user_id": "01a1f957-3428-782e-9967-e874641f6763",
         "role": "edit",
         "username": "admin",
         "display_name": null,
         "active": true
       },
       {
-        "user_id": "01a1f505-3e07-72ce-a799-8980bbfeb3cb",
+        "user_id": "01a1f965-84b1-7558-8b39-d5b7993876fe",
         "role": "edit",
         "username": "jane",
         "display_name": "Jane Doe",
         "active": true
       }
     ],
-    "created_at": "2026-11-19T18:15:23.986564Z",
+    "created_at": "2026-11-20T14:39:02.404802Z",
     "version": 3
   }
 }

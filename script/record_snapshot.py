@@ -18,7 +18,7 @@ repository::
       -e LEKTO_COOKIE_SECURE=false -e LEKTO_MEILISEARCH_URL=http://meili-snapshot:7700 \
       -e LEKTO_MEILISEARCH_API_KEY=... -e LEKTO_PUBLIC_URL=http://127.0.0.1:18000 \
       -e LEKTO_PUSH_VAPID_PRIVATE_KEY=... -e LEKTO_PUSH_SUBJECT=mailto:jane@example.com \
-      ghcr.io/lektohq/lekto:0.16.0
+      ghcr.io/lektohq/lekto:0.17.0
     # the push key: docker exec lekto-snapshot lekto-run lekto vapid-key (first line); tasks
     # need the public URL, the address the script answers them at
     # an API token: sign in at http://127.0.0.1:18000/ui, Settings, API tokens (read_write)
@@ -454,6 +454,62 @@ RECORDINGS: list[Recording] = [
     Recording("documents_page", "GET", "/documents", "/documents", params={"limit": 5}),
     Recording("documents_count", "GET", "/documents/count", "/documents/count"),
     Recording("documents_facets", "GET", "/documents/facets", "/documents/facets"),
+    Recording(
+        "documents_page_in_inbox",
+        "GET",
+        "/documents",
+        "/documents",
+        params={"limit": 5, "in_inbox": "true"},
+    ),
+    Recording(
+        "documents_page_in_inbox_all_users",
+        "GET",
+        "/documents",
+        "/documents",
+        params={"limit": 5, "in_inbox": "true", "all_users": "true"},
+    ),
+    Recording(
+        "documents_page_not_in_inbox",
+        "GET",
+        "/documents",
+        "/documents",
+        params={"limit": 5, "in_inbox": "false"},
+    ),
+    Recording(
+        "documents_page_not_in_inbox_all_users",
+        "GET",
+        "/documents",
+        "/documents",
+        params={"limit": 5, "in_inbox": "false", "all_users": "true"},
+    ),
+    Recording(
+        "documents_count_in_inbox",
+        "GET",
+        "/documents/count",
+        "/documents/count",
+        params={"in_inbox": "true"},
+    ),
+    Recording(
+        "documents_count_in_inbox_all_users",
+        "GET",
+        "/documents/count",
+        "/documents/count",
+        params={"in_inbox": "true", "all_users": "true"},
+    ),
+    Recording(
+        "documents_count_not_in_inbox",
+        "GET",
+        "/documents/count",
+        "/documents/count",
+        params={"in_inbox": "false"},
+    ),
+    Recording(
+        "documents_count_not_in_inbox_all_users",
+        "GET",
+        "/documents/count",
+        "/documents/count",
+        params={"in_inbox": "false", "all_users": "true"},
+    ),
     Recording("documents_stream", "GET", "/documents/stream", "/documents/stream"),
     Recording("documents_get", "GET", DOCUMENT, "/documents/{id}"),
     Recording(

@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "PATCH",
   "operation": "/tags/{id}",
-  "path": "/tags/01a1f505-3fd5-719a-9358-2aabb3cfcf9e",
+  "path": "/tags/01a1f965-86e1-7240-8274-d6f342ce235d",
   "params": {},
   "json": {
     "color": "#0d6b6b"
@@ -10,9 +10,9 @@
   "data": {},
   "status": 200,
   "body": {
-    "id": "01a1f505-3fd5-719a-9358-2aabb3cfcf9e",
+    "id": "01a1f965-86e1-7240-8274-d6f342ce235d",
     "name": "Muster Tag",
-    "created_at": "2026-11-19T18:15:24.373927Z",
+    "created_at": "2026-11-20T14:39:02.881543Z",
     "document_count": null,
     "scope": "document",
     "parent_id": null,

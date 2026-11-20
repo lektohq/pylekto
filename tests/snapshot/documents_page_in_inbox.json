@@ -1,0 +1,450 @@
+{
+  "lekto_version": "0.17.0",
+  "method": "GET",
+  "operation": "/documents",
+  "path": "/documents",
+  "params": {
+    "limit": 5,
+    "in_inbox": "true"
+  },
+  "json": null,
+  "data": {},
+  "status": 200,
+  "body": {
+    "items": [
+      {
+        "id": "01a1f957-a113-76c9-ab6e-c985c8aa45c7",
+        "title": "SCN_20251102_161136",
+        "original_filename": "SCN_20251102_161136.pdf",
+        "media_type": "application/pdf",
+        "channel": "migration",
+        "sha256": "30b40193a12a77cce8c686875f63b8ff78cdce0b373d09d82e54f925bb747b9f",
+        "uploaded_by": "01a1f957-3428-782e-9967-e874641f6763",
+        "space_id": "01a1f957-342f-798d-8077-6f9a905d9c5c",
+        "access": "edit",
+        "contact_id": null,
+        "document_type_id": null,
+        "topic_id": null,
+        "tag_ids": [],
+        "document_date": null,
+        "fields": {},
+        "lane": "red",
+        "first_lane": "red",
+        "page_count": 1,
+        "confirmed_at": null,
+        "space_confirmed_at": null,
+        "processing": {
+          "status": "failed",
+          "run": 1,
+          "nodes": [
+            {
+              "node": "receive",
+              "status": "done",
+              "outcome": "ok",
+              "started_at": "2026-11-20T14:23:52.079379Z",
+              "finished_at": "2026-11-20T14:23:52.079379Z",
+              "deadline": null
+            },
+            {
+              "node": "separate",
+              "status": "done",
+              "outcome": "ok",
+              "started_at": "2026-11-20T14:24:21.488340Z",
+              "finished_at": "2026-11-20T14:24:21.510365Z",
+              "deadline": null
+            },
+            {
+              "node": "ocr",
+              "status": "done",
+              "outcome": "ok",
+              "started_at": "2026-11-20T14:26:25.243535Z",
+              "finished_at": "2026-11-20T14:26:28.645063Z",
+              "deadline": null
+            },
+            {
+              "node": "pages",
+              "status": "done",
+              "outcome": "ok",
+              "started_at": "2026-11-20T14:26:27.513922Z",
+              "finished_at": "2026-11-20T14:26:28.543525Z",
+              "deadline": null
+            },
+            {
+              "node": "parse",
+              "status": "done",
+              "outcome": "failed",
+              "started_at": "2026-11-20T14:28:04.564471Z",
+              "finished_at": "2026-11-20T14:28:05.242327Z",
+              "deadline": null
+            },
+            {
+              "node": "signal_llm",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "signal_classifier",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "signal_neighbours",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "signal_facts",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "judge",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "fields",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "relate",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "apply_rules",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "file",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            }
+          ],
+          "vision": false
+        },
+        "created_at": "2026-11-20T14:23:52.079379Z",
+        "updated_at": "2026-11-20T14:28:05.242327Z",
+        "in_inbox": true
+      },
+      {
+        "id": "01a1f957-9986-7b2c-a8c5-a8fd033cad12",
+        "title": "IMG-20241229-WA0050",
+        "original_filename": "IMG-20241229-WA0050.jpg",
+        "media_type": "image/jpeg",
+        "channel": "migration",
+        "sha256": "9f70d6859c04f9ba0365ea19f52de394bb8901e74ff4daa25a1a2468fcd0e888",
+        "uploaded_by": "01a1f957-3428-782e-9967-e874641f6763",
+        "space_id": "01a1f957-342f-798d-8077-6f9a905d9c5c",
+        "access": "edit",
+        "contact_id": null,
+        "document_type_id": null,
+        "topic_id": null,
+        "tag_ids": [],
+        "document_date": null,
+        "fields": {},
+        "lane": "red",
+        "first_lane": "red",
+        "page_count": 1,
+        "confirmed_at": null,
+        "space_confirmed_at": null,
+        "processing": {
+          "status": "failed",
+          "run": 1,
+          "nodes": [
+            {
+              "node": "receive",
+              "status": "done",
+              "outcome": "ok",
+              "started_at": "2026-11-20T14:23:50.142701Z",
+              "finished_at": "2026-11-20T14:23:50.142701Z",
+              "deadline": null
+            },
+            {
+              "node": "separate",
+              "status": "done",
+              "outcome": "ok",
+              "started_at": "2026-11-20T14:24:17.448136Z",
+              "finished_at": "2026-11-20T14:24:17.462706Z",
+              "deadline": null
+            },
+            {
+              "node": "ocr",
+              "status": "done",
+              "outcome": "ok",
+              "started_at": "2026-11-20T14:24:51.681049Z",
+              "finished_at": "2026-11-20T14:24:55.605630Z",
+              "deadline": null
+            },
+            {
+              "node": "pages",
+              "status": "done",
+              "outcome": "ok",
+              "started_at": "2026-11-20T14:24:53.246947Z",
+              "finished_at": "2026-11-20T14:24:53.448412Z",
+              "deadline": null
+            },
+            {
+              "node": "parse",
+              "status": "done",
+              "outcome": "failed",
+              "started_at": "2026-11-20T14:27:47.827012Z",
+              "finished_at": "2026-11-20T14:27:48.668559Z",
+              "deadline": null
+            },
+            {
+              "node": "signal_llm",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "signal_classifier",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "signal_neighbours",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "signal_facts",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "judge",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "fields",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "relate",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "apply_rules",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "file",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            }
+          ],
+          "vision": false
+        },
+        "created_at": "2026-11-20T14:23:50.142701Z",
+        "updated_at": "2026-11-20T14:27:48.668559Z",
+        "in_inbox": true
+      },
+      {
+        "id": "01a1f957-972c-731f-840d-853cf2d8cbdd",
+        "title": "Dokument 2025-01-25 073257",
+        "original_filename": "Dokument 2025-01-25 073257.pdf",
+        "media_type": "application/pdf",
+        "channel": "migration",
+        "sha256": "a6f65e75a8ab7924747a5cfe89469a938ca84a942d2072b226d6fb31494a9fd3",
+        "uploaded_by": "01a1f957-3428-782e-9967-e874641f6763",
+        "space_id": "01a1f957-342f-798d-8077-6f9a905d9c5c",
+        "access": "edit",
+        "contact_id": null,
+        "document_type_id": null,
+        "topic_id": null,
+        "tag_ids": [],
+        "document_date": null,
+        "fields": {},
+        "lane": "red",
+        "first_lane": "red",
+        "page_count": 1,
+        "confirmed_at": null,
+        "space_confirmed_at": null,
+        "processing": {
+          "status": "failed",
+          "run": 1,
+          "nodes": [
+            {
+              "node": "receive",
+              "status": "done",
+              "outcome": "ok",
+              "started_at": "2026-11-20T14:23:49.539533Z",
+              "finished_at": "2026-11-20T14:23:49.539533Z",
+              "deadline": null
+            },
+            {
+              "node": "separate",
+              "status": "done",
+              "outcome": "ok",
+              "started_at": "2026-11-20T14:23:57.967596Z",
+              "finished_at": "2026-11-20T14:23:57.986575Z",
+              "deadline": null
+            },
+            {
+              "node": "ocr",
+              "status": "done",
+              "outcome": "ok",
+              "started_at": "2026-11-20T14:24:24.141023Z",
+              "finished_at": "2026-11-20T14:24:27.312823Z",
+              "deadline": null
+            },
+            {
+              "node": "pages",
+              "status": "done",
+              "outcome": "ok",
+              "started_at": "2026-11-20T14:24:27.054702Z",
+              "finished_at": "2026-11-20T14:24:28.094891Z",
+              "deadline": null
+            },
+            {
+              "node": "parse",
+              "status": "done",
+              "outcome": "failed",
+              "started_at": "2026-11-20T14:27:40.758325Z",
+              "finished_at": "2026-11-20T14:27:41.414283Z",
+              "deadline": null
+            },
+            {
+              "node": "signal_llm",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "signal_classifier",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "signal_neighbours",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "signal_facts",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "judge",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "fields",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "relate",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "apply_rules",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            },
+            {
+              "node": "file",
+              "status": "waiting",
+              "outcome": null,
+              "started_at": null,
+              "finished_at": null,
+              "deadline": null
+            }
+          ],
+          "vision": false
+        },
+        "created_at": "2026-11-20T14:23:49.539533Z",
+        "updated_at": "2026-11-20T14:27:41.414283Z",
+        "in_inbox": true
+      }
+    ],
+    "next_cursor": null
+  }
+}

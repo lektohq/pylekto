@@ -1,14 +1,14 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "GET",
   "operation": "/documents/{id}/places/{kind}/{ref}",
-  "path": "/documents/01a1f4f8-386f-7969-a144-5267299f8374/places/customer_number/AWk7mkL-x9K3EqEd5KYxEHEbF3wcE9BY",
+  "path": "/documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/places/customer_number/AU_pFpSr0cvyanaiaD8qwM9acZ1mOYqt",
   "params": {},
   "json": null,
   "data": {},
   "status": 200,
   "body": {
-    "document_id": "01a1f4f8-386f-7969-a144-5267299f8374",
+    "document_id": "01a1f957-95b4-70f6-a8ac-2afde78fea2a",
     "title": "VHS Spanisch A2",
     "date": "2026-01-10",
     "role": "contact",

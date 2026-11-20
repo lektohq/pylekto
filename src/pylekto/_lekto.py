@@ -3,5 +3,5 @@
 script/update_openapi.py writes this file.
 """
 
-LEKTO_VERSION = "0.16.0"
-API_VERSION = "0.2"
+LEKTO_VERSION = "0.17.0"
+API_VERSION = "0.3"

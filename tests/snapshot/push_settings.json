@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "GET",
   "operation": "/push",
   "path": "/push",
@@ -9,6 +9,6 @@
   "status": 200,
   "body": {
     "enabled": true,
-    "public_key": "BD3BwPPtk-AwlX-PxUjsPcjZOJ1p-NxBFegHL0Ua3DS1rnbACf_02I8trbuWVuig9iK8yOtF3zTxvfiVEGhIRw0"
+    "public_key": "BCogu0bwBcRwtqtir1u0RgCrcrHGscN8mFbEQZKTxtyDTLPCtghOvjvJ91srax2DiBMxTLvAruHyei2i2PliM9Y"
   }
 }

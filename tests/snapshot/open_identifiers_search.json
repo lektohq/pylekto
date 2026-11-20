@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "POST",
   "operation": "/identifiers/open/search",
   "path": "/identifiers/open/search",
@@ -16,12 +16,12 @@
       {
         "kind": "contract_number",
         "value": "FNV778812",
-        "ref": "AdUB9vJDsmbsr47tUkgfC_mwXgw0yPN4ZY4",
+        "ref": "Af0X1OjJgvnNaZymc6Y6afxBtBHIpA8OFoQ",
         "written": "FN-V-778812",
         "source": "learned",
         "contacts": [
           {
-            "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
+            "id": "01a1f957-9152-7a66-a6ee-20655a0fd4cd",
             "name": "FernNetz Telekommunikation GmbH"
           }
         ],
@@ -45,12 +45,12 @@
       {
         "kind": "customer_number",
         "value": "40012345",
-        "ref": "AZPoBSgFRTI-1yfE3l1IbCF-VvC853dlIw",
+        "ref": "ASHh90TPvJ1W7siyWYqgoF8ZdRl3N_hhuQ",
         "written": "40012345",
         "source": "learned",
         "contacts": [
           {
-            "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
+            "id": "01a1f957-9152-7a66-a6ee-20655a0fd4cd",
             "name": "FernNetz Telekommunikation GmbH"
           }
         ],
@@ -74,12 +74,12 @@
       {
         "kind": "email_domain",
         "value": "fernnetz.example",
-        "ref": "AS-0pXol82vxdbqe_jf7a9wGcSgGc8tsLD-MS8yhnzLI",
+        "ref": "AZH8NADBlkFC_i_i1K-mqQHXbmFqMB0GmVeQ1TX40Ehi",
         "written": "fernnetz.example",
         "source": "suggested",
         "contacts": [
           {
-            "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
+            "id": "01a1f957-9152-7a66-a6ee-20655a0fd4cd",
             "name": "FernNetz Telekommunikation GmbH"
           }
         ],

@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "GET",
   "operation": "/contacts",
   "path": "/contacts",
@@ -11,9 +11,9 @@
   "status": 200,
   "body": [
     {
-      "id": "01a1f4f8-3213-7a46-a494-bec2c1444639",
+      "id": "01a1f957-90b0-7ca9-bea2-f689afc50f4c",
       "name": "AutoFinanz Bank GmbH",
-      "created_at": "2026-11-19T18:01:08.883458Z",
+      "created_at": "2026-11-20T14:23:47.888785Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -23,9 +23,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-3225-7505-8ca7-6352bfb54aab",
+      "id": "01a1f957-90bb-787e-9129-173241011484",
       "name": "Autohaus Weber GmbH & Co. KG",
-      "created_at": "2026-11-19T18:01:08.901077Z",
+      "created_at": "2026-11-20T14:23:47.899704Z",
       "document_count": 2,
       "aliases": [],
       "identifiers": [],
@@ -35,9 +35,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-323d-7f31-99a2-cb307fcbabb0",
+      "id": "01a1f957-90cf-73a8-a055-9b3c477db474",
       "name": "Baumarkt Hammer GmbH",
-      "created_at": "2026-11-19T18:01:08.925218Z",
+      "created_at": "2026-11-20T14:23:47.919129Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -47,9 +47,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-324f-7648-8c69-e4078bb5a05d",
+      "id": "01a1f957-90dd-7a32-81ae-86976a2d6103",
       "name": "Bausparkasse Musterland AG",
-      "created_at": "2026-11-19T18:01:08.943738Z",
+      "created_at": "2026-11-20T14:23:47.933007Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -59,9 +59,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-3262-7bcd-a435-da853c658c52",
+      "id": "01a1f957-90ed-7b8a-94fd-371ee13d34bb",
       "name": "Brückner Maschinenbau GmbH",
-      "created_at": "2026-11-19T18:01:08.962000Z",
+      "created_at": "2026-11-20T14:23:47.949694Z",
       "document_count": 13,
       "aliases": [],
       "identifiers": [],
@@ -71,9 +71,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-3277-7d19-a410-155c66aa6e6d",
+      "id": "01a1f957-90fb-7d4b-bc2b-b5c74eaa63d1",
       "name": "Buchhandlung Seitenweise GmbH",
-      "created_at": "2026-11-19T18:01:08.983859Z",
+      "created_at": "2026-11-20T14:23:47.963126Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -83,9 +83,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-328c-77b6-b297-a83a18bd17d5",
+      "id": "01a1f957-9108-7433-916f-2fa7f5712e40",
       "name": "Café Lindenblüte",
-      "created_at": "2026-11-19T18:01:09.004632Z",
+      "created_at": "2026-11-20T14:23:47.976652Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -95,9 +95,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-329c-7492-9df0-4c7c987b72f8",
+      "id": "01a1f957-9116-782b-b461-5d46966a327e",
       "name": "Cloudberry Hosting Inc.",
-      "created_at": "2026-11-19T18:01:09.020947Z",
+      "created_at": "2026-11-20T14:23:47.990615Z",
       "document_count": 5,
       "aliases": [],
       "identifiers": [
@@ -106,7 +106,7 @@
           "value": "CBH88412",
           "source": "manual",
           "topic_id": null,
-          "user_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70"
+          "user_id": "01a1f957-3428-782e-9967-e874641f6763"
         },
         {
           "kind": "email_domain",
@@ -122,9 +122,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-32af-77ab-8a27-1363a21246cd",
+      "id": "01a1f957-9125-7b22-b0a0-1bcfe9dc48fd",
       "name": "Direktbank Nord AG",
-      "created_at": "2026-11-19T18:01:09.039933Z",
+      "created_at": "2026-11-20T14:23:48.005284Z",
       "document_count": 3,
       "aliases": [],
       "identifiers": [
@@ -142,9 +142,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-32c4-7c7e-8e0b-950282f56277",
+      "id": "01a1f957-9133-75e4-a5fe-0ad618b396aa",
       "name": "Drogerie Sonne e.K.",
-      "created_at": "2026-11-19T18:01:09.059998Z",
+      "created_at": "2026-11-20T14:23:48.019343Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -154,9 +154,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-32d6-75b6-ae7e-486415097e44",
+      "id": "01a1f957-9143-7b6b-846b-113db4912b41",
       "name": "Elektro Krause GmbH",
-      "created_at": "2026-11-19T18:01:09.078805Z",
+      "created_at": "2026-11-20T14:23:48.035615Z",
       "document_count": 2,
       "aliases": [],
       "identifiers": [],
@@ -166,9 +166,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
+      "id": "01a1f957-9152-7a66-a6ee-20655a0fd4cd",
       "name": "FernNetz Telekommunikation GmbH",
-      "created_at": "2026-11-19T18:01:09.095946Z",
+      "created_at": "2026-11-20T14:23:48.050201Z",
       "document_count": 11,
       "aliases": [],
       "identifiers": [
@@ -177,7 +177,7 @@
           "value": "40012345",
           "source": "manual",
           "topic_id": null,
-          "user_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70"
+          "user_id": "01a1f957-3428-782e-9967-e874641f6763"
         },
         {
           "kind": "email_domain",
@@ -191,7 +191,7 @@
           "value": "FNV778812",
           "source": "manual",
           "topic_id": null,
-          "user_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70"
+          "user_id": "01a1f957-3428-782e-9967-e874641f6763"
         }
       ],
       "group_ids": [],
@@ -200,9 +200,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-32f8-70f7-a97c-eeca40393117",
+      "id": "01a1f957-9163-737c-9117-5e4c61840ddc",
       "name": "Finanzamt Musterstadt",
-      "created_at": "2026-11-19T18:01:09.112327Z",
+      "created_at": "2026-11-20T14:23:48.067147Z",
       "document_count": 3,
       "aliases": [],
       "identifiers": [],
@@ -212,9 +212,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-3308-71aa-8d4e-f0102529b667",
+      "id": "01a1f957-9173-70f3-a238-24c3e460fff4",
       "name": "Frischmarkt KG",
-      "created_at": "2026-11-19T18:01:09.128337Z",
+      "created_at": "2026-11-20T14:23:48.083852Z",
       "document_count": 4,
       "aliases": [],
       "identifiers": [],
@@ -224,9 +224,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-331b-7b00-a775-e3e6bfa62e14",
+      "id": "01a1f957-9180-7509-9d4f-737595227143",
       "name": "Gesundkasse BKK",
-      "created_at": "2026-11-19T18:01:09.147662Z",
+      "created_at": "2026-11-20T14:23:48.096875Z",
       "document_count": 0,
       "aliases": [],
       "identifiers": [],
@@ -236,9 +236,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-332d-7fdf-82cd-407420fe69ae",
+      "id": "01a1f957-918e-79d9-a210-98b878fe2195",
       "name": "Glücksbote Verlag GmbH",
-      "created_at": "2026-11-19T18:01:09.165933Z",
+      "created_at": "2026-11-20T14:23:48.110250Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -248,9 +248,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-3340-7548-853e-951845ef320e",
+      "id": "01a1f957-919e-7ee6-8f21-326d322cee03",
       "name": "Grundschule am Park",
-      "created_at": "2026-11-19T18:01:09.184858Z",
+      "created_at": "2026-11-20T14:23:48.126287Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -260,9 +260,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-334e-705b-b599-f10b406fef37",
+      "id": "01a1f957-91ab-72cc-9cb6-322b826bba40",
       "name": "Hanse Versicherung AG",
-      "created_at": "2026-11-19T18:01:09.198956Z",
+      "created_at": "2026-11-20T14:23:48.139422Z",
       "document_count": 2,
       "aliases": [],
       "identifiers": [
@@ -271,7 +271,7 @@
           "value": "HV3004471",
           "source": "manual",
           "topic_id": null,
-          "user_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70"
+          "user_id": "01a1f957-3428-782e-9967-e874641f6763"
         }
       ],
       "group_ids": [],
@@ -280,9 +280,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-335d-7fac-9072-4b24a4973c18",
+      "id": "01a1f957-91bd-712a-a04c-fb7e489a7172",
       "name": "Hansebank AG",
-      "created_at": "2026-11-19T18:01:09.213245Z",
+      "created_at": "2026-11-20T14:23:48.157176Z",
       "document_count": 4,
       "aliases": [],
       "identifiers": [
@@ -291,7 +291,7 @@
           "value": "8812447100",
           "source": "manual",
           "topic_id": null,
-          "user_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70"
+          "user_id": "01a1f957-3428-782e-9967-e874641f6763"
         },
         {
           "kind": "email_domain",
@@ -307,9 +307,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-336d-79ed-b274-b723b63bbaae",
+      "id": "01a1f957-91cd-78c0-9be2-6f6bcc88006e",
       "name": "Harbour View Hotel",
-      "created_at": "2026-11-19T18:01:09.229435Z",
+      "created_at": "2026-11-20T14:23:48.173578Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -319,9 +319,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-337d-722e-9ece-2f33e92eda8f",
+      "id": "01a1f957-91e2-705a-8068-dea4d16c2043",
       "name": "Hausverwaltung Klein",
-      "created_at": "2026-11-19T18:01:09.245385Z",
+      "created_at": "2026-11-20T14:23:48.194880Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -331,9 +331,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-338c-739a-b913-029c96f9f22e",
+      "id": "01a1f957-91f9-7d52-b204-2bc1bee8ea4a",
       "name": "Kraftschutz Versicherung AG",
-      "created_at": "2026-11-19T18:01:09.260547Z",
+      "created_at": "2026-11-20T14:23:48.217568Z",
       "document_count": 3,
       "aliases": [],
       "identifiers": [],
@@ -343,9 +343,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-339c-7a18-86f4-11a0cb6fa428",
+      "id": "01a1f957-920f-719c-b0f9-57e4d3e4ceb4",
       "name": "Landkreis Musterkreis",
-      "created_at": "2026-11-19T18:01:09.276210Z",
+      "created_at": "2026-11-20T14:23:48.239208Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -355,9 +355,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-33ac-7899-a8f2-1e98fabb2168",
+      "id": "01a1f957-9227-788b-ba10-fae0cd73b62b",
       "name": "Prüfdienst Nord e.V.",
-      "created_at": "2026-11-19T18:01:09.292753Z",
+      "created_at": "2026-11-20T14:23:48.263000Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -367,9 +367,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-33bd-75c8-bf0a-865a718cecb7",
+      "id": "01a1f957-923c-787e-b529-47ccc860cc13",
       "name": "RegioBahn Musterland GmbH",
-      "created_at": "2026-11-19T18:01:09.309465Z",
+      "created_at": "2026-11-20T14:23:48.284653Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -379,9 +379,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-33cc-7ff3-ab04-86021aefd991",
+      "id": "01a1f957-9253-71ff-834a-78fbed35c985",
       "name": "Rentenkasse Musterland",
-      "created_at": "2026-11-19T18:01:09.324788Z",
+      "created_at": "2026-11-20T14:23:48.307190Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -391,9 +391,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-33dd-7fa7-b61e-8d46a712c5bd",
+      "id": "01a1f957-9268-7cd8-8326-71c5dfed0fd2",
       "name": "Sparkasse Musterstadt",
-      "created_at": "2026-11-19T18:01:09.341294Z",
+      "created_at": "2026-11-20T14:23:48.328236Z",
       "document_count": 13,
       "aliases": [],
       "identifiers": [
@@ -411,9 +411,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-33ec-777a-af35-f870a06c2b14",
+      "id": "01a1f957-927d-7262-be4f-89b6be3ef912",
       "name": "Stadt Musterstadt",
-      "created_at": "2026-11-19T18:01:09.356266Z",
+      "created_at": "2026-11-20T14:23:48.349406Z",
       "document_count": 5,
       "aliases": [],
       "identifiers": [
@@ -431,9 +431,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-33fb-7592-9c49-51a25da44c2f",
+      "id": "01a1f957-9291-73b7-aeae-3796d1de9e94",
       "name": "Stadtwerke Musterstadt GmbH",
-      "created_at": "2026-11-19T18:01:09.371935Z",
+      "created_at": "2026-11-20T14:23:48.369492Z",
       "document_count": 4,
       "aliases": [],
       "identifiers": [
@@ -442,7 +442,7 @@
           "value": "12345678",
           "source": "manual",
           "topic_id": null,
-          "user_id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70"
+          "user_id": "01a1f957-3428-782e-9967-e874641f6763"
         },
         {
           "kind": "email_domain",
@@ -458,9 +458,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-3418-78cf-bbc0-5a9127dc3ae4",
+      "id": "01a1f957-92bc-77e4-a797-7f6bbd76d89c",
       "name": "Tankstelle Nord GmbH",
-      "created_at": "2026-11-19T18:01:09.400375Z",
+      "created_at": "2026-11-20T14:23:48.412972Z",
       "document_count": 3,
       "aliases": [],
       "identifiers": [],
@@ -470,9 +470,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-3428-7048-af1b-90ac558c6649",
+      "id": "01a1f957-92d0-7cc1-948e-1caf9644e64a",
       "name": "Tierschutzverein Musterstadt e.V.",
-      "created_at": "2026-11-19T18:01:09.416278Z",
+      "created_at": "2026-11-20T14:23:48.432590Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -482,9 +482,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-340a-7340-80ca-f26c6c9f3f6d",
+      "id": "01a1f957-92a7-7081-a371-c5efb3b4ea63",
       "name": "TSV Musterstadt 1890 e.V.",
-      "created_at": "2026-11-19T18:01:09.386305Z",
+      "created_at": "2026-11-20T14:23:48.391336Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -494,9 +494,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-3439-7a54-b249-040ebba17084",
+      "id": "01a1f957-92e4-7aeb-944c-7bece2ec5ee6",
       "name": "Umzüge Express Nord GmbH",
-      "created_at": "2026-11-19T18:01:09.433532Z",
+      "created_at": "2026-11-20T14:23:48.452794Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -506,9 +506,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-344c-7d2e-85a3-7f9f677ad121",
+      "id": "01a1f957-92f8-7851-b39f-b880841ae1f9",
       "name": "Volkshochschule Musterstadt",
-      "created_at": "2026-11-19T18:01:09.452467Z",
+      "created_at": "2026-11-20T14:23:48.472245Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -518,9 +518,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-345c-7106-8052-fb121ee9abfc",
+      "id": "01a1f957-930a-7a72-b14f-b189242acc71",
       "name": "Vorsorge Leben AG",
-      "created_at": "2026-11-19T18:01:09.468565Z",
+      "created_at": "2026-11-20T14:23:48.490663Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
@@ -530,9 +530,9 @@
       "logo_failure": null
     },
     {
-      "id": "01a1f4f8-3476-791b-b09b-091727010c00",
+      "id": "01a1f957-931c-7294-9366-b7c325c8a88c",
       "name": "Zahnarztpraxis Dr. Lehmann",
-      "created_at": "2026-11-19T18:01:09.494229Z",
+      "created_at": "2026-11-20T14:23:48.508947Z",
       "document_count": 1,
       "aliases": [],
       "identifiers": [],
