@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "GET",
   "operation": "/auth/me",
   "path": "/auth/me",
@@ -9,13 +9,13 @@
   "status": 200,
   "body": {
     "user": {
-      "id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
+      "id": "01a1f957-3428-782e-9967-e874641f6763",
       "username": "admin",
       "display_name": null,
       "personal_space_id": null,
       "role": "admin",
       "active": true,
-      "created_at": "2026-11-19T18:00:52.071280Z"
+      "created_at": "2026-11-20T14:23:24.199207Z"
     },
     "authenticated_with": "token",
     "csrf_token": null,
@@ -49,9 +49,9 @@
     "has_password": true,
     "totp_enabled": false,
     "linked_accounts": [],
-    "lekto_version": "0.16.0",
-    "api_version": "0.2",
-    "instance_id": "da62bd6d-91ff-442b-8353-dc134c71f2ee",
+    "lekto_version": "0.17.0",
+    "api_version": "0.3",
+    "instance_id": "030cc9a8-6d2d-4e15-abd4-3c02a8a30a6f",
     "shortcut_url": null
   }
 }

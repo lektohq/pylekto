@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "GET",
   "operation": "/version",
   "path": "/version",
@@ -8,8 +8,8 @@
   "data": {},
   "status": 200,
   "body": {
-    "lekto_version": "0.16.0",
-    "api_version": "0.2",
+    "lekto_version": "0.17.0",
+    "api_version": "0.3",
     "update_check": true,
     "checked_at": null,
     "latest": null,

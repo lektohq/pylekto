@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "PATCH",
   "operation": "/users/{id}/profile",
-  "path": "/users/01a1f505-3e07-72ce-a799-8980bbfeb3cb/profile",
+  "path": "/users/01a1f965-84b1-7558-8b39-d5b7993876fe/profile",
   "params": {},
   "json": {
     "display_name": "Jane Doe"
@@ -10,7 +10,7 @@
   "data": {},
   "status": 200,
   "body": {
-    "user_id": "01a1f505-3e07-72ce-a799-8980bbfeb3cb",
+    "user_id": "01a1f965-84b1-7558-8b39-d5b7993876fe",
     "display_name": "Jane Doe",
     "aliases": [],
     "birth_date": null,

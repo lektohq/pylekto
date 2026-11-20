@@ -1,11 +1,11 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "POST",
   "operation": "/push/devices",
   "path": "/push/devices",
   "params": {},
   "json": {
-    "endpoint": "https://push.example.com/send/12345",
+    "endpoint": "https://web.push.apple.com/QGuQyavXutnMH9Byyn6xHn",
     "keys": {
       "auth": "BTBZMqHH6r4Tts7J_aSIgg",
       "p256dh": "BCVxsr7N_eNgVRqvHtD0zTZsEc6-VV-JvLexhqUzORcxaOzi6-AYWXvTBHm4bjyPjs7Vd8pZGH6SRpkNtoIAiw4"

@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "DELETE",
   "operation": "/rules/{id}",
-  "path": "/rules/01a1f505-40d7-7239-8916-c7141d52fdf4",
+  "path": "/rules/01a1f965-882a-7ab7-b0f9-d50d99f44ea2",
   "params": {},
   "json": null,
   "data": {},

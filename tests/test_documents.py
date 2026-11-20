@@ -31,6 +31,22 @@ ANSWERS: dict[str, Call] = {
     "documents_page": lambda lekto, _: lekto.documents.page(limit=5),
     "documents_count": lambda lekto, _: lekto.documents.count(),
     "documents_facets": lambda lekto, _: lekto.documents.facets(),
+    "documents_page_in_inbox": lambda lekto, _: lekto.documents.page(limit=5, in_inbox=True),
+    "documents_page_in_inbox_all_users": lambda lekto, _: lekto.documents.page(
+        limit=5, in_inbox=True, all_users=True
+    ),
+    "documents_page_not_in_inbox": lambda lekto, _: lekto.documents.page(limit=5, in_inbox=False),
+    "documents_page_not_in_inbox_all_users": lambda lekto, _: lekto.documents.page(
+        limit=5, in_inbox=False, all_users=True
+    ),
+    "documents_count_in_inbox": lambda lekto, _: lekto.documents.count(in_inbox=True),
+    "documents_count_in_inbox_all_users": lambda lekto, _: lekto.documents.count(
+        in_inbox=True, all_users=True
+    ),
+    "documents_count_not_in_inbox": lambda lekto, _: lekto.documents.count(in_inbox=False),
+    "documents_count_not_in_inbox_all_users": lambda lekto, _: lekto.documents.count(
+        in_inbox=False, all_users=True
+    ),
     "documents_stream": lambda lekto, _: lekto.documents.stream(),
     "documents_get": lambda lekto, r: lekto.documents.get(document(r)),
     "documents_text": lambda lekto, r: lekto.documents.text(document(r), limit=400),

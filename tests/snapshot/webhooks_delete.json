@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "DELETE",
   "operation": "/webhooks/{id}",
-  "path": "/webhooks/01a1f505-499b-7509-bc96-e465917a683b",
+  "path": "/webhooks/01a1f965-9272-7bbd-9542-5b2f0fa92046",
   "params": {},
   "json": null,
   "data": {},

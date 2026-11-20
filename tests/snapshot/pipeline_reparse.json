@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "POST",
   "operation": "/pipeline/reparse",
   "path": "/pipeline/reparse",

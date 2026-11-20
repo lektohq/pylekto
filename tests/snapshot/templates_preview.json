@@ -1,12 +1,12 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "POST",
   "operation": "/templates/preview",
   "path": "/templates/preview",
   "params": {},
   "json": {
     "template": "{{ title }} ({{ document_date }})",
-    "document_id": "01a1f4f8-386f-7969-a144-5267299f8374"
+    "document_id": "01a1f957-95b4-70f6-a8ac-2afde78fea2a"
   },
   "data": {},
   "status": 200,
@@ -25,7 +25,7 @@
       "contact": "Volkshochschule Musterstadt",
       "document_type": "Rechnung",
       "document_date": "2026-01-10",
-      "added": "2026-11-19",
+      "added": "2026-11-20",
       "tags": "",
       "contact_groups": "",
       "document_type_groups": "",

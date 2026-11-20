@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "GET",
   "operation": "/classifier",
   "path": "/classifier",
@@ -10,9 +10,9 @@
   "body": {
     "model": {
       "number": 1,
-      "trained_at": "2026-11-19T18:10:58.436277Z",
+      "trained_at": "2026-11-20T14:33:31.064849Z",
       "examples": 97,
-      "examples_until": "2026-11-19T18:05:37.393889Z",
+      "examples_until": "2026-11-20T14:28:40.205815Z",
       "classes": {
         "contact": 15,
         "document_type": 10,

@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "GET",
   "operation": "/identifiers/open",
   "path": "/identifiers/open",
@@ -14,12 +14,12 @@
       {
         "kind": "iban",
         "value": "DE30250500000123456789",
-        "ref": "ASHf2-D3QXICZdX1wrE72ISloqdCAnJNX9CUFykLg4FhooinuJCJ",
+        "ref": "ASRqJ9aMyAZJhQJXv173SpBUK5-9I20xiDWOGxxh-WXoON2xAAwV",
         "written": "DE30 2505 0000 0123\n4567 89",
         "source": "suggested",
         "contacts": [],
         "person": {
-          "id": "01a1f4f7-f068-7fc2-8af3-9c09662b2a70",
+          "id": "01a1f957-3428-782e-9967-e874641f6763",
           "name": "admin"
         },
         "documents": 15,
@@ -41,12 +41,12 @@
       {
         "kind": "contract_number",
         "value": "FNV778812",
-        "ref": "AdUB9vJDsmbsr47tUkgfC_mwXgw0yPN4ZY4",
+        "ref": "Af0X1OjJgvnNaZymc6Y6afxBtBHIpA8OFoQ",
         "written": "FN-V-778812",
         "source": "learned",
         "contacts": [
           {
-            "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
+            "id": "01a1f957-9152-7a66-a6ee-20655a0fd4cd",
             "name": "FernNetz Telekommunikation GmbH"
           }
         ],
@@ -70,12 +70,12 @@
       {
         "kind": "customer_number",
         "value": "40012345",
-        "ref": "AZPoBSgFRTI-1yfE3l1IbCF-VvC853dlIw",
+        "ref": "ASHh90TPvJ1W7siyWYqgoF8ZdRl3N_hhuQ",
         "written": "40012345",
         "source": "learned",
         "contacts": [
           {
-            "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
+            "id": "01a1f957-9152-7a66-a6ee-20655a0fd4cd",
             "name": "FernNetz Telekommunikation GmbH"
           }
         ],
@@ -99,12 +99,12 @@
       {
         "kind": "email_domain",
         "value": "fernnetz.example",
-        "ref": "AS-0pXol82vxdbqe_jf7a9wGcSgGc8tsLD-MS8yhnzLI",
+        "ref": "AZH8NADBlkFC_i_i1K-mqQHXbmFqMB0GmVeQ1TX40Ehi",
         "written": "fernnetz.example",
         "source": "suggested",
         "contacts": [
           {
-            "id": "01a1f4f8-32e7-73d8-9661-4058e704231d",
+            "id": "01a1f957-9152-7a66-a6ee-20655a0fd4cd",
             "name": "FernNetz Telekommunikation GmbH"
           }
         ],
@@ -128,12 +128,12 @@
       {
         "kind": "email_domain",
         "value": "sparkasse-musterstadt.example",
-        "ref": "AfXFSywmcPGzUX6UCgqU1gF7QagM-dX9Aq4ukjwrg_kQeWXG2MM6QOAIAjGaeQ",
+        "ref": "AcRMEd5uoEeoe47hqLisdhR6ei5_fI5dj9wI1fNIohLv2R9UVK7dSsEKWrYCXw",
         "written": "sparkasse-musterstadt.example",
         "source": "suggested",
         "contacts": [
           {
-            "id": "01a1f4f8-33dd-7fa7-b61e-8d46a712c5bd",
+            "id": "01a1f957-9268-7cd8-8326-71c5dfed0fd2",
             "name": "Sparkasse Musterstadt"
           }
         ],

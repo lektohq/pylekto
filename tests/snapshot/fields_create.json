@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.16.0",
+  "lekto_version": "0.17.0",
   "method": "POST",
   "operation": "/fields",
   "path": "/fields",
@@ -12,7 +12,7 @@
   "data": {},
   "status": 201,
   "body": {
-    "id": "01a1f505-3f55-758e-ad14-8bb8c6466cfc",
+    "id": "01a1f965-863b-7267-a423-b738f59850c9",
     "name": "Muster Number",
     "key": "muster_number",
     "data_type": "text",
@@ -23,7 +23,7 @@
     "description": null,
     "assignment": "auto",
     "position": 0,
-    "created_at": "2026-11-19T18:15:24.245705Z",
+    "created_at": "2026-11-20T14:39:02.715481Z",
     "document_count": null
   }
 }
