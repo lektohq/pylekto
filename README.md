@@ -27,7 +27,7 @@ async def main() -> None:
         result = await lekto.search.page("electricity bill", limit=5)
         print([hit.document.title for hit in result.items])
 
-        async for event in lekto.events.listen():  # until Lekto ends the stream
+        async for event in lekto.events.listen():  # until the stream ends or raises a LektoError
             print(event.type, event.document_id)
 
 

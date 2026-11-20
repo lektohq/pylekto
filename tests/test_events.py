@@ -4,14 +4,48 @@ from typing import TYPE_CHECKING
 
 import httpx2
 import pytest
+from pydantic import ValidationError
 
-from pylekto import LektoAuthenticationError, LektoClient, LektoConnectionError, LektoTimeoutError
+from pylekto import (
+    LektoAuthenticationError,
+    LektoClient,
+    LektoConnectionError,
+    LektoResponseError,
+    LektoTimeoutError,
+)
 from pylekto._sse import ServerSentEvent, server_sent_events
 
 from .conftest import Api, assert_sent
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Iterable
+
+
+class FallsSilent(httpx2.AsyncByteStream):
+    """A stream that starts, then waits for its next byte longer than the read timeout."""
+
+    async def __aiter__(self) -> AsyncIterator[bytes]:
+        """Yield Lekto's first comment, then time out as httpx2 does."""
+        yield b": ready\n\n"
+        message = "no byte within the read timeout"
+        raise httpx2.ReadTimeout(message)
+
+
+class Closes(httpx2.AsyncByteStream):
+    """A stream that holds a text and remembers whether it was closed."""
+
+    def __init__(self, text: str) -> None:
+        """Hold the text, not closed yet."""
+        self.text = text
+        self.closed = False
+
+    async def __aiter__(self) -> AsyncIterator[bytes]:
+        """Yield the text at once."""
+        yield self.text.encode()
+
+    async def aclose(self) -> None:
+        """Remember that the response was closed."""
+        self.closed = True
 
 
 async def lines(texts: Iterable[str]) -> AsyncIterator[str]:
@@ -67,6 +101,45 @@ async def test_listen_fails(
     with pytest.raises(LektoConnectionError) as raised:
         [event async for event in lekto.events.listen()]
     assert type(raised.value) is error
+
+
+async def test_listen_to_a_connection_that_falls_silent(api: Api, lekto: LektoClient) -> None:
+    """A stream waits 30 s for a byte, twice the 15 s after which Lekto sends a comment."""
+    api.answer(
+        "GET", "/events", stream=FallsSilent(), headers={"Content-Type": "text/event-stream"}
+    )
+    with pytest.raises(LektoTimeoutError, match=r"GET /events in time"):
+        [event async for event in lekto.events.listen()]
+    timeout = api.requests[-1].extensions["timeout"]
+    assert timeout == {"connect": 10.0, "read": 30.0, "write": None, "pool": None}
+
+
+async def test_listen_to_a_stream_that_cannot_be_decoded(api: Api, lekto: LektoClient) -> None:
+    """A stream whose bytes do not match its ``Content-Encoding`` raises a connection error."""
+    headers = {"Content-Type": "text/event-stream", "Content-Encoding": "gzip"}
+    api.answer("GET", "/events", content=b": ready\n\n", headers=headers)
+    with pytest.raises(LektoConnectionError, match=r"GET /events could not be read") as raised:
+        [event async for event in lekto.events.listen()]
+    assert type(raised.value) is LektoConnectionError
+    assert isinstance(raised.value.__cause__, httpx2.DecodingError)
+
+
+@pytest.mark.parametrize(
+    "data",
+    ["{broken", '{"type": "document.received", "occurred_at": "2026-11-19T08:00:00Z"}'],
+)
+async def test_listen_to_an_event_that_is_no_event_message(
+    api: Api, lekto: LektoClient, data: str
+) -> None:
+    """An event whose data is no ``EventMessage`` (a proxy's damage) raises a response error."""
+    stream = Closes(f": ready\n\nevent: document.received\ndata: {data}\n\n")
+    api.answer("GET", "/events", stream=stream, headers={"Content-Type": "text/event-stream"})
+    with pytest.raises(
+        LektoResponseError, match=r"event document.received on GET /events"
+    ) as raised:
+        [event async for event in lekto.events.listen()]
+    assert isinstance(raised.value.__cause__, ValidationError)
+    assert stream.closed
 
 
 async def test_events_are_read_as_the_standard_says() -> None:

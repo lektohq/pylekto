@@ -13,7 +13,7 @@ class LektoError(Exception):
 
 
 class LektoConnectionError(LektoError):
-    """Lekto could not be reached, or the connection broke off."""
+    """Lekto could not be reached, the connection broke off, or its answer could not be read."""
 
 
 class LektoTimeoutError(LektoConnectionError):

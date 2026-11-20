@@ -1,7 +1,15 @@
 """Requests to Lekto's REST API: the token, problem details as exceptions, pages of items."""
 
 import json
-from collections.abc import AsyncIterator, Awaitable, Callable, Collection, Mapping, Sequence
+from collections.abc import (
+    AsyncGenerator,
+    AsyncIterator,
+    Awaitable,
+    Callable,
+    Collection,
+    Mapping,
+    Sequence,
+)
 from contextlib import asynccontextmanager
 from datetime import date
 from http import HTTPStatus
@@ -29,8 +37,8 @@ from pylekto.models import Problem
 API_PATH = "/api/v1"
 # Only for the clients pylekto makes itself; a client passed in keeps its own settings.
 TIMEOUT = httpx2.Timeout(30.0, connect=10.0)
-# A stream waits for its next line as long as it takes; connecting has its usual limit.
-STREAM = httpx2.Timeout(None, connect=10.0)
+# Also on a client passed in: twice the 15 s after which Lekto sends a comment (": ping").
+STREAM = httpx2.Timeout(None, connect=10.0, read=30.0)
 # Writes ids, dates and the like as JSON (for request bodies).
 _JSON: TypeAdapter[Any] = TypeAdapter(Any)
 # Lekto recognises a file by its content, not by the type a client names.
@@ -105,10 +113,11 @@ class Http:
         """GET the bytes of a file."""
         return (await self.request("GET", path, **send)).content
 
-    async def lines(self, path: str, *, params: Params | None = None) -> AsyncIterator[str]:
+    async def lines(self, path: str, *, params: Params | None = None) -> AsyncGenerator[str]:
         """GET a stream and yield its lines as they come, until Lekto ends it.
 
-        The stream may stay quiet for long: it waits for each line without a time limit.
+        Lekto may send no event for long but keeps the stream alive with comments: after 30 s
+        without a byte it raises :class:`LektoTimeoutError`.
         """
         try:
             async with self._client.stream(
@@ -119,12 +128,8 @@ class Http:
                     raise api_error(response)
                 async for line in response.aiter_lines():
                     yield line
-        except httpx2.TimeoutException as error:
-            message = f"Lekto did not answer GET {path} in time"
-            raise LektoTimeoutError(message) from error
-        except httpx2.TransportError as error:
-            message = f"Lekto is not reachable: {type(error).__name__}"
-            raise LektoConnectionError(message) from error
+        except httpx2.RequestError as error:
+            raise _request_error(error, "GET", path) from error
 
 
 async def exchange(
@@ -144,15 +149,25 @@ async def exchange(
             files=send.get("files"),
             headers=headers,
         )
-    except httpx2.TimeoutException as error:
-        message = f"Lekto did not answer {method} {httpx2.URL(url).path} in time"
-        raise LektoTimeoutError(message) from error
-    except httpx2.TransportError as error:
-        message = f"Lekto is not reachable: {type(error).__name__}"
-        raise LektoConnectionError(message) from error
+    except httpx2.RequestError as error:
+        raise _request_error(error, method, httpx2.URL(url).path) from error
     if response.is_error and response.status_code not in send.get("accept", ()):
         raise api_error(response)
     return response
+
+
+def _request_error(error: httpx2.RequestError, method: str, path: str) -> LektoConnectionError:
+    """Return the exception for a request that failed in httpx2.
+
+    A body it cannot decode, or a loop of redirects, is no ``TransportError`` but fails it too.
+    """
+    if isinstance(error, httpx2.TimeoutException):
+        return LektoTimeoutError(f"Lekto did not answer {method} {path} in time")
+    if isinstance(error, httpx2.TransportError):
+        return LektoConnectionError(f"Lekto is not reachable: {type(error).__name__}")
+    return LektoConnectionError(
+        f"Lekto's answer to {method} {path} could not be read: {type(error).__name__}"
+    )
 
 
 @asynccontextmanager
