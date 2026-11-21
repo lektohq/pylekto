@@ -1,4 +1,5 @@
 ---
+# No version-resolver: the version follows the API (.github/scripts/release_version.py).
 name-template: "pylekto $RESOLVED_VERSION 🦉"
 tag-template: "v$RESOLVED_VERSION"
 
@@ -43,11 +44,9 @@ categories:
     when:
       label: "skip-changelog"
   - title: "🚨 Breaking changes"
-    semver-increment: major
     when:
       label: "breaking-change"
   - title: "✨ New features"
-    semver-increment: minor
     when:
       label: "new-feature"
   - title: "🚀 Enhancements"
@@ -74,22 +73,12 @@ categories:
       labels:
         - "dependencies"
         - "dev-deps"
-  # The version alone, without a section of their own.
-  - type: version-resolver
-    semver-increment: major
-    when:
-      label: "major"
-  - type: version-resolver
-    semver-increment: minor
-    when:
-      label: "minor"
-  - type: version-resolver
-    semver-increment: patch
 
 template: |
 
   $CHANGES
 
+# Not $PREVIOUS_TAG: that is the highest number (v0.4.0), not the release before.
 footer: |
 
   ## 👋 New contributors
@@ -102,4 +91,4 @@ footer: |
   pip install pylekto==$RESOLVED_VERSION
   ```
 
-  **Full changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+  **Full history**: https://github.com/$OWNER/$REPOSITORY/commits/v$RESOLVED_VERSION
