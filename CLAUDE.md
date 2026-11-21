@@ -12,11 +12,11 @@ decided in `.knowledge/decisions/2026-11-18-pylekto-architecture.md`, the order 
 | `src/pylekto/` | The package (typed: `py.typed`): `client.py` (`LektoClient`), `_http.py` (requests, problem details as exceptions, pages), `exceptions.py`, `resources/` (one module per area of the API) |
 | `src/pylekto/webhooks.py` | Receiving webhooks: `verify` (Standard Webhooks), `read_*` for each body, `task`, `answer`, `download` |
 | `src/pylekto/models.py` | The models, generated from `openapi.json` by `script/generate_models.py` (datamodel-codegen, settings in `pyproject.toml`); never edited by hand |
-| `openapi.json`, `src/pylekto/_lekto.py` | Lekto's OpenAPI description of the release `LEKTO_VERSION`, that version and the version of its API (`API_VERSION`, `info.version`) |
+| `openapi.json`, `src/pylekto/_lekto.py` | Lekto's OpenAPI description of the release `LEKTO_VERSION`, that version and the version of its API (`API_VERSION`, `info.version`), which is also the MAJOR.MINOR of pylekto's own version |
 | `tests/` | pytest; `tests/ruff.toml` adjusts the rules for tests; `tests/snapshot/` the recorded answers of a Lekto instance, one JSON file per request |
 | `script/` | `setup` (once: dependencies, Git hooks), `bootstrap` (every start of the devcontainer: dependencies), `generate_models.py` (the models), `update_openapi.py` (the description of another Lekto release), `record_snapshot.py` (the snapshot) |
 | `.devcontainer/`, `Dockerfile.dev` | Devcontainer: Python 3.14, uv, gh, Claude Code; the virtual environment lives in `/home/vscode/.local/dev-venv` |
-| `.github/` | Workflows (`ci.yml`, `release.yml`, Release Drafter, labels, stale, lock), labels, templates, `scripts/` (the test of the action pins) |
+| `.github/` | Workflows (`ci.yml`, `release.yml`, Release Drafter, labels, stale, lock), labels, templates, `scripts/` (the version of the next release, the test of the action pins) |
 | `.knowledge/` | The knowledge in German as small notes with frontmatter; start with `INDEX.md` and `README.md`. A checkout of the private repository `lektohq/lekto-knowledge`, shared with lekto and ignored by this one (see "Working style") |
 
 ## Commands
@@ -29,18 +29,23 @@ uv run pytest                    # with coverage; fails below 95 %
 uv run typos
 uv run yamllint .
 uv run prek run --all-files      # every hook at once, as before each commit
-python3 -m unittest discover -s .github/scripts   # every action is pinned to a commit
+python3 -m unittest discover -s .github/scripts   # the next version, the pins of the actions
 uv run python script/generate_models.py   # the models from openapi.json again
 uv run python script/update_openapi.py v0.16.0   # another Lekto release: description, version, models
 ```
 
 Run all checks before every commit; `script/setup` installs them as a Git hook (`prek install`).
 
-Publishing a release on GitHub runs `.github/workflows/release.yml`: it sets the version from the
-tag, builds the package (`uv build`) and uploads it to PyPI by Trusted Publishing (environment
-`release`, no token). The repository carries the version `0.0.0`. Every action in a workflow is
-pinned to its commit with the version in a comment (`uses: actions/checkout@<sha> # v7.0.1`,
-which Renovate updates); a test in `.github/scripts` fails on a tag.
+pylekto X.Y.Z speaks Lekto's API X.Y (`API_VERSION`); Z counts its releases for that API
+(`.knowledge/decisions/2026-11-21-pylekto-version.md`). The Release Drafter gets the version from
+`.github/scripts/release_version.py`: one past the highest tag vX.Y.* (a small `v`), so 0.3.0 and
+0.4.0, which PyPI holds for the APIs 0.2 and 0.3 and which are withdrawn, are skipped. Publishing a
+release on GitHub runs `.github/workflows/release.yml`: it stops unless the tag names
+`API_VERSION`, sets the version from the tag, builds the package (`uv build`) and uploads it to
+PyPI by Trusted Publishing (environment `release`, no token). The repository carries the version
+`0.0.0`. Every action in a workflow is pinned to its commit with the version in a comment (`uses:
+actions/checkout@<sha> # v7.0.1`, which Renovate updates); a test in `.github/scripts` fails on a
+tag.
 
 ## Rules
 
@@ -108,12 +113,13 @@ which Renovate updates); a test in `.github/scripts` fails on a tag.
 Every pull request carries exactly one category label from `.github/labels.yml` (`new-feature`,
 `bugfix`, `enhancement`, `refactor`, `performance`, `maintenance`, `ci`, `documentation`,
 `dependencies`, `dev-deps`, `breaking-change`); a check fails without one, and the Release Drafter
-builds the release notes from them. Renovate (`renovate.json`, the hosted app) labels its own:
+sorts the release notes by them. Renovate (`renovate.json`, the hosted app) labels its own:
 `dependencies`, `dev-deps` (development dependencies, the devcontainer, prek's hooks), `ci`
 (actions); it suggests a version 10 days after its release at the earliest.
-The version bump follows the labels (`breaking-change` or `major`: major; `new-feature` or
-`minor`: minor; else patch). pylekto is in beta like Lekto and its API: no pull request carries
-`breaking-change`, even one that breaks. Tobi publishes and tags the release from the draft.
+The version follows the API, not the labels: a pull request that brings another `API_VERSION`
+starts the next release line, every other release counts Z on. pylekto is in beta like Lekto and
+its API: no pull request carries `breaking-change`, even one that breaks. Tobi publishes and tags
+the release from the draft.
 A pull request a user notices fills the section `## Release notes` of its description with one
 sentence on what changes for them; it stands under the title in the release notes.
 

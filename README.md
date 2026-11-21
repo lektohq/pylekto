@@ -48,6 +48,9 @@ asyncio.run(main())
   failing; `case Unknown():` matches it.
 - **One version of the API.** pylekto speaks the API `pylekto.API_VERSION` of Lekto
   `pylekto.LEKTO_VERSION`; its models are generated from that release's OpenAPI description.
+  From 0.2.0 on, pylekto's version names that API: pylekto `X.Y.Z` speaks the API `X.Y`, so
+  `pylekto==0.3.*` stays with the API 0.3. Withdrawn: 0.3.0 (API 0.2) and 0.4.0 (API 0.3, again
+  as 0.3.1).
   Connecting to a Lekto whose API may differ warns (`LektoVersionWarning`): during the beta
   (`0.x`) every other MINOR, from `1.0` on another MAJOR or a smaller MINOR.
   `pylekto.api_fit(lekto.api_version)` returns the same rule as `"fits"`, `"newer"` (update
