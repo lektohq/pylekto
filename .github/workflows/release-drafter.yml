@@ -17,6 +17,22 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      # The changes start at main's last tag, not the highest number (v0.4.0 is older than v0.3.1).
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Name the release after the API
+        id: release
+        shell: bash  # with pipefail: a failing git tag must not leave the version at X.Y.0
+        run: |
+          version="$(git tag --list 'v*' | python3 .github/scripts/release_version.py)"
+          previous="$(git describe --tags --abbrev=0 --match 'v*')"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "from=refs/tags/${previous}" >> "$GITHUB_OUTPUT"
       - uses: release-drafter/release-drafter@978bb0b30c5ee8cdd332ced253758157150d43f0 # v7.10.0
+        with:
+          version: ${{ steps.release.outputs.version }}
+          from: ${{ steps.release.outputs.from }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
