@@ -16,7 +16,7 @@ decided in `.knowledge/decisions/2026-11-18-pylekto-architecture.md`, the order 
 | `tests/` | pytest; `tests/ruff.toml` adjusts the rules for tests; `tests/snapshot/` the recorded answers of a Lekto instance, one JSON file per request |
 | `script/` | `setup` (once: dependencies, Git hooks), `bootstrap` (every start of the devcontainer: dependencies), `generate_models.py` (the models), `update_openapi.py` (the description of another Lekto release), `record_snapshot.py` (the snapshot) |
 | `.devcontainer/`, `Dockerfile.dev` | Devcontainer: Python 3.14, uv, gh, Claude Code; the virtual environment lives in `/home/vscode/.local/dev-venv` |
-| `.github/` | Workflows (`ci.yml`, `release.yml`, Release Drafter, labels, stale, lock), labels, templates, `scripts/` (the version of the next release, the test of the action pins) |
+| `.github/` | Workflows (`ci.yml`, `release.yml`, `site.yml` (rebuilds lekto.dev on a release), Release Drafter, labels, stale, lock), labels, templates, `scripts/` (the version of the next release, the test of the action pins) |
 | `.knowledge/` | The knowledge in German as small notes with frontmatter; start with `INDEX.md` and `README.md`. A checkout of the private repository `lektohq/lekto-knowledge`, shared with lekto and ignored by this one (see "Working style") |
 
 ## Commands
