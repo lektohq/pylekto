@@ -12,92 +12,92 @@
       {
         "kind": "classifier.check",
         "count": 1,
-        "wait_median_ms": 210.0,
-        "wait_p90_ms": 210.0,
-        "run_median_ms": 9.7,
-        "run_p90_ms": 9.7
+        "wait_median_ms": 248164.1,
+        "wait_p90_ms": 248164.1,
+        "run_median_ms": 18.5,
+        "run_p90_ms": 18.5
+      },
+      {
+        "kind": "classifier.train",
+        "count": 2,
+        "wait_median_ms": 33.0,
+        "wait_p90_ms": 3271.6,
+        "run_median_ms": 442.3,
+        "run_p90_ms": 552.0
       },
       {
         "kind": "documents.bulk",
         "count": 1,
-        "wait_median_ms": 1373.7,
-        "wait_p90_ms": 1373.7,
-        "run_median_ms": 16.8,
-        "run_p90_ms": 16.8
+        "wait_median_ms": 1388.9,
+        "wait_p90_ms": 1388.9,
+        "run_median_ms": 26.0,
+        "run_p90_ms": 26.0
       },
       {
         "kind": "documents.remove_files",
         "count": 1,
-        "wait_median_ms": 1300.5,
-        "wait_p90_ms": 1300.5,
-        "run_median_ms": 19.9,
-        "run_p90_ms": 19.9
+        "wait_median_ms": 1295.2,
+        "wait_p90_ms": 1295.2,
+        "run_median_ms": 52.8,
+        "run_p90_ms": 52.8
       },
       {
         "kind": "maintenance.cleanup",
         "count": 1,
-        "wait_median_ms": 21.9,
-        "wait_p90_ms": 21.9,
-        "run_median_ms": 9.8,
-        "run_p90_ms": 9.8
+        "wait_median_ms": 34.8,
+        "wait_p90_ms": 34.8,
+        "run_median_ms": 16.4,
+        "run_p90_ms": 16.4
       },
       {
         "kind": "pipeline.facts",
         "count": 97,
-        "wait_median_ms": 19818.2,
-        "wait_p90_ms": 36366.9,
-        "run_median_ms": 806.0,
-        "run_p90_ms": 918.6
+        "wait_median_ms": 23019.1,
+        "wait_p90_ms": 39209.5,
+        "run_median_ms": 801.6,
+        "run_p90_ms": 906.6
       },
       {
         "kind": "pipeline.node",
         "count": 1311,
-        "wait_median_ms": 15036.4,
-        "wait_p90_ms": 94634.8,
-        "run_median_ms": 24.5,
-        "run_p90_ms": 805.6
+        "wait_median_ms": 14969.7,
+        "wait_p90_ms": 99537.5,
+        "run_median_ms": 25.4,
+        "run_p90_ms": 808.9
       },
       {
         "kind": "pipeline.relate",
         "count": 2,
-        "wait_median_ms": 1169.6,
-        "wait_p90_ms": 1913.2,
-        "run_median_ms": 7.3,
-        "run_p90_ms": 13.7
-      },
-      {
-        "kind": "rules.apply",
-        "count": 1,
-        "wait_median_ms": 21.9,
-        "wait_p90_ms": 21.9,
-        "run_median_ms": 20.1,
-        "run_p90_ms": 20.1
+        "wait_median_ms": 174.2,
+        "wait_p90_ms": 1972.1,
+        "run_median_ms": 8.5,
+        "run_p90_ms": 10.5
       },
       {
         "kind": "search.index",
-        "count": 219,
-        "wait_median_ms": 36684.7,
-        "wait_p90_ms": 245151.1,
-        "run_median_ms": 58.4,
-        "run_p90_ms": 74.5
+        "count": 221,
+        "wait_median_ms": 36171.9,
+        "wait_p90_ms": 244820.7,
+        "run_median_ms": 55.8,
+        "run_p90_ms": 64.0
       },
       {
         "kind": "search.reconcile",
         "count": 2,
-        "wait_median_ms": 92.7,
-        "wait_p90_ms": 120.0,
-        "run_median_ms": 56.6,
-        "run_p90_ms": 83.4
+        "wait_median_ms": 243841.2,
+        "wait_p90_ms": 243873.1,
+        "run_median_ms": 211.3,
+        "run_p90_ms": 237.6
       },
       {
         "kind": "updates.check",
         "count": 1,
-        "wait_median_ms": 212753.7,
-        "wait_p90_ms": 212753.7,
-        "run_median_ms": 2.1,
-        "run_p90_ms": 2.1
+        "wait_median_ms": 188259.0,
+        "wait_p90_ms": 188259.0,
+        "run_median_ms": 2.9,
+        "run_p90_ms": 2.9
       }
     ],
-    "since": "2026-11-17T10:13:11.527217Z"
+    "since": "2026-11-17T10:26:42.751217Z"
   }
 }

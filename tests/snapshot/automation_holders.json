@@ -19,7 +19,7 @@
       }
     ],
     "recommendation": {
-      "right": 7,
+      "right": 13,
       "learned_rejected": 0,
       "refused_confirmed": 0,
       "unclear": 0,

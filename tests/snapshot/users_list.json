@@ -9,12 +9,12 @@
   "status": 200,
   "body": [
     {
-      "id": "01a20d05-fd22-718b-9b59-b14e298e43ac",
+      "id": "01a20d12-adc9-7f12-a9f3-ec8bc12b5e27",
       "username": "admin",
-      "personal_space_id": "01a20d05-fd26-7dac-8381-4ecbee385f04",
+      "personal_space_id": "01a20d12-adcc-7f1c-9c72-a3945fc24975",
       "role": "admin",
       "active": true,
-      "created_at": "2026-11-24T10:07:06.017662Z"
+      "created_at": "2026-11-24T10:20:57.672124Z"
     }
   ]
 }

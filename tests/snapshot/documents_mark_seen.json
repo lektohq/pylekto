@@ -2,7 +2,7 @@
   "lekto_version": "0.17.3",
   "method": "PUT",
   "operation": "/documents/{id}/seen",
-  "path": "/documents/01a20d06-67f3-74e0-87a1-98af6f53097a/seen",
+  "path": "/documents/01a20d12-b44f-7657-84fb-1a14b136c0e4/seen",
   "params": {},
   "json": null,
   "data": {},

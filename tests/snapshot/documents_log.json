@@ -2,7 +2,7 @@
   "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/documents/{id}/log",
-  "path": "/documents/01a20d06-67f3-74e0-87a1-98af6f53097a/log",
+  "path": "/documents/01a20d12-b44f-7657-84fb-1a14b136c0e4/log",
   "params": {},
   "json": null,
   "data": {},
@@ -23,24 +23,24 @@
         "media_type": "application/pdf",
         "imported": {
           "title": "VHS Spanisch A2",
-          "contact_id": "01a20d06-65ef-7b75-bdce-f625372103e5",
-          "document_type_id": "01a20d06-6653-72d8-b76f-3ff0320cc497",
+          "contact_id": "01a20d12-b272-7bb8-965b-1bdb8518da4d",
+          "document_type_id": "01a20d12-b2d4-73fe-a8b8-9e4ac8d2be7d",
           "tag_ids": [],
           "document_date": "2026-01-10",
           "fields": {
-            "01a20d06-6695-7364-b827-015feeefb482": {
+            "01a20d12-b314-76a9-b216-14fb27cf2808": {
               "amount": "132.00",
               "currency": "EUR"
             },
-            "01a20d06-66c5-73fd-9d27-c6a6ca4b9c7d": "VHS-2026-01877"
+            "01a20d12-b344-7890-a5c8-5a438163c75f": "VHS-2026-01877"
           },
           "created_at": null,
           "review": []
         }
       },
       "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:07:33.347240Z",
-      "duration_ms": 13.069
+      "started_at": "2026-11-24T10:20:59.327638Z",
+      "duration_ms": 12.454
     },
     {
       "node": "separate",
@@ -55,8 +55,28 @@
         "not_looked": "migration"
       },
       "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:07:34.760780Z",
-      "duration_ms": 15.982
+      "started_at": "2026-11-24T10:21:02.332372Z",
+      "duration_ms": 10.632000000000001
+    },
+    {
+      "node": "ocr",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "ocrmypdf 17.14.1, tesseract 5.5.0",
+      "input": {
+        "original": "originals/21a50ee4921723c103a8b7dcfd9bd0565fc4266d402c4ad76ad092e5849513da"
+      },
+      "output": {
+        "archive": "documents/01a20d12-b44f-7657-84fb-1a14b136c0e4/archive.pdf",
+        "pages": 1,
+        "pdfa": true
+      },
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:21:18.221091Z",
+      "duration_ms": 1886.8020000000001
     },
     {
       "node": "pages",
@@ -71,32 +91,12 @@
       },
       "output": {
         "pages": 1,
-        "first_page": "documents/01a20d06-67f3-74e0-87a1-98af6f53097a/pages/1.webp",
-        "preview": "documents/01a20d06-67f3-74e0-87a1-98af6f53097a/preview.webp"
+        "first_page": "documents/01a20d12-b44f-7657-84fb-1a14b136c0e4/pages/1.webp",
+        "preview": "documents/01a20d12-b44f-7657-84fb-1a14b136c0e4/preview.webp"
       },
       "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:07:50.672891Z",
-      "duration_ms": 775.432
-    },
-    {
-      "node": "ocr",
-      "run": 1,
-      "outcome": "ok",
-      "reason": null,
-      "reasons": [],
-      "confidence": null,
-      "model_version": "ocrmypdf 17.14.1, tesseract 5.5.0",
-      "input": {
-        "original": "originals/21a50ee4921723c103a8b7dcfd9bd0565fc4266d402c4ad76ad092e5849513da"
-      },
-      "output": {
-        "archive": "documents/01a20d06-67f3-74e0-87a1-98af6f53097a/archive.pdf",
-        "pages": 1,
-        "pdfa": true
-      },
-      "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:07:50.401631Z",
-      "duration_ms": 1916.803
+      "started_at": "2026-11-24T10:21:20.147746Z",
+      "duration_ms": 850.837
     },
     {
       "node": "parse",
@@ -107,17 +107,17 @@
       "confidence": null,
       "model_version": "layout 1, pypdfium2 5.15.2",
       "input": {
-        "archive": "documents/01a20d06-67f3-74e0-87a1-98af6f53097a/archive.pdf"
+        "archive": "documents/01a20d12-b44f-7657-84fb-1a14b136c0e4/archive.pdf"
       },
       "output": {
-        "text": "documents/01a20d06-67f3-74e0-87a1-98af6f53097a/content.txt",
-        "structure": "documents/01a20d06-67f3-74e0-87a1-98af6f53097a/content.json",
+        "text": "documents/01a20d12-b44f-7657-84fb-1a14b136c0e4/content.txt",
+        "structure": "documents/01a20d12-b44f-7657-84fb-1a14b136c0e4/content.json",
         "pages": 1,
         "characters": 1585
       },
       "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:08:51.465917Z",
-      "duration_ms": 552.547
+      "started_at": "2026-11-24T10:23:42.026735Z",
+      "duration_ms": 594.857
     },
     {
       "node": "signal_llm",
@@ -136,28 +136,8 @@
         }
       },
       "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:10:48.185095Z",
-      "duration_ms": 15.488999999999999
-    },
-    {
-      "node": "signal_neighbours",
-      "run": 1,
-      "outcome": "ok",
-      "reason": null,
-      "reasons": [],
-      "confidence": null,
-      "model_version": "imported",
-      "input": {},
-      "output": {
-        "abstained": "taken over from the source system",
-        "abstained_reason": {
-          "code": "taken_over",
-          "params": {}
-        }
-      },
-      "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:10:48.238279Z",
-      "duration_ms": 12.716999999999999
+      "started_at": "2026-11-24T10:24:29.907919Z",
+      "duration_ms": 7.938000000000001
     },
     {
       "node": "signal_classifier",
@@ -176,8 +156,28 @@
         }
       },
       "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:10:48.281139Z",
-      "duration_ms": 12.971
+      "started_at": "2026-11-24T10:24:29.943922Z",
+      "duration_ms": 14.27
+    },
+    {
+      "node": "signal_neighbours",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "imported",
+      "input": {},
+      "output": {
+        "abstained": "taken over from the source system",
+        "abstained_reason": {
+          "code": "taken_over",
+          "params": {}
+        }
+      },
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:24:29.993744Z",
+      "duration_ms": 12.883000000000001
     },
     {
       "node": "signal_facts",
@@ -196,8 +196,8 @@
         }
       },
       "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:10:48.316367Z",
-      "duration_ms": 12.163
+      "started_at": "2026-11-24T10:24:30.033945Z",
+      "duration_ms": 11.571
     },
     {
       "node": "judge",
@@ -219,24 +219,24 @@
       "output": {
         "imported": {
           "title": "VHS Spanisch A2",
-          "contact_id": "01a20d06-65ef-7b75-bdce-f625372103e5",
-          "document_type_id": "01a20d06-6653-72d8-b76f-3ff0320cc497",
+          "contact_id": "01a20d12-b272-7bb8-965b-1bdb8518da4d",
+          "document_type_id": "01a20d12-b2d4-73fe-a8b8-9e4ac8d2be7d",
           "tag_ids": [],
           "document_date": "2026-01-10",
           "fields": {
-            "01a20d06-6695-7364-b827-015feeefb482": {
+            "01a20d12-b314-76a9-b216-14fb27cf2808": {
               "amount": "132.00",
               "currency": "EUR"
             },
-            "01a20d06-66c5-73fd-9d27-c6a6ca4b9c7d": "VHS-2026-01877"
+            "01a20d12-b344-7890-a5c8-5a438163c75f": "VHS-2026-01877"
           },
           "created_at": null,
           "review": []
         }
       },
       "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:11:11.162800Z",
-      "duration_ms": 7.353
+      "started_at": "2026-11-24T10:24:45.611246Z",
+      "duration_ms": 29.169
     },
     {
       "node": "fields",
@@ -259,8 +259,8 @@
         "fields": 2
       },
       "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:11:21.764546Z",
-      "duration_ms": 13.751
+      "started_at": "2026-11-24T10:24:50.877386Z",
+      "duration_ms": 11.533
     },
     {
       "node": "relate",
@@ -275,8 +275,8 @@
         "relations": []
       },
       "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:11:25.936565Z",
-      "duration_ms": 4.634
+      "started_at": "2026-11-24T10:24:54.622600Z",
+      "duration_ms": 9.879999999999999
     },
     {
       "node": "apply_rules",
@@ -292,8 +292,8 @@
       },
       "output": {},
       "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:11:29.371652Z",
-      "duration_ms": 12.956000000000001
+      "started_at": "2026-11-24T10:24:58.268474Z",
+      "duration_ms": 10.158999999999999
     },
     {
       "node": "file",
@@ -306,8 +306,8 @@
       "input": {},
       "output": {},
       "pipeline_version": "0.17.3",
-      "started_at": "2026-11-24T10:11:32.947659Z",
-      "duration_ms": 11.967
+      "started_at": "2026-11-24T10:25:02.074103Z",
+      "duration_ms": 8.62
     }
   ]
 }

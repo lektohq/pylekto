@@ -15,28 +15,34 @@
     "items": [
       {
         "document": {
-          "id": "01a20d06-6c0b-79a0-97db-72b55236eccd",
-          "title": "Ablesekarte Stromzähler",
-          "original_filename": "IMG_20260716_153440.jpg",
-          "media_type": "image/jpeg",
+          "id": "01a20d12-c16e-7cb9-bf63-1566bf91a98f",
+          "title": "Jahresabrechnung Strom 2023/2024",
+          "original_filename": "scan2404020836.pdf",
+          "media_type": "application/pdf",
           "channel": "migration",
-          "sha256": "f48f83ff592af11b0e9e7b0c8c23cc89209445d1f0d29c8049d2ab903850e5a8",
-          "uploaded_by": "01a20d05-fd22-718b-9b59-b14e298e43ac",
-          "space_id": "01a20d05-fd26-7dac-8381-4ecbee385f04",
+          "sha256": "454afe248f2ac4c55ca8da8af371a1d3e9d24cdefbc3ac25f8f09aef17ec0581",
+          "uploaded_by": "01a20d12-adc9-7f12-a9f3-ec8bc12b5e27",
+          "space_id": "01a20d12-adcc-7f1c-9c72-a3945fc24975",
           "access": "edit",
-          "contact_id": "01a20d06-65a8-77b5-8a51-c35186e8d304",
-          "document_type_id": "01a20d06-664d-7388-9ae5-1992268d00e5",
+          "contact_id": "01a20d12-b238-7ea6-a65b-9351e0536082",
+          "document_type_id": "01a20d12-b2d4-73fe-a8b8-9e4ac8d2be7d",
           "topic_id": null,
           "tag_ids": [],
-          "document_date": "2026-07-10",
+          "document_date": "2024-03-18",
           "fields": {
-            "01a20d06-66a9-7e45-988f-1a1e2bd26ed8": "2026-07-31"
+            "01a20d12-b314-76a9-b216-14fb27cf2808": {
+              "amount": "1297.42",
+              "currency": "EUR"
+            },
+            "01a20d12-b31b-70cf-ac6c-e96f98ac8cc9": "2023-03-01/2024-02-29",
+            "01a20d12-b337-79e2-8074-a0a47925ce0d": "1234 5678",
+            "01a20d12-b344-7890-a5c8-5a438163c75f": "R-2024-0277"
           },
           "lane": "green",
           "first_lane": "green",
           "page_count": 1,
-          "confirmed_at": "2026-11-24T10:11:14.951662Z",
-          "space_confirmed_at": "2026-11-24T10:11:14.951662Z",
+          "confirmed_at": "2026-11-24T10:24:51.904804Z",
+          "space_confirmed_at": "2026-11-24T10:24:51.904804Z",
           "processing": {
             "status": "completed",
             "run": 1,
@@ -45,119 +51,282 @@
                 "node": "receive",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:07:34.407421Z",
-                "finished_at": "2026-11-24T10:07:34.407421Z",
+                "started_at": "2026-11-24T10:21:02.690321Z",
+                "finished_at": "2026-11-24T10:21:02.690321Z",
                 "deadline": null
               },
               {
                 "node": "separate",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:07:35.829124Z",
-                "finished_at": "2026-11-24T10:07:35.896210Z",
+                "started_at": "2026-11-24T10:21:29.903776Z",
+                "finished_at": "2026-11-24T10:21:29.916340Z",
                 "deadline": null
               },
               {
                 "node": "ocr",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:08:35.563185Z",
-                "finished_at": "2026-11-24T10:08:38.795352Z",
+                "started_at": "2026-11-24T10:24:01.966939Z",
+                "finished_at": "2026-11-24T10:24:06.555464Z",
                 "deadline": null
               },
               {
                 "node": "pages",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:08:36.114240Z",
-                "finished_at": "2026-11-24T10:08:36.280122Z",
+                "started_at": "2026-11-24T10:24:02.380521Z",
+                "finished_at": "2026-11-24T10:24:03.209144Z",
                 "deadline": null
               },
               {
                 "node": "parse",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:09:27.965946Z",
-                "finished_at": "2026-11-24T10:09:28.502624Z",
+                "started_at": "2026-11-24T10:24:34.313440Z",
+                "finished_at": "2026-11-24T10:24:34.914651Z",
                 "deadline": null
               },
               {
                 "node": "signal_llm",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:10:57.216192Z",
-                "finished_at": "2026-11-24T10:10:57.229721Z",
+                "started_at": "2026-11-24T10:24:47.591877Z",
+                "finished_at": "2026-11-24T10:24:47.606393Z",
                 "deadline": null
               },
               {
                 "node": "signal_classifier",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:10:57.260979Z",
-                "finished_at": "2026-11-24T10:10:57.276160Z",
+                "started_at": "2026-11-24T10:24:47.637876Z",
+                "finished_at": "2026-11-24T10:24:47.651465Z",
                 "deadline": null
               },
               {
                 "node": "signal_neighbours",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:10:57.356605Z",
-                "finished_at": "2026-11-24T10:10:57.377742Z",
+                "started_at": "2026-11-24T10:24:47.643208Z",
+                "finished_at": "2026-11-24T10:24:47.799360Z",
                 "deadline": null
               },
               {
                 "node": "signal_facts",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:10:57.311476Z",
-                "finished_at": "2026-11-24T10:10:57.324705Z",
+                "started_at": "2026-11-24T10:24:47.691970Z",
+                "finished_at": "2026-11-24T10:24:47.702685Z",
                 "deadline": null
               },
               {
                 "node": "judge",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:14.934096Z",
-                "finished_at": "2026-11-24T10:11:14.951662Z",
+                "started_at": "2026-11-24T10:24:51.876759Z",
+                "finished_at": "2026-11-24T10:24:51.904804Z",
                 "deadline": null
               },
               {
                 "node": "fields",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:23.598278Z",
-                "finished_at": "2026-11-24T10:11:23.614279Z",
+                "started_at": "2026-11-24T10:24:55.605709Z",
+                "finished_at": "2026-11-24T10:24:55.619884Z",
                 "deadline": null
               },
               {
                 "node": "relate",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:27.375009Z",
-                "finished_at": "2026-11-24T10:11:27.380930Z",
+                "started_at": "2026-11-24T10:24:59.197060Z",
+                "finished_at": "2026-11-24T10:24:59.214235Z",
                 "deadline": null
               },
               {
                 "node": "apply_rules",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:31.119754Z",
-                "finished_at": "2026-11-24T10:11:31.130352Z",
+                "started_at": "2026-11-24T10:25:03.055610Z",
+                "finished_at": "2026-11-24T10:25:03.079701Z",
                 "deadline": null
               },
               {
                 "node": "file",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:34.643656Z",
-                "finished_at": "2026-11-24T10:11:34.647780Z",
+                "started_at": "2026-11-24T10:25:05.648217Z",
+                "finished_at": "2026-11-24T10:25:05.653364Z",
                 "deadline": null
               }
             ],
             "vision": false
           },
-          "created_at": "2026-11-24T10:07:34.407421Z",
-          "updated_at": "2026-11-24T10:11:34.647780Z",
+          "created_at": "2026-11-24T10:21:02.690321Z",
+          "updated_at": "2026-11-24T10:25:05.653364Z",
+          "in_inbox": false
+        },
+        "score": 0.9889807162534435,
+        "snippet": [
+          {
+            "text": "Stadtwerke Musterstadt GmbH - Abrechnungssystem EVA 4.2\n\nSTADTWERKE MUSTERSTADT GMBH           JAHRESABRECHNUNG ",
+            "match": false
+          },
+          {
+            "text": "STROM",
+            "match": true
+          },
+          {
+            "text": "\n\nMAX MUSTERMANN                         KUNDENNR.     : 1234 5678\nBIRKENWEG 5                            RECHNUNGSNR.  2: R-2024-0277\n12347 MUSTERSTADT…",
+            "match": false
+          }
+        ]
+      },
+      {
+        "document": {
+          "id": "01a20d12-b806-7361-91ce-96fe8e2949cc",
+          "title": "Ablesekarte Stromzähler",
+          "original_filename": "IMG_20260716_153440.jpg",
+          "media_type": "image/jpeg",
+          "channel": "migration",
+          "sha256": "f48f83ff592af11b0e9e7b0c8c23cc89209445d1f0d29c8049d2ab903850e5a8",
+          "uploaded_by": "01a20d12-adc9-7f12-a9f3-ec8bc12b5e27",
+          "space_id": "01a20d12-adcc-7f1c-9c72-a3945fc24975",
+          "access": "edit",
+          "contact_id": "01a20d12-b238-7ea6-a65b-9351e0536082",
+          "document_type_id": "01a20d12-b2ce-7045-b055-092953ade784",
+          "topic_id": null,
+          "tag_ids": [],
+          "document_date": "2026-07-10",
+          "fields": {
+            "01a20d12-b328-715b-8c06-570bdcc705f6": "2026-07-31"
+          },
+          "lane": "green",
+          "first_lane": "green",
+          "page_count": 1,
+          "confirmed_at": "2026-11-24T10:24:48.233048Z",
+          "space_confirmed_at": "2026-11-24T10:24:48.233048Z",
+          "processing": {
+            "status": "completed",
+            "run": 1,
+            "nodes": [
+              {
+                "node": "receive",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:21:00.291551Z",
+                "finished_at": "2026-11-24T10:21:00.291551Z",
+                "deadline": null
+              },
+              {
+                "node": "separate",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:21:03.358762Z",
+                "finished_at": "2026-11-24T10:21:03.375143Z",
+                "deadline": null
+              },
+              {
+                "node": "ocr",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:21:59.931400Z",
+                "finished_at": "2026-11-24T10:22:03.195137Z",
+                "deadline": null
+              },
+              {
+                "node": "pages",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:22:02.646314Z",
+                "finished_at": "2026-11-24T10:22:02.822275Z",
+                "deadline": null
+              },
+              {
+                "node": "parse",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:24:10.821562Z",
+                "finished_at": "2026-11-24T10:24:11.360384Z",
+                "deadline": null
+              },
+              {
+                "node": "signal_llm",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:24:36.677822Z",
+                "finished_at": "2026-11-24T10:24:36.691960Z",
+                "deadline": null
+              },
+              {
+                "node": "signal_classifier",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:24:36.712106Z",
+                "finished_at": "2026-11-24T10:24:36.718412Z",
+                "deadline": null
+              },
+              {
+                "node": "signal_neighbours",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:24:36.759517Z",
+                "finished_at": "2026-11-24T10:24:36.769841Z",
+                "deadline": null
+              },
+              {
+                "node": "signal_facts",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:24:36.770748Z",
+                "finished_at": "2026-11-24T10:24:36.812131Z",
+                "deadline": null
+              },
+              {
+                "node": "judge",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:24:48.219349Z",
+                "finished_at": "2026-11-24T10:24:48.233048Z",
+                "deadline": null
+              },
+              {
+                "node": "fields",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:24:52.267189Z",
+                "finished_at": "2026-11-24T10:24:52.366142Z",
+                "deadline": null
+              },
+              {
+                "node": "relate",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:24:56.038341Z",
+                "finished_at": "2026-11-24T10:24:56.049344Z",
+                "deadline": null
+              },
+              {
+                "node": "apply_rules",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:24:59.739772Z",
+                "finished_at": "2026-11-24T10:24:59.753754Z",
+                "deadline": null
+              },
+              {
+                "node": "file",
+                "status": "done",
+                "outcome": "ok",
+                "started_at": "2026-11-24T10:25:03.550283Z",
+                "finished_at": "2026-11-24T10:25:03.566244Z",
+                "deadline": null
+              }
+            ],
+            "vision": false
+          },
+          "created_at": "2026-11-24T10:21:00.291551Z",
+          "updated_at": "2026-11-24T10:25:03.566244Z",
           "in_inbox": false
         },
         "score": 0.9889807162534435,
@@ -170,34 +339,34 @@
       },
       {
         "document": {
-          "id": "01a20d06-6f2f-7efc-ab7f-b9e8f9ee8aed",
+          "id": "01a20d12-ba76-7355-a678-153dad6daead",
           "title": "Schlussrechnung Strom 2025",
           "original_filename": "OCR_20250831_163525.pdf",
           "media_type": "application/pdf",
           "channel": "migration",
           "sha256": "93d374352ec8f68a428b90d07a8942e82dd61d83662dc746339157f87e87b81c",
-          "uploaded_by": "01a20d05-fd22-718b-9b59-b14e298e43ac",
-          "space_id": "01a20d05-fd26-7dac-8381-4ecbee385f04",
+          "uploaded_by": "01a20d12-adc9-7f12-a9f3-ec8bc12b5e27",
+          "space_id": "01a20d12-adcc-7f1c-9c72-a3945fc24975",
           "access": "edit",
-          "contact_id": "01a20d06-65a8-77b5-8a51-c35186e8d304",
-          "document_type_id": "01a20d06-6653-72d8-b76f-3ff0320cc497",
+          "contact_id": "01a20d12-b238-7ea6-a65b-9351e0536082",
+          "document_type_id": "01a20d12-b2d4-73fe-a8b8-9e4ac8d2be7d",
           "topic_id": null,
           "tag_ids": [],
           "document_date": "2025-08-14",
           "fields": {
-            "01a20d06-6695-7364-b827-015feeefb482": {
+            "01a20d12-b314-76a9-b216-14fb27cf2808": {
               "amount": "499.34",
               "currency": "EUR"
             },
-            "01a20d06-669c-7fbb-87f1-1e4df084353b": "2025-03-01/2025-07-31",
-            "01a20d06-66b7-7260-a283-48d62166f4c6": "1234 5678",
-            "01a20d06-66c5-73fd-9d27-c6a6ca4b9c7d": "R-2025-0884"
+            "01a20d12-b31b-70cf-ac6c-e96f98ac8cc9": "2025-03-01/2025-07-31",
+            "01a20d12-b337-79e2-8074-a0a47925ce0d": "1234 5678",
+            "01a20d12-b344-7890-a5c8-5a438163c75f": "R-2025-0884"
           },
           "lane": "green",
           "first_lane": "green",
           "page_count": 2,
-          "confirmed_at": "2026-11-24T10:11:22.765905Z",
-          "space_confirmed_at": "2026-11-24T10:11:22.765905Z",
+          "confirmed_at": "2026-11-24T10:24:48.961847Z",
+          "space_confirmed_at": "2026-11-24T10:24:48.961847Z",
           "processing": {
             "status": "completed",
             "run": 1,
@@ -206,119 +375,119 @@
                 "node": "receive",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:07:35.209752Z",
-                "finished_at": "2026-11-24T10:07:35.209752Z",
+                "started_at": "2026-11-24T10:21:00.914821Z",
+                "finished_at": "2026-11-24T10:21:00.914821Z",
                 "deadline": null
               },
               {
                 "node": "separate",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:08:08.595157Z",
-                "finished_at": "2026-11-24T10:08:08.605011Z",
+                "started_at": "2026-11-24T10:21:03.969551Z",
+                "finished_at": "2026-11-24T10:21:03.986822Z",
                 "deadline": null
               },
               {
                 "node": "ocr",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:09:06.822789Z",
-                "finished_at": "2026-11-24T10:09:10.691390Z",
+                "started_at": "2026-11-24T10:22:25.744403Z",
+                "finished_at": "2026-11-24T10:22:29.559837Z",
                 "deadline": null
               },
               {
                 "node": "pages",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:09:08.110872Z",
-                "finished_at": "2026-11-24T10:09:08.955037Z",
+                "started_at": "2026-11-24T10:22:29.114722Z",
+                "finished_at": "2026-11-24T10:22:30.052240Z",
                 "deadline": null
               },
               {
                 "node": "parse",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:10:52.088256Z",
-                "finished_at": "2026-11-24T10:10:52.736579Z",
+                "started_at": "2026-11-24T10:24:16.618059Z",
+                "finished_at": "2026-11-24T10:24:17.252472Z",
                 "deadline": null
               },
               {
                 "node": "signal_llm",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:13.120668Z",
-                "finished_at": "2026-11-24T10:11:13.135145Z",
+                "started_at": "2026-11-24T10:24:39.395700Z",
+                "finished_at": "2026-11-24T10:24:39.421788Z",
                 "deadline": null
               },
               {
                 "node": "signal_classifier",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:13.168945Z",
-                "finished_at": "2026-11-24T10:11:13.182942Z",
+                "started_at": "2026-11-24T10:24:39.480621Z",
+                "finished_at": "2026-11-24T10:24:39.489303Z",
                 "deadline": null
               },
               {
                 "node": "signal_neighbours",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:13.223912Z",
-                "finished_at": "2026-11-24T10:11:13.241813Z",
+                "started_at": "2026-11-24T10:24:39.453304Z",
+                "finished_at": "2026-11-24T10:24:39.463950Z",
                 "deadline": null
               },
               {
                 "node": "signal_facts",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:13.250693Z",
-                "finished_at": "2026-11-24T10:11:13.297672Z",
+                "started_at": "2026-11-24T10:24:39.506816Z",
+                "finished_at": "2026-11-24T10:24:39.520004Z",
                 "deadline": null
               },
               {
                 "node": "judge",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:22.754945Z",
-                "finished_at": "2026-11-24T10:11:22.765905Z",
+                "started_at": "2026-11-24T10:24:48.950514Z",
+                "finished_at": "2026-11-24T10:24:48.961847Z",
                 "deadline": null
               },
               {
                 "node": "fields",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:26.678522Z",
-                "finished_at": "2026-11-24T10:11:26.686604Z",
+                "started_at": "2026-11-24T10:24:53.034046Z",
+                "finished_at": "2026-11-24T10:24:53.043681Z",
                 "deadline": null
               },
               {
                 "node": "relate",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:30.086602Z",
-                "finished_at": "2026-11-24T10:11:30.148941Z",
+                "started_at": "2026-11-24T10:24:56.624254Z",
+                "finished_at": "2026-11-24T10:24:56.628600Z",
                 "deadline": null
               },
               {
                 "node": "apply_rules",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:33.867337Z",
-                "finished_at": "2026-11-24T10:11:33.884317Z",
+                "started_at": "2026-11-24T10:25:00.396587Z",
+                "finished_at": "2026-11-24T10:25:00.405625Z",
                 "deadline": null
               },
               {
                 "node": "file",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:36.925175Z",
-                "finished_at": "2026-11-24T10:11:36.937598Z",
+                "started_at": "2026-11-24T10:25:04.111352Z",
+                "finished_at": "2026-11-24T10:25:04.118537Z",
                 "deadline": null
               }
             ],
             "vision": false
           },
-          "created_at": "2026-11-24T10:07:35.209752Z",
-          "updated_at": "2026-11-24T10:11:36.937598Z",
+          "created_at": "2026-11-24T10:21:00.914821Z",
+          "updated_at": "2026-11-24T10:25:04.118537Z",
           "in_inbox": false
         },
         "score": 0.9889807162534435,
@@ -339,35 +508,35 @@
       },
       {
         "document": {
-          "id": "01a20d06-7299-7667-be30-3478c5bfe9c1",
+          "id": "01a20d12-bc34-7e8f-86b2-067e00caff04",
           "title": "Jahresabrechnung Strom 2024/2025",
           "original_filename": "Rechnung_R-2025-0311.pdf",
           "media_type": "application/pdf",
           "channel": "migration",
           "sha256": "1af0826341233ff6d353bddd35fd2100f41b086269e3c807be5bddd9beb8734f",
-          "uploaded_by": "01a20d05-fd22-718b-9b59-b14e298e43ac",
-          "space_id": "01a20d05-fd26-7dac-8381-4ecbee385f04",
+          "uploaded_by": "01a20d12-adc9-7f12-a9f3-ec8bc12b5e27",
+          "space_id": "01a20d12-adcc-7f1c-9c72-a3945fc24975",
           "access": "edit",
-          "contact_id": "01a20d06-65a8-77b5-8a51-c35186e8d304",
-          "document_type_id": "01a20d06-6653-72d8-b76f-3ff0320cc497",
+          "contact_id": "01a20d12-b238-7ea6-a65b-9351e0536082",
+          "document_type_id": "01a20d12-b2d4-73fe-a8b8-9e4ac8d2be7d",
           "topic_id": null,
           "tag_ids": [],
           "document_date": "2025-03-20",
           "fields": {
-            "01a20d06-6695-7364-b827-015feeefb482": {
+            "01a20d12-b314-76a9-b216-14fb27cf2808": {
               "amount": "1316.59",
               "currency": "EUR"
             },
-            "01a20d06-669c-7fbb-87f1-1e4df084353b": "2024-03-01/2025-02-28",
-            "01a20d06-66a9-7e45-988f-1a1e2bd26ed8": "2025-04-04",
-            "01a20d06-66b7-7260-a283-48d62166f4c6": "1234 5678",
-            "01a20d06-66c5-73fd-9d27-c6a6ca4b9c7d": "R-2025-0311"
+            "01a20d12-b31b-70cf-ac6c-e96f98ac8cc9": "2024-03-01/2025-02-28",
+            "01a20d12-b328-715b-8c06-570bdcc705f6": "2025-04-04",
+            "01a20d12-b337-79e2-8074-a0a47925ce0d": "1234 5678",
+            "01a20d12-b344-7890-a5c8-5a438163c75f": "R-2025-0311"
           },
           "lane": "green",
           "first_lane": "green",
           "page_count": 2,
-          "confirmed_at": "2026-11-24T10:11:23.858533Z",
-          "space_confirmed_at": "2026-11-24T10:11:23.858533Z",
+          "confirmed_at": "2026-11-24T10:24:49.549655Z",
+          "space_confirmed_at": "2026-11-24T10:24:49.549655Z",
           "processing": {
             "status": "completed",
             "run": 1,
@@ -376,119 +545,119 @@
                 "node": "receive",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:07:36.087139Z",
-                "finished_at": "2026-11-24T10:07:36.087139Z",
+                "started_at": "2026-11-24T10:21:01.358680Z",
+                "finished_at": "2026-11-24T10:21:01.358680Z",
                 "deadline": null
               },
               {
                 "node": "separate",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:08:40.164732Z",
-                "finished_at": "2026-11-24T10:08:40.177477Z",
+                "started_at": "2026-11-24T10:21:04.473205Z",
+                "finished_at": "2026-11-24T10:21:04.489871Z",
                 "deadline": null
               },
               {
                 "node": "ocr",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:09:32.085896Z",
-                "finished_at": "2026-11-24T10:09:34.024843Z",
+                "started_at": "2026-11-24T10:22:46.724553Z",
+                "finished_at": "2026-11-24T10:22:48.568712Z",
                 "deadline": null
               },
               {
                 "node": "pages",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:09:32.867516Z",
-                "finished_at": "2026-11-24T10:09:33.755947Z",
+                "started_at": "2026-11-24T10:22:47.184996Z",
+                "finished_at": "2026-11-24T10:22:48.043897Z",
                 "deadline": null
               },
               {
                 "node": "parse",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:10:58.249165Z",
-                "finished_at": "2026-11-24T10:10:58.887349Z",
+                "started_at": "2026-11-24T10:24:20.480718Z",
+                "finished_at": "2026-11-24T10:24:21.094403Z",
                 "deadline": null
               },
               {
                 "node": "signal_llm",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:15.518417Z",
-                "finished_at": "2026-11-24T10:11:15.536067Z",
+                "started_at": "2026-11-24T10:24:41.253229Z",
+                "finished_at": "2026-11-24T10:24:41.265722Z",
                 "deadline": null
               },
               {
                 "node": "signal_classifier",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:15.574768Z",
-                "finished_at": "2026-11-24T10:11:15.586211Z",
+                "started_at": "2026-11-24T10:24:41.256336Z",
+                "finished_at": "2026-11-24T10:24:41.298134Z",
                 "deadline": null
               },
               {
                 "node": "signal_neighbours",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:15.585860Z",
-                "finished_at": "2026-11-24T10:11:15.619664Z",
+                "started_at": "2026-11-24T10:24:41.284313Z",
+                "finished_at": "2026-11-24T10:24:41.338689Z",
                 "deadline": null
               },
               {
                 "node": "signal_facts",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:15.609471Z",
-                "finished_at": "2026-11-24T10:11:15.665161Z",
+                "started_at": "2026-11-24T10:24:41.329587Z",
+                "finished_at": "2026-11-24T10:24:41.452927Z",
                 "deadline": null
               },
               {
                 "node": "judge",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:23.834655Z",
-                "finished_at": "2026-11-24T10:11:23.858533Z",
+                "started_at": "2026-11-24T10:24:49.539984Z",
+                "finished_at": "2026-11-24T10:24:49.549655Z",
                 "deadline": null
               },
               {
                 "node": "fields",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:27.526129Z",
-                "finished_at": "2026-11-24T10:11:27.536180Z",
+                "started_at": "2026-11-24T10:24:53.453311Z",
+                "finished_at": "2026-11-24T10:24:53.477879Z",
                 "deadline": null
               },
               {
                 "node": "relate",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:31.291541Z",
-                "finished_at": "2026-11-24T10:11:31.296166Z",
+                "started_at": "2026-11-24T10:24:57.115927Z",
+                "finished_at": "2026-11-24T10:24:57.126539Z",
                 "deadline": null
               },
               {
                 "node": "apply_rules",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:34.955666Z",
-                "finished_at": "2026-11-24T10:11:34.966013Z",
+                "started_at": "2026-11-24T10:25:00.906309Z",
+                "finished_at": "2026-11-24T10:25:00.928169Z",
                 "deadline": null
               },
               {
                 "node": "file",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:37.277204Z",
-                "finished_at": "2026-11-24T10:11:37.285844Z",
+                "started_at": "2026-11-24T10:25:04.540429Z",
+                "finished_at": "2026-11-24T10:25:04.550728Z",
                 "deadline": null
               }
             ],
             "vision": false
           },
-          "created_at": "2026-11-24T10:07:36.087139Z",
-          "updated_at": "2026-11-24T10:11:37.285844Z",
+          "created_at": "2026-11-24T10:21:01.358680Z",
+          "updated_at": "2026-11-24T10:25:04.550728Z",
           "in_inbox": false
         },
         "score": 0.9889807162534435,
@@ -517,34 +686,32 @@
       },
       {
         "document": {
-          "id": "01a20d06-77b7-76d6-87b2-a99961b025a6",
-          "title": "Jahresabrechnung Strom 2023/2024",
-          "original_filename": "scan2404020836.pdf",
+          "id": "01a20d12-c12c-7bbb-b2a7-713018febc1b",
+          "title": "Kontoauszug 11/2024",
+          "original_filename": "scan2412110643.pdf",
           "media_type": "application/pdf",
           "channel": "migration",
-          "sha256": "454afe248f2ac4c55ca8da8af371a1d3e9d24cdefbc3ac25f8f09aef17ec0581",
-          "uploaded_by": "01a20d05-fd22-718b-9b59-b14e298e43ac",
-          "space_id": "01a20d05-fd26-7dac-8381-4ecbee385f04",
+          "sha256": "5d24cc4114ab9cad3d5e6a4993ad902807bcbc4ab49c4049bbdbdc0ada3ab97c",
+          "uploaded_by": "01a20d12-adc9-7f12-a9f3-ec8bc12b5e27",
+          "space_id": "01a20d12-adcc-7f1c-9c72-a3945fc24975",
           "access": "edit",
-          "contact_id": "01a20d06-65a8-77b5-8a51-c35186e8d304",
-          "document_type_id": "01a20d06-6653-72d8-b76f-3ff0320cc497",
+          "contact_id": "01a20d12-b221-75ad-81b5-7b635853190d",
+          "document_type_id": "01a20d12-b2af-7f35-aaf3-8af0b65cbac0",
           "topic_id": null,
           "tag_ids": [],
-          "document_date": "2024-03-18",
+          "document_date": "2024-11-30",
           "fields": {
-            "01a20d06-6695-7364-b827-015feeefb482": {
-              "amount": "1297.42",
+            "01a20d12-b31b-70cf-ac6c-e96f98ac8cc9": "2024-11",
+            "01a20d12-b330-783d-a153-8bddabee678d": {
+              "amount": "20658.32",
               "currency": "EUR"
-            },
-            "01a20d06-669c-7fbb-87f1-1e4df084353b": "2023-03-01/2024-02-29",
-            "01a20d06-66b7-7260-a283-48d62166f4c6": "1234 5678",
-            "01a20d06-66c5-73fd-9d27-c6a6ca4b9c7d": "R-2024-0277"
+            }
           },
           "lane": "green",
           "first_lane": "green",
           "page_count": 1,
-          "confirmed_at": "2026-11-24T10:11:26.058290Z",
-          "space_confirmed_at": "2026-11-24T10:11:26.058290Z",
+          "confirmed_at": "2026-11-24T10:24:51.529592Z",
+          "space_confirmed_at": "2026-11-24T10:24:51.529592Z",
           "processing": {
             "status": "completed",
             "run": 1,
@@ -553,125 +720,125 @@
                 "node": "receive",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:07:37.394325Z",
-                "finished_at": "2026-11-24T10:07:37.394325Z",
+                "started_at": "2026-11-24T10:21:02.631681Z",
+                "finished_at": "2026-11-24T10:21:02.631681Z",
                 "deadline": null
               },
               {
                 "node": "separate",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:08:42.490332Z",
-                "finished_at": "2026-11-24T10:08:42.505782Z",
+                "started_at": "2026-11-24T10:21:26.747794Z",
+                "finished_at": "2026-11-24T10:21:26.759655Z",
                 "deadline": null
               },
               {
                 "node": "ocr",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:10:43.194850Z",
-                "finished_at": "2026-11-24T10:10:47.612911Z",
+                "started_at": "2026-11-24T10:23:56.312871Z",
+                "finished_at": "2026-11-24T10:24:01.129109Z",
                 "deadline": null
               },
               {
                 "node": "pages",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:10:43.968850Z",
-                "finished_at": "2026-11-24T10:10:44.742416Z",
+                "started_at": "2026-11-24T10:23:56.486933Z",
+                "finished_at": "2026-11-24T10:23:57.252984Z",
                 "deadline": null
               },
               {
                 "node": "parse",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:10.892549Z",
-                "finished_at": "2026-11-24T10:11:11.505644Z",
+                "started_at": "2026-11-24T10:24:33.026917Z",
+                "finished_at": "2026-11-24T10:24:33.640182Z",
                 "deadline": null
               },
               {
                 "node": "signal_llm",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:21.868044Z",
-                "finished_at": "2026-11-24T10:11:21.879038Z",
+                "started_at": "2026-11-24T10:24:47.001951Z",
+                "finished_at": "2026-11-24T10:24:47.091464Z",
                 "deadline": null
               },
               {
                 "node": "signal_classifier",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:21.871671Z",
-                "finished_at": "2026-11-24T10:11:21.920265Z",
+                "started_at": "2026-11-24T10:24:47.040911Z",
+                "finished_at": "2026-11-24T10:24:47.055699Z",
                 "deadline": null
               },
               {
                 "node": "signal_neighbours",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:21.910361Z",
-                "finished_at": "2026-11-24T10:11:21.946517Z",
+                "started_at": "2026-11-24T10:24:47.092178Z",
+                "finished_at": "2026-11-24T10:24:47.203364Z",
                 "deadline": null
               },
               {
                 "node": "signal_facts",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:21.938377Z",
-                "finished_at": "2026-11-24T10:11:21.973249Z",
+                "started_at": "2026-11-24T10:24:47.125726Z",
+                "finished_at": "2026-11-24T10:24:47.140587Z",
                 "deadline": null
               },
               {
                 "node": "judge",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:26.039948Z",
-                "finished_at": "2026-11-24T10:11:26.058290Z",
+                "started_at": "2026-11-24T10:24:51.518185Z",
+                "finished_at": "2026-11-24T10:24:51.529592Z",
                 "deadline": null
               },
               {
                 "node": "fields",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:29.535017Z",
-                "finished_at": "2026-11-24T10:11:29.551011Z",
+                "started_at": "2026-11-24T10:24:55.186354Z",
+                "finished_at": "2026-11-24T10:24:55.203105Z",
                 "deadline": null
               },
               {
                 "node": "relate",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:33.120038Z",
-                "finished_at": "2026-11-24T10:11:33.237608Z",
+                "started_at": "2026-11-24T10:24:58.825616Z",
+                "finished_at": "2026-11-24T10:24:58.836020Z",
                 "deadline": null
               },
               {
                 "node": "apply_rules",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:36.668503Z",
-                "finished_at": "2026-11-24T10:11:36.677645Z",
+                "started_at": "2026-11-24T10:25:02.608479Z",
+                "finished_at": "2026-11-24T10:25:02.750744Z",
                 "deadline": null
               },
               {
                 "node": "file",
                 "status": "done",
                 "outcome": "ok",
-                "started_at": "2026-11-24T10:11:38.232132Z",
-                "finished_at": "2026-11-24T10:11:38.238012Z",
+                "started_at": "2026-11-24T10:25:05.612268Z",
+                "finished_at": "2026-11-24T10:25:05.622740Z",
                 "deadline": null
               }
             ],
             "vision": false
           },
-          "created_at": "2026-11-24T10:07:37.394325Z",
-          "updated_at": "2026-11-24T10:11:38.238012Z",
+          "created_at": "2026-11-24T10:21:02.631681Z",
+          "updated_at": "2026-11-24T10:25:05.622740Z",
           "in_inbox": false
         },
-        "score": 0.9889807162534435,
+        "score": 0.509641873278237,
         "snippet": [
           {
-            "text": "Stadtwerke Musterstadt GmbH - Abrechnungssystem EVA 4.2\n\nSTADTWERKE MUSTERSTADT GMBH           JAHRESABRECHNUNG ",
+            "text": "…HANSEBANK AG\n              KREDI TKARTENABRECHNUNG\n              KARTE 4242\n15.11. 15.11. LASTSCHRIFT                                    -98,00\n              STADTWERKE MUSTERSTADT GMBH\n              ABSCHLAG ",
             "match": false
           },
           {
@@ -679,174 +846,7 @@
             "match": true
           },
           {
-            "text": "\n\nMAX MUSTERMANN                         KUNDENNR.     : 1234 5678\nBIRKENWEG 5                            RECHNUNGSNR.  2: R-2024-0277\n12347 MUSTERSTADT…",
-            "match": false
-          }
-        ]
-      },
-      {
-        "document": {
-          "id": "01a20d06-6c50-7eba-96c6-4b048efb8b51",
-          "title": "Kontoauszug 1/2025",
-          "original_filename": "Konto_0123456789_Auszug_2025_01.pdf",
-          "media_type": "application/pdf",
-          "channel": "migration",
-          "sha256": "a5018203c2a8457918d83ee5d02195f19a438a14bf064361d54b5b0e186d7792",
-          "uploaded_by": "01a20d05-fd22-718b-9b59-b14e298e43ac",
-          "space_id": "01a20d05-fd26-7dac-8381-4ecbee385f04",
-          "access": "edit",
-          "contact_id": "01a20d06-658e-7cb3-82bc-fbf19d2e8058",
-          "document_type_id": "01a20d06-662f-7779-ae55-8260b1da6917",
-          "topic_id": null,
-          "tag_ids": [],
-          "document_date": "2025-01-31",
-          "fields": {
-            "01a20d06-669c-7fbb-87f1-1e4df084353b": "2025-01",
-            "01a20d06-66b0-7b68-bb34-1719da8ff56f": {
-              "amount": "22708.08",
-              "currency": "EUR"
-            }
-          },
-          "lane": "green",
-          "first_lane": "green",
-          "page_count": 2,
-          "confirmed_at": "2026-11-24T10:11:14.942338Z",
-          "space_confirmed_at": "2026-11-24T10:11:14.942338Z",
-          "processing": {
-            "status": "completed",
-            "run": 1,
-            "nodes": [
-              {
-                "node": "receive",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:07:34.476920Z",
-                "finished_at": "2026-11-24T10:07:34.476920Z",
-                "deadline": null
-              },
-              {
-                "node": "separate",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:07:35.888412Z",
-                "finished_at": "2026-11-24T10:07:35.903367Z",
-                "deadline": null
-              },
-              {
-                "node": "ocr",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:08:36.309832Z",
-                "finished_at": "2026-11-24T10:08:38.231240Z",
-                "deadline": null
-              },
-              {
-                "node": "pages",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:08:38.259021Z",
-                "finished_at": "2026-11-24T10:08:39.167453Z",
-                "deadline": null
-              },
-              {
-                "node": "parse",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:09:27.625015Z",
-                "finished_at": "2026-11-24T10:09:28.281991Z",
-                "deadline": null
-              },
-              {
-                "node": "signal_llm",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:10:57.077251Z",
-                "finished_at": "2026-11-24T10:10:57.087751Z",
-                "deadline": null
-              },
-              {
-                "node": "signal_classifier",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:10:57.149402Z",
-                "finished_at": "2026-11-24T10:10:57.156482Z",
-                "deadline": null
-              },
-              {
-                "node": "signal_neighbours",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:10:57.114490Z",
-                "finished_at": "2026-11-24T10:10:57.128376Z",
-                "deadline": null
-              },
-              {
-                "node": "signal_facts",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:10:57.176942Z",
-                "finished_at": "2026-11-24T10:10:57.184741Z",
-                "deadline": null
-              },
-              {
-                "node": "judge",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:11:14.930161Z",
-                "finished_at": "2026-11-24T10:11:14.942338Z",
-                "deadline": null
-              },
-              {
-                "node": "fields",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:11:23.590706Z",
-                "finished_at": "2026-11-24T10:11:23.606532Z",
-                "deadline": null
-              },
-              {
-                "node": "relate",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:11:27.340771Z",
-                "finished_at": "2026-11-24T10:11:27.345399Z",
-                "deadline": null
-              },
-              {
-                "node": "apply_rules",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:11:31.075900Z",
-                "finished_at": "2026-11-24T10:11:31.087212Z",
-                "deadline": null
-              },
-              {
-                "node": "file",
-                "status": "done",
-                "outcome": "ok",
-                "started_at": "2026-11-24T10:11:34.620841Z",
-                "finished_at": "2026-11-24T10:11:34.625043Z",
-                "deadline": null
-              }
-            ],
-            "vision": false
-          },
-          "created_at": "2026-11-24T10:07:34.476920Z",
-          "updated_at": "2026-11-24T10:11:34.625043Z",
-          "in_inbox": false
-        },
-        "score": 0.509641873278237,
-        "snippet": [
-          {
-            "text": "…AG\n                        Kreditkartenabrechnung\n                        Karte 4242\n 15.01.25   15.01.25    Lastschrift                                                                -98,00\n                        Stadtwerke Musterstadt GmbH\n                        Abschlag ",
-            "match": false
-          },
-          {
-            "text": "Strom",
-            "match": true
-          },
-          {
-            "text": " 01/2025 Kd 12345678\n                        Mandatsref…",
+            "text": " 11/2024 KD 12345678\n              MANDATSREF. SWM-12345678-01\n15.11. 15.11…",
             "match": false
           }
         ]

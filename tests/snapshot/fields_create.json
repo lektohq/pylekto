@@ -12,7 +12,7 @@
   "data": {},
   "status": 201,
   "body": {
-    "id": "01a20d0b-8707-78e0-8c77-de65c515ea1e",
+    "id": "01a20d17-e7e0-74c6-8225-61e942348957",
     "name": "Muster Number",
     "key": "muster_number",
     "data_type": "text",
@@ -23,7 +23,7 @@
     "description": null,
     "assignment": "auto",
     "position": 0,
-    "created_at": "2026-11-24T10:13:08.999953Z",
+    "created_at": "2026-11-24T10:26:40.224559Z",
     "document_count": null
   }
 }

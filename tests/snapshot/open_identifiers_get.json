@@ -2,21 +2,21 @@
   "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/identifiers/open/{kind}/{ref}",
-  "path": "/identifiers/open/email_domain/AcNPQeVk0RaJNc8D54N5GNtLm-zzg_YclqL6fboAtwM3",
+  "path": "/identifiers/open/contract_number/ARaSiffqSvlBB3wpDC_WterkWg3f4Dxs1_Y",
   "params": {},
   "json": null,
   "data": {},
   "status": 200,
   "body": {
     "identifier": {
-      "kind": "email_domain",
-      "value": "fernnetz.example",
-      "ref": "AcNPQeVk0RaJNc8D54N5GNtLm-zzg_YclqL6fboAtwM3",
-      "written": "fernnetz.example",
-      "source": "suggested",
+      "kind": "contract_number",
+      "value": "FNV778812",
+      "ref": "ARaSiffqSvlBB3wpDC_WterkWg3f4Dxs1_Y",
+      "written": "FN-V-778812",
+      "source": "learned",
       "contacts": [
         {
-          "id": "01a20d06-64d0-7726-b75f-080508f149fe",
+          "id": "01a20d12-b173-7ada-866e-86c4abb31fc1",
           "name": "FernNetz Telekommunikation GmbH"
         }
       ],
@@ -26,7 +26,7 @@
       "recommendation": {
         "action": "confirm",
         "reason": {
-          "code": "recommend_confirm_named",
+          "code": "recommend_confirm",
           "params": {
             "count": 9,
             "name": "FernNetz Telekommunikation GmbH"
@@ -39,14 +39,14 @@
     },
     "places": [
       {
-        "document_id": "01a20d06-727e-7590-93a0-4864e11e4729",
+        "document_id": "01a20d12-bc11-771c-b907-7cc807ec0aea",
         "title": "Telefonrechnung Juli 2026",
         "date": "2026-07-05",
-        "role": "contact",
+        "role": "target",
         "excerpt": {
-          "before": "…GmbH Hotline 0800 3376 638 Hansebank AG Amtsgericht Beispielburg HRB 88231 Funkstraße 1 rechnung@",
-          "match": "fernnetz.example",
-          "after": " IBAN DE27 3004 0000 0987 6543 21 USt-IdNr. DE 812 345 673 40210 Beispielburg…"
+          "before": "…FN2607645026 Vertragsnummer ",
+          "match": "FN-V-778812",
+          "after": " Herrn Datum 05.07.2026 Max Mustermann…"
         },
         "occurrences": [
           {
@@ -56,26 +56,10 @@
                 "page": 1,
                 "boxes": [
                   {
-                    "x": 0.3289,
-                    "y": 0.9337,
-                    "width": 0.1403,
-                    "height": 0.0074
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "own": false,
-            "locations": [
-              {
-                "page": 1,
-                "boxes": [
-                  {
-                    "x": 0.3289,
-                    "y": 0.9438,
-                    "width": 0.1104,
-                    "height": 0.0074
+                    "x": 0.8191,
+                    "y": 0.1972,
+                    "width": 0.0857,
+                    "height": 0.0097
                   }
                 ]
               }
@@ -84,14 +68,14 @@
         ]
       },
       {
-        "document_id": "01a20d06-725d-7bc6-98e1-c4eb02b4456e",
+        "document_id": "01a20d12-bbee-7cf3-bc6e-69f427cf97d5",
         "title": "Telefonrechnung März 2026",
         "date": "2026-03-05",
-        "role": "contact",
+        "role": "target",
         "excerpt": {
-          "before": "…GmbH Hotline 0800 3376 638 Hansebank AG Amtsgericht Beispielburg HRB 88231 Funkstraße 1 rechnung@",
-          "match": "fernnetz.example",
-          "after": " IBAN DE27 3004 0000 0987 6543 21 USt-IdNr. DE 812 345 673 40210 Beispielburg…"
+          "before": "…FN2603700390 Vertragsnummer ",
+          "match": "FN-V-778812",
+          "after": " Herrn Datum 05.03.2026 Max Mustermann…"
         },
         "occurrences": [
           {
@@ -101,26 +85,10 @@
                 "page": 1,
                 "boxes": [
                   {
-                    "x": 0.3289,
-                    "y": 0.9337,
-                    "width": 0.1403,
-                    "height": 0.0074
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "own": false,
-            "locations": [
-              {
-                "page": 1,
-                "boxes": [
-                  {
-                    "x": 0.3289,
-                    "y": 0.9438,
-                    "width": 0.1104,
-                    "height": 0.0074
+                    "x": 0.8191,
+                    "y": 0.1972,
+                    "width": 0.0857,
+                    "height": 0.0097
                   }
                 ]
               }
@@ -129,14 +97,14 @@
         ]
       },
       {
-        "document_id": "01a20d06-722f-782f-b0dc-1a4adf2c47ce",
+        "document_id": "01a20d12-bbd5-71bd-9ada-9396bd9c4f83",
         "title": "Telefonrechnung November 2025",
         "date": "2025-11-05",
-        "role": "contact",
+        "role": "target",
         "excerpt": {
-          "before": "…0800 3376 638 Hansebank AG Amtsgericht Beispielburg HRB 88231 Funkstraße 1 rechnung@",
-          "match": "fernnetz.example",
-          "after": " IBAN DE27 3004 0000 0987 6543 21 USt-IdNr. DE 812 345 673 40210 Beispielburg…"
+          "before": "…FN2511634793 Vertragsnummer ",
+          "match": "FN-V-778812",
+          "after": " Herrn Datum 05.11.2025 Max…"
         },
         "occurrences": [
           {
@@ -146,26 +114,10 @@
                 "page": 1,
                 "boxes": [
                   {
-                    "x": 0.3289,
-                    "y": 0.9337,
-                    "width": 0.1403,
-                    "height": 0.0074
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "own": false,
-            "locations": [
-              {
-                "page": 1,
-                "boxes": [
-                  {
-                    "x": 0.3289,
-                    "y": 0.9438,
-                    "width": 0.1104,
-                    "height": 0.0074
+                    "x": 0.8191,
+                    "y": 0.1972,
+                    "width": 0.0857,
+                    "height": 0.0097
                   }
                 ]
               }
@@ -174,14 +126,14 @@
         ]
       },
       {
-        "document_id": "01a20d06-7206-711a-be45-dcff523bd28e",
+        "document_id": "01a20d12-bbbd-77cb-9306-83fda9b4f810",
         "title": "Telefonrechnung Juli 2025",
         "date": "2025-07-05",
-        "role": "contact",
+        "role": "target",
         "excerpt": {
-          "before": "…GmbH Hotline 0800 3376 638 Hansebank AG Amtsgericht Beispielburg HRB 88231 Funkstraße 1 rechnung@",
-          "match": "fernnetz.example",
-          "after": " IBAN DE27 3004 0000 0987 6543 21 USt-IdNr. DE 812 345 673 40210 Beispielburg…"
+          "before": "…FN2507845518 Vertragsnummer ",
+          "match": "FN-V-778812",
+          "after": " Herrn Datum 05.07.2025 Max Mustermann…"
         },
         "occurrences": [
           {
@@ -191,26 +143,10 @@
                 "page": 1,
                 "boxes": [
                   {
-                    "x": 0.3289,
-                    "y": 0.9337,
-                    "width": 0.1403,
-                    "height": 0.0074
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "own": false,
-            "locations": [
-              {
-                "page": 1,
-                "boxes": [
-                  {
-                    "x": 0.3289,
-                    "y": 0.9438,
-                    "width": 0.1104,
-                    "height": 0.0074
+                    "x": 0.8191,
+                    "y": 0.1972,
+                    "width": 0.0857,
+                    "height": 0.0097
                   }
                 ]
               }
@@ -219,14 +155,14 @@
         ]
       },
       {
-        "document_id": "01a20d06-7162-79eb-b24c-004c709520bf",
+        "document_id": "01a20d12-bba5-7d06-92b5-3d0e40183cc6",
         "title": "Telefonrechnung April 2025",
         "date": "2025-04-05",
-        "role": "contact",
+        "role": "target",
         "excerpt": {
-          "before": "…0800 3376 638 Hansebank AG Amtsgericht Beispielburg HRB 88231 Funkstraße 1 rechnung@",
-          "match": "fernnetz.example",
-          "after": " IBAN DE27 3004 0000 0987 6543 21 USt-IdNr. DE 812 345 673 40210 Beispielburg…"
+          "before": "…FN2504397004 Vertragsnummer ",
+          "match": "FN-V-778812",
+          "after": " Herrn Datum 05.04.2025 Max…"
         },
         "occurrences": [
           {
@@ -236,58 +172,10 @@
                 "page": 1,
                 "boxes": [
                   {
-                    "x": 0.3289,
-                    "y": 0.9337,
-                    "width": 0.1403,
-                    "height": 0.0074
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "own": false,
-            "locations": [
-              {
-                "page": 1,
-                "boxes": [
-                  {
-                    "x": 0.3289,
-                    "y": 0.9438,
-                    "width": 0.1104,
-                    "height": 0.0074
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "own": false,
-            "locations": [
-              {
-                "page": 2,
-                "boxes": [
-                  {
-                    "x": 0.3289,
-                    "y": 0.9337,
-                    "width": 0.1403,
-                    "height": 0.0074
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "own": false,
-            "locations": [
-              {
-                "page": 2,
-                "boxes": [
-                  {
-                    "x": 0.3289,
-                    "y": 0.9438,
-                    "width": 0.1104,
-                    "height": 0.0074
+                    "x": 0.8191,
+                    "y": 0.1972,
+                    "width": 0.0857,
+                    "height": 0.0097
                   }
                 ]
               }

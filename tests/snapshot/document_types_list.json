@@ -11,9 +11,9 @@
   "status": 200,
   "body": [
     {
-      "id": "01a20d06-6615-7cde-ae66-92cc3e339d5a",
+      "id": "01a20d12-b296-7693-a50d-bd7d19402421",
       "name": "Abrechnung",
-      "created_at": "2026-11-24T10:07:32.885305Z",
+      "created_at": "2026-11-24T10:20:58.902528Z",
       "document_count": 1,
       "description": null,
       "title_pattern": null,
@@ -22,9 +22,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-661d-703d-985f-93eb8564843e",
+      "id": "01a20d12-b29e-7498-97d2-a1dc5c25d349",
       "name": "Bescheid",
-      "created_at": "2026-11-24T10:07:32.893386Z",
+      "created_at": "2026-11-24T10:20:58.910223Z",
       "document_count": 3,
       "description": null,
       "title_pattern": null,
@@ -33,9 +33,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-6623-7efd-b927-d82799c0add1",
+      "id": "01a20d12-b2a4-78aa-b353-a1543bfd03bd",
       "name": "Bescheinigung",
-      "created_at": "2026-11-24T10:07:32.899616Z",
+      "created_at": "2026-11-24T10:20:58.916186Z",
       "document_count": 2,
       "description": null,
       "title_pattern": null,
@@ -44,9 +44,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-6629-798b-8060-c93a0980ea8c",
+      "id": "01a20d12-b2aa-7ebc-85c0-b4087f6672d8",
       "name": "Kassenbon",
-      "created_at": "2026-11-24T10:07:32.905810Z",
+      "created_at": "2026-11-24T10:20:58.922077Z",
       "document_count": 10,
       "description": null,
       "title_pattern": null,
@@ -55,9 +55,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-662f-7779-ae55-8260b1da6917",
+      "id": "01a20d12-b2af-7f35-aaf3-8af0b65cbac0",
       "name": "Kontoauszug",
-      "created_at": "2026-11-24T10:07:32.911638Z",
+      "created_at": "2026-11-24T10:20:58.927898Z",
       "document_count": 16,
       "description": null,
       "title_pattern": null,
@@ -66,9 +66,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-6635-74de-a561-5beccfd18a62",
+      "id": "01a20d12-b2b6-7736-a75b-d0566c4744f3",
       "name": "Kreditkartenabrechnung",
-      "created_at": "2026-11-24T10:07:32.917941Z",
+      "created_at": "2026-11-24T10:20:58.934423Z",
       "document_count": 4,
       "description": null,
       "title_pattern": null,
@@ -77,9 +77,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-663c-7740-af5a-44af5d9f02a8",
+      "id": "01a20d12-b2bc-70bb-87a8-2aa10f7f7236",
       "name": "Lohnabrechnung",
-      "created_at": "2026-11-24T10:07:32.924050Z",
+      "created_at": "2026-11-24T10:20:58.940323Z",
       "document_count": 14,
       "description": null,
       "title_pattern": null,
@@ -88,9 +88,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-6641-7b92-8802-161e1ffc6fbf",
+      "id": "01a20d12-b2c2-7c17-9be4-d2b033d23343",
       "name": "Lohnsteuerbescheinigung",
-      "created_at": "2026-11-24T10:07:32.929896Z",
+      "created_at": "2026-11-24T10:20:58.946133Z",
       "document_count": 1,
       "description": null,
       "title_pattern": null,
@@ -99,9 +99,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-6647-7cc1-9fd0-f83ea7bae772",
+      "id": "01a20d12-b2c8-7bd9-94a8-ffe41a060c11",
       "name": "Mahnung",
-      "created_at": "2026-11-24T10:07:32.935755Z",
+      "created_at": "2026-11-24T10:20:58.952583Z",
       "document_count": 1,
       "description": null,
       "title_pattern": null,
@@ -110,9 +110,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-664d-7388-9ae5-1992268d00e5",
+      "id": "01a20d12-b2ce-7045-b055-092953ade784",
       "name": "Mitteilung",
-      "created_at": "2026-11-24T10:07:32.941630Z",
+      "created_at": "2026-11-24T10:20:58.958611Z",
       "document_count": 7,
       "description": null,
       "title_pattern": null,
@@ -121,9 +121,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-6653-72d8-b76f-3ff0320cc497",
+      "id": "01a20d12-b2d4-73fe-a8b8-9e4ac8d2be7d",
       "name": "Rechnung",
-      "created_at": "2026-11-24T10:07:32.947502Z",
+      "created_at": "2026-11-24T10:20:58.964624Z",
       "document_count": 26,
       "description": null,
       "title_pattern": null,
@@ -132,9 +132,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-665a-7996-992b-829d35109573",
+      "id": "01a20d12-b2da-74c7-a53a-6f4f2f3748a5",
       "name": "Spendenbescheinigung",
-      "created_at": "2026-11-24T10:07:32.954076Z",
+      "created_at": "2026-11-24T10:20:58.970679Z",
       "document_count": 1,
       "description": null,
       "title_pattern": null,
@@ -143,9 +143,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-6660-753a-b4af-46eb0f25681c",
+      "id": "01a20d12-b2e1-74d5-aa55-57aac08557af",
       "name": "Ticket",
-      "created_at": "2026-11-24T10:07:32.960579Z",
+      "created_at": "2026-11-24T10:20:58.977191Z",
       "document_count": 1,
       "description": null,
       "title_pattern": null,
@@ -154,9 +154,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-6667-72d7-947d-e21b37e3db25",
+      "id": "01a20d12-b2e7-7dce-b64c-731219e122ba",
       "name": "Versicherung",
-      "created_at": "2026-11-24T10:07:32.967399Z",
+      "created_at": "2026-11-24T10:20:58.983067Z",
       "document_count": 5,
       "description": null,
       "title_pattern": null,
@@ -165,9 +165,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-666d-725d-937c-3151ee782183",
+      "id": "01a20d12-b2ed-79c0-a6ea-59d906423237",
       "name": "Vertrag",
-      "created_at": "2026-11-24T10:07:32.973423Z",
+      "created_at": "2026-11-24T10:20:58.989116Z",
       "document_count": 1,
       "description": null,
       "title_pattern": null,
@@ -176,9 +176,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-6673-78b8-a9c3-d5f1462c1260",
+      "id": "01a20d12-b2f3-74e6-b849-906f0e2310b6",
       "name": "Werbung",
-      "created_at": "2026-11-24T10:07:32.979478Z",
+      "created_at": "2026-11-24T10:20:58.995284Z",
       "document_count": 1,
       "description": null,
       "title_pattern": null,
@@ -187,9 +187,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-6679-75db-b288-5f2b6f9e3f98",
+      "id": "01a20d12-b2f9-758e-b68e-7a7e0087b106",
       "name": "Zeitnachweis",
-      "created_at": "2026-11-24T10:07:32.985206Z",
+      "created_at": "2026-11-24T10:20:59.001497Z",
       "document_count": 2,
       "description": null,
       "title_pattern": null,
@@ -198,9 +198,9 @@
       "relation_target": false
     },
     {
-      "id": "01a20d06-667f-7a24-8147-12646f178050",
+      "id": "01a20d12-b2ff-70b7-8000-0773f039fd43",
       "name": "Zeugnis",
-      "created_at": "2026-11-24T10:07:32.991632Z",
+      "created_at": "2026-11-24T10:20:59.007595Z",
       "document_count": 1,
       "description": null,
       "title_pattern": null,

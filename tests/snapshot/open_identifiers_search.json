@@ -14,6 +14,64 @@
   "body": {
     "items": [
       {
+        "kind": "contract_number",
+        "value": "FNV778812",
+        "ref": "ARaSiffqSvlBB3wpDC_WterkWg3f4Dxs1_Y",
+        "written": "FN-V-778812",
+        "source": "learned",
+        "contacts": [
+          {
+            "id": "01a20d12-b173-7ada-866e-86c4abb31fc1",
+            "name": "FernNetz Telekommunikation GmbH"
+          }
+        ],
+        "person": null,
+        "documents": 9,
+        "last": "2026-07-05",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm",
+            "params": {
+              "count": 9,
+              "name": "FernNetz Telekommunikation GmbH"
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      },
+      {
+        "kind": "customer_number",
+        "value": "40012345",
+        "ref": "AZv1YypQQGiQtNrPZrRtKNMVW55jC2-wBg",
+        "written": "40012345",
+        "source": "learned",
+        "contacts": [
+          {
+            "id": "01a20d12-b173-7ada-866e-86c4abb31fc1",
+            "name": "FernNetz Telekommunikation GmbH"
+          }
+        ],
+        "person": null,
+        "documents": 9,
+        "last": "2026-07-05",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm",
+            "params": {
+              "count": 9,
+              "name": "FernNetz Telekommunikation GmbH"
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      },
+      {
         "kind": "email_domain",
         "value": "fernnetz.example",
         "ref": "AcNPQeVk0RaJNc8D54N5GNtLm-zzg_YclqL6fboAtwM3",
@@ -21,7 +79,7 @@
         "source": "suggested",
         "contacts": [
           {
-            "id": "01a20d06-64d0-7726-b75f-080508f149fe",
+            "id": "01a20d12-b173-7ada-866e-86c4abb31fc1",
             "name": "FernNetz Telekommunikation GmbH"
           }
         ],
@@ -43,15 +101,17 @@
         }
       }
     ],
-    "total": 1,
+    "total": 3,
     "counts": {
-      "learned": 0,
+      "learned": 2,
       "suggested": 1
     },
     "kinds": {
+      "contract_number": 1,
+      "customer_number": 1,
       "email_domain": 1
     },
-    "recommended": 1,
-    "to_confirm": 8
+    "recommended": 3,
+    "to_confirm": 14
   }
 }

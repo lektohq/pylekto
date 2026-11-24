@@ -25,7 +25,9 @@ repository::
     python <lekto>/examples/mcp-eval/seed.py --url http://127.0.0.1:18000 --token ... \
       --documents 100
     # wait until the inbox shows nothing in processing; then read the facts of the documents
-    # taken over (POST /api/v1/pipeline/read-facts) and wait again
+    # taken over (POST /api/v1/pipeline/read-facts) and wait again; then train the classifier
+    # (POST /api/v1/classifier/train) and wait again, else no recording holds a model or a
+    # learned identifier
 
 For what Lekto sends to a webhook, a server on the same network writes every request it gets
 (path, headers and body as one JSON line) to a file the script reads, such as ``receiver.py``

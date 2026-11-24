@@ -21,14 +21,38 @@
       }
     },
     {
+      "kind": "customer_number",
+      "value": "40012345",
+      "done": true,
+      "reason": null
+    },
+    {
+      "kind": "email_domain",
+      "value": "fernnetz.example",
+      "done": true,
+      "reason": null
+    },
+    {
       "kind": "email_domain",
       "value": "sparkasse-musterstadt.example",
       "done": true,
       "reason": null
     },
     {
+      "kind": "customer_number",
+      "value": "CBH88412",
+      "done": true,
+      "reason": null
+    },
+    {
       "kind": "email_domain",
       "value": "cloudberry-hosting.example",
+      "done": true,
+      "reason": null
+    },
+    {
+      "kind": "customer_number",
+      "value": "8812447100",
       "done": true,
       "reason": null
     },
@@ -53,6 +77,18 @@
     {
       "kind": "email_domain",
       "value": "stadtwerke-musterstadt.example",
+      "done": true,
+      "reason": null
+    },
+    {
+      "kind": "customer_number",
+      "value": "12345678",
+      "done": true,
+      "reason": null
+    },
+    {
+      "kind": "customer_number",
+      "value": "HV3004471",
       "done": true,
       "reason": null
     }

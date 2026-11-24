@@ -2,7 +2,7 @@
   "lekto_version": "0.17.3",
   "method": "POST",
   "operation": "/documents/{id}/retry",
-  "path": "/documents/01a20d06-67f3-74e0-87a1-98af6f53097a/retry",
+  "path": "/documents/01a20d12-b44f-7657-84fb-1a14b136c0e4/retry",
   "params": {},
   "json": null,
   "data": {},
@@ -11,11 +11,11 @@
     "type": "about:blank",
     "title": "Conflict",
     "status": 409,
-    "detail": "document 01a20d06-67f3-74e0-87a1-98af6f53097a: only failed processing is retried",
+    "detail": "document 01a20d12-b44f-7657-84fb-1a14b136c0e4: only failed processing is retried",
     "reason": {
       "code": "only_failed_retried",
       "params": {
-        "id": "01a20d06-67f3-74e0-87a1-98af6f53097a"
+        "id": "01a20d12-b44f-7657-84fb-1a14b136c0e4"
       }
     }
   }

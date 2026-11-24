@@ -14,7 +14,7 @@
       "embedded": 0,
       "vectors": 0,
       "indexing": false,
-      "size_bytes": 5144576
+      "size_bytes": 5054464
     },
     "running": 0,
     "queued": 0,
@@ -22,12 +22,12 @@
     "embedded_jobs": null,
     "plain_jobs": {
       "count": 197,
-      "median_ms": 58.9,
-      "p90_ms": 73.5
+      "median_ms": 56.2,
+      "p90_ms": 62.8
     },
     "per_section_ms": null,
     "model": null,
     "dimensions": null,
-    "since": "2026-11-17T10:12:47.864090Z"
+    "since": "2026-11-17T10:26:18.816409Z"
   }
 }

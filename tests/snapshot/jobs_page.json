@@ -12,12 +12,12 @@
   "body": {
     "items": [
       {
-        "id": "01a20d0b-84de-7538-92b7-29c0cd94e4d5",
+        "id": "01a20d17-e507-754e-8ebb-62b52e227bf1",
         "kind": "search.rebuild",
         "state": "running",
         "attempts": 1,
-        "run_at": "2026-11-24T10:13:08.446616Z",
-        "started_at": "2026-11-24T10:13:09.839636Z",
+        "run_at": "2026-11-24T10:26:39.495570Z",
+        "started_at": "2026-11-24T10:26:40.904029Z",
         "finished_at": null,
         "document": null,
         "document_hidden": false,
@@ -27,15 +27,30 @@
         "retry": null
       },
       {
-        "id": "01a20d0b-8fd0-7a2e-bed5-d3a1f9643fb5",
+        "id": "01a20d17-ef73-7237-87f5-86bb1fa66788",
+        "kind": "rules.apply",
+        "state": "due",
+        "attempts": 0,
+        "run_at": "2026-11-24T10:26:42.163078Z",
+        "started_at": null,
+        "finished_at": null,
+        "document": null,
+        "document_hidden": false,
+        "node": null,
+        "contact": null,
+        "error": null,
+        "retry": null
+      },
+      {
+        "id": "01a20d17-f0bc-7aa8-a11f-ffa2b81583bd",
         "kind": "pipeline.reparse",
         "state": "due",
         "attempts": 0,
-        "run_at": "2026-11-24T10:13:11.248409Z",
+        "run_at": "2026-11-24T10:26:42.492414Z",
         "started_at": null,
         "finished_at": null,
         "document": {
-          "id": "01a20d06-77b7-76d6-87b2-a99961b025a6",
+          "id": "01a20d12-c16e-7cb9-bf63-1566bf91a98f",
           "title": "Jahresabrechnung Strom 2023/2024"
         },
         "document_hidden": false,
@@ -45,15 +60,15 @@
         "retry": null
       },
       {
-        "id": "01a20d0b-8fd1-7fe5-96db-069ec0297ce0",
+        "id": "01a20d17-f0bd-757a-8ec7-9525f3258199",
         "kind": "pipeline.reparse",
         "state": "due",
         "attempts": 0,
-        "run_at": "2026-11-24T10:13:11.249810Z",
+        "run_at": "2026-11-24T10:26:42.493450Z",
         "started_at": null,
         "finished_at": null,
         "document": {
-          "id": "01a20d06-7784-7f54-97dc-609da83f87d8",
+          "id": "01a20d12-c14c-7c84-b629-623aa66b7a52",
           "title": "Bausparvertrag Jahresauszug 2024"
         },
         "document_hidden": false,
@@ -63,34 +78,16 @@
         "retry": null
       },
       {
-        "id": "01a20d0b-8fd2-757c-b2d5-35af3a4a9512",
+        "id": "01a20d17-f0be-7ae2-998c-348826a69b6d",
         "kind": "pipeline.reparse",
         "state": "due",
         "attempts": 0,
-        "run_at": "2026-11-24T10:13:11.250459Z",
+        "run_at": "2026-11-24T10:26:42.494042Z",
         "started_at": null,
         "finished_at": null,
         "document": {
-          "id": "01a20d06-7749-7795-b78e-27cd2f9307a2",
+          "id": "01a20d12-c12c-7bbb-b2a7-713018febc1b",
           "title": "Kontoauszug 11/2024"
-        },
-        "document_hidden": false,
-        "node": "parse",
-        "contact": null,
-        "error": null,
-        "retry": null
-      },
-      {
-        "id": "01a20d0b-8fd3-7f30-a9b7-2c9ff0c1f133",
-        "kind": "pipeline.reparse",
-        "state": "due",
-        "attempts": 0,
-        "run_at": "2026-11-24T10:13:11.251120Z",
-        "started_at": null,
-        "finished_at": null,
-        "document": {
-          "id": "01a20d06-7640-7b24-a1fb-afb7f302781f",
-          "title": "Gehaltsabrechnung September 2024"
         },
         "document_hidden": false,
         "node": "parse",
@@ -99,7 +96,7 @@
         "retry": null
       }
     ],
-    "total": 303,
+    "total": 304,
     "next_offset": 5
   }
 }

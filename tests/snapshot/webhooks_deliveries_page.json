@@ -2,7 +2,7 @@
   "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/webhooks/{id}/deliveries",
-  "path": "/webhooks/01a20d0b-8f2d-74bc-a04d-43488e582d05/deliveries",
+  "path": "/webhooks/01a20d17-f02b-7829-b48c-fa867f53f487/deliveries",
   "params": {
     "limit": 5
   },
@@ -12,14 +12,14 @@
   "body": {
     "items": [
       {
-        "id": "01a20d0b-8f71-740a-b0b6-63ca6a46141c",
-        "webhook_id": "01a20d0b-8f2d-74bc-a04d-43488e582d05",
-        "event_id": "01a20d0b-8f46-7a43-8763-b8ca3270c761",
+        "id": "01a20d17-f05b-7eef-ad75-2228d62b73f1",
+        "webhook_id": "01a20d17-f02b-7829-b48c-fa867f53f487",
+        "event_id": "01a20d17-f044-79ba-a6e8-123ca37d8e69",
         "event_type": "webhook.test",
         "document_id": null,
         "attempt": 1,
-        "started_at": "2026-11-24T10:13:11.110475Z",
-        "duration_ms": 41,
+        "started_at": "2026-11-24T10:26:42.372303Z",
+        "duration_ms": 21,
         "outcome": "gave_up",
         "status_code": null,
         "error": "cannot connect",

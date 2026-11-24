@@ -19,7 +19,7 @@
         "source": "suggested",
         "contacts": [],
         "person": {
-          "id": "01a20d05-fd22-718b-9b59-b14e298e43ac",
+          "id": "01a20d12-adc9-7f12-a9f3-ec8bc12b5e27",
           "name": "admin"
         },
         "documents": 15,
@@ -39,6 +39,64 @@
         }
       },
       {
+        "kind": "contract_number",
+        "value": "FNV778812",
+        "ref": "ARaSiffqSvlBB3wpDC_WterkWg3f4Dxs1_Y",
+        "written": "FN-V-778812",
+        "source": "learned",
+        "contacts": [
+          {
+            "id": "01a20d12-b173-7ada-866e-86c4abb31fc1",
+            "name": "FernNetz Telekommunikation GmbH"
+          }
+        ],
+        "person": null,
+        "documents": 9,
+        "last": "2026-07-05",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm",
+            "params": {
+              "count": 9,
+              "name": "FernNetz Telekommunikation GmbH"
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      },
+      {
+        "kind": "customer_number",
+        "value": "40012345",
+        "ref": "AZv1YypQQGiQtNrPZrRtKNMVW55jC2-wBg",
+        "written": "40012345",
+        "source": "learned",
+        "contacts": [
+          {
+            "id": "01a20d12-b173-7ada-866e-86c4abb31fc1",
+            "name": "FernNetz Telekommunikation GmbH"
+          }
+        ],
+        "person": null,
+        "documents": 9,
+        "last": "2026-07-05",
+        "recommendation": {
+          "action": "confirm",
+          "reason": {
+            "code": "recommend_confirm",
+            "params": {
+              "count": 9,
+              "name": "FernNetz Telekommunikation GmbH"
+            },
+            "subject": null,
+            "rule": null,
+            "field": null
+          }
+        }
+      },
+      {
         "kind": "email_domain",
         "value": "fernnetz.example",
         "ref": "AcNPQeVk0RaJNc8D54N5GNtLm-zzg_YclqL6fboAtwM3",
@@ -46,7 +104,7 @@
         "source": "suggested",
         "contacts": [
           {
-            "id": "01a20d06-64d0-7726-b75f-080508f149fe",
+            "id": "01a20d12-b173-7ada-866e-86c4abb31fc1",
             "name": "FernNetz Telekommunikation GmbH"
           }
         ],
@@ -75,7 +133,7 @@
         "source": "suggested",
         "contacts": [
           {
-            "id": "01a20d06-658e-7cb3-82bc-fbf19d2e8058",
+            "id": "01a20d12-b221-75ad-81b5-7b635853190d",
             "name": "Sparkasse Musterstadt"
           }
         ],
@@ -95,76 +153,20 @@
             "field": null
           }
         }
-      },
-      {
-        "kind": "email_domain",
-        "value": "cloudberry-hosting.example",
-        "ref": "AYDy5yKI7BiW-_O0UH-n9qcejWnmeE07ZYlBGEz5gtEEDcewqJ7aStH8uw",
-        "written": "cloudberry-hosting.example",
-        "source": "suggested",
-        "contacts": [
-          {
-            "id": "01a20d06-649b-7deb-967c-7acc307a7d4d",
-            "name": "Cloudberry Hosting Inc."
-          }
-        ],
-        "person": null,
-        "documents": 5,
-        "last": "2026-09-01",
-        "recommendation": {
-          "action": "confirm",
-          "reason": {
-            "code": "recommend_confirm_named",
-            "params": {
-              "count": 5,
-              "name": "Cloudberry Hosting Inc."
-            },
-            "subject": null,
-            "rule": null,
-            "field": null
-          }
-        }
-      },
-      {
-        "kind": "email_domain",
-        "value": "hansebank.example",
-        "ref": "AWJsg6olo0rRBG2KllSbFrkvxo9OOTQq1nO2Gch0XnApwA",
-        "written": "hansebank.example",
-        "source": "suggested",
-        "contacts": [
-          {
-            "id": "01a20d06-6528-7ace-9e41-646a5e7052fd",
-            "name": "Hansebank AG"
-          }
-        ],
-        "person": null,
-        "documents": 4,
-        "last": "2026-08-31",
-        "recommendation": {
-          "action": "confirm",
-          "reason": {
-            "code": "recommend_confirm_named",
-            "params": {
-              "count": 4,
-              "name": "Hansebank AG"
-            },
-            "subject": null,
-            "rule": null,
-            "field": null
-          }
-        }
       }
     ],
-    "total": 14,
+    "total": 20,
     "counts": {
-      "learned": 0,
+      "learned": 6,
       "suggested": 14
     },
     "kinds": {
+      "contract_number": 1,
+      "customer_number": 5,
       "email_domain": 13,
       "iban": 1
     },
-    "recommended": 8,
-    "to_confirm": 8
+    "recommended": 14,
+    "to_confirm": 14
   }
 }

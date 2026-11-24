@@ -2,14 +2,14 @@
   "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/documents/{id}/files",
-  "path": "/documents/01a20d06-67f3-74e0-87a1-98af6f53097a/files",
+  "path": "/documents/01a20d12-b44f-7657-84fb-1a14b136c0e4/files",
   "params": {},
   "json": null,
   "data": {},
   "status": 200,
   "body": {
-    "added": "2026-11-24T10:07:33.360309Z",
-    "modified": "2026-11-24T10:11:32.959626Z",
+    "added": "2026-11-24T10:20:59.340092Z",
+    "modified": "2026-11-24T10:25:02.082723Z",
     "original_filename": "Anmeldebestaetigung_26F-3104.pdf",
     "media_type": "application/pdf",
     "page_count": 1,
@@ -50,7 +50,7 @@
     },
     "archive": {
       "size": 14843,
-      "sha256": "49be2da2620c18b3928a01a3efb3f3a1838bc96d294543fae267c261a1c26906",
+      "sha256": "e2e6eaac5af29a7d38ea0616ff3fc5ae1e1acae43003c669e34196ab3965b6b1",
       "metadata": {
         "format": "PDF",
         "pdf_version": "1.7",
@@ -73,7 +73,7 @@
           {
             "source": "info",
             "key": "ModDate",
-            "value": "D:20261124100752+00'00"
+            "value": "D:20261124102119+00'00"
           },
           {
             "source": "info",
@@ -88,7 +88,7 @@
           {
             "source": "xmp",
             "key": "xmp:ModifyDate",
-            "value": "2026-11-24T10:07:52+00:00"
+            "value": "2026-11-24T10:21:19+00:00"
           },
           {
             "source": "xmp",
@@ -98,7 +98,7 @@
           {
             "source": "xmp",
             "key": "xmp:MetadataDate",
-            "value": "2026-11-24T10:07:52.148016+00:00"
+            "value": "2026-11-24T10:21:19.953987+00:00"
           },
           {
             "source": "xmp",
@@ -108,7 +108,7 @@
           {
             "source": "xmp",
             "key": "xmpMM:DocumentID",
-            "value": "uuid:75bfc54c-200b-11fd-0000-3d38a3c7f152"
+            "value": "uuid:56c232d4-200d-11fd-0000-3d38a3c7f152"
           },
           {
             "source": "xmp",
@@ -145,8 +145,8 @@
         "original_filename": "Anmeldebestaetigung_26F-3104.pdf",
         "media_type": "application/pdf",
         "kind": "received",
-        "created_at": "2026-11-24T10:07:33.360309Z",
-        "created_by": "01a20d05-fd22-718b-9b59-b14e298e43ac",
+        "created_at": "2026-11-24T10:20:59.340092Z",
+        "created_by": "01a20d12-adc9-7f12-a9f3-ec8bc12b5e27",
         "detail": {},
         "origin": null
       }

@@ -4,11 +4,11 @@
   "operation": "/events",
   "path": "/events",
   "params": {
-    "document_id": "01a20d06-67f3-74e0-87a1-98af6f53097a"
+    "document_id": "01a20d12-b44f-7657-84fb-1a14b136c0e4"
   },
   "json": null,
   "data": {},
   "status": 200,
   "body": null,
-  "text": ": ready\n\nevent: document.updated\ndata: {\"type\": \"document.updated\", \"occurred_at\": \"2026-11-24T10:14:01.261427+00:00\", \"id\": \"01a20d0c-532d-7f0b-8f1c-d05ea97985e7\", \"document_id\": \"01a20d06-67f3-74e0-87a1-98af6f53097a\", \"fields\": [\"title\"]}\nid: 01a20d0c-532d-7f0b-8f1c-d05ea97985e7\n\n"
+  "text": ": ready\n\nevent: document.updated\ndata: {\"type\": \"document.updated\", \"occurred_at\": \"2026-11-24T10:27:31.351775+00:00\", \"id\": \"01a20d18-af98-7117-9c83-8e639bbef011\", \"document_id\": \"01a20d12-b44f-7657-84fb-1a14b136c0e4\", \"fields\": [\"title\"]}\nid: 01a20d18-af98-7117-9c83-8e639bbef011\n\n"
 }

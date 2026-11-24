@@ -18,6 +18,14 @@
         "done": 1
       },
       {
+        "kind": "classifier.train",
+        "running": 0,
+        "due": 0,
+        "planned": 0,
+        "failed": 0,
+        "done": 2
+      },
+      {
         "kind": "documents.bulk",
         "running": 0,
         "due": 0,
@@ -76,10 +84,10 @@
       {
         "kind": "rules.apply",
         "running": 0,
-        "due": 0,
+        "due": 1,
         "planned": 0,
         "failed": 0,
-        "done": 1
+        "done": 0
       },
       {
         "kind": "search.index",
@@ -87,7 +95,7 @@
         "due": 0,
         "planned": 1,
         "failed": 0,
-        "done": 219
+        "done": 221
       },
       {
         "kind": "search.rebuild",
@@ -114,8 +122,8 @@
         "done": 1
       }
     ],
-    "last_started_at": "2026-11-24T10:13:10.915406Z",
-    "now": "2026-11-24T10:13:11.494960Z",
-    "kept_since": "2026-11-17T10:13:11.494960Z"
+    "last_started_at": "2026-11-24T10:26:40.904029Z",
+    "now": "2026-11-24T10:26:42.721700Z",
+    "kept_since": "2026-11-17T10:26:42.721700Z"
   }
 }

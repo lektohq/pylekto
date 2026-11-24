@@ -2,7 +2,7 @@
   "lekto_version": "0.17.3",
   "method": "POST",
   "operation": "/jobs/{id}/retry",
-  "path": "/jobs/01a20d0b-8e6d-71dc-927a-d653d2205799/retry",
+  "path": "/jobs/01a20d17-e507-754e-8ebb-62b52e227bf1/retry",
   "params": {},
   "json": null,
   "data": {},
