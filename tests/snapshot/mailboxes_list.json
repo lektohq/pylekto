@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/mailboxes",
   "path": "/mailboxes",
@@ -9,7 +9,7 @@
   "status": 200,
   "body": [
     {
-      "id": "01a1f965-91ba-7c1c-a6c3-5b95d8790859",
+      "id": "01a20d17-efac-783b-938c-9ab899f47b3c",
       "name": "Muster Mailbox",
       "host": "imap.example.com",
       "port": 993,
@@ -38,8 +38,8 @@
         "keywords": [],
         "own_keywords": null
       },
-      "created_at": "2026-11-20T14:39:05.657571Z",
-      "updated_at": "2026-11-20T14:39:05.657571Z"
+      "created_at": "2026-11-24T10:26:42.220182Z",
+      "updated_at": "2026-11-24T10:26:42.220182Z"
     }
   ]
 }

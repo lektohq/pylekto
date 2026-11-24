@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/expected",
   "path": "/expected",
@@ -12,11 +12,11 @@
   "body": [
     {
       "contact": {
-        "id": "01a1f957-90ed-7b8a-94fd-371ee13d34bb",
+        "id": "01a20d12-b118-73f9-895b-5277ea829a36",
         "name": "Brückner Maschinenbau GmbH"
       },
       "document_type": {
-        "id": "01a1f957-9368-76fb-94bd-7bbe8c800ebe",
+        "id": "01a20d12-b2bc-70bb-87a8-2aa10f7f7236",
         "name": "Lohnabrechnung"
       },
       "number": null,
@@ -25,7 +25,7 @@
       "spread_days": 30,
       "documents": 8,
       "last": {
-        "id": "01a1f957-98b3-780c-a583-cd63d7fd2f43",
+        "id": "01a20d12-b682-7093-8d10-8d9a5e6783b2",
         "title": "Gehaltsabrechnung Juli 2026",
         "document_date": "2026-07-25"
       },
@@ -35,11 +35,11 @@
     },
     {
       "contact": {
-        "id": "01a1f957-9268-7cd8-8326-71c5dfed0fd2",
+        "id": "01a20d12-b221-75ad-81b5-7b635853190d",
         "name": "Sparkasse Musterstadt"
       },
       "document_type": {
-        "id": "01a1f957-9357-7405-924a-e98250ede9c7",
+        "id": "01a20d12-b2af-7f35-aaf3-8af0b65cbac0",
         "name": "Kontoauszug"
       },
       "number": {
@@ -51,7 +51,7 @@
       "spread_days": 2,
       "documents": 5,
       "last": {
-        "id": "01a1f957-9c33-77d7-9cd0-cfb0bcbda7fb",
+        "id": "01a20d12-b915-7b65-b42e-e5d4ac7337b3",
         "title": "Kontoauszug 8/2026",
         "document_date": "2026-08-31"
       },
@@ -61,11 +61,11 @@
     },
     {
       "contact": {
-        "id": "01a1f957-9116-782b-b461-5d46966a327e",
+        "id": "01a20d12-b13d-7efc-8404-f1b20ee439b0",
         "name": "Cloudberry Hosting Inc."
       },
       "document_type": {
-        "id": "01a1f957-9388-7391-b245-12ce0714f7d8",
+        "id": "01a20d12-b2d4-73fe-a8b8-9e4ac8d2be7d",
         "name": "Rechnung"
       },
       "number": {
@@ -77,7 +77,7 @@
       "spread_days": 2,
       "documents": 5,
       "last": {
-        "id": "01a1f957-a4e3-755c-974b-e0187a278dca",
+        "id": "01a20d12-c085-7926-bb31-d61648a5df95",
         "title": "Cloudberry invoice September 2026",
         "document_date": "2026-09-01"
       },
@@ -87,11 +87,11 @@
     },
     {
       "contact": {
-        "id": "01a1f957-92bc-77e4-a797-7f6bbd76d89c",
+        "id": "01a20d12-b24f-7125-a777-d7e22b22944c",
         "name": "Tankstelle Nord GmbH"
       },
       "document_type": {
-        "id": "01a1f957-934f-70a4-8526-417c6626a23e",
+        "id": "01a20d12-b2aa-7ebc-85c0-b4087f6672d8",
         "name": "Kassenbon"
       },
       "number": null,
@@ -100,7 +100,7 @@
       "spread_days": 67,
       "documents": 3,
       "last": {
-        "id": "01a1f957-a31d-7052-8930-37eb8f159a9b",
+        "id": "01a20d12-becf-7e6c-9d25-54a866f041b3",
         "title": "Tankbeleg 18.03.2026",
         "document_date": "2026-03-18"
       },

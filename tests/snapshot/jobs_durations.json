@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/jobs/durations",
   "path": "/jobs/durations",
@@ -11,109 +11,93 @@
     "kinds": [
       {
         "kind": "classifier.check",
-        "count": 2,
-        "wait_median_ms": 58.2,
-        "wait_p90_ms": 338.6,
-        "run_median_ms": 11.8,
-        "run_p90_ms": 16.8
+        "count": 1,
+        "wait_median_ms": 248164.1,
+        "wait_p90_ms": 248164.1,
+        "run_median_ms": 18.5,
+        "run_p90_ms": 18.5
       },
       {
         "kind": "classifier.train",
-        "count": 1,
-        "wait_median_ms": 55.1,
-        "wait_p90_ms": 55.1,
-        "run_median_ms": 712.4,
-        "run_p90_ms": 712.4
+        "count": 2,
+        "wait_median_ms": 33.0,
+        "wait_p90_ms": 3271.6,
+        "run_median_ms": 442.3,
+        "run_p90_ms": 552.0
       },
       {
         "kind": "documents.bulk",
         "count": 1,
-        "wait_median_ms": 1324.6,
-        "wait_p90_ms": 1324.6,
-        "run_median_ms": 23.7,
-        "run_p90_ms": 23.7
+        "wait_median_ms": 1388.9,
+        "wait_p90_ms": 1388.9,
+        "run_median_ms": 26.0,
+        "run_p90_ms": 26.0
       },
       {
         "kind": "documents.remove_files",
         "count": 1,
-        "wait_median_ms": 1201.0,
-        "wait_p90_ms": 1201.0,
-        "run_median_ms": 54.4,
-        "run_p90_ms": 54.4
+        "wait_median_ms": 1295.2,
+        "wait_p90_ms": 1295.2,
+        "run_median_ms": 52.8,
+        "run_p90_ms": 52.8
       },
       {
         "kind": "maintenance.cleanup",
         "count": 1,
-        "wait_median_ms": 32.5,
-        "wait_p90_ms": 32.5,
-        "run_median_ms": 17.3,
-        "run_p90_ms": 17.3
+        "wait_median_ms": 34.8,
+        "wait_p90_ms": 34.8,
+        "run_median_ms": 16.4,
+        "run_p90_ms": 16.4
       },
       {
         "kind": "pipeline.facts",
         "count": 97,
-        "wait_median_ms": 23248.3,
-        "wait_p90_ms": 42995.6,
-        "run_median_ms": 954.4,
-        "run_p90_ms": 1060.6
+        "wait_median_ms": 23019.1,
+        "wait_p90_ms": 39209.5,
+        "run_median_ms": 801.6,
+        "run_p90_ms": 906.6
       },
       {
         "kind": "pipeline.node",
         "count": 1311,
-        "wait_median_ms": 21628.7,
-        "wait_p90_ms": 135453.7,
-        "run_median_ms": 36.5,
-        "run_p90_ms": 1033.3
+        "wait_median_ms": 14969.7,
+        "wait_p90_ms": 99537.5,
+        "run_median_ms": 25.4,
+        "run_p90_ms": 808.9
       },
       {
         "kind": "pipeline.relate",
         "count": 2,
-        "wait_median_ms": 60.1,
-        "wait_p90_ms": 151.1,
-        "run_median_ms": 9.8,
-        "run_p90_ms": 18.5
-      },
-      {
-        "kind": "rules.apply",
-        "count": 1,
-        "wait_median_ms": 400.0,
-        "wait_p90_ms": 400.0,
-        "run_median_ms": 27.7,
-        "run_p90_ms": 27.7
+        "wait_median_ms": 174.2,
+        "wait_p90_ms": 1972.1,
+        "run_median_ms": 8.5,
+        "run_p90_ms": 10.5
       },
       {
         "kind": "search.index",
-        "count": 208,
-        "wait_median_ms": 41072.9,
-        "wait_p90_ms": 309143.2,
-        "run_median_ms": 73.3,
-        "run_p90_ms": 93.3
-      },
-      {
-        "kind": "search.rebuild",
-        "count": 1,
-        "wait_median_ms": 1340.6,
-        "wait_p90_ms": 1340.6,
-        "run_median_ms": 2877.0,
-        "run_p90_ms": 2877.0
+        "count": 221,
+        "wait_median_ms": 36171.9,
+        "wait_p90_ms": 244820.7,
+        "run_median_ms": 55.8,
+        "run_p90_ms": 64.0
       },
       {
         "kind": "search.reconcile",
         "count": 2,
-        "wait_median_ms": 125.9,
-        "wait_p90_ms": 205.7,
-        "run_median_ms": 42.8,
-        "run_p90_ms": 120.4
+        "wait_median_ms": 243841.2,
+        "wait_p90_ms": 243873.1,
+        "run_median_ms": 211.3,
+        "run_p90_ms": 237.6
       },
       {
         "kind": "updates.check",
         "count": 1,
-        "wait_median_ms": 326342.1,
-        "wait_p90_ms": 326342.1,
-        "run_median_ms": 2.6,
-        "run_p90_ms": 2.6
+        "wait_median_ms": 188259.0,
+        "wait_p90_ms": 188259.0,
+        "run_median_ms": 2.9,
+        "run_p90_ms": 2.9
       }
     ],
-    "since": "2026-11-13T14:39:06.496440Z"
+    "since": "2026-11-17T10:26:42.751217Z"
   }
 }

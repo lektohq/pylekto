@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "POST",
   "operation": "/mailboxes/{id}/fetch",
-  "path": "/mailboxes/01a1f965-91ba-7c1c-a6c3-5b95d8790859/fetch",
+  "path": "/mailboxes/01a20d17-efac-783b-938c-9ab899f47b3c/fetch",
   "params": {},
   "json": null,
   "data": {},

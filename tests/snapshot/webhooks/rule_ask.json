@@ -1,22 +1,22 @@
 {
-  "lekto_version": "0.17.0",
-  "secret": "whsec_9CJIFJSfEax/XgBcjY0osocMeqGXxKET1rHYSDR96kg=",
+  "lekto_version": "0.17.3",
+  "secret": "whsec_y7oPx2CNdVzroONBBESygXZS9lDEdGSiup4vw3iLhBk=",
   "path": "/hook",
   "headers": {
     "Host": "hook17:8080",
     "Accept": "*/*",
-    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
     "Connection": "keep-alive",
-    "User-Agent": "Lekto/0.17.0",
-    "lekto-task-id": "01a1f968-227c-7704-9818-936c9621989b",
-    "lekto-callback": "http://127.0.0.1:18000/api/v1/external/tasks/01a1f968-227c-7704-9818-936c9621989b/result",
-    "lekto-task-token": "lkt_csLjK8g3VAkttM8q8tVhy2vYwZ5Hk4uq11W7FLeJ8bw",
-    "lekto-deadline": "2026-11-20T14:46:53Z",
+    "User-Agent": "Lekto/0.17.3",
+    "lekto-task-id": "01a20d18-e212-784b-b672-23c36fc1e7ca",
+    "lekto-callback": "http://127.0.0.1:18000/api/v1/external/tasks/01a20d18-e212-784b-b672-23c36fc1e7ca/result",
+    "lekto-task-token": "lkt_kyTbfoU1KDqPVGlVhQ_EQ2Xv_FMkgEeEu2LVC7s5EAY",
+    "lekto-deadline": "2026-11-24T10:32:44Z",
     "Content-Type": "application/json",
-    "webhook-id": "01a1f968-227c-7704-9818-936c9621989b",
-    "webhook-timestamp": "1795185713",
-    "webhook-signature": "v1,SYk+V639Pl7bt3lMJcj7gDTy5aWTDyaIqqtQ1mL9mGs=",
+    "webhook-id": "01a20d18-e212-784b-b672-23c36fc1e7ca",
+    "webhook-timestamp": "1795516064",
+    "webhook-signature": "v1,q1+7/+Jb2JsQ5hLLSGF40dDAfkJlc299XzfZNnv9r48=",
     "Content-Length": "1051"
   },
-  "body": "{\"id\":\"01a1f968-227c-7704-9818-936c9621989b\",\"type\":\"rule.ask\",\"occurred_at\":\"2026-11-20T14:41:53Z\",\"document_id\":\"01a1f967-f259-7f65-8d9a-65e0cfc77029\",\"rule\":{\"id\":\"01a1f967-f241-7e68-a38b-477ab5bbabfd\",\"name\":\"Muster Question\"},\"task\":{\"id\":\"01a1f968-227c-7704-9818-936c9621989b\",\"callback\":\"http://127.0.0.1:18000/api/v1/external/tasks/01a1f968-227c-7704-9818-936c9621989b/result\",\"token\":\"lkt_csLjK8g3VAkttM8q8tVhy2vYwZ5Hk4uq11W7FLeJ8bw\",\"deadline\":\"2026-11-20T14:46:53Z\"},\"document\":{\"id\":\"01a1f967-f259-7f65-8d9a-65e0cfc77029\",\"title\":\"Muster Frage\",\"original_filename\":\"question.pdf\",\"contact\":{\"id\":\"01a1f957-92f8-7851-b39f-b880841ae1f9\",\"name\":\"Volkshochschule Musterstadt\"},\"document_type\":{\"id\":\"01a1f957-9388-7391-b245-12ce0714f7d8\",\"name\":\"Rechnung\"},\"topic\":null,\"tags\":[],\"document_date\":\"2026-10-01\",\"added\":\"2026-11-20\",\"space\":{\"id\":\"01a1f957-342f-798d-8077-6f9a905d9c5c\",\"name\":\"admin\"},\"lane\":null,\"channel\":\"api\",\"pages\":1,\"fields\":{},\"link\":\"http://127.0.0.1:18000/ui/documents/01a1f967-f259-7f65-8d9a-65e0cfc77029\"},\"steps\":{}}"
+  "body": "{\"id\":\"01a20d18-e212-784b-b672-23c36fc1e7ca\",\"type\":\"rule.ask\",\"occurred_at\":\"2026-11-24T10:27:44Z\",\"document_id\":\"01a20d18-c357-78db-aa60-11e5e8660a04\",\"rule\":{\"id\":\"01a20d18-c341-7b75-b853-bbc10a4b4b42\",\"name\":\"Muster Question\"},\"task\":{\"id\":\"01a20d18-e212-784b-b672-23c36fc1e7ca\",\"callback\":\"http://127.0.0.1:18000/api/v1/external/tasks/01a20d18-e212-784b-b672-23c36fc1e7ca/result\",\"token\":\"lkt_kyTbfoU1KDqPVGlVhQ_EQ2Xv_FMkgEeEu2LVC7s5EAY\",\"deadline\":\"2026-11-24T10:32:44Z\"},\"document\":{\"id\":\"01a20d18-c357-78db-aa60-11e5e8660a04\",\"title\":\"Muster Frage\",\"original_filename\":\"question.pdf\",\"contact\":{\"id\":\"01a20d12-b272-7bb8-965b-1bdb8518da4d\",\"name\":\"Volkshochschule Musterstadt\"},\"document_type\":{\"id\":\"01a20d12-b2d4-73fe-a8b8-9e4ac8d2be7d\",\"name\":\"Rechnung\"},\"topic\":null,\"tags\":[],\"document_date\":\"2026-10-01\",\"added\":\"2026-11-24\",\"space\":{\"id\":\"01a20d12-adcc-7f1c-9c72-a3945fc24975\",\"name\":\"admin\"},\"lane\":null,\"channel\":\"api\",\"pages\":1,\"fields\":{},\"link\":\"http://127.0.0.1:18000/ui/documents/01a20d18-c357-78db-aa60-11e5e8660a04\"},\"steps\":{}}"
 }

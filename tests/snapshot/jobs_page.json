@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/jobs",
   "path": "/jobs",
@@ -12,15 +12,45 @@
   "body": {
     "items": [
       {
-        "id": "01a1f965-9358-7ff8-ad3b-cb594fb86d0e",
+        "id": "01a20d17-e507-754e-8ebb-62b52e227bf1",
+        "kind": "search.rebuild",
+        "state": "running",
+        "attempts": 1,
+        "run_at": "2026-11-24T10:26:39.495570Z",
+        "started_at": "2026-11-24T10:26:40.904029Z",
+        "finished_at": null,
+        "document": null,
+        "document_hidden": false,
+        "node": null,
+        "contact": null,
+        "error": null,
+        "retry": null
+      },
+      {
+        "id": "01a20d17-ef73-7237-87f5-86bb1fa66788",
+        "kind": "rules.apply",
+        "state": "due",
+        "attempts": 0,
+        "run_at": "2026-11-24T10:26:42.163078Z",
+        "started_at": null,
+        "finished_at": null,
+        "document": null,
+        "document_hidden": false,
+        "node": null,
+        "contact": null,
+        "error": null,
+        "retry": null
+      },
+      {
+        "id": "01a20d17-f0bc-7aa8-a11f-ffa2b81583bd",
         "kind": "pipeline.reparse",
         "state": "due",
         "attempts": 0,
-        "run_at": "2026-11-20T14:39:06.072761Z",
+        "run_at": "2026-11-24T10:26:42.492414Z",
         "started_at": null,
         "finished_at": null,
         "document": {
-          "id": "01a1f957-a641-7b13-a81e-15619dcdb20e",
+          "id": "01a20d12-c16e-7cb9-bf63-1566bf91a98f",
           "title": "Jahresabrechnung Strom 2023/2024"
         },
         "document_hidden": false,
@@ -30,15 +60,15 @@
         "retry": null
       },
       {
-        "id": "01a1f965-935a-7e85-a786-6f51303fe763",
+        "id": "01a20d17-f0bd-757a-8ec7-9525f3258199",
         "kind": "pipeline.reparse",
         "state": "due",
         "attempts": 0,
-        "run_at": "2026-11-20T14:39:06.074345Z",
+        "run_at": "2026-11-24T10:26:42.493450Z",
         "started_at": null,
         "finished_at": null,
         "document": {
-          "id": "01a1f957-a607-7078-91a5-91539c2a1721",
+          "id": "01a20d12-c14c-7c84-b629-623aa66b7a52",
           "title": "Bausparvertrag Jahresauszug 2024"
         },
         "document_hidden": false,
@@ -48,52 +78,16 @@
         "retry": null
       },
       {
-        "id": "01a1f965-935b-7359-a42a-6baa3e153cd4",
+        "id": "01a20d17-f0be-7ae2-998c-348826a69b6d",
         "kind": "pipeline.reparse",
         "state": "due",
         "attempts": 0,
-        "run_at": "2026-11-20T14:39:06.075074Z",
+        "run_at": "2026-11-24T10:26:42.494042Z",
         "started_at": null,
         "finished_at": null,
         "document": {
-          "id": "01a1f957-a5d9-7b49-9263-5cb81ba97593",
+          "id": "01a20d12-c12c-7bbb-b2a7-713018febc1b",
           "title": "Kontoauszug 11/2024"
-        },
-        "document_hidden": false,
-        "node": "parse",
-        "contact": null,
-        "error": null,
-        "retry": null
-      },
-      {
-        "id": "01a1f965-935b-7007-a407-bc84ee608bac",
-        "kind": "pipeline.reparse",
-        "state": "due",
-        "attempts": 0,
-        "run_at": "2026-11-20T14:39:06.075706Z",
-        "started_at": null,
-        "finished_at": null,
-        "document": {
-          "id": "01a1f957-a5a9-7872-9679-2d40ed85b04e",
-          "title": "Gehaltsabrechnung September 2024"
-        },
-        "document_hidden": false,
-        "node": "parse",
-        "contact": null,
-        "error": null,
-        "retry": null
-      },
-      {
-        "id": "01a1f965-935c-7379-b1b0-e044c27be16c",
-        "kind": "pipeline.reparse",
-        "state": "due",
-        "attempts": 0,
-        "run_at": "2026-11-20T14:39:06.076295Z",
-        "started_at": null,
-        "finished_at": null,
-        "document": {
-          "id": "01a1f957-a577-7994-865b-444ec93f97c8",
-          "title": "Kontoauszug 7/2024"
         },
         "document_hidden": false,
         "node": "parse",
@@ -102,7 +96,7 @@
         "retry": null
       }
     ],
-    "total": 303,
+    "total": 304,
     "next_offset": 5
   }
 }

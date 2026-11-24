@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/rules/{id}/apply/hits/{document_id}",
-  "path": "/rules/01a1f965-882a-7ab7-b0f9-d50d99f44ea2/apply/hits/01a1f957-95b4-70f6-a8ac-2afde78fea2a",
+  "path": "/rules/01a20d17-e8f0-7122-a505-17ab68fbcf33/apply/hits/01a20d12-b44f-7657-84fb-1a14b136c0e4",
   "params": {},
   "json": null,
   "data": {},

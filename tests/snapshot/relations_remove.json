@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "DELETE",
   "operation": "/documents/{id}/relations/{other_id}",
-  "path": "/documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/relations/01a1f957-9478-7f95-bc57-c7a89fc7382a",
+  "path": "/documents/01a20d12-b44f-7657-84fb-1a14b136c0e4/relations/01a20d12-b381-79c1-8b1e-b775913f53f5",
   "params": {},
   "json": null,
   "data": {},

@@ -1,15 +1,15 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/documents/{id}/files",
-  "path": "/documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/files",
+  "path": "/documents/01a20d12-b44f-7657-84fb-1a14b136c0e4/files",
   "params": {},
   "json": null,
   "data": {},
   "status": 200,
   "body": {
-    "added": "2026-11-20T14:23:49.167359Z",
-    "modified": "2026-11-20T14:28:50.051458Z",
+    "added": "2026-11-24T10:20:59.340092Z",
+    "modified": "2026-11-24T10:25:02.082723Z",
     "original_filename": "Anmeldebestaetigung_26F-3104.pdf",
     "media_type": "application/pdf",
     "page_count": 1,
@@ -49,8 +49,8 @@
       }
     },
     "archive": {
-      "size": 14842,
-      "sha256": "f26eb749416de14e54eacef34cf792a7ae21654aecb9dc8d6d3bb33ba5f2aa1f",
+      "size": 14843,
+      "sha256": "e2e6eaac5af29a7d38ea0616ff3fc5ae1e1acae43003c669e34196ab3965b6b1",
       "metadata": {
         "format": "PDF",
         "pdf_version": "1.7",
@@ -68,27 +68,27 @@
           {
             "source": "info",
             "key": "Creator",
-            "value": "OCRmyPDF 17.13.0 / OCRmyPDF fpdf2 + Tesseract OCR 5.5.0"
+            "value": "OCRmyPDF 17.14.1 / OCRmyPDF fpdf2 + Tesseract OCR 5.5.0"
           },
           {
             "source": "info",
             "key": "ModDate",
-            "value": "D:20261120142411+00'00"
+            "value": "D:20261124102119+00'00"
           },
           {
             "source": "info",
             "key": "Producer",
-            "value": "pikepdf 10.16.0"
+            "value": "pikepdf 10.18.1"
           },
           {
             "source": "xmp",
             "key": "pdf:Producer",
-            "value": "pikepdf 10.16.0"
+            "value": "pikepdf 10.18.1"
           },
           {
             "source": "xmp",
             "key": "xmp:ModifyDate",
-            "value": "2026-11-20T14:24:11+00:00"
+            "value": "2026-11-24T10:21:19+00:00"
           },
           {
             "source": "xmp",
@@ -98,17 +98,17 @@
           {
             "source": "xmp",
             "key": "xmp:MetadataDate",
-            "value": "2026-11-20T14:24:11.541762+00:00"
+            "value": "2026-11-24T10:21:19.953987+00:00"
           },
           {
             "source": "xmp",
             "key": "xmp:CreatorTool",
-            "value": "OCRmyPDF 17.13.0 / OCRmyPDF fpdf2 + Tesseract OCR 5.5.0"
+            "value": "OCRmyPDF 17.14.1 / OCRmyPDF fpdf2 + Tesseract OCR 5.5.0"
           },
           {
             "source": "xmp",
             "key": "xmpMM:DocumentID",
-            "value": "uuid:9ab1e3e6-1d0a-11fd-0000-3d38a3c7f152"
+            "value": "uuid:56c232d4-200d-11fd-0000-3d38a3c7f152"
           },
           {
             "source": "xmp",
@@ -145,8 +145,8 @@
         "original_filename": "Anmeldebestaetigung_26F-3104.pdf",
         "media_type": "application/pdf",
         "kind": "received",
-        "created_at": "2026-11-20T14:23:49.167359Z",
-        "created_by": "01a1f957-3428-782e-9967-e874641f6763",
+        "created_at": "2026-11-24T10:20:59.340092Z",
+        "created_by": "01a20d12-adc9-7f12-a9f3-ec8bc12b5e27",
         "detail": {},
         "origin": null
       }

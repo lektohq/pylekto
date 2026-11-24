@@ -1,12 +1,12 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "POST",
   "operation": "/templates/preview",
   "path": "/templates/preview",
   "params": {},
   "json": {
     "template": "{{ title }} ({{ document_date }})",
-    "document_id": "01a1f957-95b4-70f6-a8ac-2afde78fea2a"
+    "document_id": "01a20d12-b44f-7657-84fb-1a14b136c0e4"
   },
   "data": {},
   "status": 200,
@@ -18,6 +18,7 @@
     "rendered": "Stromabrechnung 2023/2024 (2026-01-10)",
     "missing": null,
     "error": null,
+    "error_reason": null,
     "values": {
       "title": "Stromabrechnung 2023/2024",
       "filename": "Anmeldebestaetigung_26F-3104",
@@ -25,7 +26,7 @@
       "contact": "Volkshochschule Musterstadt",
       "document_type": "Rechnung",
       "document_date": "2026-01-10",
-      "added": "2026-11-20",
+      "added": "2026-11-24",
       "tags": "",
       "contact_groups": "",
       "document_type_groups": "",

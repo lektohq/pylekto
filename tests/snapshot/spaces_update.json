@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "PATCH",
   "operation": "/spaces/{id}",
-  "path": "/spaces/01a1f965-8504-76ea-b0ca-1a0d7adde833",
+  "path": "/spaces/01a20d17-e6e9-788b-8d1c-f39cb66d6a4b",
   "params": {},
   "json": {
     "description": "Shared documents"
@@ -10,21 +10,21 @@
   "data": {},
   "status": 200,
   "body": {
-    "id": "01a1f965-8504-76ea-b0ca-1a0d7adde833",
+    "id": "01a20d17-e6e9-788b-8d1c-f39cb66d6a4b",
     "name": "Muster Household",
     "personal_of": null,
     "description": "Shared documents",
     "role": "edit",
     "members": [
       {
-        "user_id": "01a1f957-3428-782e-9967-e874641f6763",
+        "user_id": "01a20d12-adc9-7f12-a9f3-ec8bc12b5e27",
         "role": "edit",
         "username": "admin",
         "display_name": null,
         "active": true
       }
     ],
-    "created_at": "2026-11-20T14:39:02.404802Z",
+    "created_at": "2026-11-24T10:26:39.977535Z",
     "version": 2
   }
 }

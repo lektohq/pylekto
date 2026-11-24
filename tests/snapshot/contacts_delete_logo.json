@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "DELETE",
   "operation": "/contacts/{id}/logo",
-  "path": "/contacts/01a1f965-856a-7773-a0d2-7ce3ec57306e/logo",
+  "path": "/contacts/01a20d17-e73b-7d13-9978-0b1db03ad418/logo",
   "params": {},
   "json": null,
   "data": {},

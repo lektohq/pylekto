@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "POST",
   "operation": "/documents/{id}/edit",
-  "path": "/documents/01a1f965-3145-7ef6-b688-af4f78ff9d97/edit",
+  "path": "/documents/01a20d17-957e-7b94-bd3c-f0720c871760/edit",
   "params": {},
   "json": null,
   "data": {
@@ -12,14 +12,14 @@
   "body": {
     "documents": [
       {
-        "id": "01a1f965-3145-7ef6-b688-af4f78ff9d97",
+        "id": "01a20d17-957e-7b94-bd3c-f0720c871760",
         "title": "documents_upload",
         "original_filename": "documents_add_version.pdf",
         "media_type": "application/pdf",
         "channel": "api",
-        "sha256": "7f3fdd5366a62e1e9710273e9c0db73ae5566a4c502920f2385767ee02463f58",
-        "uploaded_by": "01a1f957-3428-782e-9967-e874641f6763",
-        "space_id": "01a1f957-342f-798d-8077-6f9a905d9c5c",
+        "sha256": "23137385787cfd1cdb1c3d233d7fecf85b69027cc5589ebff12a681303b7308b",
+        "uploaded_by": "01a20d12-adc9-7f12-a9f3-ec8bc12b5e27",
+        "space_id": "01a20d12-adcc-7f1c-9c72-a3945fc24975",
         "access": "edit",
         "contact_id": null,
         "document_type_id": null,
@@ -40,8 +40,8 @@
               "node": "receive",
               "status": "done",
               "outcome": "ok",
-              "started_at": "2026-11-20T14:38:40.853759Z",
-              "finished_at": "2026-11-20T14:38:40.853759Z",
+              "started_at": "2026-11-24T10:26:19.131703Z",
+              "finished_at": "2026-11-24T10:26:19.131703Z",
               "deadline": null
             },
             {
@@ -151,8 +151,8 @@
           ],
           "vision": false
         },
-        "created_at": "2026-11-20T14:38:40.853759Z",
-        "updated_at": "2026-11-20T14:38:55.269722Z"
+        "created_at": "2026-11-24T10:26:19.131703Z",
+        "updated_at": "2026-11-24T10:26:33.166651Z"
       }
     ],
     "deleted": false,

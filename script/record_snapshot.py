@@ -12,20 +12,22 @@ repository::
 
     docker network create lekto-snapshot
     docker run -d --name meili-snapshot --network lekto-snapshot \
-      -e MEILI_MASTER_KEY=... -e MEILI_ENV=development getmeili/meilisearch:v1.54.3
+      -e MEILI_MASTER_KEY=... -e MEILI_ENV=development getmeili/meilisearch:v1.56.2
     docker run -d --name lekto-snapshot --network lekto-snapshot -p 127.0.0.1:18000:8000 \
       -e LEKTO_SECRET_KEY=... -e LEKTO_ADMIN_USERNAME=admin -e LEKTO_ADMIN_PASSWORD=... \
       -e LEKTO_COOKIE_SECURE=false -e LEKTO_MEILISEARCH_URL=http://meili-snapshot:7700 \
       -e LEKTO_MEILISEARCH_API_KEY=... -e LEKTO_PUBLIC_URL=http://127.0.0.1:18000 \
       -e LEKTO_PUSH_VAPID_PRIVATE_KEY=... -e LEKTO_PUSH_SUBJECT=mailto:jane@example.com \
-      ghcr.io/lektohq/lekto:0.17.0
+      ghcr.io/lektohq/lekto:0.17.3
     # the push key: docker exec lekto-snapshot lekto-run lekto vapid-key (first line); tasks
     # need the public URL, the address the script answers them at
     # an API token: sign in at http://127.0.0.1:18000/ui, Settings, API tokens (read_write)
     python <lekto>/examples/mcp-eval/seed.py --url http://127.0.0.1:18000 --token ... \
       --documents 100
     # wait until the inbox shows nothing in processing; then read the facts of the documents
-    # taken over (POST /api/v1/pipeline/read-facts) and wait again
+    # taken over (POST /api/v1/pipeline/read-facts) and wait again; then train the classifier
+    # (POST /api/v1/classifier/train) and wait again, else no recording holds a model or a
+    # learned identifier
 
 For what Lekto sends to a webhook, a server on the same network writes every request it gets
 (path, headers and body as one JSON line) to a file the script reads, such as ``receiver.py``

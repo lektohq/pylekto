@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "POST",
   "operation": "/push/devices",
   "path": "/push/devices",
@@ -16,11 +16,11 @@
   "data": {},
   "status": 201,
   "body": {
-    "id": "01a1f968-dd09-7a3c-b72c-fc267a298d83",
+    "id": "01a20d17-f08a-7032-bdcc-18738dc364b7",
     "name": "Muster Phone",
     "locale": "en",
     "endpoint": "https://web.push.apple.com/QGuQyavXutnMH9Byyn6xHn",
-    "created_at": "2026-11-20T14:42:41.545898Z",
+    "created_at": "2026-11-24T10:26:42.442339Z",
     "last_success_at": null
   }
 }

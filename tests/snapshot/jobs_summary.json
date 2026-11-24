@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/jobs/summary",
   "path": "/jobs/summary",
@@ -15,7 +15,7 @@
         "due": 0,
         "planned": 1,
         "failed": 0,
-        "done": 2
+        "done": 1
       },
       {
         "kind": "classifier.train",
@@ -23,7 +23,7 @@
         "due": 0,
         "planned": 0,
         "failed": 0,
-        "done": 1
+        "done": 2
       },
       {
         "kind": "documents.bulk",
@@ -84,26 +84,26 @@
       {
         "kind": "rules.apply",
         "running": 0,
-        "due": 0,
+        "due": 1,
         "planned": 0,
         "failed": 0,
-        "done": 1
+        "done": 0
       },
       {
         "kind": "search.index",
         "running": 0,
         "due": 0,
-        "planned": 2,
+        "planned": 1,
         "failed": 0,
-        "done": 208
+        "done": 221
       },
       {
         "kind": "search.rebuild",
-        "running": 0,
+        "running": 1,
         "due": 0,
         "planned": 0,
         "failed": 0,
-        "done": 1
+        "done": 0
       },
       {
         "kind": "search.reconcile",
@@ -122,8 +122,8 @@
         "done": 1
       }
     ],
-    "last_started_at": "2026-11-20T14:39:05.965944Z",
-    "now": "2026-11-20T14:39:06.455883Z",
-    "kept_since": "2026-11-13T14:39:06.455883Z"
+    "last_started_at": "2026-11-24T10:26:40.904029Z",
+    "now": "2026-11-24T10:26:42.721700Z",
+    "kept_since": "2026-11-17T10:26:42.721700Z"
   }
 }
