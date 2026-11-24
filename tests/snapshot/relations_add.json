@@ -1,11 +1,11 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "POST",
   "operation": "/documents/{id}/relations",
-  "path": "/documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/relations",
+  "path": "/documents/01a20d06-67f3-74e0-87a1-98af6f53097a/relations",
   "params": {},
   "json": {
-    "document_id": "01a1f957-9478-7f95-bc57-c7a89fc7382a"
+    "document_id": "01a20d06-6706-7e85-8ca2-1ca0179d5ccb"
   },
   "data": {},
   "status": 200,
@@ -13,17 +13,17 @@
     "refers_to": [
       {
         "document": {
-          "id": "01a1f957-9478-7f95-bc57-c7a89fc7382a",
+          "id": "01a20d06-6706-7e85-8ca2-1ca0179d5ccb",
           "title": "Gehaltsabrechnung Februar 2024",
-          "document_type_id": "01a1f957-9368-76fb-94bd-7bbe8c800ebe",
-          "contact_id": "01a1f957-90ed-7b8a-94fd-371ee13d34bb",
+          "document_type_id": "01a20d06-663c-7740-af5a-44af5d9f02a8",
+          "contact_id": "01a20d06-6474-70e7-83a2-c990a0f7691f",
           "document_date": "2024-02-25"
         },
         "origin": "person",
         "state": "set",
         "evidence": {},
-        "created_at": "2026-11-20T14:38:40.416654Z",
-        "decided_at": "2026-11-20T14:38:40.416654Z",
+        "created_at": "2026-11-24T10:12:47.915612Z",
+        "decided_at": "2026-11-24T10:12:47.915612Z",
         "changeable": true
       }
     ],

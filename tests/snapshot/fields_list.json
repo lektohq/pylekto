@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/fields",
   "path": "/fields",
@@ -9,7 +9,7 @@
   "status": 200,
   "body": [
     {
-      "id": "01a1f957-93c8-7ef0-bd8a-8fdf8fb168f8",
+      "id": "01a20d06-6686-7621-9bf4-497d19f43de9",
       "name": "Aktenzeichen",
       "key": "aktenzeichen",
       "data_type": "text",
@@ -20,11 +20,11 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.680727Z",
+      "created_at": "2026-11-24T10:07:32.998428Z",
       "document_count": null
     },
     {
-      "id": "01a1f957-93d2-73ec-b634-5f9ac7c74398",
+      "id": "01a20d06-668d-7660-8e19-6ce4a91982ad",
       "name": "Beitrag",
       "key": "beitrag",
       "data_type": "amount",
@@ -35,11 +35,11 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.690396Z",
+      "created_at": "2026-11-24T10:07:33.005954Z",
       "document_count": null
     },
     {
-      "id": "01a1f957-93dd-7b02-82c1-2f84ced33c34",
+      "id": "01a20d06-6695-7364-b827-015feeefb482",
       "name": "Betrag",
       "key": "betrag",
       "data_type": "amount",
@@ -50,11 +50,11 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.701491Z",
+      "created_at": "2026-11-24T10:07:33.013219Z",
       "document_count": null
     },
     {
-      "id": "01a1f957-93e7-7001-bb6d-57ba55dd4c99",
+      "id": "01a20d06-669c-7fbb-87f1-1e4df084353b",
       "name": "Bezugszeitraum",
       "key": "bezugszeitraum",
       "data_type": "text",
@@ -65,11 +65,11 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.711791Z",
+      "created_at": "2026-11-24T10:07:33.020357Z",
       "document_count": null
     },
     {
-      "id": "01a1f957-93f0-72f9-8b18-3404d4837e64",
+      "id": "01a20d06-66a2-7bc3-b2b7-d34e9e8998a9",
       "name": "Bruttolohn",
       "key": "bruttolohn",
       "data_type": "amount",
@@ -80,11 +80,11 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.720506Z",
+      "created_at": "2026-11-24T10:07:33.026979Z",
       "document_count": null
     },
     {
-      "id": "01a1f957-93fa-79ae-9e0e-e314387d911b",
+      "id": "01a20d06-66a9-7e45-988f-1a1e2bd26ed8",
       "name": "Fällig am",
       "key": "faellig_am",
       "data_type": "date",
@@ -95,11 +95,11 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.730743Z",
+      "created_at": "2026-11-24T10:07:33.033629Z",
       "document_count": null
     },
     {
-      "id": "01a1f957-9404-7f17-9cf7-f3c8ac3ad618",
+      "id": "01a20d06-66b0-7b68-bb34-1719da8ff56f",
       "name": "Kontostand",
       "key": "kontostand",
       "data_type": "amount",
@@ -110,11 +110,11 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.740100Z",
+      "created_at": "2026-11-24T10:07:33.040270Z",
       "document_count": null
     },
     {
-      "id": "01a1f957-940c-77df-bf37-7cef7555e8c8",
+      "id": "01a20d06-66b7-7260-a283-48d62166f4c6",
       "name": "Kundennummer",
       "key": "kundennummer",
       "data_type": "text",
@@ -125,11 +125,11 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.748851Z",
+      "created_at": "2026-11-24T10:07:33.047439Z",
       "document_count": null
     },
     {
-      "id": "01a1f957-9415-752c-a610-38a604d9f154",
+      "id": "01a20d06-66be-7ce9-afec-007a21f9cc62",
       "name": "Nettolohn",
       "key": "nettolohn",
       "data_type": "amount",
@@ -140,11 +140,11 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.757750Z",
+      "created_at": "2026-11-24T10:07:33.054321Z",
       "document_count": null
     },
     {
-      "id": "01a1f957-941e-7632-9704-af9f13700dca",
+      "id": "01a20d06-66c5-73fd-9d27-c6a6ca4b9c7d",
       "name": "Rechnungsnummer",
       "key": "rechnungsnummer",
       "data_type": "text",
@@ -155,11 +155,11 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.766275Z",
+      "created_at": "2026-11-24T10:07:33.061232Z",
       "document_count": null
     },
     {
-      "id": "01a1f957-9426-744a-8d8d-b279697914e0",
+      "id": "01a20d06-66cc-7682-afb0-087c5eaf1cc8",
       "name": "Versicherungsnummer",
       "key": "versicherungsnummer",
       "data_type": "text",
@@ -170,11 +170,11 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.774606Z",
+      "created_at": "2026-11-24T10:07:33.068188Z",
       "document_count": null
     },
     {
-      "id": "01a1f957-942f-75a3-b8f0-5592cd803c2a",
+      "id": "01a20d06-66d2-7cf5-abbf-77bae5005df6",
       "name": "Vertragsbeginn",
       "key": "vertragsbeginn",
       "data_type": "date",
@@ -185,11 +185,11 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.783729Z",
+      "created_at": "2026-11-24T10:07:33.074821Z",
       "document_count": null
     },
     {
-      "id": "01a1f957-9438-7159-80be-c56074c590ec",
+      "id": "01a20d06-66d9-76cf-94a4-03e9b44f0ed9",
       "name": "Zahlungsart",
       "key": "zahlungsart",
       "data_type": "text",
@@ -200,7 +200,7 @@
       "description": null,
       "assignment": "auto",
       "position": 0,
-      "created_at": "2026-11-20T14:23:48.792749Z",
+      "created_at": "2026-11-24T10:07:33.081468Z",
       "document_count": null
     }
   ]

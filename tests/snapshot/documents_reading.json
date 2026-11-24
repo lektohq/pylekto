@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/documents/{id}/reading",
-  "path": "/documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/reading",
+  "path": "/documents/01a20d06-67f3-74e0-87a1-98af6f53097a/reading",
   "params": {},
   "json": null,
   "data": {},

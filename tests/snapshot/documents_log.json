@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/documents/{id}/log",
-  "path": "/documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/log",
+  "path": "/documents/01a20d06-67f3-74e0-87a1-98af6f53097a/log",
   "params": {},
   "json": null,
   "data": {},
@@ -23,24 +23,24 @@
         "media_type": "application/pdf",
         "imported": {
           "title": "VHS Spanisch A2",
-          "contact_id": "01a1f957-92f8-7851-b39f-b880841ae1f9",
-          "document_type_id": "01a1f957-9388-7391-b245-12ce0714f7d8",
+          "contact_id": "01a20d06-65ef-7b75-bdce-f625372103e5",
+          "document_type_id": "01a20d06-6653-72d8-b76f-3ff0320cc497",
           "tag_ids": [],
           "document_date": "2026-01-10",
           "fields": {
-            "01a1f957-93dd-7b02-82c1-2f84ced33c34": {
+            "01a20d06-6695-7364-b827-015feeefb482": {
               "amount": "132.00",
               "currency": "EUR"
             },
-            "01a1f957-941e-7632-9704-af9f13700dca": "VHS-2026-01877"
+            "01a20d06-66c5-73fd-9d27-c6a6ca4b9c7d": "VHS-2026-01877"
           },
           "created_at": null,
           "review": []
         }
       },
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:23:49.149877Z",
-      "duration_ms": 17.482
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:07:33.347240Z",
+      "duration_ms": 13.069
     },
     {
       "node": "separate",
@@ -54,9 +54,9 @@
       "output": {
         "not_looked": "migration"
       },
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:23:49.767251Z",
-      "duration_ms": 148.24499999999998
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:07:34.760780Z",
+      "duration_ms": 15.982
     },
     {
       "node": "pages",
@@ -65,18 +65,18 @@
       "reason": null,
       "reasons": [],
       "confidence": null,
-      "model_version": "pdfium 8076",
+      "model_version": "pdfium 8149",
       "input": {
         "original": "originals/21a50ee4921723c103a8b7dcfd9bd0565fc4266d402c4ad76ad092e5849513da"
       },
       "output": {
         "pages": 1,
-        "first_page": "documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/pages/1.webp",
-        "preview": "documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/preview.webp"
+        "first_page": "documents/01a20d06-67f3-74e0-87a1-98af6f53097a/pages/1.webp",
+        "preview": "documents/01a20d06-67f3-74e0-87a1-98af6f53097a/preview.webp"
       },
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:24:09.785332Z",
-      "duration_ms": 914.981
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:07:50.672891Z",
+      "duration_ms": 775.432
     },
     {
       "node": "ocr",
@@ -85,18 +85,18 @@
       "reason": null,
       "reasons": [],
       "confidence": null,
-      "model_version": "ocrmypdf 17.13.0, tesseract 5.5.0",
+      "model_version": "ocrmypdf 17.14.1, tesseract 5.5.0",
       "input": {
         "original": "originals/21a50ee4921723c103a8b7dcfd9bd0565fc4266d402c4ad76ad092e5849513da"
       },
       "output": {
-        "archive": "documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/archive.pdf",
+        "archive": "documents/01a20d06-67f3-74e0-87a1-98af6f53097a/archive.pdf",
         "pages": 1,
         "pdfa": true
       },
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:24:09.436823Z",
-      "duration_ms": 2272.274
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:07:50.401631Z",
+      "duration_ms": 1916.803
     },
     {
       "node": "parse",
@@ -105,19 +105,19 @@
       "reason": null,
       "reasons": [],
       "confidence": null,
-      "model_version": "layout 1, pypdfium2 5.14.0",
+      "model_version": "layout 1, pypdfium2 5.15.2",
       "input": {
-        "archive": "documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/archive.pdf"
+        "archive": "documents/01a20d06-67f3-74e0-87a1-98af6f53097a/archive.pdf"
       },
       "output": {
-        "text": "documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/content.txt",
-        "structure": "documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/content.json",
+        "text": "documents/01a20d06-67f3-74e0-87a1-98af6f53097a/content.txt",
+        "structure": "documents/01a20d06-67f3-74e0-87a1-98af6f53097a/content.json",
         "pages": 1,
         "characters": 1585
       },
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:24:45.562156Z",
-      "duration_ms": 697.407
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:08:51.465917Z",
+      "duration_ms": 552.547
     },
     {
       "node": "signal_llm",
@@ -135,29 +135,9 @@
           "params": {}
         }
       },
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:27:46.672097Z",
-      "duration_ms": 12.756
-    },
-    {
-      "node": "signal_classifier",
-      "run": 1,
-      "outcome": "ok",
-      "reason": null,
-      "reasons": [],
-      "confidence": null,
-      "model_version": "imported",
-      "input": {},
-      "output": {
-        "abstained": "taken over from the source system",
-        "abstained_reason": {
-          "code": "taken_over",
-          "params": {}
-        }
-      },
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:27:46.722710Z",
-      "duration_ms": 20.629
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:10:48.185095Z",
+      "duration_ms": 15.488999999999999
     },
     {
       "node": "signal_neighbours",
@@ -175,9 +155,29 @@
           "params": {}
         }
       },
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:27:46.769555Z",
-      "duration_ms": 16.150000000000002
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:10:48.238279Z",
+      "duration_ms": 12.716999999999999
+    },
+    {
+      "node": "signal_classifier",
+      "run": 1,
+      "outcome": "ok",
+      "reason": null,
+      "reasons": [],
+      "confidence": null,
+      "model_version": "imported",
+      "input": {},
+      "output": {
+        "abstained": "taken over from the source system",
+        "abstained_reason": {
+          "code": "taken_over",
+          "params": {}
+        }
+      },
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:10:48.281139Z",
+      "duration_ms": 12.971
     },
     {
       "node": "signal_facts",
@@ -195,9 +195,9 @@
           "params": {}
         }
       },
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:27:46.816916Z",
-      "duration_ms": 16.779
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:10:48.316367Z",
+      "duration_ms": 12.163
     },
     {
       "node": "judge",
@@ -219,24 +219,24 @@
       "output": {
         "imported": {
           "title": "VHS Spanisch A2",
-          "contact_id": "01a1f957-92f8-7851-b39f-b880841ae1f9",
-          "document_type_id": "01a1f957-9388-7391-b245-12ce0714f7d8",
+          "contact_id": "01a20d06-65ef-7b75-bdce-f625372103e5",
+          "document_type_id": "01a20d06-6653-72d8-b76f-3ff0320cc497",
           "tag_ids": [],
           "document_date": "2026-01-10",
           "fields": {
-            "01a1f957-93dd-7b02-82c1-2f84ced33c34": {
+            "01a20d06-6695-7364-b827-015feeefb482": {
               "amount": "132.00",
               "currency": "EUR"
             },
-            "01a1f957-941e-7632-9704-af9f13700dca": "VHS-2026-01877"
+            "01a20d06-66c5-73fd-9d27-c6a6ca4b9c7d": "VHS-2026-01877"
           },
           "created_at": null,
           "review": []
         }
       },
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:28:17.273301Z",
-      "duration_ms": 104.277
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:11:11.162800Z",
+      "duration_ms": 7.353
     },
     {
       "node": "fields",
@@ -258,9 +258,9 @@
       "output": {
         "fields": 2
       },
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:28:35.053483Z",
-      "duration_ms": 11.4
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:11:21.764546Z",
+      "duration_ms": 13.751
     },
     {
       "node": "relate",
@@ -274,9 +274,9 @@
       "output": {
         "relations": []
       },
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:28:40.319990Z",
-      "duration_ms": 12.989
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:11:25.936565Z",
+      "duration_ms": 4.634
     },
     {
       "node": "apply_rules",
@@ -291,9 +291,9 @@
         "rules": []
       },
       "output": {},
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:28:45.355529Z",
-      "duration_ms": 11.854
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:11:29.371652Z",
+      "duration_ms": 12.956000000000001
     },
     {
       "node": "file",
@@ -305,9 +305,9 @@
       "model_version": null,
       "input": {},
       "output": {},
-      "pipeline_version": "0.17.0",
-      "started_at": "2026-11-20T14:28:50.039827Z",
-      "duration_ms": 11.631
+      "pipeline_version": "0.17.3",
+      "started_at": "2026-11-24T10:11:32.947659Z",
+      "duration_ms": 11.967
     }
   ]
 }

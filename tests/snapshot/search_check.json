@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "POST",
   "operation": "/search/check",
   "path": "/search/check",
@@ -13,6 +13,6 @@
     "outdated": 0,
     "other_model": 0,
     "extra": 0,
-    "took_ms": 25.6
+    "took_ms": 15.3
   }
 }

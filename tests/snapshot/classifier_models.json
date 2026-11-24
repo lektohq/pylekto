@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/classifier/models",
   "path": "/classifier/models",
@@ -7,26 +7,5 @@
   "json": null,
   "data": {},
   "status": 200,
-  "body": [
-    {
-      "number": 1,
-      "trained_at": "2026-11-20T14:33:31.064849Z",
-      "examples": 97,
-      "examples_until": "2026-11-20T14:28:40.205815Z",
-      "classes": {
-        "contact": 15,
-        "document_type": 10,
-        "topic": 0,
-        "space": 0,
-        "tags": 0
-      },
-      "learned_identifiers": 6,
-      "accuracy": {
-        "tested": 20,
-        "contact": 0.55,
-        "document_type": 0.65
-      },
-      "method": "scikit-learn 1.9.1 lekto-tfidf-logreg/1"
-    }
-  ]
+  "body": []
 }

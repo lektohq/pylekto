@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/automation/holders",
   "path": "/automation/holders",
@@ -19,7 +19,7 @@
       }
     ],
     "recommendation": {
-      "right": 13,
+      "right": 7,
       "learned_rejected": 0,
       "refused_confirmed": 0,
       "unclear": 0,

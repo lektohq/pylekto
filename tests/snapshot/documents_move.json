@@ -1,11 +1,11 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "POST",
   "operation": "/documents/{id}/move",
-  "path": "/documents/01a1f965-3145-7ef6-b688-af4f78ff9d97/move",
+  "path": "/documents/01a20d0b-35c4-7dc1-8b31-570dc4318840/move",
   "params": {},
   "json": {
-    "space_id": "01a1f965-81ce-7b5f-94d0-995b9a794ceb"
+    "space_id": "01a20d0b-848a-7689-b5e1-598d4b6132c9"
   },
   "data": {},
   "status": 204,

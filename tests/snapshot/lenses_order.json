@@ -1,19 +1,19 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "PUT",
   "operation": "/lenses/order",
   "path": "/lenses/order",
   "params": {},
   "json": {
     "ids": [
-      "01a1f965-879f-75d5-ab13-632a9088e217"
+      "01a20d0b-87cf-7e5c-965b-fa00d5e5ee71"
     ]
   },
   "data": {},
   "status": 200,
   "body": [
     {
-      "id": "01a1f965-879f-75d5-ab13-632a9088e217",
+      "id": "01a20d0b-87cf-7e5c-965b-fa00d5e5ee71",
       "name": "Muster Lens",
       "position": 0,
       "filter": {
@@ -37,8 +37,8 @@
       "layout": "list",
       "card_field_ids": [],
       "due_field_id": null,
-      "created_at": "2026-11-20T14:39:03.071225Z",
-      "updated_at": "2026-11-20T14:39:03.146335Z"
+      "created_at": "2026-11-24T10:13:09.199216Z",
+      "updated_at": "2026-11-24T10:13:09.250803Z"
     }
   ]
 }

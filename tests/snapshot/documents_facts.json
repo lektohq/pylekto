@@ -1,17 +1,17 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/documents/{id}/facts",
-  "path": "/documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/facts",
+  "path": "/documents/01a20d06-67f3-74e0-87a1-98af6f53097a/facts",
   "params": {},
   "json": null,
   "data": {},
   "status": 200,
   "body": {
-    "contact_id": "01a1f957-92f8-7851-b39f-b880841ae1f9",
+    "contact_id": "01a20d06-65ef-7b75-bdce-f625372103e5",
     "named": [
       {
-        "contact_id": "01a1f957-9268-7cd8-8326-71c5dfed0fd2",
+        "contact_id": "01a20d06-658e-7cb3-82bc-fbf19d2e8058",
         "name": "Sparkasse Musterstadt",
         "alias": false,
         "in_text": true,
@@ -37,7 +37,7 @@
         ]
       },
       {
-        "contact_id": "01a1f957-92f8-7851-b39f-b880841ae1f9",
+        "contact_id": "01a20d06-65ef-7b75-bdce-f625372103e5",
         "name": "Volkshochschule Musterstadt",
         "alias": false,
         "in_text": true,

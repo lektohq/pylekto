@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "PATCH",
   "operation": "/fields/{id}",
-  "path": "/fields/01a1f965-863b-7267-a423-b738f59850c9",
+  "path": "/fields/01a20d0b-8707-78e0-8c77-de65c515ea1e",
   "params": {},
   "json": {
     "description": "A made-up number"
@@ -10,7 +10,7 @@
   "data": {},
   "status": 200,
   "body": {
-    "id": "01a1f965-863b-7267-a423-b738f59850c9",
+    "id": "01a20d0b-8707-78e0-8c77-de65c515ea1e",
     "name": "Muster Number",
     "key": "muster_number",
     "data_type": "text",
@@ -21,7 +21,7 @@
     "description": "A made-up number",
     "assignment": "auto",
     "position": 0,
-    "created_at": "2026-11-20T14:39:02.715481Z",
+    "created_at": "2026-11-24T10:13:08.999953Z",
     "document_count": null
   }
 }

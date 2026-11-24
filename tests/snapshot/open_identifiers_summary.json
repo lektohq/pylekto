@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/identifiers/open/summary",
   "path": "/identifiers/open/summary",
@@ -8,7 +8,7 @@
   "data": {},
   "status": 200,
   "body": {
-    "learned": 6,
+    "learned": 0,
     "suggested": 14
   }
 }

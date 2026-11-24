@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "POST",
   "operation": "/documents/{id}/reprocess",
-  "path": "/documents/01a1f957-95b4-70f6-a8ac-2afde78fea2a/reprocess",
+  "path": "/documents/01a20d06-67f3-74e0-87a1-98af6f53097a/reprocess",
   "params": {},
   "json": {
     "from_node": "relate"
@@ -10,32 +10,32 @@
   "data": {},
   "status": 202,
   "body": {
-    "id": "01a1f957-95b4-70f6-a8ac-2afde78fea2a",
+    "id": "01a20d06-67f3-74e0-87a1-98af6f53097a",
     "title": "Stromabrechnung 2023/2024",
     "original_filename": "Anmeldebestaetigung_26F-3104.pdf",
     "media_type": "application/pdf",
     "channel": "migration",
     "sha256": "21a50ee4921723c103a8b7dcfd9bd0565fc4266d402c4ad76ad092e5849513da",
-    "uploaded_by": "01a1f957-3428-782e-9967-e874641f6763",
-    "space_id": "01a1f957-342f-798d-8077-6f9a905d9c5c",
+    "uploaded_by": "01a20d05-fd22-718b-9b59-b14e298e43ac",
+    "space_id": "01a20d05-fd26-7dac-8381-4ecbee385f04",
     "access": "edit",
-    "contact_id": "01a1f957-92f8-7851-b39f-b880841ae1f9",
-    "document_type_id": "01a1f957-9388-7391-b245-12ce0714f7d8",
+    "contact_id": "01a20d06-65ef-7b75-bdce-f625372103e5",
+    "document_type_id": "01a20d06-6653-72d8-b76f-3ff0320cc497",
     "topic_id": null,
     "tag_ids": [],
     "document_date": "2026-01-10",
     "fields": {
-      "01a1f957-93dd-7b02-82c1-2f84ced33c34": {
+      "01a20d06-6695-7364-b827-015feeefb482": {
         "amount": "132.00",
         "currency": "EUR"
       },
-      "01a1f957-941e-7632-9704-af9f13700dca": "VHS-2026-01877"
+      "01a20d06-66c5-73fd-9d27-c6a6ca4b9c7d": "VHS-2026-01877"
     },
     "lane": null,
     "first_lane": "green",
     "page_count": 1,
-    "confirmed_at": "2026-11-20T14:28:17.377578Z",
-    "space_confirmed_at": "2026-11-20T14:28:17.377578Z",
+    "confirmed_at": "2026-11-24T10:11:11.170153Z",
+    "space_confirmed_at": "2026-11-24T10:11:11.170153Z",
     "processing": {
       "status": "processing",
       "run": 2,
@@ -44,88 +44,88 @@
           "node": "receive",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-20T14:23:49.167359Z",
-          "finished_at": "2026-11-20T14:23:49.167359Z",
+          "started_at": "2026-11-24T10:07:33.360309Z",
+          "finished_at": "2026-11-24T10:07:33.360309Z",
           "deadline": null
         },
         {
           "node": "separate",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-20T14:23:49.767251Z",
-          "finished_at": "2026-11-20T14:23:49.915496Z",
+          "started_at": "2026-11-24T10:07:34.760780Z",
+          "finished_at": "2026-11-24T10:07:34.776762Z",
           "deadline": null
         },
         {
           "node": "ocr",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-20T14:24:09.436823Z",
-          "finished_at": "2026-11-20T14:24:11.709097Z",
+          "started_at": "2026-11-24T10:07:50.401631Z",
+          "finished_at": "2026-11-24T10:07:52.318434Z",
           "deadline": null
         },
         {
           "node": "pages",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-20T14:24:09.785332Z",
-          "finished_at": "2026-11-20T14:24:10.700313Z",
+          "started_at": "2026-11-24T10:07:50.672891Z",
+          "finished_at": "2026-11-24T10:07:51.448323Z",
           "deadline": null
         },
         {
           "node": "parse",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-20T14:24:45.562156Z",
-          "finished_at": "2026-11-20T14:24:46.259563Z",
+          "started_at": "2026-11-24T10:08:51.465917Z",
+          "finished_at": "2026-11-24T10:08:52.018464Z",
           "deadline": null
         },
         {
           "node": "signal_llm",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-20T14:27:46.672097Z",
-          "finished_at": "2026-11-20T14:27:46.684853Z",
+          "started_at": "2026-11-24T10:10:48.185095Z",
+          "finished_at": "2026-11-24T10:10:48.200584Z",
           "deadline": null
         },
         {
           "node": "signal_classifier",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-20T14:27:46.722710Z",
-          "finished_at": "2026-11-20T14:27:46.743339Z",
+          "started_at": "2026-11-24T10:10:48.281139Z",
+          "finished_at": "2026-11-24T10:10:48.294110Z",
           "deadline": null
         },
         {
           "node": "signal_neighbours",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-20T14:27:46.769555Z",
-          "finished_at": "2026-11-20T14:27:46.785705Z",
+          "started_at": "2026-11-24T10:10:48.238279Z",
+          "finished_at": "2026-11-24T10:10:48.250996Z",
           "deadline": null
         },
         {
           "node": "signal_facts",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-20T14:27:46.816916Z",
-          "finished_at": "2026-11-20T14:27:46.833695Z",
+          "started_at": "2026-11-24T10:10:48.316367Z",
+          "finished_at": "2026-11-24T10:10:48.328530Z",
           "deadline": null
         },
         {
           "node": "judge",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-20T14:28:17.273301Z",
-          "finished_at": "2026-11-20T14:28:17.377578Z",
+          "started_at": "2026-11-24T10:11:11.162800Z",
+          "finished_at": "2026-11-24T10:11:11.170153Z",
           "deadline": null
         },
         {
           "node": "fields",
           "status": "done",
           "outcome": "ok",
-          "started_at": "2026-11-20T14:28:35.053483Z",
-          "finished_at": "2026-11-20T14:28:35.064883Z",
+          "started_at": "2026-11-24T10:11:21.764546Z",
+          "finished_at": "2026-11-24T10:11:21.778297Z",
           "deadline": null
         },
         {
@@ -155,7 +155,7 @@
       ],
       "vision": false
     },
-    "created_at": "2026-11-20T14:23:49.167359Z",
-    "updated_at": "2026-11-20T14:38:40.814569Z"
+    "created_at": "2026-11-24T10:07:33.360309Z",
+    "updated_at": "2026-11-24T10:12:48.169343Z"
   }
 }

@@ -12,13 +12,13 @@ repository::
 
     docker network create lekto-snapshot
     docker run -d --name meili-snapshot --network lekto-snapshot \
-      -e MEILI_MASTER_KEY=... -e MEILI_ENV=development getmeili/meilisearch:v1.54.3
+      -e MEILI_MASTER_KEY=... -e MEILI_ENV=development getmeili/meilisearch:v1.56.2
     docker run -d --name lekto-snapshot --network lekto-snapshot -p 127.0.0.1:18000:8000 \
       -e LEKTO_SECRET_KEY=... -e LEKTO_ADMIN_USERNAME=admin -e LEKTO_ADMIN_PASSWORD=... \
       -e LEKTO_COOKIE_SECURE=false -e LEKTO_MEILISEARCH_URL=http://meili-snapshot:7700 \
       -e LEKTO_MEILISEARCH_API_KEY=... -e LEKTO_PUBLIC_URL=http://127.0.0.1:18000 \
       -e LEKTO_PUSH_VAPID_PRIVATE_KEY=... -e LEKTO_PUSH_SUBJECT=mailto:jane@example.com \
-      ghcr.io/lektohq/lekto:0.17.0
+      ghcr.io/lektohq/lekto:0.17.3
     # the push key: docker exec lekto-snapshot lekto-run lekto vapid-key (first line); tasks
     # need the public URL, the address the script answers them at
     # an API token: sign in at http://127.0.0.1:18000/ui, Settings, API tokens (read_write)

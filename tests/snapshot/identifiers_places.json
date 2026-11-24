@@ -1,8 +1,8 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/identifiers/places/{kind}/{ref}",
-  "path": "/identifiers/places/customer_number/AU_pFpSr0cvyanaiaD8qwM9acZ1mOYqt",
+  "path": "/identifiers/places/customer_number/Ae-Cbb8u_Mr2vfsSeM9acEtKYW5np37a",
   "params": {},
   "json": null,
   "data": {},
@@ -10,7 +10,7 @@
   "body": {
     "places": [
       {
-        "document_id": "01a1f957-95b4-70f6-a8ac-2afde78fea2a",
+        "document_id": "01a20d06-67f3-74e0-87a1-98af6f53097a",
         "title": "Stromabrechnung 2023/2024",
         "date": "2026-01-10",
         "role": "contact",

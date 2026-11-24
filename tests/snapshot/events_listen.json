@@ -1,5 +1,5 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "GET",
   "operation": "/events",
   "path": "/events",
@@ -8,5 +8,5 @@
   "data": {},
   "status": 200,
   "body": null,
-  "text": ": ready\n\nevent: document.updated\ndata: {\"type\": \"document.updated\", \"occurred_at\": \"2026-11-20T14:41:11.264361+00:00\", \"id\": \"01a1f967-7c60-754d-a039-197b2724bd8c\", \"document_id\": \"01a1f957-95b4-70f6-a8ac-2afde78fea2a\", \"fields\": [\"title\"]}\nid: 01a1f967-7c60-754d-a039-197b2724bd8c\n\n"
+  "text": ": ready\n\nevent: document.updated\ndata: {\"type\": \"document.updated\", \"occurred_at\": \"2026-11-24T10:14:47.323794+00:00\", \"id\": \"01a20d0d-071c-7f7c-bfb0-86faa8e40343\", \"document_id\": \"01a20d06-67f3-74e0-87a1-98af6f53097a\", \"fields\": [\"title\"]}\nid: 01a20d0d-071c-7f7c-bfb0-86faa8e40343\n\n"
 }

@@ -1,16 +1,16 @@
 {
-  "lekto_version": "0.17.0",
+  "lekto_version": "0.17.3",
   "method": "PUT",
   "operation": "/contacts/{id}/logo",
-  "path": "/contacts/01a1f965-856a-7773-a0d2-7ce3ec57306e/logo",
+  "path": "/contacts/01a20d0b-867c-732f-bf0e-f7f23902eea5/logo",
   "params": {},
   "json": null,
   "data": {},
   "status": 200,
   "body": {
-    "id": "01a1f965-856a-7773-a0d2-7ce3ec57306e",
+    "id": "01a20d0b-867c-732f-bf0e-f7f23902eea5",
     "name": "Muster Bakery",
-    "created_at": "2026-11-20T14:39:02.506065Z",
+    "created_at": "2026-11-24T10:13:08.860708Z",
     "document_count": null,
     "aliases": [
       "Muster Bakehouse"
@@ -29,8 +29,8 @@
     "logo": {
       "source": "uploaded",
       "domain": null,
-      "stored_at": "2026-11-20T14:39:02.647982Z",
-      "url": "/api/v1/contacts/01a1f965-856a-7773-a0d2-7ce3ec57306e/logo?v=1795185542647982"
+      "stored_at": "2026-11-24T10:13:08.957651Z",
+      "url": "/api/v1/contacts/01a20d0b-867c-732f-bf0e-f7f23902eea5/logo?v=1795515188957651"
     },
     "logo_failure": null
   }

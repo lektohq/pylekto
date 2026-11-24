@@ -44,6 +44,21 @@ class AddressOut(BaseModel):
     address: Annotated[str, Field(title="Address")]
 
 
+class AnswerPartOut(BaseModel):
+    """
+    A part of a model's answer, in characters (Unicode code points) from 0.
+    """
+
+    start: Annotated[int, Field(title="Start")]
+    """
+    First character, from 0.
+    """
+    end: Annotated[int, Field(title="End")]
+    """
+    After the last character.
+    """
+
+
 type Cursor = Annotated[str, Field(max_length=64, title="Cursor")]
 """
 `next_cursor`.
@@ -462,7 +477,8 @@ class DocumentTypeOut(BaseModel):
         str | None, Field(examples=["Entgeltbescheinigung"], title="Description")
     ]
     title_pattern: Annotated[
-        str | None, Field(examples=["Lohn {document_date:YYYY-MM}"], title="Title Pattern")
+        str | None,
+        Field(examples=["Lohn {{ document_date | date: '%Y-%m' }}"], title="Title Pattern"),
     ]
     group_ids: Annotated[list[UUID], Field(title="Group Ids")]
     """
@@ -1271,6 +1287,10 @@ class ModelCallOut(BaseModel):
     """
     The model's text as it came.
     """
+    read: AnswerPartOut | None
+    """
+    The part of `answer` Lekto read where it read a part: the last JSON object of an answer that is no JSON as a whole (a model that corrected itself); the rest was discarded. Null where it read the whole answer, and for a call without a document.
+    """
     model: Annotated[str, Field(examples=["qwen3:8b"], title="Model")]
     usage: Annotated[dict[str, Any], Field(title="Usage")]
     """
@@ -1580,7 +1600,7 @@ class PlaceOut(BaseModel):
         Field(title="FactRole"),
     ]
     """
-    What a fact is to the document that shows it (`fakten.md`, Rollen).
+    What a fact is to the document that shows it (`.knowledge/architecture/fact-roles.md`).
     """
     excerpt: ExcerptOut | None
     """
@@ -1969,6 +1989,7 @@ class ReasonOut(BaseModel):
             "token_invalid",
             "wrong_password",
             "totp_already_on",
+            "totp_needs_password",
             "no_totp_setup",
             "totp_off",
             "code_invalid",
@@ -2009,6 +2030,7 @@ class ReasonOut(BaseModel):
             "space_members_personal",
             "space_members",
             "space_rule_apply",
+            "rule_apply_too_many",
             "rule_disabled_deleted",
             "rule_disabled_personal_space",
             "rule_disabled_choice",
@@ -2031,6 +2053,7 @@ class ReasonOut(BaseModel):
             "not_customer_number",
             "not_of_kind",
             "fact_kind_unknown",
+            "fact_role_unknown",
             "fact_not_in_text",
             "fact_not_asked",
             "holder_not_listed",
@@ -2081,6 +2104,8 @@ class ReasonOut(BaseModel):
             "title_pattern_too_long",
             "description_too_long",
             "title_pattern_unknown",
+            "template_unknown_value",
+            "template_unknown_value_at",
             "tag_own_parent",
             "groups_manual",
             "tag_wrong_scope",
@@ -2145,6 +2170,7 @@ class ReasonOut(BaseModel):
             "mail_password_again",
             "mailbox_paused",
             "mail_too_large",
+            "mail_attachments_left",
             "mail_step_failed",
             "mail_step_gone",
             "mail_rule_person_gone",
@@ -2955,6 +2981,10 @@ class TemplatePreviewOut(BaseModel):
     """
     Why the template is invalid (its syntax, or a value templates do not know).
     """
+    error_reason: ReasonOut | None = None
+    """
+    The code of `error` where it has one (`template_unknown_value`: a value templates do not know); None for a message of the template engine, which is text.
+    """
     values: Annotated[
         dict[str, str] | None,
         Field(
@@ -3005,6 +3035,16 @@ class TimesOut(BaseModel):
     p90_ms: Annotated[float | None, Field(title="P90 Ms")]
     """
     90th percentile, by nearest rank.
+    """
+
+
+class TotpBegin(BaseModel):
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+    password: Annotated[SecretStr, Field(max_length=1024, min_length=1, title="Password")]
+    """
+    The caller's password: a session alone sets up no second factor.
     """
 
 
@@ -4725,7 +4765,7 @@ class HolderCaseOut(BaseModel):
 class HolderCasesOut(BaseModel):
     cases: Annotated[list[HolderCaseOut], Field(title="Cases")]
     """
-    At most a hundred.
+    At most 100.
     """
 
 
@@ -7043,7 +7083,7 @@ class DocumentNumberOut(BaseModel):
         Field(title="FactRole"),
     ]
     """
-    What a fact is to the document that shows it (`fakten.md`, Rollen).
+    What a fact is to the document that shows it (`.knowledge/architecture/fact-roles.md`).
     """
     origins: Annotated[
         list[Literal["pattern", "code", "model", "person"] | Unknown], Field(title="Origins")
@@ -7163,7 +7203,7 @@ class FieldCheckOut(BaseModel):
     """
     confidence: Annotated[float, Field(title="Confidence")]
     """
-    0 to 1, the rule's summary, not a probability: 1 for a value the judge or the checks accept, at most 0.89 for an uncertain one. The measured values are in `candidates` (their `sources`).
+    0 to 1, the rule's summary, not a probability: 1 for a value the judge or the checks accept, just below the confidence threshold (`LEKTO_CONFIDENCE_THRESHOLD`) at most for an uncertain one. The measured values are in `candidates` (their `sources`).
     """
     reason: Annotated[str | None, Field(title="Reason")]
     """
@@ -7877,6 +7917,10 @@ class ApplyPreviewOut(BaseModel):
     total: Annotated[int, Field(title="Total")]
     """
     Documents the whole dry run looks at: those the rule's conditions on contact, document type, their groups, topic, tags and fields do not rule out; the `looked_at` of all pages add up to it.
+    """
+    max_documents: Annotated[int, Field(title="Max Documents")]
+    """
+    Documents one application takes at most (`LEKTO_RULES_APPLY_MAX_DOCUMENTS`): applying more answers 422 `rule_apply_too_many`; apply the rest in a further run.
     """
 
 
