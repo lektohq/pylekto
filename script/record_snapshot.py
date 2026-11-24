@@ -8,7 +8,10 @@ their order.
 
 Never point it at an instance with real documents: the snapshot is public. Use a throwaway Lekto
 of the release ``LEKTO_VERSION`` names, filled with the synthetic documents of Lekto's
-repository::
+repository. Before that release, build its image from the commit of Lekto's ``main`` the
+description came from, with that version (in Lekto's repository:
+``docker build --target runtime --build-arg LEKTO_VERSION=0.17.4 -t lekto:0.17.4 .``), and run it
+in place of ``ghcr.io/lektohq/lekto:0.17.3``::
 
     docker network create lekto-snapshot
     docker run -d --name meili-snapshot --network lekto-snapshot \

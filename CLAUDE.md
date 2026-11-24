@@ -31,13 +31,18 @@ uv run yamllint .
 uv run prek run --all-files      # every hook at once, as before each commit
 python3 -m unittest discover -s .github/scripts   # the next version, the pins of the actions
 uv run python script/generate_models.py   # the models from openapi.json again
-uv run python script/update_openapi.py v0.16.0   # another Lekto release: description, version, models
+uv run python script/update_openapi.py main 0.17.4   # Lekto's main as its next release: description, version, models
+uv run python script/update_openapi.py v0.16.0   # a published Lekto release
 ```
 
 Run all checks before every commit; `script/setup` installs them as a Git hook (`prek install`).
 
 pylekto X.Y.Z speaks Lekto's API X.Y (`API_VERSION`); Z counts its releases for that API
-(`.knowledge/decisions/2026-11-21-pylekto-version.md`). The Release Drafter gets the version from
+(`.knowledge/decisions/2026-11-21-pylekto-version.md`). A pylekto of a new API comes before the
+Lekto release that brings it (`.knowledge/decisions/2026-11-24-pylekto-before-lekto.md`), so that
+release's migration client speaks its own API: take the description from Lekto's `main` with the
+version its release draft names (`update_openapi.py main 0.17.4`), record the snapshot from an
+image of that commit, release pylekto; Lekto raises its pin and is then published. The Release Drafter gets the version from
 `.github/scripts/release_version.py`: one past the highest tag vX.Y.* (a small `v`), so 0.3.0 and
 0.4.0, which PyPI holds for the APIs 0.2 and 0.3 and which are withdrawn, are skipped. Publishing a
 release on GitHub runs `.github/workflows/release.yml`: it stops unless the tag names
@@ -90,7 +95,8 @@ tag.
   dependencies need agreement first.
 - Tests run against a snapshot of the API, never against a live instance: `tests/snapshot/<name>.json`
   holds a request and Lekto's answer. `script/record_snapshot.py` records them from a throwaway
-  Lekto of the release `LEKTO_VERSION` filled with the synthetic documents of
+  Lekto of the release `LEKTO_VERSION` (an image built from Lekto's `main` with that version,
+  before the release) filled with the synthetic documents of
   `lekto/examples/documents` (its docstring says how); a new area adds its `Recording`s there.
   In a test, `api.replay(name)` answers the request as Lekto did; `tests/test_snapshot.py` checks
   every recording against the model the OpenAPI description names for its answer.
