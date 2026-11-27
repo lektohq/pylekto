@@ -95,6 +95,14 @@ class ApplyRequest(BaseModel):
     """
 
 
+type Assignment = Annotated[Literal["auto", "manual"] | Unknown, Field(title="Assignment")]
+"""
+Who sets a value: Lekto's classification (`auto`: the signals propose it, the model is
+asked for it) or only a person or a rule (`manual`: values no document shows, such as the
+number stamped on the paper copy).
+"""
+
+
 class AuthorizationUrl(BaseModel):
     authorization_url: Annotated[str, Field(title="Authorization Url")]
     """
@@ -126,6 +134,11 @@ class BlockingSpaceOut(BaseModel):
     """
 
 
+type BodyFormat = Annotated[
+    Literal["thin", "full", "template"] | Unknown, Field(title="BodyFormat")
+]
+
+
 class BoxOut(BaseModel):
     """
     A rectangle on the page as shown (rotation applied), in fractions of its width and
@@ -138,6 +151,22 @@ class BoxOut(BaseModel):
     height: Annotated[float, Field(title="Height")]
 
 
+type BulkKind = Annotated[
+    Literal[
+        "change_tags",
+        "set_contact",
+        "set_document_type",
+        "set_topic",
+        "move",
+        "confirm",
+        "reprocess",
+        "delete",
+    ]
+    | Unknown,
+    Field(title="BulkKind"),
+]
+
+
 type DocumentIds = Annotated[list[UUID], Field(max_length=500, title="Document Ids")]
 """
 The documents one by one. Without: every document the query parameters find (the filter of `GET /documents`, with `q` the hits of the search).
@@ -147,6 +176,21 @@ The documents one by one. Without: every document the query parameters find (the
 type Q = Annotated[str, Field(max_length=500, min_length=1, title="Q")]
 """
 Words of the search (`POST /documents/search`), not with `document_ids`.
+"""
+
+
+type Cadence = Annotated[
+    Literal["weekly", "monthly", "bimonthly", "quarterly", "half_yearly", "yearly", "days"]
+    | Unknown,
+    Field(title="Cadence"),
+]
+
+
+type Channel = Annotated[
+    Literal["web", "api", "migration", "mail"] | Unknown, Field(title="Channel")
+]
+"""
+How a document came in (its intake channel).
 """
 
 
@@ -238,6 +282,36 @@ class CodeIn(BaseModel):
     """
 
 
+type ConditionField = Annotated[
+    Literal[
+        "step",
+        "contact",
+        "contact_group",
+        "document_type",
+        "document_type_group",
+        "topic",
+        "tags",
+        "channel",
+        "text",
+        "field",
+        "document_date",
+        "fact",
+        "relation",
+        "mail_mailbox",
+        "mail_sender",
+        "mail_recipient",
+        "mail_to",
+        "mail_cc",
+        "mail_subject",
+        "mail_importance",
+        "mail_keyword",
+        "mail_flag",
+    ]
+    | Unknown,
+    Field(title="ConditionField"),
+]
+
+
 type Value = Annotated[list[str], Field(max_length=100, title="Value")]
 """
 None for `present` and `missing`, a list for `in`, otherwise one value: an id, a channel, a text or pattern, a date `YYYY-MM-DD` (also for `gt` and `lt` of a period field), a field value as in `fields` of a document, or (for `step`) a text, a number or true/false.
@@ -287,6 +361,19 @@ The topics it enables (tags of scope `topic`): its documents carry one of them a
 """
 
 
+type Decider = Annotated[
+    Literal["rule", "other", "fallback", "nothing"] | Unknown, Field(title="Decider")
+]
+"""
+Who would decide a mail now.
+"""
+
+
+type DeliveryOutcome = Annotated[
+    Literal["delivered", "retrying", "gave_up", "dropped"] | Unknown, Field(title="DeliveryOutcome")
+]
+
+
 class DeliverySummaryOut(BaseModel):
     delivered: Annotated[int, Field(title="Delivered")]
     """
@@ -312,6 +399,12 @@ class DeliverySummaryOut(BaseModel):
     """
     Older entries are removed (the retention period).
     """
+
+
+type Departure = Annotated[Literal["confirmed", "seen"] | Unknown, Field(title="Departure")]
+"""
+How a document left the inbox.
+"""
 
 
 class DocumentAccepted(BaseModel):
@@ -531,6 +624,11 @@ type ExchangeNode = Annotated[
 ]
 
 
+type FactAction = Annotated[
+    Literal["add", "correct", "reject", "withdraw"] | Unknown, Field(title="FactAction")
+]
+
+
 type NewValue = Annotated[str, Field(max_length=200, min_length=1, title="New Value")]
 """
 `correct`: the value, as written.
@@ -540,6 +638,46 @@ type NewValue = Annotated[str, Field(max_length=200, min_length=1, title="New Va
 type Ref = Annotated[str, Field(max_length=400, title="Ref")]
 """
 The value's reference.
+"""
+
+
+type FactOrigin = Annotated[
+    Literal["pattern", "code", "model", "person"] | Unknown, Field(title="FactOrigin")
+]
+"""
+Where a fact comes from; one fact may come from several sources.
+"""
+
+
+type FactRole = Annotated[
+    Literal["contact", "target", "own", "thread", "refers", "person"] | Unknown,
+    Field(title="FactRole"),
+]
+"""
+What a fact is to the document that shows it (`.knowledge/architecture/fact-roles.md`).
+"""
+
+
+type FactState = Annotated[
+    Literal["found", "added", "corrected", "rejected"] | Unknown, Field(title="FactState")
+]
+"""
+Whether a source found the fact as it is, or a person decided it.
+"""
+
+
+type Fallback = Annotated[Literal["nothing", "everything"] | Unknown, Field(title="Fallback")]
+"""
+What a mail no rule takes brings in: nothing, or everything (for `fallback_user_id`).
+"""
+
+
+type FetchStart = Annotated[
+    Literal["since_setup", "since_date", "unread"] | Unknown, Field(title="FetchStart")
+]
+"""
+Which mails a mailbox takes: those that came after it was set up, those from a day on,
+or the unread ones (whenever they came).
 """
 
 
@@ -640,11 +778,26 @@ class FieldPatch(BaseModel):
         RequiredDocumentTypeIds | None, Field(title="Required Document Type Ids")
     ] = None
     description: Annotated[Description2 | None, Field(title="Description")] = None
-    assignment: Literal["auto", "manual"] | Unknown | None = None
+    assignment: Assignment | None = None
     """
     `auto`: the language model reads it; `manual`: set by hand only, never asked of the model (a required one keeps the document open until a person sets it).
     """
     position: Annotated[Position | None, Field(title="Position")] = None
+
+
+type FieldType = Annotated[
+    Literal["text", "number", "amount", "date", "boolean", "choice", "link", "period"] | Unknown,
+    Field(title="FieldType"),
+]
+
+
+type FlagColor = Annotated[
+    Literal["red", "orange", "yellow", "green", "blue", "purple", "gray"] | Unknown,
+    Field(title="FlagColor"),
+]
+"""
+Apple Mail's colours of a flag, in the order of their numbers.
+"""
 
 
 type FolderName = Annotated[str, Field(max_length=1000, min_length=1)]
@@ -664,6 +817,15 @@ class ForceReviewAction(BaseModel):
     """
     A template, as a title's; the review holds where it cannot be rendered.
     """
+
+
+type Grouping = Annotated[
+    Literal["none", "month", "due", "document_type", "contact"] | Unknown, Field(title="Grouping")
+]
+"""
+What the documents of a lens stand under: nothing, the month of their document date, how
+soon their deadline is due, their type or their contact.
+"""
 
 
 class HeaderIn(BaseModel):
@@ -711,6 +873,14 @@ class Health(BaseModel):
     ]
 
 
+type HolderKind = Annotated[
+    Literal["sender", "recipient", "third_party", "unclear"] | Unknown, Field(title="HolderKind")
+]
+"""
+Whose a number is where it stands (`domain.holders`).
+"""
+
+
 type HolderOutcome = Annotated[
     Literal["right", "learned_rejected", "refused_confirmed", "unclear", "unread"] | Unknown,
     Field(title="HolderOutcome"),
@@ -720,12 +890,64 @@ How a measure fared on one decision: a column of the tally.
 """
 
 
+type HolderSource = Annotated[Literal["rule", "model"] | Unknown, Field(title="HolderSource")]
+"""
+Who told the holder.
+"""
+
+
+type IdentifierKind = Annotated[
+    Literal[
+        "iban",
+        "vat_id",
+        "customer_number",
+        "personnel_number",
+        "email_domain",
+        "tax_id",
+        "social_security_number",
+        "health_insurance_number",
+        "email_address",
+        "creditor_id",
+        "commercial_register",
+        "tax_number",
+        "contract_number",
+        "meter_number",
+        "mandate_reference",
+        "license_plate",
+        "invoice_number",
+        "credit_note_number",
+        "order_number",
+        "file_reference",
+        "our_reference",
+        "claim_number",
+        "ticket_number",
+        "your_reference",
+        "letter_date",
+        "child_benefit_number",
+    ]
+    | Unknown,
+    Field(title="IdentifierKind"),
+]
+"""
+The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
+`.knowledge/architecture/fact-roles.md`).
+"""
+
+
+type IdentifierSource = Annotated[
+    Literal["manual", "learned", "rejected"] | Unknown, Field(title="IdentifierSource")
+]
+
+
+type Importance = Annotated[Literal["high", "normal", "low"] | Unknown, Field(title="Importance")]
+
+
 class InboxDoneOut(BaseModel):
     """
     How a document left the caller's inbox.
     """
 
-    how: Annotated[Literal["confirmed", "seen"] | Unknown, Field(title="Departure")]
+    how: Departure
     """
     `confirmed`: a person confirmed it out of yellow or red (it left every inbox); `seen`: the caller saw it.
     """
@@ -745,6 +967,11 @@ class InboxSeenOut(BaseModel):
     """
     The documents marked as seen.
     """
+
+
+type InboxTab = Annotated[
+    Literal["new", "review", "intervene", "processing", "done"] | Unknown, Field(title="InboxTab")
+]
 
 
 class IndexCheckOut(BaseModel):
@@ -792,6 +1019,15 @@ class IndexStatsOut(BaseModel):
     """
     Its size on disk, if the index tells.
     """
+
+
+type JobState = Annotated[
+    Literal["running", "due", "planned", "done", "failed"] | Unknown, Field(title="JobState")
+]
+"""
+Where a job stands for the people looking at it: a queued job is due once its time has
+come, planned before (a repetition, a recurring job).
+"""
 
 
 class JobTimesOut(BaseModel):
@@ -857,12 +1093,29 @@ class KindSummaryOut(BaseModel):
     """
 
 
+type LabelOutcome = Annotated[
+    Literal["beside", "apart", "label_missing", "no_label", "unknown"] | Unknown,
+    Field(title="LabelOutcome"),
+]
+"""
+What the label check found.
+"""
+
+
+type Lane = Annotated[Literal["green", "yellow", "red"] | Unknown, Field(title="Lane")]
+
+
 type LaneFilter = Annotated[
     Literal["green", "yellow", "red", "processing"] | Unknown, Field(title="LaneFilter")
 ]
 """
 A lane, or `processing`: documents that have no lane yet.
 """
+
+
+type LaneKind = Annotated[
+    Literal["series", "branch", "chain", "single"] | Unknown, Field(title="LaneKind")
+]
 
 
 class LanesOut(BaseModel):
@@ -884,6 +1137,9 @@ class LastDocumentOut(BaseModel):
     id: Annotated[UUID, Field(title="Id")]
     title: Annotated[str, Field(title="Title")]
     document_date: Annotated[date_aliased, Field(title="Document Date")]
+
+
+type Layout = Annotated[Literal["grid", "list", "stream"] | Unknown, Field(title="Layout")]
 
 
 type Query = Annotated[str, Field(max_length=500, title="Query")]
@@ -911,6 +1167,28 @@ type Query1 = Annotated[str, Field(max_length=500, title="Query")]
 type CardFieldIds = Annotated[list[UUID], Field(max_length=3, title="Card Field Ids")]
 """
 The fields a card shows, in this order; at most 3.
+"""
+
+
+type LensSort = Annotated[
+    Literal[
+        "relevance",
+        "created_at",
+        "-created_at",
+        "document_date",
+        "-document_date",
+        "title",
+        "-title",
+        "field",
+        "-field",
+    ]
+    | Unknown,
+    Field(title="LensSort"),
+]
+"""
+The sort of a lens: by relevance (only with words), or a key of the documents list,
+descending with a `-`; `field` sorts by `Lens.sort_field_id` (not with words: the search
+index holds no field values).
 """
 
 
@@ -956,11 +1234,7 @@ class ListedField(BaseModel):
         extra="forbid",
     )
     name: Annotated[str, Field(title="Name")]
-    type: Annotated[
-        Literal["text", "number", "amount", "date", "boolean", "choice", "link", "period"]
-        | Unknown,
-        Field(title="FieldType"),
-    ]
+    type: FieldType
     form: Annotated[str, Field(title="Form")]
     """
     How the answer writes the value.
@@ -1000,6 +1274,9 @@ class LocationOut(BaseModel):
     """
     What it covers on the page.
     """
+
+
+type LoginMethod = Annotated[Literal["password", "oidc"] | Unknown, Field(title="LoginMethod")]
 
 
 type Code = Annotated[str, Field(max_length=16, title="Code")]
@@ -1045,7 +1322,63 @@ class LogoFailureOut(BaseModel):
     """
 
 
+type LogoSource = Annotated[Literal["uploaded", "fetched"] | Unknown, Field(title="LogoSource")]
+
+
+type MailAction = Annotated[
+    Literal["read", "unread", "flag", "unflag", "add_keyword", "remove_keyword", "move", "trash"]
+    | Unknown,
+    Field(title="MailAction"),
+]
+"""
+A step on a mail on the server once Lekto has taken it (Tobi, 05.11.2026: an ordered
+list of them): marked read or unread, flagged in a colour or not, a keyword added or
+removed; then at most one that ends it, moved to a folder or to the trash.
+"""
+
+
 type Value3 = Annotated[str, Field(max_length=1000, title="Value")]
+
+
+type MailField = Annotated[
+    Literal[
+        "sender",
+        "recipient",
+        "to",
+        "cc",
+        "subject",
+        "folder",
+        "attachments",
+        "importance",
+        "keyword",
+        "flag",
+    ]
+    | Unknown,
+    Field(title="MailField"),
+]
+
+
+type MailOperator = Annotated[
+    Literal["contains", "is", "starts_with", "ends_with", "present", "missing"] | Unknown,
+    Field(title="MailOperator"),
+]
+
+
+type MailOutcome = Annotated[
+    Literal["taken", "no_rule", "nothing", "known", "too_large", "failed"] | Unknown,
+    Field(title="MailOutcome"),
+]
+"""
+What became of a fetched mail.
+"""
+
+
+type MailParts = Annotated[
+    Literal["all", "attachments", "text", "nothing"] | Unknown, Field(title="MailParts")
+]
+"""
+What of a mail a rule takes.
+"""
 
 
 type Priority = Annotated[int, Field(ge=0, le=1000, title="Priority")]
@@ -1063,22 +1396,20 @@ class MailRuleRefOut(BaseModel):
     enabled: Annotated[bool, Field(title="Enabled")]
 
 
+type MailSecurity = Annotated[
+    Literal["tls", "starttls", "none"] | Unknown, Field(title="MailSecurity")
+]
+"""
+How the connection is secured: TLS from the start (IMAPS, port 993), TLS after the
+greeting (STARTTLS, port 143), or none (a server in one's own network).
+"""
+
+
 class MailStepBody(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    action: Annotated[
-        Literal[
-            "read", "unread", "flag", "unflag", "add_keyword", "remove_keyword", "move", "trash"
-        ]
-        | Unknown,
-        Field(title="MailAction"),
-    ]
-    """
-    A step on a mail on the server once Lekto has taken it (Tobi, 05.11.2026: an ordered
-    list of them): marked read or unread, flagged in a colour or not, a keyword added or
-    removed; then at most one that ends it, moved to a folder or to the trash.
-    """
+    action: MailAction
     value: Annotated[Value3 | None, Field(title="Value")] = None
 
 
@@ -1119,7 +1450,7 @@ class MailboxCreate(BaseModel):
     """
     Minutes between two fetches.
     """
-    start: Literal["since_setup", "since_date", "unread"] | Unknown | None = None
+    start: FetchStart | None = None
     """
     Which mails the mailbox takes: `since_setup`, those that came after it was set up; `since_date`, those from the day `since` on; `unread`, the unread ones.
     """
@@ -1127,7 +1458,7 @@ class MailboxCreate(BaseModel):
     """
     With `start: since_date`.
     """
-    fallback: Literal["nothing", "everything"] | Unknown | None = None
+    fallback: Fallback | None = None
     """
     What a mail no mail rule takes brings in: `nothing`, or `everything` for the person `fallback_user_id`.
     """
@@ -1146,7 +1477,7 @@ class MailboxCreate(BaseModel):
     name: Annotated[str, Field(max_length=100, min_length=1, title="Name")]
     host: Annotated[str, Field(max_length=255, min_length=1, title="Host")]
     port: Annotated[int, Field(ge=1, le=65535, title="Port")]
-    security: Annotated[Literal["tls", "starttls", "none"] | Unknown, Field(title="MailSecurity")]
+    security: MailSecurity
     """
     `tls`: TLS from the start (IMAPS, usually port 993); `starttls`: TLS after the greeting (usually 143); `none`: no encryption, for a server in one's own network.
     """
@@ -1192,7 +1523,7 @@ class MailboxPatch(BaseModel):
     """
     Minutes between two fetches.
     """
-    start: Literal["since_setup", "since_date", "unread"] | Unknown | None = None
+    start: FetchStart | None = None
     """
     Which mails the mailbox takes: `since_setup`, those that came after it was set up; `since_date`, those from the day `since` on; `unread`, the unread ones.
     """
@@ -1200,7 +1531,7 @@ class MailboxPatch(BaseModel):
     """
     With `start: since_date`.
     """
-    fallback: Literal["nothing", "everything"] | Unknown | None = None
+    fallback: Fallback | None = None
     """
     What a mail no mail rule takes brings in: `nothing`, or `everything` for the person `fallback_user_id`.
     """
@@ -1219,7 +1550,7 @@ class MailboxPatch(BaseModel):
     name: Annotated[Name5 | None, Field(title="Name")] = None
     host: Annotated[Host | None, Field(title="Host")] = None
     port: Annotated[Port | None, Field(title="Port")] = None
-    security: Literal["tls", "starttls", "none"] | Unknown | None = None
+    security: MailSecurity | None = None
     """
     `tls`: TLS from the start (IMAPS, usually port 993); `starttls`: TLS after the greeting (usually 143); `none`: no encryption, for a server in one's own network.
     """
@@ -1228,6 +1559,18 @@ class MailboxPatch(BaseModel):
     """
     A new password; left out, the stored one stays.
     """
+
+
+type MetadataSource = Annotated[
+    Literal["info", "xmp", "exif", "mail"] | Unknown, Field(title="MetadataSource")
+]
+
+
+type Missing = Annotated[Literal["red", "yellow", "continue"] | Unknown, Field(title="Missing")]
+"""
+What a step that asks does without an answer (none in time, an error, an invalid
+one).
+"""
 
 
 class ModelCallDocument(BaseModel):
@@ -1250,6 +1593,14 @@ class ModelCallDocument(BaseModel):
     """
     Signed links to the page images (WebP), page 1 first. Valid until the deadline.
     """
+
+
+type ModelCallKind = Annotated[
+    Literal["propose", "extract"] | Unknown, Field(title="ModelCallKind")
+]
+"""
+A request to the language model a webhook may take over.
+"""
 
 
 class ModelCallOut(BaseModel):
@@ -1374,6 +1725,55 @@ class NamedOut(BaseModel):
     name: Annotated[str, Field(title="Name")]
 
 
+type Node = Annotated[
+    Literal[
+        "receive",
+        "separate",
+        "ocr",
+        "pages",
+        "parse",
+        "signal_llm",
+        "signal_classifier",
+        "signal_neighbours",
+        "signal_facts",
+        "judge",
+        "fields",
+        "relate",
+        "apply_rules",
+        "file",
+    ]
+    | Unknown,
+    Field(title="Node"),
+]
+"""
+The nodes of the ingest graph, in a topological order: every node comes after the nodes
+it needs (`GRAPH`). Nodes that do not need each other run side by side.
+
+`separate` splits a scanned stack at its separator sheets when it comes in, before anything
+reads its pages (`services.separating`).
+
+The signals each propose metadata from one source: the language model, the trained
+classifier, similar confirmed documents, facts in the text (names, identifiers). `judge`
+decides from all of them, `fields` reads the fields of the decided type, `relate` finds the
+documents it refers to and those that refer to it (issue #145), before the rules see them.
+"""
+
+
+type NodeStatus = Annotated[
+    Literal["waiting", "running", "done", "skipped", "delegated"] | Unknown,
+    Field(title="NodeStatus"),
+]
+
+
+type NoteKind = Annotated[
+    Literal["skipped", "overruled", "refused", "conflict", "review", "yielded"] | Unknown,
+    Field(title="NoteKind"),
+]
+"""
+Why a rule's action was not applied, or a review the rule forces.
+"""
+
+
 class OccurrenceOut(BaseModel):
     """
     One place the pages show the value.
@@ -1394,6 +1794,9 @@ class OidcInfo(BaseModel):
     display_name: Annotated[str | None, Field(examples=["Single sign-on"], title="Display Name")]
 
 
+type OpenAction = Annotated[Literal["confirm", "reject"] | Unknown, Field(title="OpenAction")]
+
+
 class OpenCountsOut(BaseModel):
     learned: Annotated[int, Field(title="Learned")]
     suggested: Annotated[int, Field(title="Suggested")]
@@ -1403,47 +1806,12 @@ class OpenDecisionIn(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[str, Field(max_length=200, title="Value")]
     """
     Normalised, as the list gives it.
     """
-    action: Annotated[Literal["confirm", "reject"] | Unknown, Field(title="OpenAction")]
+    action: OpenAction
     """
     `confirm`: enter it at the contact by hand, or a person's suggestion in their profile; `reject`: training does not learn it again, and a learned one no longer counts; a person's suggestion is noted as declined in their profile. A person's suggestion needs a session.
     """
@@ -1470,6 +1838,34 @@ class OpenSearchIn(BaseModel):
     """
     Words in the value (with or without spaces), as written or in a contact's name.
     """
+
+
+type OpenSource = Annotated[Literal["learned", "suggested"] | Unknown, Field(title="OpenSource")]
+
+
+type Operator = Annotated[
+    Literal[
+        "is",
+        "in",
+        "contains",
+        "matches",
+        "gt",
+        "lt",
+        "overlaps",
+        "present",
+        "missing",
+        "starts_with",
+        "ends_with",
+    ]
+    | Unknown,
+    Field(title="Operator"),
+]
+
+
+type OriginRole = Annotated[Literal["cover", "attachment"] | Unknown, Field(title="OriginRole")]
+
+
+type Outcome = Annotated[Literal["ok", "uncertain", "failed"] | Unknown, Field(title="Outcome")]
 
 
 class PagePreviews(BaseModel):
@@ -1531,6 +1927,13 @@ class PasswordReset(BaseModel):
     revoke_tokens: Annotated[bool | None, Field(title="Revoke Tokens")] = False
 
 
+type Period = Annotated[Literal["30d", "12m", "all"] | Unknown, Field(title="Period")]
+"""
+The period the numbers cover, up to now: 30 days, the current month and the eleven
+before it, or all time.
+"""
+
+
 class PeriodValue(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
@@ -1553,38 +1956,7 @@ class PersonIdentifierIn(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
+    kind: IdentifierKind
     """
     `iban`, `tax_id` (11 digits with check digit), `social_security_number`, `health_insurance_number` (a letter and nine digits) or `email_address`; other kinds are a contact's (422).
     """
@@ -1595,13 +1967,7 @@ class PlaceOut(BaseModel):
     document_id: Annotated[UUID, Field(title="Document Id")]
     title: Annotated[str, Field(title="Title")]
     date: Annotated[date_aliased, Field(title="Date")]
-    role: Annotated[
-        Literal["contact", "target", "own", "thread", "refers", "person"] | Unknown,
-        Field(title="FactRole"),
-    ]
-    """
-    What a fact is to the document that shows it (`.knowledge/architecture/fact-roles.md`).
-    """
+    role: FactRole
     excerpt: ExcerptOut | None
     """
     The text around it, where the document has text and the fact a position.
@@ -1619,6 +1985,12 @@ class PlacesOut(BaseModel):
     """
 
 
+type ProcessingStatus = Annotated[
+    Literal["processing", "completed", "failed", "review"] | Unknown,
+    Field(title="ProcessingStatus"),
+]
+
+
 type DisplayName = Annotated[str, Field(max_length=150, title="Display Name")]
 """
 Unique across users regardless of case, also against their aliases (409).
@@ -1629,6 +2001,11 @@ type Alias2 = Annotated[str, Field(max_length=150, min_length=1)]
 
 
 type Email = Annotated[str, Field(max_length=200, title="Email")]
+
+
+type ProgressStatus = Annotated[
+    Literal["queued", "running", "done", "failed"] | Unknown, Field(title="ProgressStatus")
+]
 
 
 class ProposeContext(BaseModel):
@@ -1698,6 +2075,11 @@ class PushKeysIn(BaseModel):
     """
 
 
+type PushOutcome = Annotated[
+    Literal["delivered", "gone", "failed"] | Unknown, Field(title="PushOutcome")
+]
+
+
 class PushPreferencesBody(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
@@ -1727,7 +2109,7 @@ class PushSettingsOut(BaseModel):
 
 
 class PushTestOut(BaseModel):
-    outcome: Annotated[Literal["delivered", "gone", "failed"] | Unknown, Field(title="PushOutcome")]
+    outcome: PushOutcome
     """
     `delivered`: the push service took it; `gone`: it no longer knows the device, which is forgotten; `failed`: no answer or a refusal.
     """
@@ -1740,6 +2122,449 @@ class QueuedOut(BaseModel):
     """
 
 
+type ReasonCode = Annotated[
+    Literal[
+        "text",
+        "error",
+        "signals_disagree",
+        "only_suggested",
+        "one_signal_only",
+        "only_identifier",
+        "contact_is_recipient",
+        "contact_identifiers_several",
+        "contact_identifier_of_other",
+        "contact_new_proposed",
+        "contact_none",
+        "contact_none_no_model",
+        "contact_not_in_text",
+        "sender_not_a_contact",
+        "sender_matches_several",
+        "sender_only_similar",
+        "type_new_proposed",
+        "type_none",
+        "topic_without_contact",
+        "topic_none",
+        "topic_contact_suggested",
+        "space_chosen_by_person",
+        "space_named_unseen",
+        "space_stays_for_named",
+        "space_shows_more",
+        "space_hand_over",
+        "space_uploader_unseen",
+        "space_other",
+        "spaces_disagree",
+        "date_none",
+        "date_none_from_model",
+        "not_a_date",
+        "date_implausible",
+        "same_as_document_date",
+        "not_a_period",
+        "period_implausible",
+        "period_no_year",
+        "same_day_as_document_date",
+        "field_set_by_hand",
+        "field_by_hand_missing",
+        "field_not_found",
+        "field_not_read_no_model",
+        "value_invalid",
+        "quote_not_in_text",
+        "quote_missing",
+        "quote_without_value",
+        "quote_too_short",
+        "date_not_in_text",
+        "period_not_in_text",
+        "amount_not_in_text",
+        "currency_not_in_text",
+        "number_not_in_text",
+        "link_not_in_text",
+        "text_not_in_text",
+        "value_read_unsure",
+        "page_poorly_read",
+        "page_poorly_read_content",
+        "surroundings_poorly_read",
+        "source_lacks_contact",
+        "source_lacks_document_type",
+        "source_lacks_document_date",
+        "paperless_user_review",
+        "paperless_correspondent_review",
+        "paperless_document_type_review",
+        "paperless_tag_review",
+        "paperless_custom_field_review",
+        "paperless_storage_path_review",
+        "paperless_asn_review",
+        "field_does_not_apply",
+        "field_gone",
+        "contact_gone",
+        "document_type_gone",
+        "topic_gone",
+        "tag_gone",
+        "space_gone",
+        "tag_is_group",
+        "rule_other_space",
+        "space_no_right_any_more",
+        "space_no_right",
+        "space_widens_unconfirmed",
+        "space_widens_needs_confirmed",
+        "review_on_arrival_only",
+        "review_confirmed",
+        "rules_disagree",
+        "value_other_not_accepted",
+        "person_decided_field",
+        "rule_value_on_unconfirmed",
+        "model_value_other",
+        "rules_value_on_unconfirmed",
+        "rules_model_value_other",
+        "topic_person_chose",
+        "topic_no_contact",
+        "topic_not_enabled",
+        "tag_added_and_removed",
+        "tag_removed_by_person",
+        "tag_set_by_person",
+        "tag_above_kept",
+        "title_empty",
+        "title_yields",
+        "value_empty",
+        "template_missing_value",
+        "template_unreadable",
+        "node_attempts_exhausted",
+        "node_crashed",
+        "file_not_pdf_or_image",
+        "file_damaged",
+        "file_not_processable",
+        "pdf_encrypted",
+        "pdf_unreadable",
+        "pdf_unreadable_detail",
+        "pdf_too_complex",
+        "image_unreadable",
+        "image_unreadable_detail",
+        "image_too_large",
+        "document_no_pages",
+        "document_too_many_pages",
+        "preview_too_many_pages",
+        "ocr_failed",
+        "text_unreadable",
+        "signature_dropped",
+        "colours_converted",
+        "not_pdfa",
+        "archive_not_pdfa",
+        "vision_read",
+        "vision_not_configured",
+        "no_text",
+        "only_separator_sheets",
+        "answer_unfit",
+        "nothing_recognised",
+        "master_data_changed",
+        "metadata_unfit",
+        "taken_over",
+        "space_changed_meanwhile",
+        "rules_back_and_forth",
+        "rules_change_unfit",
+        "signal_did_not_run",
+        "no_language_model",
+        "no_document_text",
+        "no_classifier",
+        "classifier_unusable",
+        "classifier_untrained",
+        "neighbours_off",
+        "no_embedding_index",
+        "text_not_embedded",
+        "vector_misfit",
+        "no_uploader",
+        "index_unavailable",
+        "no_similar",
+        "input_missing",
+        "input_too_short",
+        "input_too_long",
+        "input_too_few",
+        "input_too_many",
+        "input_too_small",
+        "input_above",
+        "input_too_large",
+        "input_below",
+        "input_choice",
+        "input_not_id",
+        "input_not_date",
+        "input_not_datetime",
+        "input_not_number",
+        "input_not_integer",
+        "input_not_boolean",
+        "input_not_text",
+        "input_not_list",
+        "input_not_object",
+        "input_unknown",
+        "input_pattern",
+        "input_invalid",
+        "in_use",
+        "name_taken",
+        "topic_carried",
+        "choices_in_use",
+        "values_outside_scope",
+        "title_pattern_uses_field",
+        "type_has_values",
+        "tag_has_children",
+        "tag_has_contacts",
+        "tag_has_types",
+        "topic_enabled_by",
+        "tag_used_by_rules",
+        "field_used_by_patterns",
+        "field_used_by_rules",
+        "field_used_by_webhooks",
+        "field_key_taken",
+        "identifier_of_person",
+        "identifier_of_contact",
+        "profile_identifier_of_contact",
+        "name_of_contact",
+        "name_too_close",
+        "logo_uploaded",
+        "logo_type",
+        "logo_upload_type",
+        "training_needs_examples",
+        "job_not_failed",
+        "job_already_queued",
+        "job_retry_in_document",
+        "rule_follows_type",
+        "personal_space_undeletable",
+        "space_not_empty",
+        "space_name_taken",
+        "no_write_access_to_space",
+        "username_taken",
+        "last_admin",
+        "user_deletion_blocked",
+        "display_name_taken",
+        "username_of_other",
+        "lenses_limit",
+        "webhooks_limit",
+        "model_call_taken",
+        "model_call_admins",
+        "open_fields",
+        "duplicate_of",
+        "new_version",
+        "new_version_differs",
+        "duplicate_of_version",
+        "duplicate_unseen",
+        "no_text_yet",
+        "no_structure_yet",
+        "being_processed",
+        "only_failed_retried",
+        "receive_not_repeatable",
+        "separate_not_repeatable",
+        "not_waiting_for_confirmation",
+        "still_running",
+        "no_text_to_extract",
+        "no_vision_model",
+        "cannot_skip",
+        "uncertain_before_filing",
+        "invalid_credentials",
+        "invalid_one_time_code",
+        "second_factor_required",
+        "account_inactive",
+        "authentication_required",
+        "session_expired",
+        "token_invalid",
+        "wrong_password",
+        "totp_already_on",
+        "totp_needs_password",
+        "no_totp_setup",
+        "totp_off",
+        "code_invalid",
+        "read_only_token",
+        "upload_only_token",
+        "upload_only_token_fields",
+        "token_lacks_right",
+        "token_rights_empty",
+        "token_admin_rights",
+        "push_off",
+        "push_endpoint_refused",
+        "push_keys_invalid",
+        "push_devices_limit",
+        "csrf_missing",
+        "session_needed",
+        "oidc_mismatch",
+        "oidc_relink",
+        "oidc_linked_elsewhere",
+        "oidc_no_account",
+        "oidc_password_first",
+        "not_found",
+        "page_not_found",
+        "version_not_found",
+        "file_not_found",
+        "rule_version_not_found",
+        "name_empty",
+        "name_too_long",
+        "admins_only",
+        "editors_only",
+        "admins_cannot",
+        "no_write_access_to_document",
+        "session_needed_create_user",
+        "session_needed_role",
+        "session_needed_profile",
+        "profile_own_only",
+        "personal_space_describe",
+        "space_manage",
+        "space_members_personal",
+        "space_members",
+        "space_rule_apply",
+        "rule_apply_too_many",
+        "rule_disabled_deleted",
+        "rule_disabled_personal_space",
+        "rule_disabled_choice",
+        "rule_webhook_gone",
+        "rule_webhook_unreadable",
+        "task_no_answer",
+        "task_error",
+        "task_invalid",
+        "task_too_large",
+        "task_undelivered",
+        "task_run_over",
+        "task_run_stopped",
+        "rule_asks_on_arrival",
+        "skip_changed_meanwhile",
+        "skip_not_available",
+        "bulk_too_many",
+        "bulk_ids_and_filter",
+        "not_iban",
+        "not_vat_id",
+        "not_customer_number",
+        "not_of_kind",
+        "fact_kind_unknown",
+        "fact_role_unknown",
+        "fact_not_in_text",
+        "fact_not_asked",
+        "holder_not_listed",
+        "holder_kind_unknown",
+        "holder_name_not_near",
+        "fact_criterion_empty",
+        "ref_unknown",
+        "rule_fact_of_person",
+        "relation_exists",
+        "relation_not_found",
+        "relation_to_itself",
+        "fact_filter_of_person",
+        "fact_of_a_person",
+        "fact_not_found",
+        "fact_exists",
+        "fact_role_missing",
+        "fact_of_person",
+        "fact_at_contact_admin",
+        "fact_not_at_contact",
+        "not_personnel_number",
+        "not_domain",
+        "free_mail_domain",
+        "not_tax_id",
+        "not_social_security_number",
+        "not_health_insurance_number",
+        "not_email_address",
+        "birth_date_too_early",
+        "birth_date_in_future",
+        "alias_twice",
+        "person_too_many_aliases",
+        "person_too_many_identifiers",
+        "display_name_is_alias",
+        "too_many_groups",
+        "too_many_topics",
+        "identifier_topic_not_enabled",
+        "alias_is_name",
+        "contact_too_many_aliases",
+        "contact_too_many_identifiers",
+        "only_numbers_name_users",
+        "identifier_taken",
+        "identifier_entered",
+        "identifier_not_open",
+        "identifier_contact_unclear",
+        "recommend_confirm",
+        "recommend_confirm_named",
+        "recommend_reject_foreign",
+        "recommend_reject_contacts",
+        "title_pattern_too_long",
+        "description_too_long",
+        "title_pattern_unknown",
+        "template_unknown_value",
+        "template_unknown_value_at",
+        "tag_own_parent",
+        "groups_manual",
+        "tag_wrong_scope",
+        "tag_parent_other_scope",
+        "tag_under_own_child",
+        "tag_too_deep",
+        "field_global_required",
+        "field_typed_required",
+        "field_required_own_types",
+        "choice_needs_choices",
+        "choices_not_unique",
+        "only_choice_fields_choices",
+        "field_needs_type",
+        "field_is_global",
+        "field_only_this_type",
+        "field_not_for_type",
+        "not_a_url",
+        "url_not_http",
+        "receipt_in_future",
+        "personal_space_name",
+        "personal_space_editor",
+        "space_needs_editor",
+        "password_too_short",
+        "password_too_long",
+        "password_is_username",
+        "expiry_in_past",
+        "url_length",
+        "url_spaces",
+        "url_invalid",
+        "url_scheme",
+        "url_no_host",
+        "url_credentials",
+        "url_fragment",
+        "webhook_private_admins",
+        "webhook_private_none",
+        "header_name_invalid",
+        "header_reserved",
+        "header_value_invalid",
+        "header_twice",
+        "headers_limit",
+        "header_value_missing",
+        "icon_invalid",
+        "colour_invalid",
+        "card_field_unknown",
+        "due_field_not_date",
+        "sort_field_invalid",
+        "pattern_invalid",
+        "pattern_too_large",
+        "search_no_embeddings",
+        "search_embed_timeout",
+        "search_embed_failed",
+        "search_embed_dimensions",
+        "search_index_unavailable",
+        "search_not_configured",
+        "mail_unreachable",
+        "mail_tls_failed",
+        "mail_login_failed",
+        "mail_folder_missing",
+        "mail_server_error",
+        "mail_password_unreadable",
+        "mail_fetch_failed",
+        "mail_password_again",
+        "mailbox_paused",
+        "mail_too_large",
+        "mail_attachments_left",
+        "mail_step_failed",
+        "mail_step_gone",
+        "mail_rule_person_gone",
+        "mail_rule_space_unreachable",
+        "mail_rule_type_gone",
+        "webhook_failing",
+        "delivery_webhook_off",
+        "delivery_owner_inactive",
+        "delivery_document_unavailable",
+        "delivery_owner_no_admin",
+        "delivery_webhook_deleted",
+        "delivery_secret_unusable",
+        "webhook_headers_again",
+        "mail_rule_unreadable",
+    ]
+    | Unknown,
+    Field(title="ReasonCode"),
+]
+
+
 class ReasonOut(BaseModel):
     """
     A reason with its code: a client translates `code` with `params`; the English text
@@ -1748,447 +2573,7 @@ class ReasonOut(BaseModel):
     from before reasons had codes (its `params` hold the `text`).
     """
 
-    code: Annotated[
-        Literal[
-            "text",
-            "error",
-            "signals_disagree",
-            "only_suggested",
-            "one_signal_only",
-            "only_identifier",
-            "contact_is_recipient",
-            "contact_identifiers_several",
-            "contact_identifier_of_other",
-            "contact_new_proposed",
-            "contact_none",
-            "contact_none_no_model",
-            "contact_not_in_text",
-            "sender_not_a_contact",
-            "sender_matches_several",
-            "sender_only_similar",
-            "type_new_proposed",
-            "type_none",
-            "topic_without_contact",
-            "topic_none",
-            "topic_contact_suggested",
-            "space_chosen_by_person",
-            "space_named_unseen",
-            "space_stays_for_named",
-            "space_shows_more",
-            "space_hand_over",
-            "space_uploader_unseen",
-            "space_other",
-            "spaces_disagree",
-            "date_none",
-            "date_none_from_model",
-            "not_a_date",
-            "date_implausible",
-            "same_as_document_date",
-            "not_a_period",
-            "period_implausible",
-            "period_no_year",
-            "same_day_as_document_date",
-            "field_set_by_hand",
-            "field_by_hand_missing",
-            "field_not_found",
-            "field_not_read_no_model",
-            "value_invalid",
-            "quote_not_in_text",
-            "quote_missing",
-            "quote_without_value",
-            "quote_too_short",
-            "date_not_in_text",
-            "period_not_in_text",
-            "amount_not_in_text",
-            "currency_not_in_text",
-            "number_not_in_text",
-            "link_not_in_text",
-            "text_not_in_text",
-            "value_read_unsure",
-            "page_poorly_read",
-            "page_poorly_read_content",
-            "surroundings_poorly_read",
-            "source_lacks_contact",
-            "source_lacks_document_type",
-            "source_lacks_document_date",
-            "paperless_user_review",
-            "paperless_correspondent_review",
-            "paperless_document_type_review",
-            "paperless_tag_review",
-            "paperless_custom_field_review",
-            "paperless_storage_path_review",
-            "paperless_asn_review",
-            "field_does_not_apply",
-            "field_gone",
-            "contact_gone",
-            "document_type_gone",
-            "topic_gone",
-            "tag_gone",
-            "space_gone",
-            "tag_is_group",
-            "rule_other_space",
-            "space_no_right_any_more",
-            "space_no_right",
-            "space_widens_unconfirmed",
-            "space_widens_needs_confirmed",
-            "review_on_arrival_only",
-            "review_confirmed",
-            "rules_disagree",
-            "value_other_not_accepted",
-            "person_decided_field",
-            "rule_value_on_unconfirmed",
-            "model_value_other",
-            "rules_value_on_unconfirmed",
-            "rules_model_value_other",
-            "topic_person_chose",
-            "topic_no_contact",
-            "topic_not_enabled",
-            "tag_added_and_removed",
-            "tag_removed_by_person",
-            "tag_set_by_person",
-            "tag_above_kept",
-            "title_empty",
-            "title_yields",
-            "value_empty",
-            "template_missing_value",
-            "template_unreadable",
-            "node_attempts_exhausted",
-            "node_crashed",
-            "file_not_pdf_or_image",
-            "file_damaged",
-            "file_not_processable",
-            "pdf_encrypted",
-            "pdf_unreadable",
-            "pdf_unreadable_detail",
-            "pdf_too_complex",
-            "image_unreadable",
-            "image_unreadable_detail",
-            "image_too_large",
-            "document_no_pages",
-            "document_too_many_pages",
-            "preview_too_many_pages",
-            "ocr_failed",
-            "text_unreadable",
-            "signature_dropped",
-            "colours_converted",
-            "not_pdfa",
-            "archive_not_pdfa",
-            "vision_read",
-            "vision_not_configured",
-            "no_text",
-            "only_separator_sheets",
-            "answer_unfit",
-            "nothing_recognised",
-            "master_data_changed",
-            "metadata_unfit",
-            "taken_over",
-            "space_changed_meanwhile",
-            "rules_back_and_forth",
-            "rules_change_unfit",
-            "signal_did_not_run",
-            "no_language_model",
-            "no_document_text",
-            "no_classifier",
-            "classifier_unusable",
-            "classifier_untrained",
-            "neighbours_off",
-            "no_embedding_index",
-            "text_not_embedded",
-            "vector_misfit",
-            "no_uploader",
-            "index_unavailable",
-            "no_similar",
-            "input_missing",
-            "input_too_short",
-            "input_too_long",
-            "input_too_few",
-            "input_too_many",
-            "input_too_small",
-            "input_above",
-            "input_too_large",
-            "input_below",
-            "input_choice",
-            "input_not_id",
-            "input_not_date",
-            "input_not_datetime",
-            "input_not_number",
-            "input_not_integer",
-            "input_not_boolean",
-            "input_not_text",
-            "input_not_list",
-            "input_not_object",
-            "input_unknown",
-            "input_pattern",
-            "input_invalid",
-            "in_use",
-            "name_taken",
-            "topic_carried",
-            "choices_in_use",
-            "values_outside_scope",
-            "title_pattern_uses_field",
-            "type_has_values",
-            "tag_has_children",
-            "tag_has_contacts",
-            "tag_has_types",
-            "topic_enabled_by",
-            "tag_used_by_rules",
-            "field_used_by_patterns",
-            "field_used_by_rules",
-            "field_used_by_webhooks",
-            "field_key_taken",
-            "identifier_of_person",
-            "identifier_of_contact",
-            "profile_identifier_of_contact",
-            "name_of_contact",
-            "name_too_close",
-            "logo_uploaded",
-            "logo_type",
-            "logo_upload_type",
-            "training_needs_examples",
-            "job_not_failed",
-            "job_already_queued",
-            "job_retry_in_document",
-            "rule_follows_type",
-            "personal_space_undeletable",
-            "space_not_empty",
-            "space_name_taken",
-            "no_write_access_to_space",
-            "username_taken",
-            "last_admin",
-            "user_deletion_blocked",
-            "display_name_taken",
-            "username_of_other",
-            "lenses_limit",
-            "webhooks_limit",
-            "model_call_taken",
-            "model_call_admins",
-            "open_fields",
-            "duplicate_of",
-            "new_version",
-            "new_version_differs",
-            "duplicate_of_version",
-            "duplicate_unseen",
-            "no_text_yet",
-            "no_structure_yet",
-            "being_processed",
-            "only_failed_retried",
-            "receive_not_repeatable",
-            "separate_not_repeatable",
-            "not_waiting_for_confirmation",
-            "still_running",
-            "no_text_to_extract",
-            "no_vision_model",
-            "cannot_skip",
-            "uncertain_before_filing",
-            "invalid_credentials",
-            "invalid_one_time_code",
-            "second_factor_required",
-            "account_inactive",
-            "authentication_required",
-            "session_expired",
-            "token_invalid",
-            "wrong_password",
-            "totp_already_on",
-            "totp_needs_password",
-            "no_totp_setup",
-            "totp_off",
-            "code_invalid",
-            "read_only_token",
-            "upload_only_token",
-            "upload_only_token_fields",
-            "token_lacks_right",
-            "token_rights_empty",
-            "token_admin_rights",
-            "push_off",
-            "push_endpoint_refused",
-            "push_keys_invalid",
-            "push_devices_limit",
-            "csrf_missing",
-            "session_needed",
-            "oidc_mismatch",
-            "oidc_relink",
-            "oidc_linked_elsewhere",
-            "oidc_no_account",
-            "oidc_password_first",
-            "not_found",
-            "page_not_found",
-            "version_not_found",
-            "file_not_found",
-            "rule_version_not_found",
-            "name_empty",
-            "name_too_long",
-            "admins_only",
-            "editors_only",
-            "admins_cannot",
-            "no_write_access_to_document",
-            "session_needed_create_user",
-            "session_needed_role",
-            "session_needed_profile",
-            "profile_own_only",
-            "personal_space_describe",
-            "space_manage",
-            "space_members_personal",
-            "space_members",
-            "space_rule_apply",
-            "rule_apply_too_many",
-            "rule_disabled_deleted",
-            "rule_disabled_personal_space",
-            "rule_disabled_choice",
-            "rule_webhook_gone",
-            "rule_webhook_unreadable",
-            "task_no_answer",
-            "task_error",
-            "task_invalid",
-            "task_too_large",
-            "task_undelivered",
-            "task_run_over",
-            "task_run_stopped",
-            "rule_asks_on_arrival",
-            "skip_changed_meanwhile",
-            "skip_not_available",
-            "bulk_too_many",
-            "bulk_ids_and_filter",
-            "not_iban",
-            "not_vat_id",
-            "not_customer_number",
-            "not_of_kind",
-            "fact_kind_unknown",
-            "fact_role_unknown",
-            "fact_not_in_text",
-            "fact_not_asked",
-            "holder_not_listed",
-            "holder_kind_unknown",
-            "holder_name_not_near",
-            "fact_criterion_empty",
-            "ref_unknown",
-            "rule_fact_of_person",
-            "relation_exists",
-            "relation_not_found",
-            "relation_to_itself",
-            "fact_filter_of_person",
-            "fact_of_a_person",
-            "fact_not_found",
-            "fact_exists",
-            "fact_role_missing",
-            "fact_of_person",
-            "fact_at_contact_admin",
-            "fact_not_at_contact",
-            "not_personnel_number",
-            "not_domain",
-            "free_mail_domain",
-            "not_tax_id",
-            "not_social_security_number",
-            "not_health_insurance_number",
-            "not_email_address",
-            "birth_date_too_early",
-            "birth_date_in_future",
-            "alias_twice",
-            "person_too_many_aliases",
-            "person_too_many_identifiers",
-            "display_name_is_alias",
-            "too_many_groups",
-            "too_many_topics",
-            "identifier_topic_not_enabled",
-            "alias_is_name",
-            "contact_too_many_aliases",
-            "contact_too_many_identifiers",
-            "only_numbers_name_users",
-            "identifier_taken",
-            "identifier_entered",
-            "identifier_not_open",
-            "identifier_contact_unclear",
-            "recommend_confirm",
-            "recommend_confirm_named",
-            "recommend_reject_foreign",
-            "recommend_reject_contacts",
-            "title_pattern_too_long",
-            "description_too_long",
-            "title_pattern_unknown",
-            "template_unknown_value",
-            "template_unknown_value_at",
-            "tag_own_parent",
-            "groups_manual",
-            "tag_wrong_scope",
-            "tag_parent_other_scope",
-            "tag_under_own_child",
-            "tag_too_deep",
-            "field_global_required",
-            "field_typed_required",
-            "field_required_own_types",
-            "choice_needs_choices",
-            "choices_not_unique",
-            "only_choice_fields_choices",
-            "field_needs_type",
-            "field_is_global",
-            "field_only_this_type",
-            "field_not_for_type",
-            "not_a_url",
-            "url_not_http",
-            "receipt_in_future",
-            "personal_space_name",
-            "personal_space_editor",
-            "space_needs_editor",
-            "password_too_short",
-            "password_too_long",
-            "password_is_username",
-            "expiry_in_past",
-            "url_length",
-            "url_spaces",
-            "url_invalid",
-            "url_scheme",
-            "url_no_host",
-            "url_credentials",
-            "url_fragment",
-            "webhook_private_admins",
-            "webhook_private_none",
-            "header_name_invalid",
-            "header_reserved",
-            "header_value_invalid",
-            "header_twice",
-            "headers_limit",
-            "header_value_missing",
-            "icon_invalid",
-            "colour_invalid",
-            "card_field_unknown",
-            "due_field_not_date",
-            "sort_field_invalid",
-            "pattern_invalid",
-            "pattern_too_large",
-            "search_no_embeddings",
-            "search_embed_timeout",
-            "search_embed_failed",
-            "search_embed_dimensions",
-            "search_index_unavailable",
-            "search_not_configured",
-            "mail_unreachable",
-            "mail_tls_failed",
-            "mail_login_failed",
-            "mail_folder_missing",
-            "mail_server_error",
-            "mail_password_unreadable",
-            "mail_fetch_failed",
-            "mail_password_again",
-            "mailbox_paused",
-            "mail_too_large",
-            "mail_attachments_left",
-            "mail_step_failed",
-            "mail_step_gone",
-            "mail_rule_person_gone",
-            "mail_rule_space_unreachable",
-            "mail_rule_type_gone",
-            "webhook_failing",
-            "delivery_webhook_off",
-            "delivery_owner_inactive",
-            "delivery_document_unavailable",
-            "delivery_owner_no_admin",
-            "delivery_webhook_deleted",
-            "delivery_secret_unusable",
-            "webhook_headers_again",
-            "mail_rule_unreadable",
-        ]
-        | Unknown,
-        Field(title="ReasonCode"),
-    ]
+    code: ReasonCode
     params: Annotated[dict[str, Any], Field(examples=[{"contact": "Stadtwerke"}], title="Params")]
     subject: Annotated[str | None, Field(title="Subject")] = None
     """
@@ -2204,12 +2589,20 @@ class ReasonOut(BaseModel):
     """
 
 
+type Recommendation = Annotated[
+    Literal["confirm", "reject"] | Unknown, Field(title="Recommendation")
+]
+"""
+What the documents recommend doing with an open identifier (`_recommended`).
+"""
+
+
 class RecommendationOut(BaseModel):
     """
     What its confirmed documents recommend doing with an open identifier.
     """
 
-    action: Annotated[Literal["confirm", "reject"] | Unknown, Field(title="Recommendation")]
+    action: Recommendation
     """
     `confirm`: it stands in two or more confirmed documents of its contact, at no other contact, and (of a kind with a holder) is its contact's in each; `reject` (a learned one): a document of its contact gives it someone else, or other contacts hold it as theirs.
     """
@@ -2233,42 +2626,7 @@ class RefIn(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[str, Field(max_length=200, min_length=1, title="Value")]
     """
     As written.
@@ -2276,42 +2634,7 @@ class RefIn(BaseModel):
 
 
 class RefOut(BaseModel):
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[str, Field(title="Value")]
     """
     Normalised, as Lekto compares it.
@@ -2346,6 +2669,22 @@ class RelatedDocumentOut(BaseModel):
     document_date: Annotated[date_aliased | None, Field(title="Document Date")]
 
 
+type RelationOrigin = Annotated[Literal["person", "lekto"] | Unknown, Field(title="RelationOrigin")]
+
+
+type RelationState = Annotated[
+    Literal["set", "suggested", "rejected"] | Unknown, Field(title="RelationState")
+]
+
+
+type RelativePeriod = Annotated[
+    Literal["this_year", "last_12_months", "last_year"] | Unknown, Field(title="RelativePeriod")
+]
+"""
+A period that moves with the day the lens is opened (the quick picks of the filters).
+"""
+
+
 class ReleaseOut(BaseModel):
     version: Annotated[str, Field(examples=["0.16.0"], title="Version")]
     published_at: Annotated[AwareDatetime, Field(title="Published At")]
@@ -2367,31 +2706,47 @@ class Removed(BaseModel):
     removed: Annotated[int, Field(title="Removed")]
 
 
+type ReprocessNode = Annotated[
+    Literal[
+        "ocr",
+        "pages",
+        "parse",
+        "signal_llm",
+        "signal_classifier",
+        "signal_neighbours",
+        "signal_facts",
+        "judge",
+        "fields",
+        "relate",
+        "apply_rules",
+        "file",
+    ]
+    | Unknown,
+    Field(title="ReprocessNode"),
+]
+
+
 class ReprocessRequest(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    from_node: Annotated[
-        Literal[
-            "ocr",
-            "pages",
-            "parse",
-            "signal_llm",
-            "signal_classifier",
-            "signal_neighbours",
-            "signal_facts",
-            "judge",
-            "fields",
-            "relate",
-            "apply_rules",
-            "file",
-        ]
-        | Unknown,
-        Field(title="ReprocessNode"),
-    ]
+    from_node: ReprocessNode
     """
     Discard the results from this node on and process again from there.
     """
+
+
+type ResumeNode = Annotated[Literal["fields", "apply_rules"] | Unknown, Field(title="ResumeNode")]
+
+
+type RetryWay = Annotated[Literal["job", "document"] | Unknown, Field(title="RetryWay")]
+"""
+How an admin tries a failed job again: the job itself, or (a processing step) its
+document.
+"""
+
+
+type Role = Annotated[Literal["admin", "user"] | Unknown, Field(title="Role")]
 
 
 class RuleEffectOut(BaseModel):
@@ -2405,10 +2760,7 @@ class RuleEffectOut(BaseModel):
 
 class RuleNoteOut(BaseModel):
     field: Annotated[str, Field(title="Field")]
-    kind: Annotated[
-        Literal["skipped", "overruled", "refused", "conflict", "review", "yielded"] | Unknown,
-        Field(title="NoteKind"),
-    ]
+    kind: NoteKind
     """
     `overruled`: a person decided the field; `refused`: not allowed (rights, scope, unconfirmed values); `conflict`: rules or values disagree; `skipped`: something it refers to is gone or does not apply, or a template writes a missing value; `review`: the rule holds the document for a review; `yielded`: a document type's title pattern gave way to another rule that sets the title.
     """
@@ -2427,6 +2779,9 @@ class RulePatch(BaseModel):
         extra="forbid",
     )
     enabled: Annotated[bool, Field(title="Enabled")]
+
+
+type RuleScope = Annotated[Literal["global", "space"] | Unknown, Field(title="RuleScope")]
 
 
 class RunExchangeOut(BaseModel):
@@ -2449,6 +2804,9 @@ class SearchIn(BaseModel):
     """
     What to look for.
     """
+
+
+type SearchMode = Annotated[Literal["hybrid", "words"] | Unknown, Field(title="SearchMode")]
 
 
 class SearchPlacesOut(BaseModel):
@@ -2581,6 +2939,11 @@ class SentTask(BaseModel):
     deadline: Annotated[AwareDatetime, Field(title="Deadline")]
 
 
+type SeriesState = Annotated[
+    Literal["overdue", "soon", "later", "ended"] | Unknown, Field(title="SeriesState")
+]
+
+
 class SessionsEnded(BaseModel):
     ended: Annotated[int, Field(title="Ended")]
 
@@ -2658,43 +3021,18 @@ class SetTopicAction(BaseModel):
     """
 
 
+type Signal = Annotated[
+    Literal["signal_llm", "signal_classifier", "signal_neighbours", "signal_facts"] | Unknown,
+    Field(title="Signal"),
+]
+
+
 class SignalHitsOut(BaseModel):
     field: Annotated[str, Field(examples=["contact"], title="Field")]
     """
     The field as checks name it: `contact`, `document_type`, `topic`, `document_date`, `space`, `tags`, or `field:<id>` for a custom field.
     """
-    signal: Annotated[
-        Literal[
-            "receive",
-            "separate",
-            "ocr",
-            "pages",
-            "parse",
-            "signal_llm",
-            "signal_classifier",
-            "signal_neighbours",
-            "signal_facts",
-            "judge",
-            "fields",
-            "relate",
-            "apply_rules",
-            "file",
-        ]
-        | Unknown,
-        Field(title="Node"),
-    ]
-    """
-    The nodes of the ingest graph, in a topological order: every node comes after the nodes
-    it needs (`GRAPH`). Nodes that do not need each other run side by side.
-
-    `separate` splits a scanned stack at its separator sheets when it comes in, before anything
-    reads its pages (`services.separating`).
-
-    The signals each propose metadata from one source: the language model, the trained
-    classifier, similar confirmed documents, facts in the text (names, identifiers). `judge`
-    decides from all of them, `fields` reads the fields of the decided type, `relate` finds the
-    documents it refers to and those that refer to it (issue #145), before the rules see them.
-    """
+    signal: Node
     hits: Annotated[int, Field(title="Hits")]
     """
     Its best value was the one the person decided.
@@ -2710,14 +3048,8 @@ class SignalHitsOut(BaseModel):
 
 
 class SignalsOut(BaseModel):
-    channels: Annotated[
-        list[Literal["web", "api", "migration", "mail"] | Unknown], Field(title="Channels")
-    ]
-    period: Annotated[Literal["30d", "12m", "all"] | Unknown, Field(title="Period")]
-    """
-    The period the numbers cover, up to now: 30 days, the current month and the eleven
-    before it, or all time.
-    """
+    channels: Annotated[list[Channel], Field(title="Channels")]
+    period: Period
     since: Annotated[AwareDatetime | None, Field(title="Since")]
     signals: Annotated[list[SignalHitsOut], Field(title="Signals")]
     """
@@ -2781,6 +3113,9 @@ class SpacePatch(BaseModel):
     description: Annotated[Description4 | None, Field(title="Description")] = None
 
 
+type SpaceRole = Annotated[Literal["read", "edit"] | Unknown, Field(title="SpaceRole")]
+
+
 class SpaceSettlementIn(BaseModel):
     """
     How deleting a user settles one of the spaces that stop it.
@@ -2829,38 +3164,7 @@ class StepTimesOut(BaseModel):
     """
     90th percentile, by nearest rank.
     """
-    node: Annotated[
-        Literal[
-            "receive",
-            "separate",
-            "ocr",
-            "pages",
-            "parse",
-            "signal_llm",
-            "signal_classifier",
-            "signal_neighbours",
-            "signal_facts",
-            "judge",
-            "fields",
-            "relate",
-            "apply_rules",
-            "file",
-        ]
-        | Unknown,
-        Field(title="Node"),
-    ]
-    """
-    The nodes of the ingest graph, in a topological order: every node comes after the nodes
-    it needs (`GRAPH`). Nodes that do not need each other run side by side.
-
-    `separate` splits a scanned stack at its separator sheets when it comes in, before anything
-    reads its pages (`services.separating`).
-
-    The signals each propose metadata from one source: the language model, the trained
-    classifier, similar confirmed documents, facts in the text (names, identifiers). `judge`
-    decides from all of them, `fields` reads the fields of the decided type, `relate` finds the
-    documents it refers to and those that refer to it (issue #145), before the rules see them.
-    """
+    node: Node
 
 
 class StreamDocumentOut(BaseModel):
@@ -2874,7 +3178,13 @@ class StreamDocumentOut(BaseModel):
     created_at: Annotated[AwareDatetime, Field(title="Created At")]
     contact_id: Annotated[UUID | None, Field(title="Contact Id")]
     document_type_id: Annotated[UUID | None, Field(title="Document Type Id")]
-    lane: Literal["green", "yellow", "red"] | Unknown | None
+    lane: Lane | None
+
+
+type Strength = Annotated[Literal["weak", "medium", "hard"] | Unknown, Field(title="Strength")]
+"""
+How surely a document names a person.
+"""
 
 
 type Color = Annotated[
@@ -2905,10 +3215,22 @@ class TagPatch(BaseModel):
     )
     name: Annotated[Name7 | None, Field(title="Name")] = None
     parent_id: Annotated[UUID | None, Field(title="Parent Id")] = None
-    assignment: Literal["auto", "manual"] | Unknown | None = None
+    assignment: Assignment | None = None
     shown: Annotated[bool | None, Field(title="Shown")] = None
     icon: Annotated[Icon | None, Field(title="Icon")] = None
     color: Annotated[Color | None, Field(title="Color")] = None
+
+
+type TagScope = Annotated[
+    Literal["document", "contact", "document_type", "topic"] | Unknown, Field(title="TagScope")
+]
+"""
+What a tag describes, fixed when it is made: a document (`document`, as tags were
+before 0.3), contacts (`contact`: a contact group, "insurance"), document types
+(`document_type`: a type group, "invoice" over "medical bill") or what a document is about
+with its contact (`topic`: "work", "health insurance"; a global catalogue, enabled at
+contacts, at most one per document). Names are unique per scope.
+"""
 
 
 class TallyOut(BaseModel):
@@ -3038,6 +3360,48 @@ class TimesOut(BaseModel):
     """
 
 
+type TokenRight = Annotated[
+    Literal[
+        "documents:count",
+        "documents:read",
+        "documents:write",
+        "documents:upload",
+        "master_data:read",
+        "master_data:write",
+        "rules:read",
+        "rules:write",
+        "spaces:read",
+        "spaces:write",
+        "webhooks:read",
+        "webhooks:write",
+        "lenses:read",
+        "lenses:write",
+        "push:read",
+        "push:write",
+        "system:read",
+        "system:write",
+        "admin:count_all",
+        "admin:documents_all",
+        "admin:mailboxes",
+        "admin:private_webhooks",
+        "admin:manage",
+    ]
+    | Unknown,
+    Field(title="TokenRight"),
+]
+
+
+type TokenScope = Annotated[
+    Literal["read", "read_write", "upload"] | Unknown, Field(title="TokenScope")
+]
+"""
+A preset of rights for an API token (`rights`): read, read and write, or only upload
+documents (a shortcut on a phone that sends shared files; it reads nothing, not even what it
+uploaded). What a token may is its rights; the scope is how they were chosen, or the preset
+they match.
+"""
+
+
 class TotpBegin(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
@@ -3058,6 +3422,9 @@ class TotpSetupOut(BaseModel):
         str,
         Field(examples=["otpauth://totp/Lekto:alice?secret=JBSWY3DPEHPK3PXP"], title="Otpauth Uri"),
     ]
+
+
+type Trigger = Annotated[Literal["ingest", "change"] | Unknown, Field(title="Trigger")]
 
 
 type DisplayName1 = Annotated[str, Field(max_length=150, title="Display Name")]
@@ -3081,7 +3448,7 @@ class UserCreate(BaseModel):
     """
     How others see the user; unique regardless of case (409).
     """
-    role: Annotated[Literal["admin", "user"] | Unknown | None, Field(title="Role")] = "user"
+    role: Role | None = "user"
     password: Annotated[Password2 | None, Field(title="Password")] = None
     """
     Optional; 12 to 256 characters, not the username.
@@ -3104,7 +3471,7 @@ class UserOut(BaseModel):
     """
     The user's personal space, where a document is handed over to them (`POST /documents/{id}/move`); in `GET /users` and `GET /users/{id}`.
     """
-    role: Literal["admin", "user"] | Unknown | None = None
+    role: Role | None = None
     active: Annotated[bool | None, Field(title="Active")] = None
     created_at: Annotated[AwareDatetime | None, Field(title="Created At")] = None
 
@@ -3113,7 +3480,7 @@ class UserPatch(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    role: Literal["admin", "user"] | Unknown | None = None
+    role: Role | None = None
     active: Annotated[bool | None, Field(title="Active")] = None
     """
     false ends the user's sessions and blocks their tokens.
@@ -3169,6 +3536,12 @@ class VerdictsOut(BaseModel):
     """
 
 
+type VersionKind = Annotated[
+    Literal["received", "replaced", "edited", "split", "separated", "merged"] | Unknown,
+    Field(title="VersionKind"),
+]
+
+
 class VersionOut(BaseModel):
     lekto_version: Annotated[str, Field(title="Lekto Version")]
     """
@@ -3196,6 +3569,15 @@ class VersionOut(BaseModel):
     """
 
 
+type VisionAdvice = Annotated[
+    Literal["no_text", "poor_page"] | Unknown, Field(title="VisionAdvice")
+]
+"""
+Why a person is advised to have the document read by the vision language model: the
+text recognition made it red or yellow.
+"""
+
+
 class VisionOut(BaseModel):
     model: Annotated[str, Field(title="Model")]
     endpoint: Annotated[str, Field(title="Endpoint")]
@@ -3214,10 +3596,7 @@ class WebhookModelCallIn(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    kind: Annotated[Literal["propose", "extract"] | Unknown, Field(title="ModelCallKind")]
-    """
-    A request to the language model a webhook may take over.
-    """
+    kind: ModelCallKind
     timeout_seconds: Annotated[int | None, Field(ge=30, le=86400, title="Timeout Seconds")] = 300
     """
     How long the consumer has to answer, from sending.
@@ -3225,10 +3604,7 @@ class WebhookModelCallIn(BaseModel):
 
 
 class WebhookModelCallOut(BaseModel):
-    kind: Annotated[Literal["propose", "extract"] | Unknown, Field(title="ModelCallKind")]
-    """
-    A request to the language model a webhook may take over.
-    """
+    kind: ModelCallKind
     timeout_seconds: Annotated[int, Field(title="Timeout Seconds")]
 
 
@@ -3247,7 +3623,7 @@ class WebhookOut(BaseModel):
     """
     The names of the webhook's own headers, in order.
     """
-    body: Annotated[Literal["thin", "full", "template"] | Unknown, Field(title="BodyFormat")]
+    body: BodyFormat
     """
     What a request carries: `thin`, the event (`id`, `type`, `occurred_at`, `document_id`); `full`, the event and `document` as it is when the request goes (title, contact, type, topic, tags, date, space, lane, the fields with a value by key, `link` into the web UI); `template`, the JSON `body_template` makes of them.
     """
@@ -3337,7 +3713,7 @@ class WebhookPatch(BaseModel):
     """
     All of the webhook's own headers from now on (empty: none). Headers of the webhook's own, sent with every request (at most 20), e.g. `Authorization` for a token the receiver checks. Lekto sets `content-type`, `content-length`, `host`, `connection`, `transfer-encoding` and the headers beginning with `webhook-` or `lekto-` itself; those are refused. The values are stored encrypted and never shown again; the names are.
     """
-    body: Literal["thin", "full", "template"] | Unknown | None = None
+    body: BodyFormat | None = None
     """
     What a request carries: `thin`, the event (`id`, `type`, `occurred_at`, `document_id`); `full`, the event and `document` as it is when the request goes (title, contact, type, topic, tags, date, space, lane, the fields with a value by key, `link` into the web UI); `template`, the JSON `body_template` makes of them. Left out: body and template stay.
     """
@@ -3487,7 +3863,7 @@ class AccountOut(BaseModel):
     """
     The user's personal space, where a document is handed over to them (`POST /documents/{id}/move`); in `GET /users` and `GET /users/{id}`.
     """
-    role: Literal["admin", "user"] | Unknown | None = None
+    role: Role | None = None
     active: Annotated[bool | None, Field(title="Active")] = None
     created_at: Annotated[AwareDatetime | None, Field(title="Created At")] = None
     has_password: Annotated[bool, Field(title="Has Password")]
@@ -3512,9 +3888,7 @@ class AskWebhookAction(BaseModel):
     """
     The time to answer, from sending (the request may wait for its webhook).
     """
-    missing: Annotated[
-        Literal["red", "yellow", "continue"] | Unknown | None, Field(title="Missing")
-    ] = "red"
+    missing: Missing | None = "red"
     """
     Without an answer (none in time, an error, an invalid one): `red` fails the node (no rule acts), `yellow` ends the rule here (its steps before count) and holds the document for a person, `continue` goes on without `steps.<name>`. After a person decided in the run, it is only reported.
     """
@@ -3524,20 +3898,7 @@ class BulkActionIn(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    kind: Annotated[
-        Literal[
-            "change_tags",
-            "set_contact",
-            "set_document_type",
-            "set_topic",
-            "move",
-            "confirm",
-            "reprocess",
-            "delete",
-        ]
-        | Unknown,
-        Field(title="BulkKind"),
-    ]
+    kind: BulkKind
     add_tag_ids: Annotated[list[UUID] | None, Field(max_length=50, title="Add Tag Ids")] = None
     """
     `change_tags`: the tags to add.
@@ -3564,24 +3925,7 @@ class BulkActionIn(BaseModel):
     """
     `move`: the space to move into.
     """
-    from_node: (
-        Literal[
-            "ocr",
-            "pages",
-            "parse",
-            "signal_llm",
-            "signal_classifier",
-            "signal_neighbours",
-            "signal_facts",
-            "judge",
-            "fields",
-            "relate",
-            "apply_rules",
-            "file",
-        ]
-        | Unknown
-        | None
-    ) = None
+    from_node: ReprocessNode | None = None
     """
     `reprocess`: process again from this node on.
     """
@@ -3589,23 +3933,8 @@ class BulkActionIn(BaseModel):
 
 class BulkOperationOut(BaseModel):
     id: Annotated[UUID, Field(title="Id")]
-    kind: Annotated[
-        Literal[
-            "change_tags",
-            "set_contact",
-            "set_document_type",
-            "set_topic",
-            "move",
-            "confirm",
-            "reprocess",
-            "delete",
-        ]
-        | Unknown,
-        Field(title="BulkKind"),
-    ]
-    status: Annotated[
-        Literal["queued", "running", "done", "failed"] | Unknown, Field(title="ProgressStatus")
-    ]
+    kind: BulkKind
+    status: ProgressStatus
     total: Annotated[int, Field(title="Total")]
     """
     Selected documents.
@@ -3648,10 +3977,7 @@ class CandidateSourceOut(BaseModel):
     What one signal says about a candidate.
     """
 
-    signal: Annotated[
-        Literal["signal_llm", "signal_classifier", "signal_neighbours", "signal_facts"] | Unknown,
-        Field(title="Signal"),
-    ]
+    signal: Signal
     names: Annotated[bool, Field(title="Names")]
     """
     Sure enough to name the value: it counts for the judge's rule.
@@ -3730,51 +4056,8 @@ class ConditionSchema(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    field: Annotated[
-        Literal[
-            "step",
-            "contact",
-            "contact_group",
-            "document_type",
-            "document_type_group",
-            "topic",
-            "tags",
-            "channel",
-            "text",
-            "field",
-            "document_date",
-            "fact",
-            "relation",
-            "mail_mailbox",
-            "mail_sender",
-            "mail_recipient",
-            "mail_to",
-            "mail_cc",
-            "mail_subject",
-            "mail_importance",
-            "mail_keyword",
-            "mail_flag",
-        ]
-        | Unknown,
-        Field(title="ConditionField"),
-    ]
-    op: Annotated[
-        Literal[
-            "is",
-            "in",
-            "contains",
-            "matches",
-            "gt",
-            "lt",
-            "overlaps",
-            "present",
-            "missing",
-            "starts_with",
-            "ends_with",
-        ]
-        | Unknown,
-        Field(title="Operator"),
-    ]
+    field: ConditionField
+    op: Operator
     value: Annotated[
         str | bool | int | float | MoneyValue | PeriodValue | Value | Value1 | None,
         Field(title="Value"),
@@ -3794,44 +4077,11 @@ class ConditionSchema(BaseModel):
     """
     For `matches` only; other comparisons ignore case.
     """
-    fact_kind: (
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown
-        | None
-    ) = None
+    fact_kind: IdentifierKind | None = None
     """
     Only when `field` is `fact`: the kind of the facts.
     """
-    fact_role: (
-        Literal["contact", "target", "own", "thread", "refers", "person"] | Unknown | None
-    ) = None
+    fact_role: FactRole | None = None
     """
     Only when `field` is `fact`: their role; none for any.
     """
@@ -3849,9 +4099,7 @@ class ConfirmRequest(BaseModel):
     """
     Take the suggestion of every open field that is neither in `changes` nor set on the document; for an open `space` with a suggestion, that space: the document moves there (which may show it to more people, as the suggestion says), unless `space_id` chooses another.
     """
-    resume_at: Annotated[
-        Literal["fields", "apply_rules"] | Unknown | None, Field(title="ResumeNode")
-    ] = "apply_rules"
+    resume_at: ResumeNode | None = "apply_rules"
     """
     `fields` after correcting the document type, so the fields of the new type are read.
     """
@@ -3871,7 +4119,7 @@ class ConnectionTestBody(BaseModel):
     )
     host: Annotated[str, Field(max_length=255, min_length=1, title="Host")]
     port: Annotated[int, Field(ge=1, le=65535, title="Port")]
-    security: Annotated[Literal["tls", "starttls", "none"] | Unknown, Field(title="MailSecurity")]
+    security: MailSecurity
     """
     `tls`: TLS from the start (IMAPS, usually port 993); `starttls`: TLS after the greeting (usually 143); `none`: no encryption, for a server in one's own network.
     """
@@ -3912,38 +4160,7 @@ class ContactNumberIn(BaseModel):
         extra="forbid",
     )
     contact_id: Annotated[UUID, Field(title="Contact Id")]
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
+    kind: IdentifierKind
     """
     `customer_number` (also a contract or policy number) or `personnel_number`; other kinds name nobody (422).
     """
@@ -3956,49 +4173,12 @@ class ContactNumberIn(BaseModel):
 
 class ContactNumberOut(BaseModel):
     contact_id: Annotated[UUID, Field(title="Contact Id")]
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[str, Field(title="Value")]
     """
     Normalised.
     """
-    source: Annotated[
-        Literal["manual", "learned", "rejected"] | Unknown, Field(title="IdentifierSource")
-    ]
+    source: IdentifierSource
     """
     `manual`: entered by hand (by the user or an admin); `learned`: training found it in confirmed documents that are surely the user's alone (in their personal space, or naming them by more than their name).
     """
@@ -4020,10 +4200,7 @@ class DeliveryOut(BaseModel):
     """
     started_at: Annotated[AwareDatetime, Field(title="Started At")]
     duration_ms: Annotated[int, Field(title="Duration Ms")]
-    outcome: Annotated[
-        Literal["delivered", "retrying", "gave_up", "dropped"] | Unknown,
-        Field(title="DeliveryOutcome"),
-    ]
+    outcome: DeliveryOutcome
     """
     `delivered`: answered with 2xx. `retrying`: failed, another attempt follows at `next_attempt_at`. `gave_up`: failed for good. `dropped`: not sent, because the owner may no longer see the document or the webhook is off.
     """
@@ -4146,10 +4323,7 @@ class DocumentVersionOut(BaseModel):
     current: Annotated[bool, Field(title="Current")]
     original_filename: Annotated[str, Field(title="Original Filename")]
     media_type: Annotated[str, Field(title="Media Type")]
-    kind: Annotated[
-        Literal["received", "replaced", "edited", "split", "separated", "merged"] | Unknown,
-        Field(title="VersionKind"),
-    ]
+    kind: VersionKind
     """
     `received`: how the document came in; `replaced`: a person put another file in its place; `edited`: a person edited its pages; `split`: the first version, pages split off another document (by a person, or at a separator sheet); `separated`: the first part of the stack the document came in as, split at its separator sheets; `merged`: a person merged other documents into it. A version that came from another document in a merge keeps its kind.
     """
@@ -4183,10 +4357,7 @@ class DryRunMailOut(BaseModel):
     """
     The names of the attachments Lekto takes (empty for one without a name).
     """
-    outcome: Annotated[
-        Literal["taken", "no_rule", "nothing", "known", "too_large", "failed"] | Unknown,
-        Field(title="MailOutcome"),
-    ]
+    outcome: MailOutcome
     """
     What became of it when it came.
     """
@@ -4194,9 +4365,7 @@ class DryRunMailOut(BaseModel):
     """
     Whether the rule's conditions hold.
     """
-    decider: Annotated[
-        Literal["rule", "other", "fallback", "nothing"] | Unknown, Field(title="Decider")
-    ]
+    decider: Decider
     """
     Who would decide it now: `rule` (this one), `other` (another rule before it: `rule`, `rule_id`), `fallback` (the mailbox takes everything), `nothing` (no rule, the mailbox takes nothing).
     """
@@ -4266,14 +4435,8 @@ class ExpectedNextOut(BaseModel):
     """
     In ISO notation (`2026-11`), where it has one.
     """
-    state: Annotated[
-        Literal["overdue", "soon", "later", "ended"] | Unknown, Field(title="SeriesState")
-    ]
-    cadence: Annotated[
-        Literal["weekly", "monthly", "bimonthly", "quarterly", "half_yearly", "yearly", "days"]
-        | Unknown,
-        Field(title="Cadence"),
-    ]
+    state: SeriesState
+    cadence: Cadence
     spread_days: Annotated[int, Field(title="Spread Days")]
 
 
@@ -4309,53 +4472,16 @@ class FactDecisionIn(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    action: Annotated[
-        Literal["add", "correct", "reject", "withdraw"] | Unknown, Field(title="FactAction")
-    ]
+    action: FactAction
     """
     `add` a fact the sources did not find (`value` as written, `role` required); `correct` the fact of `kind` and `value` (its role, and with `new_value` its value: the old one is then rejected); `reject` it (it is no fact of the document); `withdraw` a decision (a fact a source found is as found again, one only a person gave goes).
     """
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[str, Field(max_length=200, min_length=1, title="Value")]
     """
     `add`: as written; otherwise the fact's value, normalised.
     """
-    role: Literal["contact", "target", "own", "thread", "refers", "person"] | Unknown | None = None
+    role: FactRole | None = None
     """
     `add`: its role; `correct`: the role it has instead.
     """
@@ -4378,43 +4504,12 @@ class FactFilterBody(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    kind: (
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown
-        | None
-    ) = None
+    kind: IdentifierKind | None = None
     ref: Annotated[Ref | None, Field(title="Ref")] = None
     """
     The value's reference.
     """
-    role: Literal["contact", "target", "own", "thread", "refers", "person"] | Unknown | None = None
+    role: FactRole | None = None
 
 
 class FactFilterOut(BaseModel):
@@ -4422,38 +4517,7 @@ class FactFilterOut(BaseModel):
     A fact the documents have, with its value and the value's reference.
     """
 
-    kind: (
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown
-        | None
-    )
+    kind: IdentifierKind | None
     value: Annotated[str | None, Field(title="Value")]
     """
     Normalised, as Lekto compares it.
@@ -4462,7 +4526,7 @@ class FactFilterOut(BaseModel):
     """
     The value's reference, for the `fact` filter.
     """
-    role: Literal["contact", "target", "own", "thread", "refers", "person"] | Unknown | None
+    role: FactRole | None
 
 
 class FieldCreate(BaseModel):
@@ -4472,11 +4536,7 @@ class FieldCreate(BaseModel):
     name: Annotated[
         str, Field(examples=["ACME Energy"], max_length=200, min_length=1, title="Name")
     ]
-    data_type: Annotated[
-        Literal["text", "number", "amount", "date", "boolean", "choice", "link", "period"]
-        | Unknown,
-        Field(title="FieldType"),
-    ]
+    data_type: FieldType
     document_type_ids: Annotated[DocumentTypeIds | None, Field(title="Document Type Ids")] = None
     """
     null: global; otherwise only for these document types.
@@ -4496,9 +4556,7 @@ class FieldCreate(BaseModel):
     A typed field: the document types (of its own) it is required for; for the others it is optional. Extraction must find a required field; an optional one may stay empty, but a value it gives must be shown by the text.
     """
     description: Annotated[Description2 | None, Field(title="Description")] = None
-    assignment: Annotated[Literal["auto", "manual"] | Unknown | None, Field(title="Assignment")] = (
-        "auto"
-    )
+    assignment: Assignment | None = "auto"
     """
     `auto`: the language model reads it; `manual`: set by hand only, never asked of the model (a required one keeps the document open until a person sets it).
     """
@@ -4515,11 +4573,7 @@ class FieldOut(BaseModel):
     """
     The field in templates of rules and title patterns: `field.<key>`, from the name (lower case, umlauts as ae/oe/ue, anything else `_`)
     """
-    data_type: Annotated[
-        Literal["text", "number", "amount", "date", "boolean", "choice", "link", "period"]
-        | Unknown,
-        Field(title="FieldType"),
-    ]
+    data_type: FieldType
     document_type_ids: Annotated[list[UUID] | None, Field(title="Document Type Ids")]
     choices: Annotated[list[str], Field(title="Choices")]
     required: Annotated[bool, Field(title="Required")]
@@ -4533,7 +4587,7 @@ class FieldOut(BaseModel):
     A typed field: the document types (of its own) it is required for; for the others it is optional. Extraction must find a required field; an optional one may stay empty, but a value it gives must be shown by the text.
     """
     description: Annotated[str | None, Field(title="Description")]
-    assignment: Annotated[Literal["auto", "manual"] | Unknown, Field(title="Assignment")]
+    assignment: Assignment
     """
     `auto`: the language model reads it; `manual`: set by hand only, never asked of the model (a required one keeps the document open until a person sets it).
     """
@@ -4565,8 +4619,8 @@ class FieldVerdictsOut(BaseModel):
 
 
 class FlowOut(BaseModel):
-    first_lane: Annotated[Literal["green", "yellow", "red"] | Unknown, Field(title="Lane")]
-    lane: Literal["green", "yellow", "red"] | Unknown | None
+    first_lane: Lane
+    lane: Lane | None
     """
     Where they lie now; null: being processed again.
     """
@@ -4583,7 +4637,7 @@ class FoundPersonOut(BaseModel):
     """
     Their display name, else the username.
     """
-    strength: Annotated[Literal["weak", "medium", "hard"] | Unknown, Field(title="Strength")]
+    strength: Strength
     """
     `hard`: one of their identifiers (or a contact's number that names them); `medium`: their birth date; `weak`: their display name or an alias.
     """
@@ -4613,86 +4667,12 @@ class GiroCodeOut(BaseModel):
 
 
 class GraphNodeOut(BaseModel):
-    node: Annotated[
-        Literal[
-            "receive",
-            "separate",
-            "ocr",
-            "pages",
-            "parse",
-            "signal_llm",
-            "signal_classifier",
-            "signal_neighbours",
-            "signal_facts",
-            "judge",
-            "fields",
-            "relate",
-            "apply_rules",
-            "file",
-        ]
-        | Unknown,
-        Field(title="Node"),
-    ]
-    """
-    The nodes of the ingest graph, in a topological order: every node comes after the nodes
-    it needs (`GRAPH`). Nodes that do not need each other run side by side.
-
-    `separate` splits a scanned stack at its separator sheets when it comes in, before anything
-    reads its pages (`services.separating`).
-
-    The signals each propose metadata from one source: the language model, the trained
-    classifier, similar confirmed documents, facts in the text (names, identifiers). `judge`
-    decides from all of them, `fields` reads the fields of the decided type, `relate` finds the
-    documents it refers to and those that refer to it (issue #145), before the rules see them.
-    """
-    requires: Annotated[
-        list[
-            Literal[
-                "receive",
-                "separate",
-                "ocr",
-                "pages",
-                "parse",
-                "signal_llm",
-                "signal_classifier",
-                "signal_neighbours",
-                "signal_facts",
-                "judge",
-                "fields",
-                "relate",
-                "apply_rules",
-                "file",
-            ]
-            | Unknown
-        ],
-        Field(title="Requires"),
-    ]
+    node: Node
+    requires: Annotated[list[Node], Field(title="Requires")]
     """
     The nodes whose results this node needs.
     """
-    waits_for: Annotated[
-        list[
-            Literal[
-                "receive",
-                "separate",
-                "ocr",
-                "pages",
-                "parse",
-                "signal_llm",
-                "signal_classifier",
-                "signal_neighbours",
-                "signal_facts",
-                "judge",
-                "fields",
-                "relate",
-                "apply_rules",
-                "file",
-            ]
-            | Unknown
-        ]
-        | None,
-        Field(title="Waits For"),
-    ] = []
+    waits_for: Annotated[list[Node] | None, Field(title="Waits For")] = []
     """
     Nodes this node also waits for without needing their results; processing again from one of them leaves this node alone.
     """
@@ -4703,42 +4683,7 @@ class HolderCaseOut(BaseModel):
     One decision behind a number of the holders' evaluation.
     """
 
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[str, Field(title="Value")]
     """
     Normalised, as Lekto compares it.
@@ -4790,42 +4735,7 @@ class HolderKindOut(BaseModel):
     """
     Read before its kind had a holder (`read-facts` sets it).
     """
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
 
 
 class HolderOut(BaseModel):
@@ -4833,10 +4743,7 @@ class HolderOut(BaseModel):
     Whose an IBAN, an e-mail domain or a customer number (in bookings) is where it stands.
     """
 
-    kind: Annotated[
-        Literal["sender", "recipient", "third_party", "unclear"] | Unknown,
-        Field(title="HolderKind"),
-    ]
+    kind: HolderKind
     """
     `sender`: the document's sender (its contact, if `name` is none or its name or an alias), `recipient`: a person it is addressed to, `third_party`: another party (a payee in a booking, a party of a list), `unclear`.
     """
@@ -4844,7 +4751,7 @@ class HolderOut(BaseModel):
     """
     The holder's name as the document writes it, if any.
     """
-    source: Annotated[Literal["rule", "model"] | Unknown, Field(title="HolderSource")]
+    source: HolderSource
     """
     Who told it: `rule` or `model`.
     """
@@ -4870,42 +4777,7 @@ class IdentifierIn(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[
         str,
         Field(
@@ -4927,42 +4799,7 @@ class IdentifierKeyOut(BaseModel):
     An identifier by its kind and its value (RA-12).
     """
 
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[str, Field(title="Value")]
     """
     Normalised, as Lekto compares it.
@@ -4970,46 +4807,9 @@ class IdentifierKeyOut(BaseModel):
 
 
 class IdentifierOut(BaseModel):
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[str, Field(examples=["DE89370400440532013000"], title="Value")]
-    source: Annotated[
-        Literal["manual", "learned", "rejected"] | Unknown, Field(title="IdentifierSource")
-    ]
+    source: IdentifierSource
     """
     `manual`: entered by hand (by an admin, or by the user it names); `learned`: found by training in confirmed documents of only this contact; `rejected`: learned, then rejected by an admin or declined by the user it named (does not count, and training does not learn it again).
     """
@@ -5037,7 +4837,7 @@ class InboxSummaryOut(BaseModel):
     """
     Everything open: all tabs but `done`.
     """
-    worst_lane: Literal["green", "yellow", "red"] | Unknown | None
+    worst_lane: Lane | None
     """
     The worst lane among the open documents, `red` before `yellow` before `green` (new ones); null with only documents in processing, or none.
     """
@@ -5060,13 +4860,7 @@ class JobOut(BaseModel):
     """
     What the job does, as Lekto names it internally (`pipeline.node`, `search.index`, `webhooks.deliver`, ...); new kinds may come.
     """
-    state: Annotated[
-        Literal["running", "due", "planned", "done", "failed"] | Unknown, Field(title="JobState")
-    ]
-    """
-    Where a job stands for the people looking at it: a queued job is due once its time has
-    come, planned before (a repetition, a recurring job).
-    """
+    state: JobState
     attempts: Annotated[int, Field(title="Attempts")]
     """
     Attempts that counted, the current one included; claims given back because a worker stopped are left out.
@@ -5091,26 +4885,7 @@ class JobOut(BaseModel):
     """
     It works on a document the caller may not read (or one deleted since).
     """
-    node: (
-        Literal[
-            "receive",
-            "separate",
-            "ocr",
-            "pages",
-            "parse",
-            "signal_llm",
-            "signal_classifier",
-            "signal_neighbours",
-            "signal_facts",
-            "judge",
-            "fields",
-            "relate",
-            "apply_rules",
-            "file",
-        ]
-        | Unknown
-        | None
-    )
+    node: Node | None
     """
     The processing step it runs, for `pipeline.node`.
     """
@@ -5122,7 +4897,7 @@ class JobOut(BaseModel):
     """
     Why its last attempt failed, as the worker wrote it (English, for admins; null for other users).
     """
-    retry: Literal["job", "document"] | Unknown | None
+    retry: RetryWay | None
     """
     For an admin and a failed job: `job` to queue it again (`POST /jobs/{id}/retry`), `document` to repeat the failed step at its document (`POST /documents/{id}/retry`); null otherwise.
     """
@@ -5168,10 +4943,7 @@ class LabelCheckOut(BaseModel):
     """
     The label as the model copied it from the document; null for none.
     """
-    outcome: Annotated[
-        Literal["beside", "apart", "label_missing", "no_label", "unknown"] | Unknown,
-        Field(title="LabelOutcome"),
-    ]
+    outcome: LabelOutcome
     """
     `beside`: the value stands on the label's line to its right, or below it in its column within 3 lines; `apart`: the label stands in the text, the value not by it; `label_missing`: the label is not in the text (as whole words); `no_label`: the model gave none; `unknown`: no words with boxes, the value not found, or a type that is not checked (only amounts, numbers, dates and periods are).
     """
@@ -5201,7 +4973,7 @@ class LensFilterBody(BaseModel):
     field_id: Annotated[UUID | None, Field(title="Field Id")] = None
     document_date_from: Annotated[date_aliased | None, Field(title="Document Date From")] = None
     document_date_to: Annotated[date_aliased | None, Field(title="Document Date To")] = None
-    document_period: Literal["this_year", "last_12_months", "last_year"] | Unknown | None = None
+    document_period: RelativePeriod | None = None
     """
     A period that moves with the day the lens is opened; not together with `document_date_from` or `_to`.
     """
@@ -5226,7 +4998,7 @@ class LensFilterOut(BaseModel):
     field_id: Annotated[UUID | None, Field(title="Field Id")]
     document_date_from: Annotated[date_aliased | None, Field(title="Document Date From")]
     document_date_to: Annotated[date_aliased | None, Field(title="Document Date To")]
-    document_period: Literal["this_year", "last_12_months", "last_year"] | Unknown | None
+    document_period: RelativePeriod | None
     facts: Annotated[list[FactFilterOut], Field(title="Facts")]
 
 
@@ -5239,31 +5011,10 @@ class LensOut(BaseModel):
     """
     filter: LensFilterOut
     query: Annotated[str | None, Field(title="Query")]
-    sort: (
-        Literal[
-            "relevance",
-            "created_at",
-            "-created_at",
-            "document_date",
-            "-document_date",
-            "title",
-            "-title",
-            "field",
-            "-field",
-        ]
-        | Unknown
-        | None
-    )
+    sort: LensSort | None
     sort_field_id: Annotated[UUID | None, Field(title="Sort Field Id")]
-    grouping: Annotated[
-        Literal["none", "month", "due", "document_type", "contact"] | Unknown,
-        Field(title="Grouping"),
-    ]
-    """
-    What the documents of a lens stand under: nothing, the month of their document date, how
-    soon their deadline is due, their type or their contact.
-    """
-    layout: Annotated[Literal["grid", "list", "stream"] | Unknown, Field(title="Layout")]
+    grouping: Grouping
+    layout: Layout
     card_field_ids: Annotated[list[UUID], Field(title="Card Field Ids")]
     due_field_id: Annotated[UUID | None, Field(title="Due Field Id")]
     created_at: Annotated[AwareDatetime, Field(title="Created At")]
@@ -5282,30 +5033,16 @@ class LensPatch(BaseModel):
     name: Annotated[Name3 | None, Field(title="Name")] = None
     filter: LensFilterBody | None = None
     query: Annotated[Query1 | None, Field(title="Query")] = None
-    sort: (
-        Literal[
-            "relevance",
-            "created_at",
-            "-created_at",
-            "document_date",
-            "-document_date",
-            "title",
-            "-title",
-            "field",
-            "-field",
-        ]
-        | Unknown
-        | None
-    ) = None
+    sort: LensSort | None = None
     """
     `relevance` (only with `query`), or a key of `GET /documents`; `field` and `-field` sort by `sort_field_id` (not with `query`). None: as the list or the search sorts by default.
     """
     sort_field_id: Annotated[UUID | None, Field(title="Sort Field Id")] = None
-    grouping: Literal["none", "month", "due", "document_type", "contact"] | Unknown | None = None
+    grouping: Grouping | None = None
     """
     What the documents stand under: `month` of their document date, `due`: how soon `due_field_id` is due (overdue, within seven days, later, none), `document_type`, `contact`.
     """
-    layout: Literal["grid", "list", "stream"] | Unknown | None = None
+    layout: Layout | None = None
     card_field_ids: Annotated[CardFieldIds | None, Field(title="Card Field Ids")] = None
     """
     The fields a card shows, in this order; at most 3.
@@ -5321,40 +5058,9 @@ class LogEntry(BaseModel):
     One execution of one node.
     """
 
-    node: Annotated[
-        Literal[
-            "receive",
-            "separate",
-            "ocr",
-            "pages",
-            "parse",
-            "signal_llm",
-            "signal_classifier",
-            "signal_neighbours",
-            "signal_facts",
-            "judge",
-            "fields",
-            "relate",
-            "apply_rules",
-            "file",
-        ]
-        | Unknown,
-        Field(title="Node"),
-    ]
-    """
-    The nodes of the ingest graph, in a topological order: every node comes after the nodes
-    it needs (`GRAPH`). Nodes that do not need each other run side by side.
-
-    `separate` splits a scanned stack at its separator sheets when it comes in, before anything
-    reads its pages (`services.separating`).
-
-    The signals each propose metadata from one source: the language model, the trained
-    classifier, similar confirmed documents, facts in the text (names, identifiers). `judge`
-    decides from all of them, `fields` reads the fields of the decided type, `relate` finds the
-    documents it refers to and those that refer to it (issue #145), before the rules see them.
-    """
+    node: Node
     run: Annotated[int, Field(title="Run")]
-    outcome: Annotated[Literal["ok", "uncertain", "failed"] | Unknown, Field(title="Outcome")]
+    outcome: Outcome
     reason: Annotated[str | None, Field(title="Reason")]
     """
     Why, in English; several reasons joined by `; `.
@@ -5378,7 +5084,7 @@ class LogEntry(BaseModel):
 
 
 class LogoOut(BaseModel):
-    source: Annotated[Literal["uploaded", "fetched"] | Unknown, Field(title="LogoSource")]
+    source: LogoSource
     """
     `uploaded` by an admin (a fetched one never replaces it) or `fetched` from the contact's website.
     """
@@ -5405,26 +5111,8 @@ class MailConditionBody(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    field: Annotated[
-        Literal[
-            "sender",
-            "recipient",
-            "to",
-            "cc",
-            "subject",
-            "folder",
-            "attachments",
-            "importance",
-            "keyword",
-            "flag",
-        ]
-        | Unknown,
-        Field(title="MailField"),
-    ]
-    op: Annotated[
-        Literal["contains", "is", "starts_with", "ends_with", "present", "missing"] | Unknown,
-        Field(title="MailOperator"),
-    ]
+    field: MailField
+    op: MailOperator
     value: Annotated[Value3 | None, Field(title="Value")] = None
 
 
@@ -5442,7 +5130,7 @@ class MailOriginOut(BaseModel):
     """
     The mail rule that took it; null: the fallback.
     """
-    role: Annotated[Literal["cover", "attachment"] | Unknown, Field(title="OriginRole")]
+    role: OriginRole
     """
     `cover`: the mail's text; `attachment`: one of its files.
     """
@@ -5464,7 +5152,7 @@ class MailOriginOut(BaseModel):
     Who forwarded the mail that held it, outermost first.
     """
     message_id: Annotated[str | None, Field(title="Message Id")]
-    importance: Literal["high", "normal", "low"] | Unknown | None
+    importance: Importance | None
     """
     As the letter's header gives it; null for a document taken before.
     """
@@ -5472,7 +5160,7 @@ class MailOriginOut(BaseModel):
     """
     The keywords the mail had on the server when fetched; null: not known.
     """
-    flag: Literal["red", "orange", "yellow", "green", "blue", "purple", "gray"] | Unknown | None
+    flag: FlagColor | None
     """
     The colour of its flag on the server then; null: not flagged or not known.
     """
@@ -5485,18 +5173,7 @@ The steps on the mail on the server once taken, in order: `read`, `unread`, `fla
 
 
 class MailStepOut(BaseModel):
-    action: Annotated[
-        Literal[
-            "read", "unread", "flag", "unflag", "add_keyword", "remove_keyword", "move", "trash"
-        ]
-        | Unknown,
-        Field(title="MailAction"),
-    ]
-    """
-    A step on a mail on the server once Lekto has taken it (Tobi, 05.11.2026: an ordered
-    list of them): marked read or unread, flagged in a colour or not, a keyword added or
-    removed; then at most one that ends it, moved to a folder or to the trash.
-    """
+    action: MailAction
     value: Annotated[str | None, Field(title="Value")]
     failed: ReasonOut | None
     """
@@ -5509,10 +5186,7 @@ class MailSummaryOut(BaseModel):
     What the log of a mailbox holds.
     """
 
-    counts: Annotated[
-        dict[Literal["taken", "no_rule", "nothing", "known", "too_large", "failed"] | Unknown, int],
-        Field(title="Counts"),
-    ]
+    counts: Annotated[dict[MailOutcome, int], Field(title="Counts")]
     """
     Mails by outcome (of `rule_id`, if given); outcomes without any left out.
     """
@@ -5585,41 +5259,11 @@ class Me(BaseModel):
     With a session: for `X-CSRF-Token`.
     """
     session_expires_at: Annotated[AwareDatetime | None, Field(title="Session Expires At")]
-    token_scope: Literal["read", "read_write", "upload"] | Unknown | None
+    token_scope: TokenScope | None
     """
     With an API token: the preset its rights match; null for rights chosen one by one.
     """
-    rights: Annotated[
-        list[
-            Literal[
-                "documents:count",
-                "documents:read",
-                "documents:write",
-                "documents:upload",
-                "master_data:read",
-                "master_data:write",
-                "rules:read",
-                "rules:write",
-                "spaces:read",
-                "spaces:write",
-                "webhooks:read",
-                "webhooks:write",
-                "lenses:read",
-                "lenses:write",
-                "push:read",
-                "push:write",
-                "system:read",
-                "system:write",
-                "admin:count_all",
-                "admin:documents_all",
-                "admin:mailboxes",
-                "admin:private_webhooks",
-                "admin:manage",
-            ]
-            | Unknown
-        ],
-        Field(title="Rights"),
-    ]
+    rights: Annotated[list[TokenRight], Field(title="Rights")]
     """
     What the caller may: with an API token its rights (an admin right only while the user is an active admin), with a session every right of the user.
     """
@@ -5646,7 +5290,7 @@ class Me(BaseModel):
 
 class MemberDetails(BaseModel):
     user_id: Annotated[UUID, Field(title="User Id")]
-    role: Annotated[Literal["read", "edit"] | Unknown, Field(title="SpaceRole")]
+    role: SpaceRole
     username: Annotated[str, Field(title="Username")]
     display_name: Annotated[str | None, Field(title="Display Name")] = None
     """
@@ -5662,7 +5306,7 @@ class MemberIn(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    role: Annotated[Literal["read", "edit"] | Unknown, Field(title="SpaceRole")]
+    role: SpaceRole
     """
     `read`: the space's green documents; `edit`: every document in it in every lane, changing, confirming, moving and deleting them, the space's rules, members and name.
     """
@@ -5670,13 +5314,11 @@ class MemberIn(BaseModel):
 
 class MemberOut(BaseModel):
     user_id: Annotated[UUID, Field(title="User Id")]
-    role: Annotated[Literal["read", "edit"] | Unknown, Field(title="SpaceRole")]
+    role: SpaceRole
 
 
 class MetadataEntryOut(BaseModel):
-    source: Annotated[
-        Literal["info", "xmp", "exif", "mail"] | Unknown, Field(title="MetadataSource")
-    ]
+    source: MetadataSource
     """
     `info`: a PDF's document information; `xmp`: its XMP packet (`prefix:name`); `exif`: an image's EXIF tags.
     """
@@ -5706,46 +5348,12 @@ class NamedContactOut(BaseModel):
 
 
 class NodeStateOut(BaseModel):
-    node: Annotated[
-        Literal[
-            "receive",
-            "separate",
-            "ocr",
-            "pages",
-            "parse",
-            "signal_llm",
-            "signal_classifier",
-            "signal_neighbours",
-            "signal_facts",
-            "judge",
-            "fields",
-            "relate",
-            "apply_rules",
-            "file",
-        ]
-        | Unknown,
-        Field(title="Node"),
-    ]
-    """
-    The nodes of the ingest graph, in a topological order: every node comes after the nodes
-    it needs (`GRAPH`). Nodes that do not need each other run side by side.
-
-    `separate` splits a scanned stack at its separator sheets when it comes in, before anything
-    reads its pages (`services.separating`).
-
-    The signals each propose metadata from one source: the language model, the trained
-    classifier, similar confirmed documents, facts in the text (names, identifiers). `judge`
-    decides from all of them, `fields` reads the fields of the decided type, `relate` finds the
-    documents it refers to and those that refer to it (issue #145), before the rules see them.
-    """
-    status: Annotated[
-        Literal["waiting", "running", "done", "skipped", "delegated"] | Unknown,
-        Field(title="NodeStatus"),
-    ]
+    node: Node
+    status: NodeStatus
     """
     `waiting`: not run yet (it runs once the nodes it needs are done); `running`: a worker is at it; `delegated`: waits for answers to its tasks (running externally); `done`: has an outcome; `skipped`: left out in this run.
     """
-    outcome: Literal["ok", "uncertain", "failed"] | Unknown | None
+    outcome: Outcome | None
     """
     Set once the node is done.
     """
@@ -5762,42 +5370,7 @@ class OpenIdentifierOut(BaseModel):
     An identifier no person has confirmed.
     """
 
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[str, Field(title="Value")]
     """
     Normalised, as Lekto compares it.
@@ -5810,7 +5383,7 @@ class OpenIdentifierOut(BaseModel):
     """
     As the newest of its documents writes it.
     """
-    source: Annotated[Literal["learned", "suggested"] | Unknown, Field(title="OpenSource")]
+    source: OpenSource
     """
     `learned`: training found it at `contacts[0]`; `suggested`: an e-mail domain whose name fits `contacts[0]`, the contact of its documents, which has none entered, or an IBAN its documents give to the person in `person`.
     """
@@ -5843,41 +5416,7 @@ class OpenPageOut(BaseModel):
     """
     How many match under each source (not `source`).
     """
-    kinds: Annotated[
-        dict[
-            Literal[
-                "iban",
-                "vat_id",
-                "customer_number",
-                "personnel_number",
-                "email_domain",
-                "tax_id",
-                "social_security_number",
-                "health_insurance_number",
-                "email_address",
-                "creditor_id",
-                "commercial_register",
-                "tax_number",
-                "contract_number",
-                "meter_number",
-                "mandate_reference",
-                "license_plate",
-                "invoice_number",
-                "credit_note_number",
-                "order_number",
-                "file_reference",
-                "our_reference",
-                "claim_number",
-                "ticket_number",
-                "your_reference",
-                "letter_date",
-                "child_benefit_number",
-            ]
-            | Unknown,
-            int,
-        ],
-        Field(title="Kinds"),
-    ]
+    kinds: Annotated[dict[IdentifierKind, int], Field(title="Kinds")]
     """
     How many match of each kind (not `kind`).
     """
@@ -5900,42 +5439,7 @@ class OriginOut(BaseModel):
 
 
 class OutcomeOut(BaseModel):
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[str, Field(title="Value")]
     done: Annotated[bool, Field(title="Done")]
     reason: ReasonOut | None
@@ -5964,10 +5468,7 @@ class PipelineOut(BaseModel):
 
 
 class Processing(BaseModel):
-    status: Annotated[
-        Literal["processing", "completed", "failed", "review"] | Unknown,
-        Field(title="ProcessingStatus"),
-    ]
+    status: ProcessingStatus
     """
     `processing`: nodes are due or running; `review`: stopped before filing until the uncertain fields are confirmed; `completed`; `failed`: a node failed (nodes still running finish, nothing new starts).
     """
@@ -6069,7 +5570,7 @@ class ReadingOut(BaseModel):
     """
     Each page the reader recognised, by the archive's latest OCR; none for pages with text of their own, and for documents read before the readings were logged.
     """
-    advice: Literal["no_text", "poor_page"] | Unknown | None
+    advice: VisionAdvice | None
     """
     Why reading the document with the vision language model is advised, if it is: `no_text`, the OCR found no text (red); `poor_page`, it waits for a person and a page was read poorly. None once the model has read it.
     """
@@ -6077,13 +5578,11 @@ class ReadingOut(BaseModel):
 
 class RelatedOut(BaseModel):
     document: RelatedDocumentOut
-    origin: Annotated[Literal["person", "lekto"] | Unknown, Field(title="RelationOrigin")]
+    origin: RelationOrigin
     """
     `person` set it, `lekto` recognised it.
     """
-    state: Annotated[
-        Literal["set", "suggested", "rejected"] | Unknown, Field(title="RelationState")
-    ]
+    state: RelationState
     """
     `set`, or `suggested` (a person decides).
     """
@@ -6129,9 +5628,7 @@ class RuleApplicationOut(BaseModel):
     id: Annotated[UUID, Field(title="Id")]
     rule_id: Annotated[UUID, Field(title="Rule Id")]
     version: Annotated[int, Field(title="Version")]
-    status: Annotated[
-        Literal["queued", "running", "done", "failed"] | Unknown, Field(title="ProgressStatus")
-    ]
+    status: ProgressStatus
     total: Annotated[int, Field(title="Total")]
     """
     Selected documents.
@@ -6190,7 +5687,7 @@ class RuleReportOut(BaseModel):
     rule_id: Annotated[UUID, Field(title="Rule Id")]
     version: Annotated[int, Field(title="Version")]
     name: Annotated[str, Field(title="Name")]
-    scope: Annotated[Literal["global", "space"] | Unknown, Field(title="RuleScope")]
+    scope: RuleScope
     applied: Annotated[list[RuleEffectOut], Field(title="Applied")]
     notes: Annotated[list[RuleNoteOut], Field(title="Notes")]
     """
@@ -6228,7 +5725,7 @@ class SessionOut(BaseModel):
     """
 
     user: UserOut
-    method: Annotated[Literal["password", "oidc"] | Unknown, Field(title="LoginMethod")]
+    method: LoginMethod
     expires_at: Annotated[AwareDatetime, Field(title="Expires At")]
     csrf_token: Annotated[str, Field(examples=["3f5c0e…"], title="Csrf Token")]
     """
@@ -6241,7 +5738,7 @@ class SpaceMember(BaseModel):
         extra="forbid",
     )
     user_id: Annotated[UUID, Field(title="User Id")]
-    role: Annotated[Literal["read", "edit"] | Unknown, Field(title="SpaceRole")]
+    role: SpaceRole
 
 
 class SpaceOut(BaseModel):
@@ -6258,7 +5755,7 @@ class SpaceOut(BaseModel):
     """
     What belongs in the space, for the language model.
     """
-    role: Annotated[Literal["read", "edit"] | Unknown, Field(title="SpaceRole")]
+    role: SpaceRole
     """
     The caller's role; admins edit every space.
     """
@@ -6268,9 +5765,7 @@ class SpaceOut(BaseModel):
 
 
 class StreamLaneOut(BaseModel):
-    kind: Annotated[
-        Literal["series", "branch", "chain", "single"] | Unknown, Field(title="LaneKind")
-    ]
+    kind: LaneKind
     """
     `series`; `branch` (documents that refer to one of a series or to its target, with the chain of theirs); `chain` (documents related only among themselves); `single` (documents without series and relation).
     """
@@ -6332,15 +5827,12 @@ class TagCreate(BaseModel):
     name: Annotated[
         str, Field(examples=["ACME Energy"], max_length=200, min_length=1, title="Name")
     ]
-    scope: Annotated[
-        Literal["document", "contact", "document_type", "topic"] | Unknown | None,
-        Field(title="TagScope"),
-    ] = "document"
+    scope: TagScope | None = "document"
     """
     `document`: a tag of documents; `contact`: a contact group; `document_type`: a type group; `topic`: a topic, enabled at contacts, one per document at most. Fixed once the tag exists.
     """
     parent_id: Annotated[UUID | None, Field(title="Parent Id")] = None
-    assignment: Literal["auto", "manual"] | Unknown | None = None
+    assignment: Assignment | None = None
     shown: Annotated[bool | None, Field(title="Shown")] = None
     icon: Annotated[Icon | None, Field(title="Icon")] = None
     color: Annotated[Color | None, Field(title="Color")] = None
@@ -6354,22 +5846,13 @@ class TagOut(BaseModel):
     """
     With `document_counts`: how many documents within the caller's reach (with `all_users`, every document) it stands for: those with it or a tag below it, each once; for a group, those whose contact (type) is in it or a group below it; for a topic, those with it or a topic below it.
     """
-    scope: Annotated[
-        Literal["document", "contact", "document_type", "topic"] | Unknown, Field(title="TagScope")
-    ]
-    """
-    What a tag describes, fixed when it is made: a document (`document`, as tags were
-    before 0.3), contacts (`contact`: a contact group, "insurance"), document types
-    (`document_type`: a type group, "invoice" over "medical bill") or what a document is about
-    with its contact (`topic`: "work", "health insurance"; a global catalogue, enabled at
-    contacts, at most one per document). Names are unique per scope.
-    """
+    scope: TagScope
     parent_id: Annotated[UUID | None, Field(title="Parent Id")]
     path: Annotated[list[str], Field(title="Path")]
     """
     The names from the top-level tag down to its own; documents show the last, its path tells where it stands.
     """
-    assignment: Annotated[Literal["auto", "manual"] | Unknown, Field(title="Assignment")]
+    assignment: Assignment
     """
     `auto`: the classification proposes and sets it (document tags and topics); `manual`: only a person or a rule sets it (a status such as 'to pay'). Groups are always `manual`.
     """
@@ -6395,37 +5878,7 @@ class TagOut(BaseModel):
     """
 
 
-type Rights = Annotated[
-    list[
-        Literal[
-            "documents:count",
-            "documents:read",
-            "documents:write",
-            "documents:upload",
-            "master_data:read",
-            "master_data:write",
-            "rules:read",
-            "rules:write",
-            "spaces:read",
-            "spaces:write",
-            "webhooks:read",
-            "webhooks:write",
-            "lenses:read",
-            "lenses:write",
-            "push:read",
-            "push:write",
-            "system:read",
-            "system:write",
-            "admin:count_all",
-            "admin:documents_all",
-            "admin:mailboxes",
-            "admin:private_webhooks",
-            "admin:manage",
-        ]
-        | Unknown
-    ],
-    Field(max_length=23, title="Rights"),
-]
+type Rights = Annotated[list[TokenRight], Field(max_length=23, title="Rights")]
 """
 The rights one by one; admin rights only for an admin. Either this or `scope`.
 """
@@ -6436,7 +5889,7 @@ class TokenCreate(BaseModel):
         extra="forbid",
     )
     name: Annotated[str, Field(examples=["scanner"], max_length=100, min_length=1, title="Name")]
-    scope: Literal["read", "read_write", "upload"] | Unknown | None = None
+    scope: TokenScope | None = None
     """
     A preset of rights: `read`, `read_write` (for an admin with every admin right) or `upload`. Either this or `rights`.
     """
@@ -6450,41 +5903,11 @@ class TokenCreate(BaseModel):
 class TokenCreated(BaseModel):
     id: Annotated[UUID, Field(title="Id")]
     name: Annotated[str, Field(title="Name")]
-    scope: Literal["read", "read_write", "upload"] | Unknown | None
+    scope: TokenScope | None
     """
     The preset the rights match; null for rights chosen one by one.
     """
-    rights: Annotated[
-        list[
-            Literal[
-                "documents:count",
-                "documents:read",
-                "documents:write",
-                "documents:upload",
-                "master_data:read",
-                "master_data:write",
-                "rules:read",
-                "rules:write",
-                "spaces:read",
-                "spaces:write",
-                "webhooks:read",
-                "webhooks:write",
-                "lenses:read",
-                "lenses:write",
-                "push:read",
-                "push:write",
-                "system:read",
-                "system:write",
-                "admin:count_all",
-                "admin:documents_all",
-                "admin:mailboxes",
-                "admin:private_webhooks",
-                "admin:manage",
-            ]
-            | Unknown
-        ],
-        Field(title="Rights"),
-    ]
+    rights: Annotated[list[TokenRight], Field(title="Rights")]
     created_at: Annotated[AwareDatetime, Field(title="Created At")]
     expires_at: Annotated[AwareDatetime | None, Field(title="Expires At")]
     last_used_at: Annotated[AwareDatetime | None, Field(title="Last Used At")]
@@ -6497,41 +5920,11 @@ class TokenCreated(BaseModel):
 class TokenOut(BaseModel):
     id: Annotated[UUID, Field(title="Id")]
     name: Annotated[str, Field(title="Name")]
-    scope: Literal["read", "read_write", "upload"] | Unknown | None
+    scope: TokenScope | None
     """
     The preset the rights match; null for rights chosen one by one.
     """
-    rights: Annotated[
-        list[
-            Literal[
-                "documents:count",
-                "documents:read",
-                "documents:write",
-                "documents:upload",
-                "master_data:read",
-                "master_data:write",
-                "rules:read",
-                "rules:write",
-                "spaces:read",
-                "spaces:write",
-                "webhooks:read",
-                "webhooks:write",
-                "lenses:read",
-                "lenses:write",
-                "push:read",
-                "push:write",
-                "system:read",
-                "system:write",
-                "admin:count_all",
-                "admin:documents_all",
-                "admin:mailboxes",
-                "admin:private_webhooks",
-                "admin:manage",
-            ]
-            | Unknown
-        ],
-        Field(title="Rights"),
-    ]
+    rights: Annotated[list[TokenRight], Field(title="Rights")]
     created_at: Annotated[AwareDatetime, Field(title="Created At")]
     expires_at: Annotated[AwareDatetime | None, Field(title="Expires At")]
     last_used_at: Annotated[AwareDatetime | None, Field(title="Last Used At")]
@@ -6576,9 +5969,7 @@ class WebhookCreate(BaseModel):
     """
     Headers of the webhook's own, sent with every request (at most 20), e.g. `Authorization` for a token the receiver checks. Lekto sets `content-type`, `content-length`, `host`, `connection`, `transfer-encoding` and the headers beginning with `webhook-` or `lekto-` itself; those are refused. The values are stored encrypted and never shown again; the names are.
     """
-    body: Annotated[
-        Literal["thin", "full", "template"] | Unknown | None, Field(title="BodyFormat")
-    ] = "thin"
+    body: BodyFormat | None = "thin"
     """
     What a request carries: `thin`, the event (`id`, `type`, `occurred_at`, `document_id`); `full`, the event and `document` as it is when the request goes (title, contact, type, topic, tags, date, space, lane, the fields with a value by key, `link` into the web UI); `template`, the JSON `body_template` makes of them.
     """
@@ -6611,7 +6002,7 @@ class WebhookCreated(BaseModel):
     """
     The names of the webhook's own headers, in order.
     """
-    body: Annotated[Literal["thin", "full", "template"] | Unknown, Field(title="BodyFormat")]
+    body: BodyFormat
     """
     What a request carries: `thin`, the event (`id`, `type`, `occurred_at`, `document_id`); `full`, the event and `document` as it is when the request goes (title, contact, type, topic, tags, date, space, lane, the fields with a value by key, `link` into the web UI); `template`, the JSON `body_template` makes of them.
     """
@@ -6685,14 +6076,8 @@ class ArrivalStepOut(BaseModel):
 
 
 class AutomationOut(BaseModel):
-    channels: Annotated[
-        list[Literal["web", "api", "migration", "mail"] | Unknown], Field(title="Channels")
-    ]
-    period: Annotated[Literal["30d", "12m", "all"] | Unknown, Field(title="Period")]
-    """
-    The period the numbers cover, up to now: 30 days, the current month and the eleven
-    before it, or all time.
-    """
+    channels: Annotated[list[Channel], Field(title="Channels")]
+    period: Period
     since: Annotated[AwareDatetime | None, Field(title="Since")]
     """
     From when the period counts; null: all time.
@@ -6880,7 +6265,7 @@ class DocumentChanged(BaseModel):
     title: Annotated[str, Field(title="Title")]
     original_filename: Annotated[str, Field(title="Original Filename")]
     media_type: Annotated[str, Field(examples=["application/pdf"], title="Media Type")]
-    channel: Annotated[Literal["web", "api", "migration", "mail"] | Unknown, Field(title="Channel")]
+    channel: Channel
     """
     How the document arrived: `web` (web UI), `api`, `migration`, `mail`.
     """
@@ -6902,7 +6287,7 @@ class DocumentChanged(BaseModel):
     """
     The space it lies in: its members have the rights.
     """
-    access: Annotated[Literal["read", "edit"] | Unknown, Field(title="SpaceRole")]
+    access: SpaceRole
     """
     What the caller may do: `read`, or `edit` (change, confirm, move, delete); admins edit every document.
     """
@@ -6918,11 +6303,11 @@ class DocumentChanged(BaseModel):
     """
     Values by field id.
     """
-    lane: Literal["green", "yellow", "red"] | Unknown | None
+    lane: Lane | None
     """
     None while processing runs.
     """
-    first_lane: Literal["green", "yellow", "red"] | Unknown | None
+    first_lane: Lane | None
     """
     The lane the document's first processing run ended in by itself, where it first stopped: `green` went through without a review, `yellow` needed one, `red` failed. It never changes afterwards, neither by a confirmation nor by a later run. Null while the first run is still processing, and for older documents whose processing log does not tell.
     """
@@ -6959,7 +6344,7 @@ class DocumentDetails(BaseModel):
     title: Annotated[str, Field(title="Title")]
     original_filename: Annotated[str, Field(title="Original Filename")]
     media_type: Annotated[str, Field(examples=["application/pdf"], title="Media Type")]
-    channel: Annotated[Literal["web", "api", "migration", "mail"] | Unknown, Field(title="Channel")]
+    channel: Channel
     """
     How the document arrived: `web` (web UI), `api`, `migration`, `mail`.
     """
@@ -6981,7 +6366,7 @@ class DocumentDetails(BaseModel):
     """
     The space it lies in: its members have the rights.
     """
-    access: Annotated[Literal["read", "edit"] | Unknown, Field(title="SpaceRole")]
+    access: SpaceRole
     """
     What the caller may do: `read`, or `edit` (change, confirm, move, delete); admins edit every document.
     """
@@ -6997,11 +6382,11 @@ class DocumentDetails(BaseModel):
     """
     Values by field id.
     """
-    lane: Literal["green", "yellow", "red"] | Unknown | None
+    lane: Lane | None
     """
     None while processing runs.
     """
-    first_lane: Literal["green", "yellow", "red"] | Unknown | None
+    first_lane: Lane | None
     """
     The lane the document's first processing run ended in by itself, where it first stopped: `green` went through without a review, `yellow` needed one, `red` failed. It never changes afterwards, neither by a confirmation nor by a later run. Null while the first run is still processing, and for older documents whose processing log does not tell.
     """
@@ -7034,42 +6419,7 @@ class DocumentNumberOut(BaseModel):
     licence plate); or one of another kind a person decided.
     """
 
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[str, Field(title="Value")]
     """
     Normalised, as Lekto compares it.
@@ -7078,20 +6428,9 @@ class DocumentNumberOut(BaseModel):
     """
     As the text writes it where it stands first.
     """
-    role: Annotated[
-        Literal["contact", "target", "own", "thread", "refers", "person"] | Unknown,
-        Field(title="FactRole"),
-    ]
-    """
-    What a fact is to the document that shows it (`.knowledge/architecture/fact-roles.md`).
-    """
-    origins: Annotated[
-        list[Literal["pattern", "code", "model", "person"] | Unknown], Field(title="Origins")
-    ]
-    state: Annotated[
-        Literal["found", "added", "corrected", "rejected"] | Unknown | None,
-        Field(title="FactState"),
-    ] = "found"
+    role: FactRole
+    origins: Annotated[list[FactOrigin], Field(title="Origins")]
+    state: FactState | None = "found"
     """
     As `FoundIdentifierOut.state`.
     """
@@ -7154,11 +6493,7 @@ class ExpectedOut(BaseModel):
     """
     The contract or customer number the series follows, if its documents show one.
     """
-    cadence: Annotated[
-        Literal["weekly", "monthly", "bimonthly", "quarterly", "half_yearly", "yearly", "days"]
-        | Unknown,
-        Field(title="Cadence"),
-    ]
+    cadence: Cadence
     """
     A calendar step (`weekly` to `yearly`) or `days` (see `interval_days`).
     """
@@ -7180,9 +6515,7 @@ class ExpectedOut(BaseModel):
     """
     The period the next document is for, in ISO notation (`2026-11`), where the series carries one.
     """
-    state: Annotated[
-        Literal["overdue", "soon", "later", "ended"] | Unknown, Field(title="SeriesState")
-    ]
+    state: SeriesState
     """
     `overdue` (its date and spread are over), `soon` (in the next 30 days), `later`, or `ended` (two dates missed).
     """
@@ -7197,7 +6530,7 @@ class FieldCheckOut(BaseModel):
     """
     `contact`, `document_type`, `topic`, `tags`, `document_date`, or `field:<id>`. The topic, as the tags, is never uncertain: one not set comes as a `suggestion`.
     """
-    outcome: Annotated[Literal["ok", "uncertain", "failed"] | Unknown, Field(title="Outcome")]
+    outcome: Outcome
     """
     `ok` or `uncertain`.
     """
@@ -7282,42 +6615,7 @@ class FileMetadataOut(BaseModel):
 
 
 class FoundIdentifierOut(BaseModel):
-    kind: Annotated[
-        Literal[
-            "iban",
-            "vat_id",
-            "customer_number",
-            "personnel_number",
-            "email_domain",
-            "tax_id",
-            "social_security_number",
-            "health_insurance_number",
-            "email_address",
-            "creditor_id",
-            "commercial_register",
-            "tax_number",
-            "contract_number",
-            "meter_number",
-            "mandate_reference",
-            "license_plate",
-            "invoice_number",
-            "credit_note_number",
-            "order_number",
-            "file_reference",
-            "our_reference",
-            "claim_number",
-            "ticket_number",
-            "your_reference",
-            "letter_date",
-            "child_benefit_number",
-        ]
-        | Unknown,
-        Field(title="IdentifierKind"),
-    ]
-    """
-    The kinds of identifiers, which are the kinds of facts too (`domain.document_facts`;
-    `.knowledge/architecture/fact-roles.md`).
-    """
+    kind: IdentifierKind
     value: Annotated[str, Field(title="Value")]
     """
     Normalised, as a contact keeps it.
@@ -7339,23 +6637,15 @@ class FoundIdentifierOut(BaseModel):
     """
     Where it stands in the text.
     """
-    role: Annotated[
-        Literal["contact", "target", "own", "thread", "refers", "person"] | Unknown,
-        Field(title="FactRole"),
-    ]
+    role: FactRole
     """
     What it is to the document (`contact`: points to the contact, `target`: to what a series refers to, `own`: marks the document, `thread`: joins a strand, `refers`: refers to another document, `person`: points to a person). As kept for the document; until the facts signal ran again after 0.7, the role of its kind.
     """
-    origins: Annotated[
-        list[Literal["pattern", "code", "model", "person"] | Unknown], Field(title="Origins")
-    ]
+    origins: Annotated[list[FactOrigin], Field(title="Origins")]
     """
     Where it comes from: `pattern` (the text), `code`, `model`, `person`.
     """
-    state: Annotated[
-        Literal["found", "added", "corrected", "rejected"] | Unknown | None,
-        Field(title="FactState"),
-    ] = "found"
+    state: FactState | None = "found"
     """
     `found` as the sources found it, or a person's decision: `added`, `corrected`, `rejected` (it is no fact of the document).
     """
@@ -7394,35 +6684,16 @@ class LensCreate(BaseModel):
     """
     Words.
     """
-    sort: (
-        Literal[
-            "relevance",
-            "created_at",
-            "-created_at",
-            "document_date",
-            "-document_date",
-            "title",
-            "-title",
-            "field",
-            "-field",
-        ]
-        | Unknown
-        | None
-    ) = None
+    sort: LensSort | None = None
     """
     `relevance` (only with `query`), or a key of `GET /documents`; `field` and `-field` sort by `sort_field_id` (not with `query`). None: as the list or the search sorts by default.
     """
     sort_field_id: Annotated[UUID | None, Field(title="Sort Field Id")] = None
-    grouping: Annotated[
-        Literal["none", "month", "due", "document_type", "contact"] | Unknown | None,
-        Field(title="Grouping"),
-    ] = "none"
+    grouping: Grouping | None = "none"
     """
     What the documents stand under: `month` of their document date, `due`: how soon `due_field_id` is due (overdue, within seven days, later, none), `document_type`, `contact`.
     """
-    layout: Annotated[Literal["grid", "list", "stream"] | Unknown | None, Field(title="Layout")] = (
-        "grid"
-    )
+    layout: Layout | None = "grid"
     card_field_ids: Annotated[list[UUID] | None, Field(max_length=3, title="Card Field Ids")] = None
     """
     The fields a card shows, in this order; at most 3.
@@ -7442,7 +6713,7 @@ class ListedDocument(BaseModel):
     title: Annotated[str, Field(title="Title")]
     original_filename: Annotated[str, Field(title="Original Filename")]
     media_type: Annotated[str, Field(examples=["application/pdf"], title="Media Type")]
-    channel: Annotated[Literal["web", "api", "migration", "mail"] | Unknown, Field(title="Channel")]
+    channel: Channel
     """
     How the document arrived: `web` (web UI), `api`, `migration`, `mail`.
     """
@@ -7464,7 +6735,7 @@ class ListedDocument(BaseModel):
     """
     The space it lies in: its members have the rights.
     """
-    access: Annotated[Literal["read", "edit"] | Unknown, Field(title="SpaceRole")]
+    access: SpaceRole
     """
     What the caller may do: `read`, or `edit` (change, confirm, move, delete); admins edit every document.
     """
@@ -7480,11 +6751,11 @@ class ListedDocument(BaseModel):
     """
     Values by field id.
     """
-    lane: Literal["green", "yellow", "red"] | Unknown | None
+    lane: Lane | None
     """
     None while processing runs.
     """
-    first_lane: Literal["green", "yellow", "red"] | Unknown | None
+    first_lane: Lane | None
     """
     The lane the document's first processing run ended in by itself, where it first stopped: `green` went through without a review, `yellow` needed one, `red` failed. It never changes afterwards, neither by a confirmation nor by a later run. Null while the first run is still processing, and for older documents whose processing log does not tell.
     """
@@ -7534,10 +6805,7 @@ class MailOut(BaseModel):
     """
     Bytes.
     """
-    outcome: Annotated[
-        Literal["taken", "no_rule", "nothing", "known", "too_large", "failed"] | Unknown,
-        Field(title="MailOutcome"),
-    ]
+    outcome: MailOutcome
     """
     `taken`: documents made; `nothing`: taken, nothing in it to take; `no_rule`: no rule took it and the fallback takes nothing; `known`: its Message-ID came before; `too_large`; `failed`.
     """
@@ -7612,26 +6880,13 @@ class MailboxOut(BaseModel):
     name: Annotated[str, Field(title="Name")]
     host: Annotated[str, Field(title="Host")]
     port: Annotated[int, Field(title="Port")]
-    security: Annotated[Literal["tls", "starttls", "none"] | Unknown, Field(title="MailSecurity")]
-    """
-    How the connection is secured: TLS from the start (IMAPS, port 993), TLS after the
-    greeting (STARTTLS, port 143), or none (a server in one's own network).
-    """
+    security: MailSecurity
     username: Annotated[str, Field(title="Username")]
     folders: Annotated[list[str], Field(title="Folders")]
     interval_minutes: Annotated[int, Field(title="Interval Minutes")]
-    start: Annotated[
-        Literal["since_setup", "since_date", "unread"] | Unknown, Field(title="FetchStart")
-    ]
-    """
-    Which mails a mailbox takes: those that came after it was set up, those from a day on,
-    or the unread ones (whenever they came).
-    """
+    start: FetchStart
     since: Annotated[date_aliased | None, Field(title="Since")]
-    fallback: Annotated[Literal["nothing", "everything"] | Unknown, Field(title="Fallback")]
-    """
-    What a mail no rule takes brings in: nothing, or everything (for `fallback_user_id`).
-    """
+    fallback: Fallback
     fallback_user_id: Annotated[UUID | None, Field(title="Fallback User Id")]
     body_type_id: Annotated[UUID | None, Field(title="Body Type Id")]
     enabled: Annotated[bool, Field(title="Enabled")]
@@ -7645,40 +6900,9 @@ class NodeReviewOut(BaseModel):
     The latest run of classification or field extraction by the model.
     """
 
-    node: Annotated[
-        Literal[
-            "receive",
-            "separate",
-            "ocr",
-            "pages",
-            "parse",
-            "signal_llm",
-            "signal_classifier",
-            "signal_neighbours",
-            "signal_facts",
-            "judge",
-            "fields",
-            "relate",
-            "apply_rules",
-            "file",
-        ]
-        | Unknown,
-        Field(title="Node"),
-    ]
-    """
-    The nodes of the ingest graph, in a topological order: every node comes after the nodes
-    it needs (`GRAPH`). Nodes that do not need each other run side by side.
-
-    `separate` splits a scanned stack at its separator sheets when it comes in, before anything
-    reads its pages (`services.separating`).
-
-    The signals each propose metadata from one source: the language model, the trained
-    classifier, similar confirmed documents, facts in the text (names, identifiers). `judge`
-    decides from all of them, `fields` reads the fields of the decided type, `relate` finds the
-    documents it refers to and those that refer to it (issue #145), before the rules see them.
-    """
+    node: Node
     run: Annotated[int, Field(title="Run")]
-    outcome: Annotated[Literal["ok", "uncertain", "failed"] | Unknown, Field(title="Outcome")]
+    outcome: Outcome
     reason: Annotated[str | None, Field(title="Reason")]
     reasons: Annotated[list[ReasonOut] | None, Field(title="Reasons")] = None
     """
@@ -7705,39 +6929,8 @@ class OpenNodeOut(BaseModel):
     A node that was uncertain or failed, with the fields left to decide.
     """
 
-    node: Annotated[
-        Literal[
-            "receive",
-            "separate",
-            "ocr",
-            "pages",
-            "parse",
-            "signal_llm",
-            "signal_classifier",
-            "signal_neighbours",
-            "signal_facts",
-            "judge",
-            "fields",
-            "relate",
-            "apply_rules",
-            "file",
-        ]
-        | Unknown,
-        Field(title="Node"),
-    ]
-    """
-    The nodes of the ingest graph, in a topological order: every node comes after the nodes
-    it needs (`GRAPH`). Nodes that do not need each other run side by side.
-
-    `separate` splits a scanned stack at its separator sheets when it comes in, before anything
-    reads its pages (`services.separating`).
-
-    The signals each propose metadata from one source: the language model, the trained
-    classifier, similar confirmed documents, facts in the text (names, identifiers). `judge`
-    decides from all of them, `fields` reads the fields of the decided type, `relate` finds the
-    documents it refers to and those that refer to it (issue #145), before the rules see them.
-    """
-    outcome: Annotated[Literal["ok", "uncertain", "failed"] | Unknown, Field(title="Outcome")]
+    node: Node
+    outcome: Outcome
     reason: Annotated[str | None, Field(title="Reason")]
     """
     Why, in English; several reasons joined by `; `.
@@ -7791,7 +6984,7 @@ class SearchResultPage(BaseModel):
     """
     Whether the meaning took part (`mode` is `hybrid`). False without embeddings, with `semantic_ratio=0`, or when the embedding service did not answer in time: the result is by words only then.
     """
-    mode: Annotated[Literal["hybrid", "words"] | Unknown, Field(title="SearchMode")]
+    mode: SearchMode
     """
     `hybrid`: by words and meaning; `words`: by words alone, the fallback that always stays.
     """
@@ -7983,10 +7176,7 @@ class FactsOut(BaseModel):
 
 class InboxItemOut(BaseModel):
     document: DocumentDetails
-    tab: Annotated[
-        Literal["new", "review", "intervene", "processing", "done"] | Unknown,
-        Field(title="InboxTab"),
-    ]
+    tab: InboxTab
     """
     Where it stands: `new` (green by itself, not seen by the caller since it became new), `review` (yellow), `intervene` (red), `processing` (no lane yet), `done` (left the caller's inbox in the last 14 days).
     """
@@ -8009,10 +7199,7 @@ class AllGroupConditionSchemaInput(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    all: Annotated[
-        list[ConditionSchema | AllGroupConditionSchemaInput | AnyGroupConditionSchemaInput],
-        Field(max_length=50, min_length=1),
-    ]
+    all: GroupItemsConditionSchemaInput
     not_: Annotated[bool | None, Field(alias="not", title="Not")] = False
 
 
@@ -8020,10 +7207,7 @@ class AllGroupConditionSchemaOutput(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    all: Annotated[
-        list[ConditionSchema | AllGroupConditionSchemaOutput | AnyGroupConditionSchemaOutput],
-        Field(max_length=50, min_length=1),
-    ]
+    all: GroupItemsConditionSchemaOutput
     not_: Annotated[bool | None, Field(alias="not", title="Not")] = False
 
 
@@ -8031,10 +7215,7 @@ class AllGroupMailConditionBodyInput(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    all: Annotated[
-        list[MailConditionBody | AllGroupMailConditionBodyInput | AnyGroupMailConditionBodyInput],
-        Field(max_length=50, min_length=1),
-    ]
+    all: GroupItemsMailConditionBodyInput
     not_: Annotated[bool | None, Field(alias="not", title="Not")] = False
 
 
@@ -8042,10 +7223,7 @@ class AllGroupMailConditionBodyOutput(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    all: Annotated[
-        list[MailConditionBody | AllGroupMailConditionBodyOutput | AnyGroupMailConditionBodyOutput],
-        Field(max_length=50, min_length=1),
-    ]
+    all: GroupItemsMailConditionBodyOutput
     not_: Annotated[bool | None, Field(alias="not", title="Not")] = False
 
 
@@ -8053,10 +7231,7 @@ class AnyGroupConditionSchemaInput(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    any: Annotated[
-        list[ConditionSchema | AllGroupConditionSchemaInput | AnyGroupConditionSchemaInput],
-        Field(max_length=50, min_length=1),
-    ]
+    any: GroupItemsConditionSchemaInput
     not_: Annotated[bool | None, Field(alias="not", title="Not")] = False
 
 
@@ -8064,10 +7239,7 @@ class AnyGroupConditionSchemaOutput(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    any: Annotated[
-        list[ConditionSchema | AllGroupConditionSchemaOutput | AnyGroupConditionSchemaOutput],
-        Field(max_length=50, min_length=1),
-    ]
+    any: GroupItemsConditionSchemaOutput
     not_: Annotated[bool | None, Field(alias="not", title="Not")] = False
 
 
@@ -8075,10 +7247,7 @@ class AnyGroupMailConditionBodyInput(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    any: Annotated[
-        list[MailConditionBody | AllGroupMailConditionBodyInput | AnyGroupMailConditionBodyInput],
-        Field(max_length=50, min_length=1),
-    ]
+    any: GroupItemsMailConditionBodyInput
     not_: Annotated[bool | None, Field(alias="not", title="Not")] = False
 
 
@@ -8086,10 +7255,7 @@ class AnyGroupMailConditionBodyOutput(BaseModel):
     model_config = ConfigDict(
         extra="forbid",
     )
-    any: Annotated[
-        list[MailConditionBody | AllGroupMailConditionBodyOutput | AnyGroupMailConditionBodyOutput],
-        Field(max_length=50, min_length=1),
-    ]
+    any: GroupItemsMailConditionBodyOutput
     not_: Annotated[bool | None, Field(alias="not", title="Not")] = False
 
 
@@ -8119,6 +7285,30 @@ class ConditionStepActionOutput(BaseModel):
     """
 
 
+type GroupItemsConditionSchemaInput = Annotated[
+    list[ConditionSchema | AllGroupConditionSchemaInput | AnyGroupConditionSchemaInput],
+    Field(max_length=50, min_length=1),
+]
+
+
+type GroupItemsConditionSchemaOutput = Annotated[
+    list[ConditionSchema | AllGroupConditionSchemaOutput | AnyGroupConditionSchemaOutput],
+    Field(max_length=50, min_length=1),
+]
+
+
+type GroupItemsMailConditionBodyInput = Annotated[
+    list[MailConditionBody | AllGroupMailConditionBodyInput | AnyGroupMailConditionBodyInput],
+    Field(max_length=50, min_length=1),
+]
+
+
+type GroupItemsMailConditionBodyOutput = Annotated[
+    list[MailConditionBody | AllGroupMailConditionBodyOutput | AnyGroupMailConditionBodyOutput],
+    Field(max_length=50, min_length=1),
+]
+
+
 class MailRuleCreate(BaseModel):
     """
     A new mail rule of a mailbox; what is left out gets the default (priority 100, no
@@ -8139,7 +7329,7 @@ class MailRuleCreate(BaseModel):
     """
     A tree as a document rule's: a group of `all` or `any`, `not` turns it around; its items are conditions or groups again, nested at most 5 deep, at most 50 conditions. Fields: `sender`, `recipient` (To or Cc), `to`, `cc` and `subject` with `contains`, `is`, `starts_with`, `ends_with` (an address or a name, regardless of case); `folder` with `is`; `attachments` with `present` or `missing` (attachments Lekto takes); `importance` with `is` (`high`, `normal`, `low`); `keyword` with `contains` (an IMAP keyword, regardless of case), `present` or `missing`; `flag` with `present`, `missing` or `is` (a colour: `red`, `orange`, `yellow`, `green`, `blue`, `purple`, `gray`). Null: every mail.
     """
-    parts: Literal["all", "attachments", "text", "nothing"] | Unknown | None = None
+    parts: MailParts | None = None
     """
     What it takes: `all` (the attachments and the text), `attachments`, `text`, `nothing`.
     """
@@ -8183,7 +7373,7 @@ class MailRuleDryRun(BaseModel):
     """
     A tree as a document rule's: a group of `all` or `any`, `not` turns it around; its items are conditions or groups again, nested at most 5 deep, at most 50 conditions. Fields: `sender`, `recipient` (To or Cc), `to`, `cc` and `subject` with `contains`, `is`, `starts_with`, `ends_with` (an address or a name, regardless of case); `folder` with `is`; `attachments` with `present` or `missing` (attachments Lekto takes); `importance` with `is` (`high`, `normal`, `low`); `keyword` with `contains` (an IMAP keyword, regardless of case), `present` or `missing`; `flag` with `present`, `missing` or `is` (a colour: `red`, `orange`, `yellow`, `green`, `blue`, `purple`, `gray`). Null: every mail.
     """
-    parts: Literal["all", "attachments", "text", "nothing"] | Unknown | None = None
+    parts: MailParts | None = None
     """
     What it takes: `all` (the attachments and the text), `attachments`, `text`, `nothing`.
     """
@@ -8224,12 +7414,7 @@ class MailRuleOut(BaseModel):
     """
     A tree as a document rule's: a group of `all` or `any`, `not` turns it around; its items are conditions or groups again, nested at most 5 deep, at most 50 conditions. Fields: `sender`, `recipient` (To or Cc), `to`, `cc` and `subject` with `contains`, `is`, `starts_with`, `ends_with` (an address or a name, regardless of case); `folder` with `is`; `attachments` with `present` or `missing` (attachments Lekto takes); `importance` with `is` (`high`, `normal`, `low`); `keyword` with `contains` (an IMAP keyword, regardless of case), `present` or `missing`; `flag` with `present`, `missing` or `is` (a colour: `red`, `orange`, `yellow`, `green`, `blue`, `purple`, `gray`). Null: every mail.
     """
-    parts: Annotated[
-        Literal["all", "attachments", "text", "nothing"] | Unknown, Field(title="MailParts")
-    ]
-    """
-    What of a mail a rule takes.
-    """
+    parts: MailParts
     user_id: Annotated[UUID | None, Field(title="User Id")]
     space_id: Annotated[UUID | None, Field(title="Space Id")]
     text_type_id: Annotated[UUID | None, Field(title="Text Type Id")]
@@ -8267,7 +7452,7 @@ class MailRulePatch(BaseModel):
     """
     A tree as a document rule's: a group of `all` or `any`, `not` turns it around; its items are conditions or groups again, nested at most 5 deep, at most 50 conditions. Fields: `sender`, `recipient` (To or Cc), `to`, `cc` and `subject` with `contains`, `is`, `starts_with`, `ends_with` (an address or a name, regardless of case); `folder` with `is`; `attachments` with `present` or `missing` (attachments Lekto takes); `importance` with `is` (`high`, `normal`, `low`); `keyword` with `contains` (an IMAP keyword, regardless of case), `present` or `missing`; `flag` with `present`, `missing` or `is` (a colour: `red`, `orange`, `yellow`, `green`, `blue`, `purple`, `gray`). Null: every mail.
     """
-    parts: Literal["all", "attachments", "text", "nothing"] | Unknown | None = None
+    parts: MailParts | None = None
     """
     What it takes: `all` (the attachments and the text), `attachments`, `text`, `nothing`.
     """
@@ -8291,6 +7476,23 @@ class MailRulePatch(BaseModel):
     name: Annotated[Name4 | None, Field(title="Name")] = None
 
 
+type Actions = Annotated[
+    SetSpaceAction
+    | SetContactAction
+    | SetDocumentTypeAction
+    | SetTopicAction
+    | SetTitleAction
+    | AddTagsAction
+    | RemoveTagsAction
+    | SetFieldAction
+    | ForceReviewAction
+    | SendWebhookAction
+    | AskWebhookAction
+    | ConditionStepActionInput,
+    Field(discriminator="type"),
+]
+
+
 class RuleChange(BaseModel):
     """
     The new content of a rule, and, with `scope`, where it moves.
@@ -8305,8 +7507,7 @@ class RuleChange(BaseModel):
     Higher first; the order of the log and of suggestions. Conflicts are never decided by priority.
     """
     triggers: Annotated[
-        list[Literal["ingest", "change"] | Unknown] | None,
-        Field(max_length=2, min_length=1, title="Triggers"),
+        list[Trigger] | None, Field(max_length=2, min_length=1, title="Triggers")
     ] = None
     """
     `ingest`: when a document arrives; `change`: when a person changes it. A rule with a step that asks a webhook: `ingest` only.
@@ -8317,30 +7518,11 @@ class RuleChange(BaseModel):
     """
     Nested at most 5 deep, at most 50 conditions.
     """
-    actions: Annotated[
-        list[
-            Annotated[
-                SetSpaceAction
-                | SetContactAction
-                | SetDocumentTypeAction
-                | SetTopicAction
-                | SetTitleAction
-                | AddTagsAction
-                | RemoveTagsAction
-                | SetFieldAction
-                | ForceReviewAction
-                | SendWebhookAction
-                | AskWebhookAction
-                | ConditionStepActionInput,
-                Field(discriminator="type"),
-            ]
-        ],
-        Field(max_length=20, min_length=1, title="Actions"),
-    ]
+    actions: Annotated[list[Actions], Field(max_length=20, min_length=1, title="Actions")]
     """
     The steps, in order: actions, steps that ask a webhook and condition steps. Each rule works on its own copy of the document and sees what its own steps before set; the actions of all rules are combined at the end.
     """
-    scope: Literal["global", "space"] | Unknown | None = None
+    scope: RuleScope | None = None
     """
     Moves the rule: `space`, into `space_id` (one the caller edits; default: the caller's personal space); `global` (admins). Without it the rule stays where it is.
     """
@@ -8364,8 +7546,7 @@ class RuleCreate(BaseModel):
     Higher first; the order of the log and of suggestions. Conflicts are never decided by priority.
     """
     triggers: Annotated[
-        list[Literal["ingest", "change"] | Unknown] | None,
-        Field(max_length=2, min_length=1, title="Triggers"),
+        list[Trigger] | None, Field(max_length=2, min_length=1, title="Triggers")
     ] = None
     """
     `ingest`: when a document arrives; `change`: when a person changes it. A rule with a step that asks a webhook: `ingest` only.
@@ -8376,32 +7557,11 @@ class RuleCreate(BaseModel):
     """
     Nested at most 5 deep, at most 50 conditions.
     """
-    actions: Annotated[
-        list[
-            Annotated[
-                SetSpaceAction
-                | SetContactAction
-                | SetDocumentTypeAction
-                | SetTopicAction
-                | SetTitleAction
-                | AddTagsAction
-                | RemoveTagsAction
-                | SetFieldAction
-                | ForceReviewAction
-                | SendWebhookAction
-                | AskWebhookAction
-                | ConditionStepActionInput,
-                Field(discriminator="type"),
-            ]
-        ],
-        Field(max_length=20, min_length=1, title="Actions"),
-    ]
+    actions: Annotated[list[Actions], Field(max_length=20, min_length=1, title="Actions")]
     """
     The steps, in order: actions, steps that ask a webhook and condition steps. Each rule works on its own copy of the document and sees what its own steps before set; the actions of all rules are combined at the end.
     """
-    scope: Annotated[Literal["global", "space"] | Unknown | None, Field(title="RuleScope")] = (
-        "space"
-    )
+    scope: RuleScope | None = "space"
     """
     `space`: a rule of the space `space_id` (one the caller edits; default: the caller's personal space), for the documents in it. `global` (admins): for every document.
     """
@@ -8415,35 +7575,33 @@ class RuleCreate(BaseModel):
     """
 
 
+type Actions2 = Annotated[
+    SetSpaceAction
+    | SetContactAction
+    | SetDocumentTypeAction
+    | SetTopicAction
+    | SetTitleAction
+    | AddTagsAction
+    | RemoveTagsAction
+    | SetFieldAction
+    | ForceReviewAction
+    | SendWebhookAction
+    | AskWebhookAction
+    | ConditionStepActionOutput,
+    Field(discriminator="type"),
+]
+
+
 class RuleOut(BaseModel):
     name: Annotated[str, Field(title="Name")]
     priority: Annotated[int, Field(title="Priority")]
-    triggers: Annotated[list[Literal["ingest", "change"] | Unknown], Field(title="Triggers")]
+    triggers: Annotated[list[Trigger], Field(title="Triggers")]
     conditions: Annotated[
         AllGroupConditionSchemaOutput | AnyGroupConditionSchemaOutput, Field(title="Conditions")
     ]
-    actions: Annotated[
-        list[
-            Annotated[
-                SetSpaceAction
-                | SetContactAction
-                | SetDocumentTypeAction
-                | SetTopicAction
-                | SetTitleAction
-                | AddTagsAction
-                | RemoveTagsAction
-                | SetFieldAction
-                | ForceReviewAction
-                | SendWebhookAction
-                | AskWebhookAction
-                | ConditionStepActionOutput,
-                Field(discriminator="type"),
-            ]
-        ],
-        Field(title="Actions"),
-    ]
+    actions: Annotated[list[Actions2], Field(title="Actions")]
     id: Annotated[UUID, Field(title="Id")]
-    scope: Annotated[Literal["global", "space"] | Unknown, Field(title="RuleScope")]
+    scope: RuleScope
     space_id: Annotated[UUID | None, Field(title="Space Id")]
     """
     The space the rule belongs to and acts in; None for global rules.
@@ -8472,36 +7630,17 @@ class RuleOut(BaseModel):
 class RuleVersionOut(BaseModel):
     name: Annotated[str, Field(title="Name")]
     priority: Annotated[int, Field(title="Priority")]
-    triggers: Annotated[list[Literal["ingest", "change"] | Unknown], Field(title="Triggers")]
+    triggers: Annotated[list[Trigger], Field(title="Triggers")]
     conditions: Annotated[
         AllGroupConditionSchemaOutput | AnyGroupConditionSchemaOutput, Field(title="Conditions")
     ]
-    actions: Annotated[
-        list[
-            Annotated[
-                SetSpaceAction
-                | SetContactAction
-                | SetDocumentTypeAction
-                | SetTopicAction
-                | SetTitleAction
-                | AddTagsAction
-                | RemoveTagsAction
-                | SetFieldAction
-                | ForceReviewAction
-                | SendWebhookAction
-                | AskWebhookAction
-                | ConditionStepActionOutput,
-                Field(discriminator="type"),
-            ]
-        ],
-        Field(title="Actions"),
-    ]
+    actions: Annotated[list[Actions2], Field(title="Actions")]
     rule_id: Annotated[UUID, Field(title="Rule Id")]
     version: Annotated[int, Field(title="Version")]
     """
     Counts from 1; every change of the content or of the space adds one.
     """
-    scope: Annotated[Literal["global", "space"] | Unknown, Field(title="RuleScope")]
+    scope: RuleScope
     """
     Where the rule belonged with this version.
     """

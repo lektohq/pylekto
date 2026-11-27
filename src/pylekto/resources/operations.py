@@ -31,7 +31,8 @@ if TYPE_CHECKING:
     import builtins
     from collections.abc import AsyncIterator, Sequence
 
-    from pylekto.types import Channel, Id, IdentifierKind, JobState, Period
+    from pylekto.models import Channel, IdentifierKind, JobState, Period
+    from pylekto.types import Id
 
 _DEVICES = TypeAdapter(list[PushDeviceOut])
 _MODELS = TypeAdapter(list[ClassifierModelOut])

@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     import builtins
     from collections.abc import AsyncIterator
 
-    from pylekto.types import InboxTab
+    from pylekto.models import InboxTab
 
 _EXPECTED = TypeAdapter(list[ExpectedOut])
 

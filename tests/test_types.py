@@ -2,25 +2,9 @@
 
 import json
 from pathlib import Path
-from typing import get_args, get_type_hints
+from typing import get_type_hints
 
-from pylekto import Unknown
-from pylekto.types import (
-    Channel,
-    DeliveryOutcome,
-    DocumentFilter,
-    EditPart,
-    IdentifierKind,
-    InboxTab,
-    JobState,
-    ListedFilter,
-    MailOutcome,
-    OpenSource,
-    PagePick,
-    Period,
-    RuleScope,
-    TagScope,
-)
+from pylekto.types import DocumentFilter, EditPart, ListedFilter, PagePick
 
 ROOT = Path(__file__).resolve().parent.parent
 DESCRIPTION = json.loads((ROOT / "openapi.json").read_text(encoding="utf-8"))
@@ -58,23 +42,3 @@ def test_edit_parts_are_the_ones_of_the_form() -> None:
     part = form["multipart/form-data"]["schema"]["properties"]["parts"]["contentSchema"]["items"]
     assert set(get_type_hints(EditPart)) == set(part["properties"])
     assert set(get_type_hints(PagePick)) == set(part["properties"]["pages"]["items"]["properties"])
-
-
-def test_literals_are_the_descriptions_choices() -> None:
-    """The literal types written by hand hold the choices of the description, open as theirs."""
-    schemas = DESCRIPTION["components"]["schemas"]
-    for alias, schema in [
-        (IdentifierKind, "IdentifierKind"),
-        (TagScope, "TagScope"),
-        (OpenSource, "OpenSource"),
-        (RuleScope, "RuleScope"),
-        (InboxTab, "InboxTab"),
-        (DeliveryOutcome, "DeliveryOutcome"),
-        (MailOutcome, "MailOutcome"),
-        (JobState, "JobState"),
-        (Channel, "Channel"),
-        (Period, "Period"),
-    ]:
-        literal, unknown = get_args(alias.__value__)
-        assert unknown is Unknown
-        assert list(get_args(literal)) == schemas[schema]["enum"]

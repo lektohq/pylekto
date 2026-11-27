@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     import builtins
     from collections.abc import AsyncIterator
 
-    from pylekto.types import IdentifierKind, OpenSource
+    from pylekto.models import IdentifierKind, OpenSource
 
 _OUTCOMES = TypeAdapter(list[OutcomeOut])
 

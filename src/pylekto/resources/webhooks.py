@@ -20,7 +20,8 @@ if TYPE_CHECKING:
     import builtins
     from collections.abc import AsyncIterator, Sequence
 
-    from pylekto.types import DeliveryOutcome, Id
+    from pylekto.models import DeliveryOutcome
+    from pylekto.types import Id
 
 _WEBHOOKS = TypeAdapter(list[WebhookOut])
 

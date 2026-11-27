@@ -41,7 +41,11 @@ def test_versions_are_the_descriptions() -> None:
 
 
 def test_every_model_builds() -> None:
-    """Every generated model is complete: each name in its annotations resolves at run time."""
+    """Every generated model is complete: each name in its annotations resolves at run time.
+
+    A model defined before an alias it reaches (the items of a group of conditions) completes
+    on its first use, which is what ``model_rebuild`` does here.
+    """
     built = [
         value
         for value in vars(models).values()
@@ -50,4 +54,6 @@ def test_every_model_builds() -> None:
         and value.__module__ == models.__name__
     ]
     assert len(built) > 100
+    for model in built:
+        model.model_rebuild()
     assert [model.__name__ for model in built if not model.__pydantic_complete__] == []

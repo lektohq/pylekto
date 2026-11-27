@@ -27,7 +27,8 @@ from pylekto.resources._base import Resource
 if TYPE_CHECKING:
     import builtins
 
-    from pylekto.types import Id, TagScope
+    from pylekto.models import TagScope
+    from pylekto.types import Id
 
 _CONTACTS = TypeAdapter(list[ContactOut])
 _DOCUMENT_TYPES = TypeAdapter(list[DocumentTypeOut])

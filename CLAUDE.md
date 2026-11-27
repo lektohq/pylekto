@@ -65,9 +65,10 @@ tag.
   value (`SearchIn.q`, `MoveRequest.space_id`, `RelateIn.document_id`) is passed as that value.
   Path ids are named for what they are (`document_id`, not `id`) and take `UUID` or `str`
   (`types.Id`). Query filters the description gives no model are `TypedDict`s in `types.py`
-  (`DocumentFilter`), taken as keyword arguments, and so are choices the generator wrote inline
-  (`IdentifierKind`, `TagScope`, `OpenSource`); tests keep them equal to the description's. Form fields always go as parts of a multipart body (`(None, text)`): Lekto reads
-  them nowhere else.
+  (`DocumentFilter`), taken as keyword arguments; tests keep them equal to the description's. A
+  choice the description names (`IdentifierKind`, `TagScope`, `JobState`) is a type alias in
+  `models.py`, written once, for requests and answers alike. Form fields always go as parts of a
+  multipart body (`(None, text)`): Lekto reads them nowhere else.
 - What Lekto sends to a webhook is recorded as it came (`tests/snapshot/webhooks/`, with the secret
   of a webhook deleted at the end): `record_snapshot.py --receiver <url Lekto reaches>
   --receiver-log <file a receiving server writes>`; the tests verify Lekto's real signatures.
@@ -77,7 +78,7 @@ tag.
   request that triggers events).
 - `models.py` is generated; a test fails if it differs from what `script/generate_models.py`
   writes from `openapi.json`. Ruff and typos leave it out; mypy checks it.
-- Every choice (an `enum` of strings, in the models and in `types.py`) is `Literal[...] | Unknown`:
+- Every choice (an `enum` of strings, in the models) is `Literal[...] | Unknown`:
   a value a newer Lekto sends and pylekto does not know reads as `pylekto.Unknown` (a `str`)
   instead of failing, and goes back to Lekto as a filter. A plain `str` is no `Unknown`, so type
   checkers keep requests to the known values. Unions with a discriminator stay closed.

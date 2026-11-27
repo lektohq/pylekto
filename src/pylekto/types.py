@@ -9,7 +9,6 @@ from datetime import date
 from typing import Literal, NotRequired, TypedDict
 from uuid import UUID
 
-from pylekto._unknown import Unknown
 from pylekto.models import LaneFilter
 
 # The id of an object: a UUID, or its text.
@@ -87,64 +86,3 @@ class EditPart(TypedDict):
     """Its pages in their order; each page goes in one part at most."""
     replaces: NotRequired[bool]
     """It becomes the document's next version; every other part becomes a new document."""
-
-
-# The kind of an identifier, such as an IBAN or a customer number.
-type IdentifierKind = (
-    Literal[
-        "iban",
-        "vat_id",
-        "customer_number",
-        "personnel_number",
-        "email_domain",
-        "tax_id",
-        "social_security_number",
-        "health_insurance_number",
-        "email_address",
-        "creditor_id",
-        "commercial_register",
-        "tax_number",
-        "contract_number",
-        "meter_number",
-        "mandate_reference",
-        "license_plate",
-        "invoice_number",
-        "credit_note_number",
-        "order_number",
-        "file_reference",
-        "our_reference",
-        "claim_number",
-        "ticket_number",
-        "your_reference",
-        "letter_date",
-        "child_benefit_number",
-    ]
-    | Unknown
-)
-
-# What a tag is for.
-type TagScope = Literal["document", "contact", "document_type", "topic"] | Unknown
-
-# Where an open identifier comes from: learned from confirmed documents, or suggested.
-type OpenSource = Literal["learned", "suggested"] | Unknown
-
-# Whether a rule acts in every space or in one.
-type RuleScope = Literal["global", "space"] | Unknown
-
-# A tab of the inbox.
-type InboxTab = Literal["new", "review", "intervene", "processing", "done"] | Unknown
-
-# The outcome of a webhook delivery.
-type DeliveryOutcome = Literal["delivered", "retrying", "gave_up", "dropped"] | Unknown
-
-# What became of a mail a mailbox fetched.
-type MailOutcome = Literal["taken", "no_rule", "nothing", "known", "too_large", "failed"] | Unknown
-
-# The state of a job.
-type JobState = Literal["running", "due", "planned", "done", "failed"] | Unknown
-
-# The way a document came in.
-type Channel = Literal["web", "api", "migration", "mail"] | Unknown
-
-# The time an automation report looks back on.
-type Period = Literal["30d", "12m", "all"] | Unknown

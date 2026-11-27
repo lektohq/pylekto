@@ -124,7 +124,6 @@ use-standard-collections = true
 use-union-operator = true
 field-constraints = true
 enum-field-as-literal = "all"
-collapse-root-models = true
 use-type-alias = true
 use-schema-description = true
 use-field-description = true

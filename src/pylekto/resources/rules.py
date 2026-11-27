@@ -24,7 +24,8 @@ from pylekto.resources._base import Resource
 if TYPE_CHECKING:
     import builtins
 
-    from pylekto.types import Id, RuleScope
+    from pylekto.models import RuleScope
+    from pylekto.types import Id
 
 _RULES = TypeAdapter(list[RuleOut])
 _VERSIONS = TypeAdapter(list[RuleVersionOut])

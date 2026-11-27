@@ -26,7 +26,8 @@ if TYPE_CHECKING:
     import builtins
     from collections.abc import AsyncIterator, Sequence
 
-    from pylekto.types import Id, MailOutcome
+    from pylekto.models import MailOutcome
+    from pylekto.types import Id
 
 _MAILBOXES = TypeAdapter(list[MailboxOut])
 _MAIL_RULES = TypeAdapter(list[MailRuleOut])

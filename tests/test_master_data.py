@@ -15,6 +15,7 @@ from pylekto.models import (
     FieldCreate,
     FieldPatch,
     IdentifierIn,
+    IdentifierKind,
     MemberIn,
     OpenDecisionsIn,
     ProfilePatch,
@@ -26,7 +27,6 @@ from pylekto.models import (
     UserCreate,
     UserPatch,
 )
-from pylekto.types import IdentifierKind
 
 from .conftest import Api, Snapshot, assert_sent, expected, plain
 

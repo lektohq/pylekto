@@ -7,7 +7,7 @@ from pylekto.models import PlacesOut, RefIn, RefOut
 from pylekto.resources._base import Resource
 
 if TYPE_CHECKING:
-    from pylekto.types import IdentifierKind
+    from pylekto.models import IdentifierKind
 
 
 class IdentifiersResource(Resource):
