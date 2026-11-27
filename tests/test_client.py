@@ -79,9 +79,12 @@ async def test_a_lekto_without_an_api_version_warns(api: Api, lekto: LektoClient
         await lekto.connect()
 
 
-async def test_an_answer_that_is_no_json_warns(api: Api, lekto: LektoClient) -> None:
-    """A page that is no JSON (a proxy's) names no API version either."""
-    api.answer("GET", "/auth/me", content=b"<html>Muster Proxy</html>")
+@pytest.mark.parametrize("content", [b"<html>Muster Proxy</html>", b'["Muster Proxy"]'])
+async def test_an_answer_that_is_no_object_warns(
+    api: Api, lekto: LektoClient, content: bytes
+) -> None:
+    """A page that is no JSON (a proxy's), or no object, names no API version either."""
+    api.answer("GET", "/auth/me", content=content)
     with (
         pytest.warns(LektoVersionWarning, match=r"^Lekto answers with no API version"),
         pytest.raises(LektoResponseError),
