@@ -1,6 +1,6 @@
 """``/webhooks``: the endpoints Lekto tells about events and asks for tasks."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Unpack
 
 from pydantic import TypeAdapter
 
@@ -18,10 +18,9 @@ from pylekto.resources._base import Resource
 
 if TYPE_CHECKING:
     import builtins
-    from collections.abc import AsyncIterator, Sequence
+    from collections.abc import AsyncIterator
 
-    from pylekto.models import DeliveryOutcome
-    from pylekto.types import Id
+    from pylekto.types import DeliveryFilter, Id
 
 _WEBHOOKS = TypeAdapter(list[WebhookOut])
 
@@ -150,17 +149,15 @@ class WebhooksResource(Resource):
         self,
         webhook_id: Id,
         *,
-        outcome: Sequence[DeliveryOutcome] | None = None,
-        event_type: str | None = None,
         page_size: int | None = None,
+        **filters: Unpack[DeliveryFilter],
     ) -> AsyncIterator[DeliveryOut]:
         """Iterate over the delivery log of a webhook, page after page.
 
         Args:
             webhook_id: The webhook.
-            outcome: Only deliveries with these outcomes.
-            event_type: Only deliveries of this event.
             page_size: How many deliveries each request fetches.
+            **filters: Which deliveries (:class:`pylekto.types.DeliveryFilter`).
 
         Example::
 
@@ -170,13 +167,7 @@ class WebhooksResource(Resource):
         """
 
         async def fetch(offset: int) -> DeliveryPageOut:
-            return await self.deliveries_page(
-                webhook_id,
-                outcome=outcome,
-                event_type=event_type,
-                offset=offset,
-                limit=page_size,
-            )
+            return await self.deliveries_page(webhook_id, offset=offset, limit=page_size, **filters)
 
         return offset_items(fetch)
 
@@ -184,26 +175,24 @@ class WebhooksResource(Resource):
         self,
         webhook_id: Id,
         *,
-        outcome: Sequence[DeliveryOutcome] | None = None,
-        event_type: str | None = None,
         offset: int | None = None,
         limit: int | None = None,
+        **filters: Unpack[DeliveryFilter],
     ) -> DeliveryPageOut:
         """Return one page of the delivery log of a webhook.
 
         Args:
             webhook_id: The webhook.
-            outcome: Only deliveries with these outcomes.
-            event_type: Only deliveries of this event.
             offset: Skip so many deliveries.
             limit: How many deliveries the page holds at most.
+            **filters: Which deliveries (:class:`pylekto.types.DeliveryFilter`).
 
         Example::
 
             page = await lekto.webhooks.deliveries_page(webhook_id, limit=20)
 
         """
-        params = query(outcome=outcome, event_type=event_type, offset=offset, limit=limit)
+        params = query(offset=offset, limit=limit, **filters)
         return await self._http.get(
             t"/webhooks/{webhook_id}/deliveries", DeliveryPageOut, params=params
         )

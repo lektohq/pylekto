@@ -9,7 +9,17 @@ from datetime import date
 from typing import Literal, NotRequired, TypedDict
 from uuid import UUID
 
-from pylekto.models import LaneFilter
+from pylekto.models import (
+    Channel,
+    DeliveryOutcome,
+    IdentifierKind,
+    InboxTab,
+    JobState,
+    LaneFilter,
+    MailOutcome,
+    OpenSource,
+    Period,
+)
 
 # The id of an object: a UUID, or its text.
 type Id = UUID | str
@@ -65,6 +75,118 @@ class ListedFilter(DocumentFilter, total=False):
     ``in_inbox`` marks them and ``GET /inbox/summary`` counts them: in processing, to review, to
     intervene, or new and not seen by the caller since; in the spaces the caller edits, with
     ``all_users`` in every user's inbox, with the caller's own seen marks."""
+
+
+class InboxFilter(TypedDict, total=False):
+    """Which documents of the inbox a list takes.
+
+    Example::
+
+        async for item in lekto.inbox.list(tab="review", all_users=True):
+            print(item.document.title)
+
+    """
+
+    tab: InboxTab
+    """The tab; default: everything open."""
+    all_users: bool
+    """Every user's inbox (admins)."""
+
+
+class OpenIdentifierFilter(TypedDict, total=False):
+    """Which open identifiers a list or a search takes.
+
+    Example::
+
+        page = await lekto.open_identifiers.page(kind="iban", recommended=True)
+
+    """
+
+    source: OpenSource
+    """Only those learned from confirmed documents, or only suggested ones."""
+    kind: IdentifierKind
+    """Only identifiers of this kind."""
+    recommended: bool
+    """Only those their documents recommend for a contact."""
+
+
+class JobFilter(TypedDict, total=False):
+    """Which jobs a list takes.
+
+    Example::
+
+        async for job in lekto.jobs.list(state=["failed"], kind="pipeline.node"):
+            print(job.error)
+
+    """
+
+    state: Sequence[JobState]
+    """Only jobs in these states."""
+    kind: str
+    """Only jobs of this kind, such as ``pipeline.node``."""
+
+
+class MailFilter(TypedDict, total=False):
+    """Which mails of a mailbox's log a list takes.
+
+    Example::
+
+        page = await lekto.mailboxes.mails_page(mailbox_id, outcome=["failed"])
+
+    """
+
+    outcome: Sequence[MailOutcome]
+    """Only mails with these outcomes."""
+    rule_id: Id
+    """Only mails this mail rule took."""
+
+
+class DeliveryFilter(TypedDict, total=False):
+    """Which deliveries of a webhook's log a list takes.
+
+    Example::
+
+        page = await lekto.webhooks.deliveries_page(webhook_id, outcome=["gave_up"])
+
+    """
+
+    outcome: Sequence[DeliveryOutcome]
+    """Only deliveries with these outcomes."""
+    event_type: str
+    """Only deliveries of this event."""
+
+
+class AutomationFilter(TypedDict, total=False):
+    """Which documents a report of the automation looks at.
+
+    Example::
+
+        report = await lekto.automation.get(channel=["mail"], period="30d", tz="Europe/Berlin")
+
+    """
+
+    channel: Sequence[Channel]
+    """Only documents that came in these ways."""
+    period: Period
+    """The time to look back on."""
+    tz: str
+    """The IANA time zone the days and months begin in."""
+
+
+class DocumentCounts(TypedDict, total=False):
+    """Whether a list of master data counts the documents of each item.
+
+    Example::
+
+        for contact in await lekto.contacts.list(document_counts=True):
+            print(contact.name, contact.document_count)
+
+    """
+
+    document_counts: bool
+    """Count the documents of each item."""
+    all_users: bool
+    """Count every user's documents, not only the caller's reach (admins)."""
 
 
 class PagePick(TypedDict):

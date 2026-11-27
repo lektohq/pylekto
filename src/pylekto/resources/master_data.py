@@ -1,6 +1,6 @@
 """The master data: contacts, document types, tags and fields (changed by admins)."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Unpack
 
 from pydantic import TypeAdapter
 
@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     import builtins
 
     from pylekto.models import TagScope
-    from pylekto.types import Id
+    from pylekto.types import DocumentCounts, Id
 
 _CONTACTS = TypeAdapter(list[ContactOut])
 _DOCUMENT_TYPES = TypeAdapter(list[DocumentTypeOut])
@@ -39,14 +39,11 @@ _FIELDS = TypeAdapter(list[FieldOut])
 class ContactsResource(Resource):
     """The contacts: who sends documents, with aliases, identifiers and logos."""
 
-    async def list(
-        self, *, document_counts: bool | None = None, all_users: bool | None = None
-    ) -> builtins.list[ContactOut]:
+    async def list(self, **counts: Unpack[DocumentCounts]) -> builtins.list[ContactOut]:
         """Return every contact.
 
         Args:
-            document_counts: Count each contact's documents.
-            all_users: Count every user's documents, not only the caller's reach (admins).
+            **counts: Whether to count each one's documents (:class:`pylekto.types.DocumentCounts`).
 
         Example::
 
@@ -54,7 +51,7 @@ class ContactsResource(Resource):
                 print(contact.name, contact.document_count)
 
         """
-        params = query(document_counts=document_counts, all_users=all_users)
+        params = query(**counts)
         return await self._http.call_as("GET", "/contacts", _CONTACTS, params=params)
 
     async def create(self, contact: ContactCreate) -> ContactOut:
@@ -203,21 +200,18 @@ class ContactsResource(Resource):
 class DocumentTypesResource(Resource):
     """The document types, their title patterns and their fields."""
 
-    async def list(
-        self, *, document_counts: bool | None = None, all_users: bool | None = None
-    ) -> builtins.list[DocumentTypeOut]:
+    async def list(self, **counts: Unpack[DocumentCounts]) -> builtins.list[DocumentTypeOut]:
         """Return every document type.
 
         Args:
-            document_counts: Count each type's documents.
-            all_users: Count every user's documents, not only the caller's reach (admins).
+            **counts: Whether to count each one's documents (:class:`pylekto.types.DocumentCounts`).
 
         Example::
 
             names = [kind.name for kind in await lekto.document_types.list()]
 
         """
-        params = query(document_counts=document_counts, all_users=all_users)
+        params = query(**counts)
         return await self._http.call_as("GET", "/document-types", _DOCUMENT_TYPES, params=params)
 
     async def create(self, document_type: DocumentTypeCreate) -> DocumentTypeOut:
@@ -302,25 +296,20 @@ class TagsResource(Resource):
     """The tags of documents, contacts, document types and topics."""
 
     async def list(
-        self,
-        *,
-        scope: TagScope | None = None,
-        document_counts: bool | None = None,
-        all_users: bool | None = None,
+        self, *, scope: TagScope | None = None, **counts: Unpack[DocumentCounts]
     ) -> builtins.list[TagOut]:
         """Return every tag, or those of one scope.
 
         Args:
             scope: Only the tags of documents, contacts, document types or topics.
-            document_counts: Count each tag's documents.
-            all_users: Count every user's documents, not only the caller's reach (admins).
+            **counts: Whether to count each one's documents (:class:`pylekto.types.DocumentCounts`).
 
         Example::
 
             topics = await lekto.tags.list(scope="topic")
 
         """
-        params = query(scope=scope, document_counts=document_counts, all_users=all_users)
+        params = query(scope=scope, **counts)
         return await self._http.call_as("GET", "/tags", _TAGS, params=params)
 
     async def create(self, tag: TagCreate) -> TagOut:
@@ -380,14 +369,11 @@ class TagsResource(Resource):
 class FieldsResource(Resource):
     """The field definitions: what Lekto reads from documents besides title and date."""
 
-    async def list(
-        self, *, document_counts: bool | None = None, all_users: bool | None = None
-    ) -> builtins.list[FieldOut]:
+    async def list(self, **counts: Unpack[DocumentCounts]) -> builtins.list[FieldOut]:
         """Return every field definition.
 
         Args:
-            document_counts: Count the documents with a value of each field.
-            all_users: Count every user's documents, not only the caller's reach (admins).
+            **counts: Whether to count each one's documents (:class:`pylekto.types.DocumentCounts`).
 
         Example::
 
@@ -395,7 +381,7 @@ class FieldsResource(Resource):
                 print(field.name, field.data_type)
 
         """
-        params = query(document_counts=document_counts, all_users=all_users)
+        params = query(**counts)
         return await self._http.call_as("GET", "/fields", _FIELDS, params=params)
 
     async def create(self, field: FieldCreate) -> FieldOut:

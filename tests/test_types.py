@@ -4,7 +4,19 @@ import json
 from pathlib import Path
 from typing import get_type_hints
 
-from pylekto.types import DocumentFilter, EditPart, ListedFilter, PagePick
+from pylekto.types import (
+    AutomationFilter,
+    DeliveryFilter,
+    DocumentCounts,
+    DocumentFilter,
+    EditPart,
+    InboxFilter,
+    JobFilter,
+    ListedFilter,
+    MailFilter,
+    OpenIdentifierFilter,
+    PagePick,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 DESCRIPTION = json.loads((ROOT / "openapi.json").read_text(encoding="utf-8"))
@@ -34,6 +46,26 @@ def test_document_filter_is_the_filter_of_each_list() -> None:
         "sort",
         "sort_field_id",
     }
+
+
+def test_each_filter_is_the_one_of_its_lists() -> None:
+    """A filter holds what the query of its operations takes besides the place in the list."""
+    place = {"cursor", "offset", "limit"}
+    for filters, path, method in [
+        (InboxFilter, "/inbox", "get"),
+        (OpenIdentifierFilter, "/identifiers/open", "get"),
+        (OpenIdentifierFilter, "/identifiers/open/search", "post"),
+        (JobFilter, "/jobs", "get"),
+        (MailFilter, "/mailboxes/{id}/mails", "get"),
+        (DeliveryFilter, "/webhooks/{id}/deliveries", "get"),
+        (AutomationFilter, "/automation", "get"),
+        (AutomationFilter, "/automation/signals", "get"),
+        (DocumentCounts, "/contacts", "get"),
+        (DocumentCounts, "/document-types", "get"),
+        (DocumentCounts, "/fields", "get"),
+    ]:
+        assert set(get_type_hints(filters)) == query_names(path, method) - place, path
+    assert set(get_type_hints(DocumentCounts)) == query_names("/tags") - {"scope"}
 
 
 def test_edit_parts_are_the_ones_of_the_form() -> None:

@@ -1,6 +1,6 @@
 """``/inbox`` and ``/expected``: what waits for the caller, and what should come next."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Unpack
 
 from pydantic import TypeAdapter
 
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     import builtins
     from collections.abc import AsyncIterator
 
-    from pylekto.models import InboxTab
+    from pylekto.types import InboxFilter
 
 _EXPECTED = TypeAdapter(list[ExpectedOut])
 
@@ -21,18 +21,13 @@ class InboxResource(Resource):
     """The caller's inbox: new documents, those to review, to intervene, in processing, done."""
 
     def list(
-        self,
-        *,
-        tab: InboxTab | None = None,
-        all_users: bool | None = None,
-        page_size: int | None = None,
+        self, *, page_size: int | None = None, **filters: Unpack[InboxFilter]
     ) -> AsyncIterator[InboxItemOut]:
         """Iterate over every document of an inbox tab, page after page.
 
         Args:
-            tab: The tab; default: everything open.
-            all_users: Every user's inbox (admins).
             page_size: How many documents each request fetches.
+            **filters: The tab and whose inbox (:class:`pylekto.types.InboxFilter`).
 
         Example::
 
@@ -42,32 +37,30 @@ class InboxResource(Resource):
         """
 
         async def fetch(cursor: str | None) -> InboxPage:
-            return await self.page(tab=tab, all_users=all_users, cursor=cursor, limit=page_size)
+            return await self.page(cursor=cursor, limit=page_size, **filters)
 
         return cursor_items(fetch)
 
     async def page(
         self,
         *,
-        tab: InboxTab | None = None,
-        all_users: bool | None = None,
         cursor: str | None = None,
         limit: int | None = None,
+        **filters: Unpack[InboxFilter],
     ) -> InboxPage:
         """Return one page of an inbox tab; ``next_cursor`` leads to the next.
 
         Args:
-            tab: The tab; default: everything open.
-            all_users: Every user's inbox (admins).
             cursor: Where the page starts: the ``next_cursor`` of the page before.
             limit: How many documents the page holds at most.
+            **filters: The tab and whose inbox (:class:`pylekto.types.InboxFilter`).
 
         Example::
 
             page = await lekto.inbox.page(tab="new", limit=10)
 
         """
-        params = query(tab=tab, all_users=all_users, cursor=cursor, limit=limit)
+        params = query(cursor=cursor, limit=limit, **filters)
         return await self._http.get("/inbox", InboxPage, params=params)
 
     async def summary(self, *, all_users: bool | None = None) -> InboxSummaryOut:

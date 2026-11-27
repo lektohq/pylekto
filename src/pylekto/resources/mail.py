@@ -1,6 +1,6 @@
 """``/mailboxes`` and ``/mail-rules``: documents that come in by mail (admins)."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Unpack
 
 from pydantic import TypeAdapter
 
@@ -24,10 +24,9 @@ from pylekto.resources._base import Resource
 
 if TYPE_CHECKING:
     import builtins
-    from collections.abc import AsyncIterator, Sequence
+    from collections.abc import AsyncIterator
 
-    from pylekto.models import MailOutcome
-    from pylekto.types import Id
+    from pylekto.types import Id, MailFilter
 
 _MAILBOXES = TypeAdapter(list[MailboxOut])
 _MAIL_RULES = TypeAdapter(list[MailRuleOut])
@@ -135,17 +134,15 @@ class MailboxesResource(Resource):
         self,
         mailbox_id: Id,
         *,
-        outcome: Sequence[MailOutcome] | None = None,
-        rule_id: Id | None = None,
         page_size: int | None = None,
+        **filters: Unpack[MailFilter],
     ) -> AsyncIterator[MailOut]:
         """Iterate over the log of the mails a mailbox fetched, page after page.
 
         Args:
             mailbox_id: The mailbox.
-            outcome: Only mails with these outcomes.
-            rule_id: Only mails this mail rule took.
             page_size: How many mails each request fetches.
+            **filters: Which mails (:class:`pylekto.types.MailFilter`).
 
         Example::
 
@@ -155,9 +152,7 @@ class MailboxesResource(Resource):
         """
 
         async def fetch(offset: int) -> MailPageOut:
-            return await self.mails_page(
-                mailbox_id, outcome=outcome, rule_id=rule_id, offset=offset, limit=page_size
-            )
+            return await self.mails_page(mailbox_id, offset=offset, limit=page_size, **filters)
 
         return offset_items(fetch)
 
@@ -165,19 +160,17 @@ class MailboxesResource(Resource):
         self,
         mailbox_id: Id,
         *,
-        outcome: Sequence[MailOutcome] | None = None,
-        rule_id: Id | None = None,
         offset: int | None = None,
         limit: int | None = None,
+        **filters: Unpack[MailFilter],
     ) -> MailPageOut:
         """Return one page of the log of the mails a mailbox fetched.
 
         Args:
             mailbox_id: The mailbox.
-            outcome: Only mails with these outcomes.
-            rule_id: Only mails this mail rule took.
             offset: Skip so many mails.
             limit: How many mails the page holds at most.
+            **filters: Which mails (:class:`pylekto.types.MailFilter`).
 
         Example::
 
@@ -185,7 +178,7 @@ class MailboxesResource(Resource):
             print(page.total)
 
         """
-        params = query(outcome=outcome, rule_id=rule_id, offset=offset, limit=limit)
+        params = query(offset=offset, limit=limit, **filters)
         return await self._http.get(t"/mailboxes/{mailbox_id}/mails", MailPageOut, params=params)
 
     async def mails_summary(self, mailbox_id: Id, *, rule_id: Id | None = None) -> MailSummaryOut:
