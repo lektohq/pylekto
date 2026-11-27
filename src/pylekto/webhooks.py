@@ -45,8 +45,8 @@ if TYPE_CHECKING:
 
     import httpx2
 
-KEY_PREFIX = "whsec_"
-SIGNATURE_VERSION = "v1"
+_KEY_PREFIX = "whsec_"
+_SIGNATURE_VERSION = "v1"
 # How far the timestamp of a request may lie from now: an older request may be a repeated one.
 TOLERANCE = timedelta(minutes=5)
 
@@ -78,7 +78,7 @@ def verify(
     """
     # First, so that a secret that is none shows with any request, a signed one or not.
     keys = [_key(key) for key in ([secret] if isinstance(secret, str) else secret)]
-    named = {name.lower(): value for name, value in headers.items()}
+    named = _named(headers)
     message_id = named.get("webhook-id")
     timestamp = named.get("webhook-timestamp")
     signatures = named.get("webhook-signature")
@@ -98,7 +98,7 @@ def verify(
     expected = [base64.b64encode(hmac.new(key, signed, hashlib.sha256).digest()) for key in keys]
     for entry in signatures.split():
         version, _, value = entry.partition(",")
-        if version == SIGNATURE_VERSION and any(
+        if version == _SIGNATURE_VERSION and any(
             hmac.compare_digest(value.encode(), digest) for digest in expected
         ):
             return
@@ -106,13 +106,18 @@ def verify(
     raise WebhookVerificationError(message)
 
 
+def _named(headers: Mapping[str, str]) -> dict[str, str]:
+    """Return the headers by their names in lower case: a framework may hand them in any case."""
+    return {name.lower(): value for name, value in headers.items()}
+
+
 def _key(secret: str) -> bytes:
     """Return the key of a webhook's secret: the bytes of its base64 after ``whsec_``."""
-    if not secret.startswith(KEY_PREFIX):
+    if not secret.startswith(_KEY_PREFIX):
         message = "not a webhook secret: it does not start with whsec_"
         raise ValueError(message)
     try:
-        return base64.b64decode(secret.removeprefix(KEY_PREFIX), validate=True)
+        return base64.b64decode(secret.removeprefix(_KEY_PREFIX), validate=True)
     except binascii.Error:
         message = "not a webhook secret: no base64 after whsec_"
         raise ValueError(message) from None
@@ -223,7 +228,7 @@ def read_task(headers: Mapping[str, str]) -> Task | None:
         task = webhooks.read_task(request.headers)
 
     """
-    named = {name.lower(): value for name, value in headers.items()}
+    named = _named(headers)
     task_id = named.get("lekto-task-id")
     callback = named.get("lekto-callback")
     token = named.get("lekto-task-token")
