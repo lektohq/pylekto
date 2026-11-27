@@ -62,6 +62,7 @@ def verify(
     """Check that Lekto signed a request with the webhook's secret, and not too long ago.
 
     Raises :class:`pylekto.WebhookVerificationError` if not: then do not trust the request.
+    A ``secret`` that is no webhook secret raises a ``ValueError``, whatever the request.
 
     Args:
         headers: The request's headers (any case).
@@ -75,6 +76,8 @@ def verify(
         webhooks.verify(request.headers, await request.body(), secret)
 
     """
+    # First, so that a secret that is none shows with any request, a signed one or not.
+    keys = [_key(key) for key in ([secret] if isinstance(secret, str) else secret)]
     named = {name.lower(): value for name, value in headers.items()}
     message_id = named.get("webhook-id")
     timestamp = named.get("webhook-timestamp")
@@ -92,10 +95,7 @@ def verify(
         message = "the request's timestamp lies too far from now"
         raise WebhookVerificationError(message)
     signed = f"{message_id}.{timestamp}.".encode() + content
-    keys = [secret] if isinstance(secret, str) else list(secret)
-    expected = [
-        base64.b64encode(hmac.new(_key(key), signed, hashlib.sha256).digest()) for key in keys
-    ]
+    expected = [base64.b64encode(hmac.new(key, signed, hashlib.sha256).digest()) for key in keys]
     for entry in signatures.split():
         version, _, value = entry.partition(",")
         if version == SIGNATURE_VERSION and any(
@@ -109,7 +109,7 @@ def verify(
 def _key(secret: str) -> bytes:
     """Return the key of a webhook's secret: the bytes of its base64 after ``whsec_``."""
     if not secret.startswith(KEY_PREFIX):
-        message = "not a webhook secret: it starts with whsec_"
+        message = "not a webhook secret: it does not start with whsec_"
         raise ValueError(message)
     try:
         return base64.b64decode(secret.removeprefix(KEY_PREFIX), validate=True)

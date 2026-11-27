@@ -131,6 +131,8 @@ def test_a_secret_that_is_none(secret: str) -> None:
     request = recorded("rule_send")
     with pytest.raises(ValueError, match="not a webhook secret"):
         webhooks.verify(request["headers"], request["body"].encode(), secret, now=sent_at(request))
+    with pytest.raises(ValueError, match="not a webhook secret"):
+        webhooks.verify({}, b"", [request["secret"], secret])
 
 
 def test_bodies_read_as_their_models() -> None:
