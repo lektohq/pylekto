@@ -51,6 +51,22 @@ async def test_another_api_warns(api: Api, lekto: LektoClient) -> None:
     assert lekto.api_version == "0.98"
 
 
+async def test_the_warning_names_the_callers_line(api: Api, lekto: LektoClient) -> None:
+    """The warning points at the code that connects, not at pylekto."""
+    api.answer("GET", "/auth/me", json=me(api_version="0.98"))
+    with pytest.warns(LektoVersionWarning) as caught:
+        await lekto.connect()
+    assert [warning.filename for warning in caught] == [__file__]
+
+
+async def test_the_warning_names_the_line_that_enters(api: Api, lekto: LektoClient) -> None:
+    """Through ``async with`` the warning points at that line as well."""
+    api.answer("GET", "/auth/me", json=me(api_version="0.98"))
+    with pytest.warns(LektoVersionWarning) as caught:
+        await lekto.__aenter__()
+    assert [warning.filename for warning in caught] == [__file__]
+
+
 async def test_a_lekto_without_an_api_version_warns(api: Api, lekto: LektoClient) -> None:
     """A Lekto before 0.16 names no API version: the warning says why its answer does not fit."""
     answer = me(lekto_version="0.15.5")

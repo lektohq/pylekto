@@ -3,6 +3,7 @@
 import json
 import re
 import warnings
+from pathlib import Path
 from typing import TYPE_CHECKING, Literal, Self
 
 import httpx2
@@ -46,6 +47,9 @@ if TYPE_CHECKING:
 
 # ASCII and bounded: int() refuses over 4300 digits, and \d also takes other scripts.
 _API_VERSION = re.compile(r"([0-9]{1,9})\.([0-9]{1,9})")
+
+# The warning names the caller's line, also through ``async with`` (``__aenter__``).
+_PACKAGE = (str(Path(__file__).parent),)
 
 type ApiFit = Literal["fits", "newer", "older", "unknown"]
 
@@ -150,7 +154,7 @@ class LektoClient:
                 f"{who} answers with {api}; this pylekto speaks the API {API_VERSION} "
                 f"of Lekto {LEKTO_VERSION}",
                 LektoVersionWarning,
-                stacklevel=2,
+                skip_file_prefixes=_PACKAGE,
             )
         me = parse(response, Me)
         self.lekto_version = me.lekto_version
