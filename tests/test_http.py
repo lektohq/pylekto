@@ -1,5 +1,6 @@
 """Tests of the HTTP layer: errors as exceptions, answers as models, pages of items."""
 
+import copy
 from dataclasses import dataclass
 from datetime import date
 
@@ -23,7 +24,7 @@ from pylekto import (
     Unknown,
 )
 from pylekto._http import _reveal, body, cursor_items, offset_items
-from pylekto.models import DocumentPatch, MailboxPatch
+from pylekto.models import DocumentPatch, MailboxPatch, Problem
 
 from .conftest import DOCUMENT_ID, TOKEN, URL, Api
 
@@ -134,6 +135,23 @@ async def test_rate_limit_says_how_long_to_wait(
     with pytest.raises(LektoRateLimitError) as raised:
         await lekto.auth.me()
     assert raised.value.retry_after == seconds
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        LektoApiError(Problem(title="Refused", status=400, detail="No")),
+        LektoConflictError(Problem(title="Conflict", status=409)),
+        LektoRateLimitError(Problem(title="Too Many Requests", status=429), 7.0),
+    ],
+)
+def test_an_error_survives_a_copy(error: LektoApiError) -> None:
+    """A refusal copies (and so pickles) with its problem details and the seconds to wait."""
+    for other in (copy.copy(error), copy.deepcopy(error)):
+        assert type(other) is type(error)
+        assert str(other) == str(error)
+        assert other.problem == error.problem
+        assert vars(other) == vars(error)
 
 
 @pytest.mark.parametrize(
