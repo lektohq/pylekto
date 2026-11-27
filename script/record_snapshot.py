@@ -1260,8 +1260,7 @@ def record_webhook_requests(recorder: Recorder, receiver: str, log: Path) -> Non
         recorder.call("POST", f"/documents/{document}/confirm", json={"changes": changes})
 
         def filed() -> bool:
-            # Confirming runs the rules again, so the rule asks again before the document is
-            # filed.
+            # Confirming runs the rules again: the rule asks once more before it is filed.
             _answer_tasks(recorder, log, answered)
             return {"rule.send", "document.filed"} <= {_kind(sent) for sent in _requests(log)}
 

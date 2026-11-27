@@ -65,8 +65,9 @@ tag.
   value (`SearchIn.q`, `MoveRequest.space_id`, `RelateIn.document_id`) is passed as that value.
   Path ids are named for what they are (`document_id`, not `id`) and take `UUID` or `str`
   (`types.Id`). A path with values is a template string (`t"/documents/{document_id}"`, never an
-  f-string, which a test refuses): `_http.address` percent-encodes each value, so it stays one
-  segment, and raises `ValueError` for an empty one, `.` and `..`. Query filters the description gives no model are `TypedDict`s in `types.py`
+  f-string, which a test refuses): `_http.address` percent-encodes each value and raises
+  `ValueError` for one no encoding keeps in its segment: an empty one, `.`, `..`, one with `/`
+  (Lekto's server decodes `%2F` before it finds the operation) or `\`. Query filters the description gives no model are `TypedDict`s in `types.py`
   (`DocumentFilter`), taken as keyword arguments; tests keep them equal to the description's. A
   choice the description names (`IdentifierKind`, `TagScope`, `JobState`) is a type alias in
   `models.py`, written once, for requests and answers alike. Form fields always go as parts of a

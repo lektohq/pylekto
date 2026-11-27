@@ -146,8 +146,10 @@ async def test_rate_limit_says_how_long_to_wait(
     ],
 )
 def test_an_error_survives_a_copy(error: LektoApiError) -> None:
-    """A refusal copies (and so pickles) with its problem details and the seconds to wait."""
+    """A refusal copies (pickling goes the same way) with its problem details and its notes."""
+    error.add_note("made up")
     for other in (copy.copy(error), copy.deepcopy(error)):
+        assert other.__notes__ == ["made up"]
         assert type(other) is type(error)
         assert str(other) == str(error)
         assert other.problem == error.problem
@@ -199,9 +201,8 @@ async def test_redirects_in_a_circle(api: Api) -> None:
 @pytest.mark.parametrize(
     ("value", "sent"),
     [
-        ("a/b", "a%2Fb"),
         ("a?b=c#d", "a%3Fb%3Dc%23d"),
-        ("../users", "..%2Fusers"),
+        ("a%2Fb", "a%252Fb"),
         ("ä b", "%C3%A4%20b"),
         (DOCUMENT_ID, DOCUMENT_ID),
     ],
@@ -215,9 +216,9 @@ async def test_a_path_value_stays_in_its_segment(
     assert api.requests[-1].url.raw_path == f"/api/v1/documents/{sent}".encode()
 
 
-@pytest.mark.parametrize("value", ["", ".", ".."])
+@pytest.mark.parametrize("value", ["", ".", "..", "../users", "a/b", "a\\b"])
 async def test_a_path_value_that_is_none(api: Api, lekto: LektoClient, value: str) -> None:
-    """An empty value and one that leads up are refused before a request is sent."""
+    """An empty value, one that leads up and one with a slash are refused before a request."""
     with pytest.raises(ValueError, match="no path value"):
         await lekto.documents.get(value)
     assert api.requests == []

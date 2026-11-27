@@ -203,8 +203,8 @@ async def http_client(client: httpx2.AsyncClient | None) -> AsyncIterator[httpx2
 def address(path: Path) -> str:
     """Write a path with each value of its template as one segment, percent-encoded.
 
-    A value never leaves its segment: an id with ``/`` or ``?`` in it would reach another
-    operation.
+    A value never leaves its segment: an id with ``?`` in it would add a query, one with ``/``
+    reach another operation.
     """
     if isinstance(path, str):
         return path
@@ -212,13 +212,13 @@ def address(path: Path) -> str:
 
 
 def _segment(value: object) -> str:
-    """Encode one path value.
+    """Encode one path value, or refuse one that no encoding keeps in its segment.
 
-    An empty one would name another operation, and a proxy may resolve ``.`` and ``..`` even
-    when they are encoded: those are refused.
+    An empty one names another operation; httpx2 resolves ``.`` and ``..``; Lekto's server
+    decodes ``%2F`` before it finds the operation, and a proxy may read a backslash as ``/``.
     """
     text = str(value)
-    if text in {"", ".", ".."}:
+    if text in {"", ".", ".."} or "/" in text or "\\" in text:
         message = f"no path value: {text!r}"
         raise ValueError(message)
     return quote(text, safe="")

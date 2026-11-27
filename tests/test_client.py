@@ -79,6 +79,25 @@ async def test_a_lekto_without_an_api_version_warns(api: Api, lekto: LektoClient
         await lekto.connect()
 
 
+async def test_an_answer_of_the_same_api_that_is_no_me_warns_nothing(
+    api: Api, lekto: LektoClient
+) -> None:
+    """An answer that names pylekto's API but does not fit raises without a warning."""
+    api.answer("GET", "/auth/me", json={"api_version": API_VERSION, "lekto_version": "0.99.0"})
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        with pytest.raises(LektoResponseError):
+            await lekto.connect()
+    assert lekto.api_version is None
+
+
+def test_the_versions_are_read_only(lekto: LektoClient) -> None:
+    """Only connecting sets the versions of a client."""
+    for name in ("lekto_version", "api_version"):
+        with pytest.raises(AttributeError):
+            setattr(lekto, name, "0.1")
+
+
 @pytest.mark.parametrize("content", [b"<html>Muster Proxy</html>", b'["Muster Proxy"]'])
 async def test_an_answer_that_is_no_object_warns(
     api: Api, lekto: LektoClient, content: bytes

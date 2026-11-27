@@ -49,9 +49,9 @@ class LektoApiError(LektoError):
         super().__init__(f"{problem.status} {problem.title}{detail}")
         self.problem = problem
 
-    def __reduce__(self) -> tuple[type[Self], tuple[object, ...]]:
+    def __reduce__(self) -> tuple[type[Self], tuple[object, ...], dict[str, object]]:
         """Copy and pickle from the problem details: ``args`` holds only the message."""
-        return type(self), (self.problem,)
+        return type(self), (self.problem,), vars(self)
 
     @property
     def status(self) -> int:
@@ -115,9 +115,9 @@ class LektoRateLimitError(LektoApiError):
         super().__init__(problem)
         self.retry_after = retry_after
 
-    def __reduce__(self) -> tuple[type[Self], tuple[object, ...]]:
+    def __reduce__(self) -> tuple[type[Self], tuple[object, ...], dict[str, object]]:
         """Copy and pickle with the seconds to wait as well."""
-        return type(self), (self.problem, self.retry_after)
+        return type(self), (self.problem, self.retry_after), vars(self)
 
 
 class LektoServerError(LektoApiError):

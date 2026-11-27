@@ -238,14 +238,17 @@ def read_task(headers: Mapping[str, str]) -> Task | None:
 
 
 def _deadline(header: str | None) -> datetime | None:
-    """Read ``lekto-deadline`` (ISO 8601) as the time the body's ``task.deadline`` is."""
+    """Read ``lekto-deadline`` (ISO 8601 with its zone), as the body's ``task.deadline`` is."""
     if header is None:
         return None
     try:
-        return datetime.fromisoformat(header)
-    except ValueError as error:
-        message = f"the webhook's lekto-deadline is no time: {header!r}"
-        raise LektoResponseError(message) from error
+        deadline = datetime.fromisoformat(header)
+    except ValueError:
+        deadline = None
+    if deadline is None or deadline.tzinfo is None:
+        message = f"the webhook's lekto-deadline is no time with a zone: {header!r}"
+        raise LektoResponseError(message)
+    return deadline
 
 
 async def answer(

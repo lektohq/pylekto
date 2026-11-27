@@ -1,6 +1,7 @@
 """The client of one Lekto instance."""
 
 import json
+import os
 import re
 import warnings
 from pathlib import Path
@@ -49,7 +50,7 @@ if TYPE_CHECKING:
 _API_VERSION = re.compile(r"([0-9]{1,9})\.([0-9]{1,9})")
 
 # The warning names the caller's line, also through ``async with`` (``__aenter__``).
-_PACKAGE = (str(Path(__file__).parent),)
+_PACKAGE = (str(Path(__file__).parent) + os.sep,)
 
 type ApiFit = Literal["fits", "newer", "older", "unknown"]
 
