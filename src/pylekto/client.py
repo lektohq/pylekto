@@ -6,9 +6,7 @@ import warnings
 from pathlib import Path
 from typing import TYPE_CHECKING, Literal, Self
 
-import httpx2
-
-from pylekto._http import TIMEOUT, Http, parse
+from pylekto._http import Http, new_client, parse
 from pylekto._lekto import API_VERSION, LEKTO_VERSION
 from pylekto.exceptions import LektoVersionWarning
 from pylekto.models import Me
@@ -45,6 +43,8 @@ from pylekto.resources import (
 if TYPE_CHECKING:
     from types import TracebackType
 
+    import httpx2
+
 # ASCII and bounded: int() refuses over 4300 digits, and \d also takes other scripts.
 _API_VERSION = re.compile(r"([0-9]{1,9})\.([0-9]{1,9})")
 
@@ -78,7 +78,7 @@ class LektoClient:
     def __init__(self, url: str, token: str, *, client: httpx2.AsyncClient | None = None) -> None:
         """Prepare the client; nothing is sent before the first request."""
         self._own_client = client is None
-        self._client = httpx2.AsyncClient(timeout=TIMEOUT) if client is None else client
+        self._client = new_client() if client is None else client
         http = Http(url, token, self._client)
         self._http = http
         self.auth = AuthResource(http)
