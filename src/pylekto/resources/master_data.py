@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from pydantic import TypeAdapter
 
-from pylekto._http import FILE_TYPE, Upload, body, query
+from pylekto._http import Upload, body, file_part, query
 from pylekto.models import (
     ContactCreate,
     ContactOut,
@@ -160,7 +160,7 @@ class ContactsResource(Resource):
             "PUT",
             t"/contacts/{contact_id}/logo",
             ContactOut,
-            files=[("file", (filename, file, FILE_TYPE))],
+            files=[file_part(file, filename)],
         )
 
     async def delete_logo(self, contact_id: Id) -> None:

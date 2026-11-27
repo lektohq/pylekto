@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any, Literal, Unpack
 
 from pydantic import TypeAdapter
 
-from pylekto._http import FILE_TYPE, Part, Upload, body, cursor_items, query
+from pylekto._http import Part, Upload, body, cursor_items, file_part, query
 from pylekto.models import (
     BulkOperationOut,
     BulkRequest,
@@ -218,7 +218,7 @@ class DocumentsResource(Resource):
             "uploaded_by": uploaded_by,
             "metadata": None if metadata is None else json.dumps(metadata),
         }
-        parts: list[tuple[str, Part]] = [("file", (filename, file, FILE_TYPE))]
+        parts = [file_part(file, filename)]
         parts += [(name, (None, str(value))) for name, value in fields.items() if value is not None]
         return await self._http.call("POST", "/documents", DocumentAccepted, files=parts)
 
@@ -630,7 +630,7 @@ class DocumentsResource(Resource):
             "POST",
             t"/documents/{document_id}/versions",
             DocumentDetails,
-            files=[("file", (filename, file, FILE_TYPE))],
+            files=[file_part(file, filename)],
         )
 
     async def edit_pages(self, document_id: Id, file: Upload, filename: str) -> PagePreviews:
@@ -650,7 +650,7 @@ class DocumentsResource(Resource):
             "POST",
             t"/documents/{document_id}/edit/pages",
             PagePreviews,
-            files=[("file", (filename, file, FILE_TYPE))],
+            files=[file_part(file, filename)],
         )
 
     async def edit(
@@ -686,7 +686,7 @@ class DocumentsResource(Resource):
             fields.append(("documents", (None, json.dumps([str(other) for other in documents]))))
         if target is not None:
             fields.append(("target", (None, str(target))))
-        fields += [("files", (name, content, FILE_TYPE)) for name, content in files]
+        fields += [file_part(content, name, "files") for name, content in files]
         return await self._http.call(
             "POST", t"/documents/{document_id}/edit", EditedDocuments, files=fields
         )

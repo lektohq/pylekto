@@ -54,6 +54,12 @@ type Upload = bytes | IO[bytes]
 type Part = tuple[str, Upload, str] | tuple[None, str]
 type Files = Sequence[tuple[str, Part]]
 
+
+def file_part(file: Upload, filename: str, field: str = "file") -> tuple[str, Part]:
+    """Return a file as a part of a multipart body, under the name of its form field."""
+    return field, (filename, file, FILE_TYPE)
+
+
 _ERRORS: dict[int, type[LektoApiError]] = {
     HTTPStatus.UNAUTHORIZED: LektoAuthenticationError,
     HTTPStatus.FORBIDDEN: LektoForbiddenError,
