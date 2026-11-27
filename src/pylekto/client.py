@@ -108,8 +108,18 @@ class LektoClient:
         self.users = UsersResource(http)
         self.version = VersionResource(http)
         self.webhooks = WebhooksResource(http)
-        self.lekto_version: str | None = None
-        self.api_version: str | None = None
+        self._lekto_version: str | None = None
+        self._api_version: str | None = None
+
+    @property
+    def lekto_version(self) -> str | None:
+        """The version of the Lekto that answered :meth:`connect`; None before."""
+        return self._lekto_version
+
+    @property
+    def api_version(self) -> str | None:
+        """The version of the API that Lekto speaks (see :func:`pylekto.api_fit`); None before."""
+        return self._api_version
 
     async def __aenter__(self) -> Self:
         """Connect (:meth:`connect`); a failure closes the client again."""
@@ -152,8 +162,8 @@ class LektoClient:
             _warn_unless_fit(sent.get("api_version"), sent.get("lekto_version"))
             raise
         _warn_unless_fit(me.api_version, me.lekto_version)
-        self.lekto_version = me.lekto_version
-        self.api_version = me.api_version
+        self._lekto_version = me.lekto_version
+        self._api_version = me.api_version
         return me
 
     async def close(self) -> None:
