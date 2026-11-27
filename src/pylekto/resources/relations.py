@@ -24,7 +24,7 @@ class RelationsResource(Resource):
             print([related.title for related in relations.refers_to])
 
         """
-        return await self._http.get(f"/documents/{document_id}/relations", RelationsOut)
+        return await self._http.get(t"/documents/{document_id}/relations", RelationsOut)
 
     async def add(self, document_id: Id, other_id: Id) -> RelationsOut:
         """Relate a document with another.
@@ -40,7 +40,7 @@ class RelationsResource(Resource):
         """
         return await self._http.call(
             "POST",
-            f"/documents/{document_id}/relations",
+            t"/documents/{document_id}/relations",
             RelationsOut,
             json={"document_id": str(other_id)},
         )
@@ -58,5 +58,5 @@ class RelationsResource(Resource):
 
         """
         return await self._http.call(
-            "DELETE", f"/documents/{document_id}/relations/{other_id}", RelationsOut
+            "DELETE", t"/documents/{document_id}/relations/{other_id}", RelationsOut
         )

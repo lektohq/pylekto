@@ -178,6 +178,33 @@ async def test_redirects_in_a_circle(api: Api) -> None:
     assert isinstance(raised.value.__cause__, httpx2.TooManyRedirects)
 
 
+@pytest.mark.parametrize(
+    ("value", "sent"),
+    [
+        ("a/b", "a%2Fb"),
+        ("a?b=c#d", "a%3Fb%3Dc%23d"),
+        ("../users", "..%2Fusers"),
+        ("ä b", "%C3%A4%20b"),
+        (DOCUMENT_ID, DOCUMENT_ID),
+    ],
+)
+async def test_a_path_value_stays_in_its_segment(
+    api: Api, lekto: LektoClient, value: str, sent: str
+) -> None:
+    """A value put in a path is percent-encoded, so it reaches no other operation."""
+    api.answer("DELETE", f"/documents/{value}", 204)
+    await lekto.documents.delete(value)
+    assert api.requests[-1].url.raw_path == f"/api/v1/documents/{sent}".encode()
+
+
+@pytest.mark.parametrize("value", ["", ".", ".."])
+async def test_a_path_value_that_is_none(api: Api, lekto: LektoClient, value: str) -> None:
+    """An empty value and one that leads up are refused before a request is sent."""
+    with pytest.raises(ValueError, match="no path value"):
+        await lekto.documents.get(value)
+    assert api.requests == []
+
+
 async def test_answer_the_models_do_not_describe(api: Api, lekto: LektoClient) -> None:
     """An answer that does not fit the model raises a response error."""
     api.answer("GET", "/auth/me", json={"user": None})

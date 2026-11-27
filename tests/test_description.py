@@ -66,10 +66,14 @@ def description() -> set[Operation]:
 
 
 def _path(node: ast.expr) -> str:
-    """Return a path as the code writes it, with ``{}`` for each value put in."""
+    """Return a path as the code writes it, with ``{}`` for each value put in.
+
+    A path with values is a template string, whose values the HTTP layer encodes; an f-string
+    would put them in as they are.
+    """
     if isinstance(node, ast.Constant) and isinstance(node.value, str):
         return node.value
-    assert isinstance(node, ast.JoinedStr), ast.unparse(node)
+    assert isinstance(node, ast.TemplateStr), ast.unparse(node)
     return "".join(
         part.value if isinstance(part, ast.Constant) and isinstance(part.value, str) else "{}"
         for part in node.values

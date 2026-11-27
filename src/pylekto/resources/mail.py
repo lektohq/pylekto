@@ -87,7 +87,7 @@ class MailboxesResource(Resource):
             mailbox = await lekto.mailboxes.get(mailbox_id)
 
         """
-        return await self._http.get(f"/mailboxes/{mailbox_id}", MailboxOut)
+        return await self._http.get(t"/mailboxes/{mailbox_id}", MailboxOut)
 
     async def update(self, mailbox_id: Id, changes: MailboxPatch) -> MailboxOut:
         """Change a mailbox; only the values set in ``changes`` change.
@@ -102,7 +102,7 @@ class MailboxesResource(Resource):
 
         """
         return await self._http.call(
-            "PATCH", f"/mailboxes/{mailbox_id}", MailboxOut, json=body(changes)
+            "PATCH", t"/mailboxes/{mailbox_id}", MailboxOut, json=body(changes)
         )
 
     async def delete(self, mailbox_id: Id) -> None:
@@ -116,7 +116,7 @@ class MailboxesResource(Resource):
             await lekto.mailboxes.delete(mailbox_id)
 
         """
-        await self._http.call_empty("DELETE", f"/mailboxes/{mailbox_id}")
+        await self._http.call_empty("DELETE", t"/mailboxes/{mailbox_id}")
 
     async def fetch(self, mailbox_id: Id) -> None:
         """Fetch a mailbox now, in the background.
@@ -129,7 +129,7 @@ class MailboxesResource(Resource):
             await lekto.mailboxes.fetch(mailbox_id)
 
         """
-        await self._http.call_empty("POST", f"/mailboxes/{mailbox_id}/fetch")
+        await self._http.call_empty("POST", t"/mailboxes/{mailbox_id}/fetch")
 
     def mails(
         self,
@@ -186,7 +186,7 @@ class MailboxesResource(Resource):
 
         """
         params = query(outcome=outcome, rule_id=rule_id, offset=offset, limit=limit)
-        return await self._http.get(f"/mailboxes/{mailbox_id}/mails", MailPageOut, params=params)
+        return await self._http.get(t"/mailboxes/{mailbox_id}/mails", MailPageOut, params=params)
 
     async def mails_summary(self, mailbox_id: Id, *, rule_id: Id | None = None) -> MailSummaryOut:
         """Count the mails of a mailbox's log by outcome.
@@ -201,7 +201,7 @@ class MailboxesResource(Resource):
 
         """
         return await self._http.get(
-            f"/mailboxes/{mailbox_id}/mails/summary", MailSummaryOut, params=query(rule_id=rule_id)
+            t"/mailboxes/{mailbox_id}/mails/summary", MailSummaryOut, params=query(rule_id=rule_id)
         )
 
 
@@ -255,7 +255,7 @@ class MailRulesResource(Resource):
             rule = await lekto.mail_rules.get(rule_id)
 
         """
-        return await self._http.get(f"/mail-rules/{rule_id}", MailRuleOut)
+        return await self._http.get(t"/mail-rules/{rule_id}", MailRuleOut)
 
     async def update(self, rule_id: Id, changes: MailRulePatch) -> MailRuleOut:
         """Change a mail rule; only the values set in ``changes`` change.
@@ -270,7 +270,7 @@ class MailRulesResource(Resource):
 
         """
         return await self._http.call(
-            "PATCH", f"/mail-rules/{rule_id}", MailRuleOut, json=body(changes)
+            "PATCH", t"/mail-rules/{rule_id}", MailRuleOut, json=body(changes)
         )
 
     async def delete(self, rule_id: Id) -> None:
@@ -284,4 +284,4 @@ class MailRulesResource(Resource):
             await lekto.mail_rules.delete(rule_id)
 
         """
-        await self._http.call_empty("DELETE", f"/mail-rules/{rule_id}")
+        await self._http.call_empty("DELETE", t"/mail-rules/{rule_id}")

@@ -85,7 +85,7 @@ class PushResource(Resource):
             await lekto.push.remove_device(device_id)
 
         """
-        await self._http.call_empty("DELETE", f"/push/devices/{device_id}")
+        await self._http.call_empty("DELETE", t"/push/devices/{device_id}")
 
     async def test_device(self, device_id: Id) -> PushTestOut:
         """Send a device a test notification.
@@ -98,7 +98,7 @@ class PushResource(Resource):
             result = await lekto.push.test_device(device_id)
 
         """
-        return await self._http.call("POST", f"/push/devices/{device_id}/test", PushTestOut)
+        return await self._http.call("POST", t"/push/devices/{device_id}/test", PushTestOut)
 
     async def preferences(self) -> PushPreferencesBody:
         """Return what the caller is told about.
@@ -266,7 +266,7 @@ class JobsResource(Resource):
             job = await lekto.jobs.retry(job_id)
 
         """
-        return await self._http.call("POST", f"/jobs/{job_id}/retry", JobOut)
+        return await self._http.call("POST", t"/jobs/{job_id}/retry", JobOut)
 
 
 class AutomationResource(Resource):

@@ -43,7 +43,7 @@ class IdentifiersResource(Resource):
             value = await lekto.identifiers.value("iban", ref)
 
         """
-        return await self._http.get(f"/identifiers/refs/{kind}/{ref}", RefOut)
+        return await self._http.get(t"/identifiers/refs/{kind}/{ref}", RefOut)
 
     async def places(self, kind: IdentifierKind, ref: str) -> PlacesOut:
         """Return where an identifier stands: contacts, documents, profiles.
@@ -57,4 +57,4 @@ class IdentifiersResource(Resource):
             places = await lekto.identifiers.places("iban", ref)
 
         """
-        return await self._http.get(f"/identifiers/places/{kind}/{ref}", PlacesOut)
+        return await self._http.get(t"/identifiers/places/{kind}/{ref}", PlacesOut)

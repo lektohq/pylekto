@@ -143,7 +143,7 @@ class OpenIdentifiersResource(Resource):
             detail = await lekto.open_identifiers.get("iban", ref)
 
         """
-        return await self._http.get(f"/identifiers/open/{kind}/{ref}", OpenDetailOut)
+        return await self._http.get(t"/identifiers/open/{kind}/{ref}", OpenDetailOut)
 
     async def decide(self, decisions: OpenDecisionsIn) -> builtins.list[OutcomeOut]:
         """Confirm open identifiers at a contact, or reject them.

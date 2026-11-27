@@ -178,7 +178,7 @@ class DocumentsResource(Resource):
             print(document.title, document.lane)
 
         """
-        return await self._http.get(f"/documents/{document_id}", DocumentDetails)
+        return await self._http.get(t"/documents/{document_id}", DocumentDetails)
 
     async def upload(
         self,
@@ -238,7 +238,7 @@ class DocumentsResource(Resource):
         """
         return await self._http.call_as(
             "PATCH",
-            f"/documents/{document_id}",
+            t"/documents/{document_id}",
             _CHANGED,
             params=query(confirm=confirm),
             json=body(changes),
@@ -261,7 +261,7 @@ class DocumentsResource(Resource):
         """
         return await self._http.call(
             "POST",
-            f"/documents/{document_id}/dry-run",
+            t"/documents/{document_id}/dry-run",
             DocumentPreviewOut,
             params=query(confirm=confirm),
             json=body(changes),
@@ -278,7 +278,7 @@ class DocumentsResource(Resource):
             await lekto.documents.delete(document_id)
 
         """
-        await self._http.call_empty("DELETE", f"/documents/{document_id}")
+        await self._http.call_empty("DELETE", t"/documents/{document_id}")
 
     async def move(self, document_id: Id, space_id: Id) -> None:
         """Move a document to another space.
@@ -293,7 +293,7 @@ class DocumentsResource(Resource):
 
         """
         await self._http.call_empty(
-            "POST", f"/documents/{document_id}/move", json={"space_id": str(space_id)}
+            "POST", t"/documents/{document_id}/move", json={"space_id": str(space_id)}
         )
 
     async def original(self, document_id: Id) -> bytes:
@@ -307,7 +307,7 @@ class DocumentsResource(Resource):
             content = await lekto.documents.original(document_id)
 
         """
-        return await self._http.download(f"/documents/{document_id}/original")
+        return await self._http.download(t"/documents/{document_id}/original")
 
     async def version_original(self, document_id: Id, number: int) -> bytes:
         """Download the original file of a version.
@@ -321,7 +321,7 @@ class DocumentsResource(Resource):
             first = await lekto.documents.version_original(document_id, 1)
 
         """
-        return await self._http.download(f"/documents/{document_id}/versions/{number}/original")
+        return await self._http.download(t"/documents/{document_id}/versions/{number}/original")
 
     async def archive(self, document_id: Id) -> bytes:
         """Download the archive PDF (PDF/A with a text layer).
@@ -334,7 +334,7 @@ class DocumentsResource(Resource):
             pdf = await lekto.documents.archive(document_id)
 
         """
-        return await self._http.download(f"/documents/{document_id}/archive")
+        return await self._http.download(t"/documents/{document_id}/archive")
 
     async def preview(self, document_id: Id) -> bytes:
         """Download the preview image of the first page (WebP).
@@ -347,7 +347,7 @@ class DocumentsResource(Resource):
             image = await lekto.documents.preview(document_id)
 
         """
-        return await self._http.download(f"/documents/{document_id}/preview")
+        return await self._http.download(t"/documents/{document_id}/preview")
 
     async def page_image(self, document_id: Id, number: int) -> bytes:
         """Download the image of one page (WebP).
@@ -361,7 +361,7 @@ class DocumentsResource(Resource):
             image = await lekto.documents.page_image(document_id, 2)
 
         """
-        return await self._http.download(f"/documents/{document_id}/pages/{number}")
+        return await self._http.download(t"/documents/{document_id}/pages/{number}")
 
     async def text(
         self, document_id: Id, *, offset: int | None = None, limit: int | None = None
@@ -380,7 +380,7 @@ class DocumentsResource(Resource):
 
         """
         return await self._http.get(
-            f"/documents/{document_id}/text",
+            t"/documents/{document_id}/text",
             DocumentTextOut,
             params=query(offset=offset, limit=limit),
         )
@@ -396,7 +396,7 @@ class DocumentsResource(Resource):
             structure = await lekto.documents.structure(document_id)
 
         """
-        return await self._http.call_as("GET", f"/documents/{document_id}/structure", _STRUCTURE)
+        return await self._http.call_as("GET", t"/documents/{document_id}/structure", _STRUCTURE)
 
     async def exchanges(self, document_id: Id, node: ExchangeNode) -> builtins.list[RunExchangeOut]:
         """Return what a node sent to the language model and what came back.
@@ -412,7 +412,7 @@ class DocumentsResource(Resource):
 
         """
         return await self._http.call_as(
-            "GET", f"/documents/{document_id}/exchanges/{node}", _EXCHANGES
+            "GET", t"/documents/{document_id}/exchanges/{node}", _EXCHANGES
         )
 
     async def log(self, document_id: Id) -> builtins.list[LogEntry]:
@@ -427,7 +427,7 @@ class DocumentsResource(Resource):
                 print(entry.node, entry.outcome)
 
         """
-        return await self._http.call_as("GET", f"/documents/{document_id}/log", _LOG)
+        return await self._http.call_as("GET", t"/documents/{document_id}/log", _LOG)
 
     async def retry(self, document_id: Id) -> DocumentDetails:
         """Repeat the node that failed.
@@ -440,7 +440,7 @@ class DocumentsResource(Resource):
             document = await lekto.documents.retry(document_id)
 
         """
-        return await self._http.call("POST", f"/documents/{document_id}/retry", DocumentDetails)
+        return await self._http.call("POST", t"/documents/{document_id}/retry", DocumentDetails)
 
     async def vision(self, document_id: Id) -> DocumentDetails:
         """Have the vision language model read the document.
@@ -453,7 +453,7 @@ class DocumentsResource(Resource):
             document = await lekto.documents.vision(document_id)
 
         """
-        return await self._http.call("POST", f"/documents/{document_id}/vision", DocumentDetails)
+        return await self._http.call("POST", t"/documents/{document_id}/vision", DocumentDetails)
 
     async def reprocess(self, document_id: Id, request: ReprocessRequest) -> DocumentDetails:
         """Process the document again from a node.
@@ -468,7 +468,7 @@ class DocumentsResource(Resource):
 
         """
         return await self._http.call(
-            "POST", f"/documents/{document_id}/reprocess", DocumentDetails, json=body(request)
+            "POST", t"/documents/{document_id}/reprocess", DocumentDetails, json=body(request)
         )
 
     async def facts(self, document_id: Id) -> FactsOut:
@@ -482,7 +482,7 @@ class DocumentsResource(Resource):
             facts = await lekto.documents.facts(document_id)
 
         """
-        return await self._http.get(f"/documents/{document_id}/facts", FactsOut)
+        return await self._http.get(t"/documents/{document_id}/facts", FactsOut)
 
     async def decide_fact(self, document_id: Id, decision: FactDecisionIn) -> FactsOut:
         """Decide about a fact of the document: confirm, reject or correct it.
@@ -497,7 +497,7 @@ class DocumentsResource(Resource):
 
         """
         return await self._http.call(
-            "POST", f"/documents/{document_id}/facts/decisions", FactsOut, json=body(decision)
+            "POST", t"/documents/{document_id}/facts/decisions", FactsOut, json=body(decision)
         )
 
     async def place(self, document_id: Id, kind: str, ref: str) -> PlaceOut:
@@ -513,7 +513,7 @@ class DocumentsResource(Resource):
             place = await lekto.documents.place(document_id, "iban", ref)
 
         """
-        return await self._http.get(f"/documents/{document_id}/places/{kind}/{ref}", PlaceOut)
+        return await self._http.get(t"/documents/{document_id}/places/{kind}/{ref}", PlaceOut)
 
     async def files(self, document_id: Id) -> DocumentFilesOut:
         """Return the document's files and their metadata.
@@ -526,7 +526,7 @@ class DocumentsResource(Resource):
             files = await lekto.documents.files(document_id)
 
         """
-        return await self._http.get(f"/documents/{document_id}/files", DocumentFilesOut)
+        return await self._http.get(t"/documents/{document_id}/files", DocumentFilesOut)
 
     async def reading(self, document_id: Id) -> ReadingOut:
         """Return how the text was read: the way, its confidence, the vision model's offer.
@@ -539,7 +539,7 @@ class DocumentsResource(Resource):
             reading = await lekto.documents.reading(document_id)
 
         """
-        return await self._http.get(f"/documents/{document_id}/reading", ReadingOut)
+        return await self._http.get(t"/documents/{document_id}/reading", ReadingOut)
 
     async def review(self, document_id: Id) -> ReviewOut:
         """Return what the model proposed for the document.
@@ -552,7 +552,7 @@ class DocumentsResource(Resource):
             review = await lekto.documents.review(document_id)
 
         """
-        return await self._http.get(f"/documents/{document_id}/review", ReviewOut)
+        return await self._http.get(t"/documents/{document_id}/review", ReviewOut)
 
     async def confirm(
         self, document_id: Id, request: ConfirmRequest | None = None
@@ -570,7 +570,7 @@ class DocumentsResource(Resource):
         """
         request = request if request is not None else ConfirmRequest()
         return await self._http.call_as(
-            "POST", f"/documents/{document_id}/confirm", _CONFIRMED, json=body(request)
+            "POST", t"/documents/{document_id}/confirm", _CONFIRMED, json=body(request)
         )
 
     async def mark_seen(self, document_id: Id) -> None:
@@ -584,7 +584,7 @@ class DocumentsResource(Resource):
             await lekto.documents.mark_seen(document_id)
 
         """
-        await self._http.call_empty("PUT", f"/documents/{document_id}/seen")
+        await self._http.call_empty("PUT", t"/documents/{document_id}/seen")
 
     async def mark_new(self, document_id: Id) -> None:
         """Mark a document as new again.
@@ -597,7 +597,7 @@ class DocumentsResource(Resource):
             await lekto.documents.mark_new(document_id)
 
         """
-        await self._http.call_empty("DELETE", f"/documents/{document_id}/seen")
+        await self._http.call_empty("DELETE", t"/documents/{document_id}/seen")
 
     async def origin(self, document_id: Id) -> OriginOut:
         """Return where the document came from: upload, mail or migration.
@@ -610,7 +610,7 @@ class DocumentsResource(Resource):
             origin = await lekto.documents.origin(document_id)
 
         """
-        return await self._http.get(f"/documents/{document_id}/origin", OriginOut)
+        return await self._http.get(t"/documents/{document_id}/origin", OriginOut)
 
     async def add_version(self, document_id: Id, file: Upload, filename: str) -> DocumentDetails:
         """Replace the document's file with a new version.
@@ -627,7 +627,7 @@ class DocumentsResource(Resource):
         """
         return await self._http.call(
             "POST",
-            f"/documents/{document_id}/versions",
+            t"/documents/{document_id}/versions",
             DocumentDetails,
             files=[("file", (filename, file, FILE_TYPE))],
         )
@@ -647,7 +647,7 @@ class DocumentsResource(Resource):
         """
         return await self._http.call(
             "POST",
-            f"/documents/{document_id}/edit/pages",
+            t"/documents/{document_id}/edit/pages",
             PagePreviews,
             files=[("file", (filename, file, FILE_TYPE))],
         )
@@ -687,7 +687,7 @@ class DocumentsResource(Resource):
             fields.append(("target", (None, str(target))))
         fields += [("files", (name, content, FILE_TYPE)) for name, content in files]
         return await self._http.call(
-            "POST", f"/documents/{document_id}/edit", EditedDocuments, files=fields
+            "POST", t"/documents/{document_id}/edit", EditedDocuments, files=fields
         )
 
     async def bulk(
@@ -721,4 +721,4 @@ class DocumentsResource(Resource):
             print(progress.done, progress.total)
 
         """
-        return await self._http.get(f"/documents/bulk/{operation_id}", BulkOperationOut)
+        return await self._http.get(t"/documents/bulk/{operation_id}", BulkOperationOut)

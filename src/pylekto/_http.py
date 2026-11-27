@@ -13,7 +13,9 @@ from collections.abc import (
 from contextlib import asynccontextmanager
 from datetime import date
 from http import HTTPStatus
+from string.templatelib import Template
 from typing import IO, Any, Protocol, TypedDict, Unpack
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx2
@@ -44,6 +46,8 @@ _JSON: TypeAdapter[Any] = TypeAdapter(Any)
 # Lekto recognises a file by its content, not by the type a client names.
 FILE_TYPE = "application/octet-stream"
 
+# A path below ``/api/v1``: a template (``t"/documents/{document_id}"``) wherever it holds values.
+type Path = str | Template
 type Params = Mapping[str, str | Sequence[str]]
 type Upload = bytes | IO[bytes]
 # A multipart part: a file (name, content, type) or a form field (None, its text).
@@ -85,43 +89,45 @@ class Http:
         self._headers = {"Authorization": f"Bearer {token}"}
         self._client = client
 
-    async def request(self, method: str, path: str, **send: Unpack[Send]) -> httpx2.Response:
+    async def request(self, method: str, path: Path, **send: Unpack[Send]) -> httpx2.Response:
         """Send a request below ``/api/v1``; an error status raises, unless it is in ``accept``."""
-        return await exchange(self._client, method, self._api + path, self._headers, **send)
+        url = self._api + address(path)
+        return await exchange(self._client, method, url, self._headers, **send)
 
-    async def get[M: BaseModel](self, path: str, model: type[M], **send: Unpack[Send]) -> M:
+    async def get[M: BaseModel](self, path: Path, model: type[M], **send: Unpack[Send]) -> M:
         """GET a JSON answer as a model."""
         return parse(await self.request("GET", path, **send), model)
 
     async def call[M: BaseModel](
-        self, method: str, path: str, model: type[M], **send: Unpack[Send]
+        self, method: str, path: Path, model: type[M], **send: Unpack[Send]
     ) -> M:
         """Send a request and read its JSON answer as a model."""
         return parse(await self.request(method, path, **send), model)
 
     async def call_as[T](
-        self, method: str, path: str, answer: TypeAdapter[T], **send: Unpack[Send]
+        self, method: str, path: Path, answer: TypeAdapter[T], **send: Unpack[Send]
     ) -> T:
         """Send a request and read its JSON answer as a type that is no model: a list, a union."""
         return parse_as(await self.request(method, path, **send), answer)
 
-    async def call_empty(self, method: str, path: str, **send: Unpack[Send]) -> None:
+    async def call_empty(self, method: str, path: Path, **send: Unpack[Send]) -> None:
         """Send a request whose answer has no body (204, or 202 without one)."""
         await self.request(method, path, **send)
 
-    async def download(self, path: str, **send: Unpack[Send]) -> bytes:
+    async def download(self, path: Path, **send: Unpack[Send]) -> bytes:
         """GET the bytes of a file."""
         return (await self.request("GET", path, **send)).content
 
-    async def lines(self, path: str, *, params: Params | None = None) -> AsyncGenerator[str]:
+    async def lines(self, path: Path, *, params: Params | None = None) -> AsyncGenerator[str]:
         """GET a stream and yield its lines as they come, until Lekto ends it.
 
         Lekto may send no event for long but keeps the stream alive with comments: after 30 s
         without a byte it raises :class:`LektoTimeoutError`.
         """
+        target = address(path)
         try:
             async with self._client.stream(
-                "GET", self._api + path, params=params, headers=self._headers, timeout=STREAM
+                "GET", self._api + target, params=params, headers=self._headers, timeout=STREAM
             ) as response:
                 if response.is_error:
                     await response.aread()
@@ -129,7 +135,7 @@ class Http:
                 async for line in response.aiter_lines():
                     yield line
         except httpx2.RequestError as error:
-            raise _request_error(error, "GET", path) from error
+            raise _request_error(error, "GET", target) from error
 
 
 async def exchange(
@@ -181,6 +187,30 @@ async def http_client(client: httpx2.AsyncClient | None) -> AsyncIterator[httpx2
         yield own
     finally:
         await own.aclose()
+
+
+def address(path: Path) -> str:
+    """Write a path with each value of its template as one segment, percent-encoded.
+
+    A value never leaves its segment: an id with ``/`` or ``?`` in it would reach another
+    operation.
+    """
+    if isinstance(path, str):
+        return path
+    return "".join(part if isinstance(part, str) else _segment(part.value) for part in path)
+
+
+def _segment(value: object) -> str:
+    """Encode one path value.
+
+    An empty one would name another operation, and a proxy may resolve ``.`` and ``..`` even
+    when they are encoded: those are refused.
+    """
+    text = str(value)
+    if text in {"", ".", ".."}:
+        message = f"no path value: {text!r}"
+        raise ValueError(message)
+    return quote(text, safe="")
 
 
 def query(**values: object) -> dict[str, str | list[str]]:
