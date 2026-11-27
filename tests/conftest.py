@@ -10,6 +10,7 @@ import pytest
 from pydantic import BaseModel, TypeAdapter
 
 from pylekto import API_VERSION, LEKTO_VERSION, LektoClient
+from pylekto.models import IdentifierKind
 
 SNAPSHOT = Path(__file__).resolve().parent / "snapshot"
 URL = "https://lekto.example.com"
@@ -68,6 +69,10 @@ class Snapshot:
     def segment(self, index: int) -> str:
         """Return a segment of the path: 1 is the first after ``/``."""
         return self.path.split("/")[index]
+
+    def kind(self, index: int) -> IdentifierKind:
+        """Return the segment of the path that names a kind of identifier."""
+        return TypeAdapter(IdentifierKind).validate_python(self.segment(index))
 
 
 def snapshot(name: str) -> Snapshot:

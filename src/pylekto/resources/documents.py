@@ -43,6 +43,7 @@ if TYPE_CHECKING:
     import builtins
     from collections.abc import AsyncIterator, Mapping, Sequence
 
+    from pylekto.models import IdentifierKind
     from pylekto.types import DocumentFilter, EditPart, Id, ListedFilter
 
 _CHANGED = TypeAdapter(DocumentChanged | DocumentOutOfReach)
@@ -500,7 +501,7 @@ class DocumentsResource(Resource):
             "POST", t"/documents/{document_id}/facts/decisions", FactsOut, json=body(decision)
         )
 
-    async def place(self, document_id: Id, kind: str, ref: str) -> PlaceOut:
+    async def place(self, document_id: Id, kind: IdentifierKind, ref: str) -> PlaceOut:
         """Return where an identifier stands in the document.
 
         Args:

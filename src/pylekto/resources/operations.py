@@ -1,6 +1,6 @@
 """Running Lekto: notifications, the pipeline, jobs, the automation's report, the classifier."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from pydantic import TypeAdapter
 
@@ -327,12 +327,12 @@ class AutomationResource(Resource):
         return await self._http.get("/automation/holders", HoldersOut)
 
     async def holder_cases(
-        self, measure: IdentifierKind | str, outcome: HolderOutcome
+        self, measure: IdentifierKind | Literal["recommendation"], outcome: HolderOutcome
     ) -> HolderCasesOut:
         """Return the decisions behind one number of :meth:`holders`.
 
         Args:
-            measure: The kind of identifier, or another measure the report names.
+            measure: The kind of identifier, or ``recommendation``.
             outcome: Which outcome to show the cases of.
 
         Example::
