@@ -1,16 +1,13 @@
 """Tests that the models are the ones generated from the OpenAPI description in the repository."""
 
-import json
 import runpy
-from pathlib import Path
 
 import pytest
 from pydantic import BaseModel
 
 from pylekto import API_VERSION, LEKTO_VERSION, models
 
-ROOT = Path(__file__).resolve().parent.parent
-
+from .conftest import DESCRIPTION, ROOT
 
 GENERATOR = runpy.run_path(str(ROOT / "script" / "generate_models.py"))
 
@@ -35,9 +32,8 @@ def test_choices_are_opened_but_not_examples() -> None:
 
 def test_versions_are_the_descriptions() -> None:
     """``LEKTO_VERSION`` names the Lekto release of ``openapi.json``, ``API_VERSION`` its API."""
-    description = json.loads((ROOT / "openapi.json").read_text(encoding="utf-8"))
-    assert description["info"]["x-lekto-version"] == LEKTO_VERSION
-    assert description["info"]["version"] == API_VERSION
+    assert DESCRIPTION["info"]["x-lekto-version"] == LEKTO_VERSION
+    assert DESCRIPTION["info"]["version"] == API_VERSION
 
 
 def test_every_model_builds() -> None:

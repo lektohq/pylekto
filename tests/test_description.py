@@ -5,10 +5,9 @@ import json
 import re
 from pathlib import Path
 
-from .conftest import SNAPSHOT
+from .conftest import API, DESCRIPTION, ROOT, SNAPSHOT
 
-ROOT = Path(__file__).resolve().parent.parent
-PATHS = json.loads((ROOT / "openapi.json").read_text(encoding="utf-8"))["paths"]
+PATHS = DESCRIPTION["paths"]
 METHODS = {"get", "post", "put", "patch", "delete"}
 CREDENTIALS = {"token", "taskToken", "fileSignature"}
 
@@ -48,7 +47,7 @@ _SENDS = {"call", "call_as", "call_empty", "request"}
 
 def template(path: str) -> str:
     """Return a path below ``/api/v1`` with every parameter written as ``{}``."""
-    return re.sub(r"\{[^}]*\}", "{}", path.removeprefix("/api/v1"))
+    return re.sub(r"\{[^}]*\}", "{}", path.removeprefix(API))
 
 
 def description() -> set[Operation]:
