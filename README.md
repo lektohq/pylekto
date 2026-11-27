@@ -68,7 +68,7 @@ from pylekto.models import TaskAnswer
 async def receive(headers: dict[str, str], body: bytes) -> None:
     webhooks.verify(headers, body, "whsec_…")  # raises WebhookVerificationError
     asked = webhooks.read_rule_ask(body)  # or read_event, read_rule_send, read_propose …
-    task = webhooks.task(headers)
+    task = webhooks.read_task(headers)
     if task is not None:
         await webhooks.answer(task, TaskAnswer(status="ok", answer={"paid": True}))
 ```

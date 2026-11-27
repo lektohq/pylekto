@@ -13,7 +13,7 @@ Example::
 
     webhooks.verify(request.headers, request.body, secret)
     event = webhooks.read_event(request.body)
-    task = webhooks.task(request.headers)
+    task = webhooks.read_task(request.headers)
     if task is not None:
         await webhooks.answer(task, TaskAnswer(status="ok", answer={"paid": True}))
 
@@ -210,7 +210,7 @@ class Task:
     deadline: str | None
 
 
-def task(headers: Mapping[str, str]) -> Task | None:
+def read_task(headers: Mapping[str, str]) -> Task | None:
     """Return the task of a request from its headers ``lekto-task-*``, or None for none.
 
     Args:
@@ -218,7 +218,7 @@ def task(headers: Mapping[str, str]) -> Task | None:
 
     Example::
 
-        task = webhooks.task(request.headers)
+        task = webhooks.read_task(request.headers)
 
     """
     named = {name.lower(): value for name, value in headers.items()}
@@ -239,7 +239,7 @@ async def answer(
     token (401) and an answer that does not fit (422); each raises its LektoApiError.
 
     Args:
-        task: The task, from :func:`task`.
+        task: The task, from :func:`read_task`.
         result: ``status`` ``ok`` with the ``answer``, or ``error`` with a ``reason``.
         client: An httpx2 client to send it with; default: one made for the moment.
 

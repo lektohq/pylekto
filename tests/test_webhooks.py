@@ -191,14 +191,14 @@ def test_a_body_of_another_kind() -> None:
 def test_task_from_the_headers() -> None:
     """A request that asks names its task in the headers; one that does not, none."""
     asked = recorded("rule_ask")
-    task = webhooks.task(asked["headers"])
+    task = webhooks.read_task(asked["headers"])
     assert task is not None
     content = webhooks.read_rule_ask(asked["body"])
     assert task.id == str(content.task.id)
     assert task.token == content.task.token
     assert task.callback == content.task.callback
     assert task.deadline is not None
-    assert webhooks.task(recorded("rule_send")["headers"]) is None
+    assert webhooks.read_task(recorded("rule_send")["headers"]) is None
 
 
 TASK = webhooks.Task(

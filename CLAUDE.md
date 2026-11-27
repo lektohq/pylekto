@@ -10,7 +10,7 @@ decided in `.knowledge/decisions/2026-11-18-pylekto-architecture.md`, the order 
 | Path | Content |
 | --- | --- |
 | `src/pylekto/` | The package (typed: `py.typed`): `client.py` (`LektoClient`), `_http.py` (requests, problem details as exceptions, pages), `exceptions.py`, `resources/` (one module per area of the API) |
-| `src/pylekto/webhooks.py` | Receiving webhooks: `verify` (Standard Webhooks), `read_*` for each body, `task`, `answer`, `download` |
+| `src/pylekto/webhooks.py` | Receiving webhooks: `verify` (Standard Webhooks), `read_*` for each body and for the task in the headers (`read_task`), `answer`, `download` |
 | `src/pylekto/models.py` | The models, generated from `openapi.json` by `script/generate_models.py` (datamodel-codegen, settings in `pyproject.toml`); never edited by hand |
 | `openapi.json`, `src/pylekto/_lekto.py` | Lekto's OpenAPI description of the release `LEKTO_VERSION`, that version and the version of its API (`API_VERSION`, `info.version`), which is also the MAJOR.MINOR of pylekto's own version |
 | `tests/` | pytest; `tests/ruff.toml` adjusts the rules for tests; `tests/snapshot/` the recorded answers of a Lekto instance, one JSON file per request |
