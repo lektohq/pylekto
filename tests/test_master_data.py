@@ -3,7 +3,6 @@
 from collections.abc import Awaitable, Callable
 
 import pytest
-from pydantic import TypeAdapter
 
 from pylekto import LektoClient, LektoForbiddenError, LektoServerError
 from pylekto.models import (
@@ -26,7 +25,6 @@ from pylekto.models import (
     UserCreate,
     UserPatch,
 )
-from pylekto.types import IdentifierKind
 
 from .conftest import Api, Snapshot, assert_sent, expected, plain
 
@@ -36,11 +34,6 @@ type Call = Callable[[LektoClient, Snapshot], Awaitable[object]]
 def first(recorded: Snapshot) -> str:
     """Return the id in the path of a recording (``/<area>/<id>/…``)."""
     return recorded.segment(2)
-
-
-def kind(recorded: Snapshot) -> IdentifierKind:
-    """Return the kind of identifier in the path of a recording (``/identifiers/…/<kind>/…``)."""
-    return TypeAdapter(IdentifierKind).validate_python(recorded.segment(3))
 
 
 ANSWERS: dict[str, Call] = {
@@ -96,10 +89,10 @@ ANSWERS: dict[str, Call] = {
     "open_identifiers_page": lambda lekto, _: lekto.open_identifiers.page(limit=5),
     "open_identifiers_search": lambda lekto, r: lekto.open_identifiers.search(r.json["q"], limit=5),
     "open_identifiers_summary": lambda lekto, _: lekto.open_identifiers.summary(),
-    "open_identifiers_get": lambda lekto, r: lekto.open_identifiers.get(kind(r), r.segment(4)),
+    "open_identifiers_get": lambda lekto, r: lekto.open_identifiers.get(r.kind(3), r.segment(4)),
     "identifiers_ref": lambda lekto, r: lekto.identifiers.ref(RefIn.model_validate(r.json)),
-    "identifiers_value": lambda lekto, r: lekto.identifiers.value(kind(r), r.segment(4)),
-    "identifiers_places": lambda lekto, r: lekto.identifiers.places(kind(r), r.segment(4)),
+    "identifiers_value": lambda lekto, r: lekto.identifiers.value(r.kind(3), r.segment(4)),
+    "identifiers_places": lambda lekto, r: lekto.identifiers.places(r.kind(3), r.segment(4)),
     "open_identifiers_decide": lambda lekto, r: lekto.open_identifiers.decide(
         OpenDecisionsIn.model_validate(r.json)
     ),

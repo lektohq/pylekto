@@ -2,7 +2,6 @@
 
 import json
 from http import HTTPStatus
-from pathlib import Path
 from typing import Any
 
 import pytest
@@ -10,16 +9,14 @@ from pydantic import ValidationError
 
 from pylekto import LEKTO_VERSION, models
 
-from .conftest import SNAPSHOT, snapshot
+from .conftest import API, DESCRIPTION, SNAPSHOT, snapshot
 
-ROOT = Path(__file__).resolve().parent.parent
-DESCRIPTION = json.loads((ROOT / "openapi.json").read_text(encoding="utf-8"))
 NAMES = sorted(path.stem for path in SNAPSHOT.glob("*.json"))
 
 
 def answer_schema(method: str, operation: str, status: int) -> dict[str, Any]:
     """Return the schema the description names for an answer."""
-    answer = DESCRIPTION["paths"]["/api/v1" + operation][method.lower()]["responses"][str(status)]
+    answer = DESCRIPTION["paths"][API + operation][method.lower()]["responses"][str(status)]
     schema: dict[str, Any] = answer["content"]["application/json"]["schema"]
     return schema
 

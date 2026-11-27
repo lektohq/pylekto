@@ -43,9 +43,12 @@ asyncio.run(main())
   requests with it and leaves it open.
 - **Errors raise.** Each subclass of `LektoError` says what went wrong; a refusal carries Lekto's
   problem details with a reason code. pylekto repeats nothing: whether to try again is up to you.
+  An id that is no part of an address (empty, `.`, `..`, with a slash) raises `ValueError` before
+  anything is sent.
 - **New values read.** A choice in the models is `Literal[...] | Unknown`: a value that a newer
   Lekto sends and this pylekto does not know arrives as `pylekto.Unknown` (a `str`) instead of
-  failing; `case Unknown():` matches it.
+  failing; `case Unknown():` matches it. The choices themselves (`IdentifierKind`, `JobState`, …)
+  are type aliases in `pylekto.models`.
 - **One version of the API.** pylekto speaks the API `pylekto.API_VERSION` of Lekto
   `pylekto.LEKTO_VERSION`; its models are generated from that release's OpenAPI description.
   From 0.2.0 on, pylekto's version names that API: pylekto `X.Y.Z` speaks the API `X.Y`, so
@@ -68,7 +71,7 @@ from pylekto.models import TaskAnswer
 async def receive(headers: dict[str, str], body: bytes) -> None:
     webhooks.verify(headers, body, "whsec_…")  # raises WebhookVerificationError
     asked = webhooks.read_rule_ask(body)  # or read_event, read_rule_send, read_propose …
-    task = webhooks.task(headers)
+    task = webhooks.read_task(headers)
     if task is not None:
         await webhooks.answer(task, TaskAnswer(status="ok", answer={"paid": True}))
 ```

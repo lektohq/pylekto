@@ -10,7 +10,7 @@ decided in `.knowledge/decisions/2026-11-18-pylekto-architecture.md`, the order 
 | Path | Content |
 | --- | --- |
 | `src/pylekto/` | The package (typed: `py.typed`): `client.py` (`LektoClient`), `_http.py` (requests, problem details as exceptions, pages), `exceptions.py`, `resources/` (one module per area of the API) |
-| `src/pylekto/webhooks.py` | Receiving webhooks: `verify` (Standard Webhooks), `read_*` for each body, `task`, `answer`, `download` |
+| `src/pylekto/webhooks.py` | Receiving webhooks: `verify` (Standard Webhooks), `read_*` for each body and for the task in the headers (`read_task`), `answer`, `download` |
 | `src/pylekto/models.py` | The models, generated from `openapi.json` by `script/generate_models.py` (datamodel-codegen, settings in `pyproject.toml`); never edited by hand |
 | `openapi.json`, `src/pylekto/_lekto.py` | Lekto's OpenAPI description of the release `LEKTO_VERSION`, that version and the version of its API (`API_VERSION`, `info.version`), which is also the MAJOR.MINOR of pylekto's own version |
 | `tests/` | pytest; `tests/ruff.toml` adjusts the rules for tests; `tests/snapshot/` the recorded answers of a Lekto instance, one JSON file per request |
@@ -64,10 +64,14 @@ tag.
   gives only its total). A body that is a single required
   value (`SearchIn.q`, `MoveRequest.space_id`, `RelateIn.document_id`) is passed as that value.
   Path ids are named for what they are (`document_id`, not `id`) and take `UUID` or `str`
-  (`types.Id`). Query filters the description gives no model are `TypedDict`s in `types.py`
-  (`DocumentFilter`), taken as keyword arguments, and so are choices the generator wrote inline
-  (`IdentifierKind`, `TagScope`, `OpenSource`); tests keep them equal to the description's. Form fields always go as parts of a multipart body (`(None, text)`): Lekto reads
-  them nowhere else.
+  (`types.Id`). A path with values is a template string (`t"/documents/{document_id}"`, never an
+  f-string, which a test refuses): `_http.address` percent-encodes each value and raises
+  `ValueError` for one no encoding keeps in its segment: an empty one, `.`, `..`, one with `/`
+  (Lekto's server decodes `%2F` before it finds the operation) or `\`. Query filters the description gives no model are `TypedDict`s in `types.py`
+  (`DocumentFilter`), taken as keyword arguments; tests keep them equal to the description's. A
+  choice the description names (`IdentifierKind`, `TagScope`, `JobState`) is a type alias in
+  `models.py`, written once, for requests and answers alike. Form fields always go as parts of a
+  multipart body (`(None, text)`): Lekto reads them nowhere else.
 - What Lekto sends to a webhook is recorded as it came (`tests/snapshot/webhooks/`, with the secret
   of a webhook deleted at the end): `record_snapshot.py --receiver <url Lekto reaches>
   --receiver-log <file a receiving server writes>`; the tests verify Lekto's real signatures.
@@ -77,7 +81,7 @@ tag.
   request that triggers events).
 - `models.py` is generated; a test fails if it differs from what `script/generate_models.py`
   writes from `openapi.json`. Ruff and typos leave it out; mypy checks it.
-- Every choice (an `enum` of strings, in the models and in `types.py`) is `Literal[...] | Unknown`:
+- Every choice (an `enum` of strings, in the models) is `Literal[...] | Unknown`:
   a value a newer Lekto sends and pylekto does not know reads as `pylekto.Unknown` (a `str`)
   instead of failing, and goes back to Lekto as a filter. A plain `str` is no `Unknown`, so type
   checkers keep requests to the known values. Unions with a discriminator stay closed.

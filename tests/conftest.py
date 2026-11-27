@@ -10,8 +10,13 @@ import pytest
 from pydantic import BaseModel, TypeAdapter
 
 from pylekto import API_VERSION, LEKTO_VERSION, LektoClient
+from pylekto.models import IdentifierKind
 
-SNAPSHOT = Path(__file__).resolve().parent / "snapshot"
+ROOT = Path(__file__).resolve().parent.parent
+SNAPSHOT = ROOT / "tests" / "snapshot"
+# Lekto's OpenAPI description, read once for every test that compares pylekto with it.
+DESCRIPTION: dict[str, Any] = json.loads((ROOT / "openapi.json").read_text(encoding="utf-8"))
+API = "/api/v1"
 URL = "https://lekto.example.com"
 TOKEN = "lekto_0123456789abcdef"
 USER_ID = "0199a3c4-0000-7000-8000-000000000001"
@@ -69,6 +74,10 @@ class Snapshot:
         """Return a segment of the path: 1 is the first after ``/``."""
         return self.path.split("/")[index]
 
+    def kind(self, index: int) -> IdentifierKind:
+        """Return the segment of the path that names a kind of identifier."""
+        return TypeAdapter(IdentifierKind).validate_python(self.segment(index))
+
 
 def snapshot(name: str) -> Snapshot:
     """Read the recording ``tests/snapshot/<name>.json``."""
@@ -114,7 +123,7 @@ class Api:
         ``when`` restricts the answer to requests with these query values; the answer added
         last that fits is given.
         """
-        self.answers.setdefault((method, "/api/v1" + path), []).append(Answer(status, **answer))
+        self.answers.setdefault((method, API + path), []).append(Answer(status, **answer))
 
     def replay(self, name: str) -> Snapshot:
         """Answer the request of the recording ``name`` as Lekto did; return the recording."""
@@ -173,7 +182,7 @@ def assert_sent(api: Api, recorded: Snapshot) -> None:
     """Assert that the last request is the one of the recording: method, path, query, body."""
     request = api.requests[-1]
     assert request.method == recorded.method
-    assert request.url.path == "/api/v1" + recorded.path
+    assert request.url.path == API + recorded.path
     sent = {key: request.url.params.get_list(key) for key in request.url.params}
     expected = {
         key: [str(item) for item in value] if isinstance(value, list) else [str(value)]

@@ -24,7 +24,8 @@ from pylekto.resources._base import Resource
 if TYPE_CHECKING:
     import builtins
 
-    from pylekto.types import Id, RuleScope
+    from pylekto.models import RuleScope
+    from pylekto.types import Id
 
 _RULES = TypeAdapter(list[RuleOut])
 _VERSIONS = TypeAdapter(list[RuleVersionOut])
@@ -87,7 +88,7 @@ class RulesResource(Resource):
             rule = await lekto.rules.get(rule_id)
 
         """
-        return await self._http.get(f"/rules/{rule_id}", RuleOut)
+        return await self._http.get(t"/rules/{rule_id}", RuleOut)
 
     async def replace(self, rule_id: Id, rule: RuleChange) -> RuleOut:
         """Replace a rule's definition; the rule gets a new version.
@@ -101,7 +102,7 @@ class RulesResource(Resource):
             rule = await lekto.rules.replace(rule_id, RuleChange.model_validate(definition))
 
         """
-        return await self._http.call("PUT", f"/rules/{rule_id}", RuleOut, json=body(rule))
+        return await self._http.call("PUT", t"/rules/{rule_id}", RuleOut, json=body(rule))
 
     async def update(self, rule_id: Id, changes: RulePatch) -> RuleOut:
         """Enable or disable a rule.
@@ -115,7 +116,7 @@ class RulesResource(Resource):
             await lekto.rules.update(rule_id, RulePatch(enabled=False))
 
         """
-        return await self._http.call("PATCH", f"/rules/{rule_id}", RuleOut, json=body(changes))
+        return await self._http.call("PATCH", t"/rules/{rule_id}", RuleOut, json=body(changes))
 
     async def delete(self, rule_id: Id) -> None:
         """Delete a rule.
@@ -128,7 +129,7 @@ class RulesResource(Resource):
             await lekto.rules.delete(rule_id)
 
         """
-        await self._http.call_empty("DELETE", f"/rules/{rule_id}")
+        await self._http.call_empty("DELETE", t"/rules/{rule_id}")
 
     async def versions(self, rule_id: Id) -> builtins.list[RuleVersionOut]:
         """Return every version of a rule.
@@ -141,7 +142,7 @@ class RulesResource(Resource):
             versions = await lekto.rules.versions(rule_id)
 
         """
-        return await self._http.call_as("GET", f"/rules/{rule_id}/versions", _VERSIONS)
+        return await self._http.call_as("GET", t"/rules/{rule_id}/versions", _VERSIONS)
 
     async def version(self, rule_id: Id, number: int) -> RuleVersionOut:
         """Return one version of a rule.
@@ -155,7 +156,7 @@ class RulesResource(Resource):
             first = await lekto.rules.version(rule_id, 1)
 
         """
-        return await self._http.get(f"/rules/{rule_id}/versions/{number}", RuleVersionOut)
+        return await self._http.get(t"/rules/{rule_id}/versions/{number}", RuleVersionOut)
 
     async def preview_apply(self, rule_id: Id, request: ApplyPreviewRequest) -> ApplyPreviewOut:
         """Show what applying a rule to the existing documents would change.
@@ -170,7 +171,7 @@ class RulesResource(Resource):
 
         """
         return await self._http.call(
-            "POST", f"/rules/{rule_id}/apply/preview", ApplyPreviewOut, json=body(request)
+            "POST", t"/rules/{rule_id}/apply/preview", ApplyPreviewOut, json=body(request)
         )
 
     async def hits(self, rule_id: Id, document_id: Id) -> TextHitsOut:
@@ -185,7 +186,7 @@ class RulesResource(Resource):
             hits = await lekto.rules.hits(rule_id, document_id)
 
         """
-        return await self._http.get(f"/rules/{rule_id}/apply/hits/{document_id}", TextHitsOut)
+        return await self._http.get(t"/rules/{rule_id}/apply/hits/{document_id}", TextHitsOut)
 
     async def apply(self, rule_id: Id, request: ApplyRequest) -> RuleApplicationOut:
         """Apply a version of a rule to existing documents, in the background.
@@ -201,7 +202,7 @@ class RulesResource(Resource):
 
         """
         return await self._http.call(
-            "POST", f"/rules/{rule_id}/apply", RuleApplicationOut, json=body(request)
+            "POST", t"/rules/{rule_id}/apply", RuleApplicationOut, json=body(request)
         )
 
     async def application(self, application_id: Id) -> RuleApplicationOut:
@@ -215,7 +216,7 @@ class RulesResource(Resource):
             progress = await lekto.rules.application(application_id)
 
         """
-        return await self._http.get(f"/rule-applications/{application_id}", RuleApplicationOut)
+        return await self._http.get(t"/rule-applications/{application_id}", RuleApplicationOut)
 
     async def preview_template(self, template: TemplatePreviewIn) -> TemplatePreviewOut:
         """Check a template and render it with a document.

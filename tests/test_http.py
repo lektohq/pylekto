@@ -1,5 +1,6 @@
 """Tests of the HTTP layer: errors as exceptions, answers as models, pages of items."""
 
+import copy
 from dataclasses import dataclass
 from datetime import date
 
@@ -23,7 +24,7 @@ from pylekto import (
     Unknown,
 )
 from pylekto._http import _reveal, body, cursor_items, offset_items
-from pylekto.models import DocumentPatch, MailboxPatch
+from pylekto.models import DocumentPatch, MailboxPatch, Problem
 
 from .conftest import DOCUMENT_ID, TOKEN, URL, Api
 
@@ -137,6 +138,25 @@ async def test_rate_limit_says_how_long_to_wait(
 
 
 @pytest.mark.parametrize(
+    "error",
+    [
+        LektoApiError(Problem(title="Refused", status=400, detail="No")),
+        LektoConflictError(Problem(title="Conflict", status=409)),
+        LektoRateLimitError(Problem(title="Too Many Requests", status=429), 7.0),
+    ],
+)
+def test_an_error_survives_a_copy(error: LektoApiError) -> None:
+    """A refusal copies (pickling goes the same way) with its problem details and its notes."""
+    error.add_note("made up")
+    for other in (copy.copy(error), copy.deepcopy(error)):
+        assert other.__notes__ == ["made up"]
+        assert type(other) is type(error)
+        assert str(other) == str(error)
+        assert other.problem == error.problem
+        assert vars(other) == vars(error)
+
+
+@pytest.mark.parametrize(
     ("failure", "error"),
     [
         (httpx2.ConnectError("refused"), LektoConnectionError),
@@ -176,6 +196,32 @@ async def test_redirects_in_a_circle(api: Api) -> None:
             await lekto.auth.me()
     assert type(raised.value) is LektoConnectionError
     assert isinstance(raised.value.__cause__, httpx2.TooManyRedirects)
+
+
+@pytest.mark.parametrize(
+    ("value", "sent"),
+    [
+        ("a?b=c#d", "a%3Fb%3Dc%23d"),
+        ("a%2Fb", "a%252Fb"),
+        ("ä b", "%C3%A4%20b"),
+        (DOCUMENT_ID, DOCUMENT_ID),
+    ],
+)
+async def test_a_path_value_stays_in_its_segment(
+    api: Api, lekto: LektoClient, value: str, sent: str
+) -> None:
+    """A value put in a path is percent-encoded, so it reaches no other operation."""
+    api.answer("DELETE", f"/documents/{value}", 204)
+    await lekto.documents.delete(value)
+    assert api.requests[-1].url.raw_path == f"/api/v1/documents/{sent}".encode()
+
+
+@pytest.mark.parametrize("value", ["", ".", "..", "../users", "a/b", "a\\b"])
+async def test_a_path_value_that_is_none(api: Api, lekto: LektoClient, value: str) -> None:
+    """An empty value, one that leads up and one with a slash are refused before a request."""
+    with pytest.raises(ValueError, match="no path value"):
+        await lekto.documents.get(value)
+    assert api.requests == []
 
 
 async def test_answer_the_models_do_not_describe(api: Api, lekto: LektoClient) -> None:

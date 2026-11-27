@@ -67,7 +67,7 @@ class UsersResource(Resource):
             user = await lekto.users.get(user_id)
 
         """
-        return await self._http.call_as("GET", f"/users/{user_id}", _USER)
+        return await self._http.call_as("GET", t"/users/{user_id}", _USER)
 
     async def update(self, user_id: Id, changes: UserPatch) -> UserOut:
         """Change a user's role or whether they are active.
@@ -81,7 +81,7 @@ class UsersResource(Resource):
             await lekto.users.update(user_id, UserPatch(active=False))
 
         """
-        return await self._http.call("PATCH", f"/users/{user_id}", UserOut, json=body(changes))
+        return await self._http.call("PATCH", t"/users/{user_id}", UserOut, json=body(changes))
 
     async def profile(self, user_id: Id) -> ProfileOut:
         """Return a user's profile: names, birth date, identifiers, numbers.
@@ -94,7 +94,7 @@ class UsersResource(Resource):
             profile = await lekto.users.profile(user_id)
 
         """
-        return await self._http.get(f"/users/{user_id}/profile", ProfileOut)
+        return await self._http.get(t"/users/{user_id}/profile", ProfileOut)
 
     async def update_profile(self, user_id: Id, changes: ProfilePatch) -> ProfileOut:
         """Change a user's profile; only the values set in ``changes`` change.
@@ -109,7 +109,7 @@ class UsersResource(Resource):
 
         """
         return await self._http.call(
-            "PATCH", f"/users/{user_id}/profile", ProfileOut, json=body(changes)
+            "PATCH", t"/users/{user_id}/profile", ProfileOut, json=body(changes)
         )
 
     async def removal(self, user_id: Id) -> UserRemovalOut:
@@ -123,4 +123,4 @@ class UsersResource(Resource):
             removal = await lekto.users.removal(user_id)
 
         """
-        return await self._http.get(f"/users/{user_id}/removal", UserRemovalOut)
+        return await self._http.get(t"/users/{user_id}/removal", UserRemovalOut)

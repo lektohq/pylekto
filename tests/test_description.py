@@ -5,10 +5,9 @@ import json
 import re
 from pathlib import Path
 
-from .conftest import SNAPSHOT
+from .conftest import API, DESCRIPTION, ROOT, SNAPSHOT
 
-ROOT = Path(__file__).resolve().parent.parent
-PATHS = json.loads((ROOT / "openapi.json").read_text(encoding="utf-8"))["paths"]
+PATHS = DESCRIPTION["paths"]
 METHODS = {"get", "post", "put", "patch", "delete"}
 CREDENTIALS = {"token", "taskToken", "fileSignature"}
 
@@ -48,7 +47,7 @@ _SENDS = {"call", "call_as", "call_empty", "request"}
 
 def template(path: str) -> str:
     """Return a path below ``/api/v1`` with every parameter written as ``{}``."""
-    return re.sub(r"\{[^}]*\}", "{}", path.removeprefix("/api/v1"))
+    return re.sub(r"\{[^}]*\}", "{}", path.removeprefix(API))
 
 
 def description() -> set[Operation]:
@@ -66,10 +65,14 @@ def description() -> set[Operation]:
 
 
 def _path(node: ast.expr) -> str:
-    """Return a path as the code writes it, with ``{}`` for each value put in."""
+    """Return a path as the code writes it, with ``{}`` for each value put in.
+
+    A path with values is a template string, whose values the HTTP layer encodes; an f-string
+    would put them in as they are.
+    """
     if isinstance(node, ast.Constant) and isinstance(node.value, str):
         return node.value
-    assert isinstance(node, ast.JoinedStr), ast.unparse(node)
+    assert isinstance(node, ast.TemplateStr), ast.unparse(node)
     return "".join(
         part.value if isinstance(part, ast.Constant) and isinstance(part.value, str) else "{}"
         for part in node.values

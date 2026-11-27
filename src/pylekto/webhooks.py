@@ -13,7 +13,7 @@ Example::
 
     webhooks.verify(request.headers, request.body, secret)
     event = webhooks.read_event(request.body)
-    task = webhooks.task(request.headers)
+    task = webhooks.read_task(request.headers)
     if task is not None:
         await webhooks.answer(task, TaskAnswer(status="ok", answer={"paid": True}))
 
@@ -45,8 +45,8 @@ if TYPE_CHECKING:
 
     import httpx2
 
-KEY_PREFIX = "whsec_"
-SIGNATURE_VERSION = "v1"
+_KEY_PREFIX = "whsec_"
+_SIGNATURE_VERSION = "v1"
 # How far the timestamp of a request may lie from now: an older request may be a repeated one.
 TOLERANCE = timedelta(minutes=5)
 
@@ -62,6 +62,7 @@ def verify(
     """Check that Lekto signed a request with the webhook's secret, and not too long ago.
 
     Raises :class:`pylekto.WebhookVerificationError` if not: then do not trust the request.
+    A ``secret`` that is no webhook secret raises a ``ValueError``, whatever the request.
 
     Args:
         headers: The request's headers (any case).
@@ -75,7 +76,9 @@ def verify(
         webhooks.verify(request.headers, await request.body(), secret)
 
     """
-    named = {name.lower(): value for name, value in headers.items()}
+    # First, so that a secret that is none shows with any request, a signed one or not.
+    keys = [_key(key) for key in ([secret] if isinstance(secret, str) else secret)]
+    named = _named(headers)
     message_id = named.get("webhook-id")
     timestamp = named.get("webhook-timestamp")
     signatures = named.get("webhook-signature")
@@ -92,13 +95,10 @@ def verify(
         message = "the request's timestamp lies too far from now"
         raise WebhookVerificationError(message)
     signed = f"{message_id}.{timestamp}.".encode() + content
-    keys = [secret] if isinstance(secret, str) else list(secret)
-    expected = [
-        base64.b64encode(hmac.new(_key(key), signed, hashlib.sha256).digest()) for key in keys
-    ]
+    expected = [base64.b64encode(hmac.new(key, signed, hashlib.sha256).digest()) for key in keys]
     for entry in signatures.split():
         version, _, value = entry.partition(",")
-        if version == SIGNATURE_VERSION and any(
+        if version == _SIGNATURE_VERSION and any(
             hmac.compare_digest(value.encode(), digest) for digest in expected
         ):
             return
@@ -106,13 +106,18 @@ def verify(
     raise WebhookVerificationError(message)
 
 
+def _named(headers: Mapping[str, str]) -> dict[str, str]:
+    """Return the headers by their names in lower case: a framework may hand them in any case."""
+    return {name.lower(): value for name, value in headers.items()}
+
+
 def _key(secret: str) -> bytes:
     """Return the key of a webhook's secret: the bytes of its base64 after ``whsec_``."""
-    if not secret.startswith(KEY_PREFIX):
-        message = "not a webhook secret: it starts with whsec_"
+    if not secret.startswith(_KEY_PREFIX):
+        message = "not a webhook secret: it does not start with whsec_"
         raise ValueError(message)
     try:
-        return base64.b64decode(secret.removeprefix(KEY_PREFIX), validate=True)
+        return base64.b64decode(secret.removeprefix(_KEY_PREFIX), validate=True)
     except binascii.Error:
         message = "not a webhook secret: no base64 after whsec_"
         raise ValueError(message) from None
@@ -207,27 +212,43 @@ class Task:
     id: str
     callback: str
     token: str
-    deadline: str | None
+    deadline: datetime | None
 
 
-def task(headers: Mapping[str, str]) -> Task | None:
+def read_task(headers: Mapping[str, str]) -> Task | None:
     """Return the task of a request from its headers ``lekto-task-*``, or None for none.
+
+    A deadline that is no time raises :class:`pylekto.LektoResponseError`.
 
     Args:
         headers: The request's headers (any case).
 
     Example::
 
-        task = webhooks.task(request.headers)
+        task = webhooks.read_task(request.headers)
 
     """
-    named = {name.lower(): value for name, value in headers.items()}
+    named = _named(headers)
     task_id = named.get("lekto-task-id")
     callback = named.get("lekto-callback")
     token = named.get("lekto-task-token")
     if not task_id or not callback or not token:
         return None
-    return Task(task_id, callback, token, named.get("lekto-deadline"))
+    return Task(task_id, callback, token, _deadline(named.get("lekto-deadline")))
+
+
+def _deadline(header: str | None) -> datetime | None:
+    """Read ``lekto-deadline`` (ISO 8601 with its zone), as the body's ``task.deadline`` is."""
+    if header is None:
+        return None
+    try:
+        deadline = datetime.fromisoformat(header)
+    except ValueError:
+        deadline = None
+    if deadline is None or deadline.tzinfo is None:
+        message = f"the webhook's lekto-deadline is no time with a zone: {header!r}"
+        raise LektoResponseError(message)
+    return deadline
 
 
 async def answer(
@@ -239,7 +260,7 @@ async def answer(
     token (401) and an answer that does not fit (422); each raises its LektoApiError.
 
     Args:
-        task: The task, from :func:`task`.
+        task: The task, from :func:`read_task`.
         result: ``status`` ``ok`` with the ``answer``, or ``error`` with a ``reason``.
         client: An httpx2 client to send it with; default: one made for the moment.
 

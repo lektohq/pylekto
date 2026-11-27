@@ -1,10 +1,10 @@
 """The master data: contacts, document types, tags and fields (changed by admins)."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Unpack
 
 from pydantic import TypeAdapter
 
-from pylekto._http import FILE_TYPE, Upload, body, query
+from pylekto._http import Upload, body, file_part, query
 from pylekto.models import (
     ContactCreate,
     ContactOut,
@@ -27,7 +27,8 @@ from pylekto.resources._base import Resource
 if TYPE_CHECKING:
     import builtins
 
-    from pylekto.types import Id, TagScope
+    from pylekto.models import TagScope
+    from pylekto.types import DocumentCounts, Id
 
 _CONTACTS = TypeAdapter(list[ContactOut])
 _DOCUMENT_TYPES = TypeAdapter(list[DocumentTypeOut])
@@ -38,14 +39,11 @@ _FIELDS = TypeAdapter(list[FieldOut])
 class ContactsResource(Resource):
     """The contacts: who sends documents, with aliases, identifiers and logos."""
 
-    async def list(
-        self, *, document_counts: bool | None = None, all_users: bool | None = None
-    ) -> builtins.list[ContactOut]:
+    async def list(self, **counts: Unpack[DocumentCounts]) -> builtins.list[ContactOut]:
         """Return every contact.
 
         Args:
-            document_counts: Count each contact's documents.
-            all_users: Count every user's documents, not only the caller's reach (admins).
+            **counts: Whether to count each one's documents (:class:`pylekto.types.DocumentCounts`).
 
         Example::
 
@@ -53,7 +51,7 @@ class ContactsResource(Resource):
                 print(contact.name, contact.document_count)
 
         """
-        params = query(document_counts=document_counts, all_users=all_users)
+        params = query(**counts)
         return await self._http.call_as("GET", "/contacts", _CONTACTS, params=params)
 
     async def create(self, contact: ContactCreate) -> ContactOut:
@@ -80,7 +78,7 @@ class ContactsResource(Resource):
             contact = await lekto.contacts.get(contact_id)
 
         """
-        return await self._http.get(f"/contacts/{contact_id}", ContactOut)
+        return await self._http.get(t"/contacts/{contact_id}", ContactOut)
 
     async def update(self, contact_id: Id, changes: ContactPatch) -> ContactOut:
         """Change a contact; only the values set in ``changes`` change.
@@ -95,7 +93,7 @@ class ContactsResource(Resource):
 
         """
         return await self._http.call(
-            "PATCH", f"/contacts/{contact_id}", ContactOut, json=body(changes)
+            "PATCH", t"/contacts/{contact_id}", ContactOut, json=body(changes)
         )
 
     async def delete(self, contact_id: Id) -> None:
@@ -109,7 +107,7 @@ class ContactsResource(Resource):
             await lekto.contacts.delete(contact_id)
 
         """
-        await self._http.call_empty("DELETE", f"/contacts/{contact_id}")
+        await self._http.call_empty("DELETE", t"/contacts/{contact_id}")
 
     async def attach_identifier(self, contact_id: Id, identifier: IdentifierIn) -> ContactOut:
         """Attach an identifier from a document's facts to a contact.
@@ -126,7 +124,7 @@ class ContactsResource(Resource):
 
         """
         return await self._http.call(
-            "POST", f"/contacts/{contact_id}/identifiers", ContactOut, json=body(identifier)
+            "POST", t"/contacts/{contact_id}/identifiers", ContactOut, json=body(identifier)
         )
 
     async def logo(self, contact_id: Id) -> bytes:
@@ -140,7 +138,7 @@ class ContactsResource(Resource):
             image = await lekto.contacts.logo(contact_id)
 
         """
-        return await self._http.download(f"/contacts/{contact_id}/logo")
+        return await self._http.download(t"/contacts/{contact_id}/logo")
 
     async def upload_logo(self, contact_id: Id, file: Upload, filename: str) -> ContactOut:
         """Upload a contact's logo: PNG, JPEG or WebP, at most 1 MiB.
@@ -157,9 +155,9 @@ class ContactsResource(Resource):
         """
         return await self._http.call(
             "PUT",
-            f"/contacts/{contact_id}/logo",
+            t"/contacts/{contact_id}/logo",
             ContactOut,
-            files=[("file", (filename, file, FILE_TYPE))],
+            files=[file_part(file, filename)],
         )
 
     async def delete_logo(self, contact_id: Id) -> None:
@@ -173,7 +171,7 @@ class ContactsResource(Resource):
             await lekto.contacts.delete_logo(contact_id)
 
         """
-        await self._http.call_empty("DELETE", f"/contacts/{contact_id}/logo")
+        await self._http.call_empty("DELETE", t"/contacts/{contact_id}/logo")
 
     async def fetch_logo(self, contact_id: Id) -> None:
         """Fetch a contact's logo from its website, in the background.
@@ -186,7 +184,7 @@ class ContactsResource(Resource):
             await lekto.contacts.fetch_logo(contact_id)
 
         """
-        await self._http.call_empty("POST", f"/contacts/{contact_id}/logo/fetch")
+        await self._http.call_empty("POST", t"/contacts/{contact_id}/logo/fetch")
 
     async def fetch_logos(self) -> QueuedOut:
         """Fetch the missing logos of every contact with a website, in the background.
@@ -202,21 +200,18 @@ class ContactsResource(Resource):
 class DocumentTypesResource(Resource):
     """The document types, their title patterns and their fields."""
 
-    async def list(
-        self, *, document_counts: bool | None = None, all_users: bool | None = None
-    ) -> builtins.list[DocumentTypeOut]:
+    async def list(self, **counts: Unpack[DocumentCounts]) -> builtins.list[DocumentTypeOut]:
         """Return every document type.
 
         Args:
-            document_counts: Count each type's documents.
-            all_users: Count every user's documents, not only the caller's reach (admins).
+            **counts: Whether to count each one's documents (:class:`pylekto.types.DocumentCounts`).
 
         Example::
 
             names = [kind.name for kind in await lekto.document_types.list()]
 
         """
-        params = query(document_counts=document_counts, all_users=all_users)
+        params = query(**counts)
         return await self._http.call_as("GET", "/document-types", _DOCUMENT_TYPES, params=params)
 
     async def create(self, document_type: DocumentTypeCreate) -> DocumentTypeOut:
@@ -245,7 +240,7 @@ class DocumentTypesResource(Resource):
             document_type = await lekto.document_types.get(document_type_id)
 
         """
-        return await self._http.get(f"/document-types/{document_type_id}", DocumentTypeOut)
+        return await self._http.get(t"/document-types/{document_type_id}", DocumentTypeOut)
 
     async def update(self, document_type_id: Id, changes: DocumentTypePatch) -> DocumentTypeOut:
         """Change a document type; only the values set in ``changes`` change.
@@ -260,7 +255,7 @@ class DocumentTypesResource(Resource):
 
         """
         return await self._http.call(
-            "PATCH", f"/document-types/{document_type_id}", DocumentTypeOut, json=body(changes)
+            "PATCH", t"/document-types/{document_type_id}", DocumentTypeOut, json=body(changes)
         )
 
     async def delete(self, document_type_id: Id) -> None:
@@ -274,7 +269,7 @@ class DocumentTypesResource(Resource):
             await lekto.document_types.delete(document_type_id)
 
         """
-        await self._http.call_empty("DELETE", f"/document-types/{document_type_id}")
+        await self._http.call_empty("DELETE", t"/document-types/{document_type_id}")
 
     async def set_fields(
         self, document_type_id: Id, fields: FieldAssignmentsIn
@@ -293,7 +288,7 @@ class DocumentTypesResource(Resource):
 
         """
         return await self._http.call_as(
-            "PUT", f"/document-types/{document_type_id}/fields", _FIELDS, json=body(fields)
+            "PUT", t"/document-types/{document_type_id}/fields", _FIELDS, json=body(fields)
         )
 
 
@@ -301,25 +296,20 @@ class TagsResource(Resource):
     """The tags of documents, contacts, document types and topics."""
 
     async def list(
-        self,
-        *,
-        scope: TagScope | None = None,
-        document_counts: bool | None = None,
-        all_users: bool | None = None,
+        self, *, scope: TagScope | None = None, **counts: Unpack[DocumentCounts]
     ) -> builtins.list[TagOut]:
         """Return every tag, or those of one scope.
 
         Args:
             scope: Only the tags of documents, contacts, document types or topics.
-            document_counts: Count each tag's documents.
-            all_users: Count every user's documents, not only the caller's reach (admins).
+            **counts: Whether to count each one's documents (:class:`pylekto.types.DocumentCounts`).
 
         Example::
 
             topics = await lekto.tags.list(scope="topic")
 
         """
-        params = query(scope=scope, document_counts=document_counts, all_users=all_users)
+        params = query(scope=scope, **counts)
         return await self._http.call_as("GET", "/tags", _TAGS, params=params)
 
     async def create(self, tag: TagCreate) -> TagOut:
@@ -346,7 +336,7 @@ class TagsResource(Resource):
             tag = await lekto.tags.get(tag_id)
 
         """
-        return await self._http.get(f"/tags/{tag_id}", TagOut)
+        return await self._http.get(t"/tags/{tag_id}", TagOut)
 
     async def update(self, tag_id: Id, changes: TagPatch) -> TagOut:
         """Change a tag; only the values set in ``changes`` change.
@@ -360,7 +350,7 @@ class TagsResource(Resource):
             await lekto.tags.update(tag_id, TagPatch(color="#0d6b6b"))
 
         """
-        return await self._http.call("PATCH", f"/tags/{tag_id}", TagOut, json=body(changes))
+        return await self._http.call("PATCH", t"/tags/{tag_id}", TagOut, json=body(changes))
 
     async def delete(self, tag_id: Id) -> None:
         """Delete a tag.
@@ -373,20 +363,17 @@ class TagsResource(Resource):
             await lekto.tags.delete(tag_id)
 
         """
-        await self._http.call_empty("DELETE", f"/tags/{tag_id}")
+        await self._http.call_empty("DELETE", t"/tags/{tag_id}")
 
 
 class FieldsResource(Resource):
     """The field definitions: what Lekto reads from documents besides title and date."""
 
-    async def list(
-        self, *, document_counts: bool | None = None, all_users: bool | None = None
-    ) -> builtins.list[FieldOut]:
+    async def list(self, **counts: Unpack[DocumentCounts]) -> builtins.list[FieldOut]:
         """Return every field definition.
 
         Args:
-            document_counts: Count the documents with a value of each field.
-            all_users: Count every user's documents, not only the caller's reach (admins).
+            **counts: Whether to count each one's documents (:class:`pylekto.types.DocumentCounts`).
 
         Example::
 
@@ -394,7 +381,7 @@ class FieldsResource(Resource):
                 print(field.name, field.data_type)
 
         """
-        params = query(document_counts=document_counts, all_users=all_users)
+        params = query(**counts)
         return await self._http.call_as("GET", "/fields", _FIELDS, params=params)
 
     async def create(self, field: FieldCreate) -> FieldOut:
@@ -421,7 +408,7 @@ class FieldsResource(Resource):
             field = await lekto.fields.get(field_id)
 
         """
-        return await self._http.get(f"/fields/{field_id}", FieldOut)
+        return await self._http.get(t"/fields/{field_id}", FieldOut)
 
     async def update(self, field_id: Id, changes: FieldPatch) -> FieldOut:
         """Change a field definition; only the values set in ``changes`` change.
@@ -435,7 +422,7 @@ class FieldsResource(Resource):
             await lekto.fields.update(field_id, FieldPatch(required=True))
 
         """
-        return await self._http.call("PATCH", f"/fields/{field_id}", FieldOut, json=body(changes))
+        return await self._http.call("PATCH", t"/fields/{field_id}", FieldOut, json=body(changes))
 
     async def delete(self, field_id: Id) -> None:
         """Delete a field definition and its values.
@@ -448,4 +435,4 @@ class FieldsResource(Resource):
             await lekto.fields.delete(field_id)
 
         """
-        await self._http.call_empty("DELETE", f"/fields/{field_id}")
+        await self._http.call_empty("DELETE", t"/fields/{field_id}")

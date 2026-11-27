@@ -1,6 +1,6 @@
 """``/webhooks``: the endpoints Lekto tells about events and asks for tasks."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Unpack
 
 from pydantic import TypeAdapter
 
@@ -18,9 +18,9 @@ from pylekto.resources._base import Resource
 
 if TYPE_CHECKING:
     import builtins
-    from collections.abc import AsyncIterator, Sequence
+    from collections.abc import AsyncIterator
 
-    from pylekto.types import DeliveryOutcome, Id
+    from pylekto.types import DeliveryFilter, Id
 
 _WEBHOOKS = TypeAdapter(list[WebhookOut])
 
@@ -73,7 +73,7 @@ class WebhooksResource(Resource):
             hook = await lekto.webhooks.get(webhook_id)
 
         """
-        return await self._http.get(f"/webhooks/{webhook_id}", WebhookOut)
+        return await self._http.get(t"/webhooks/{webhook_id}", WebhookOut)
 
     async def update(self, webhook_id: Id, changes: WebhookPatch) -> WebhookOut:
         """Change a webhook or switch it on or off; only the values set in ``changes`` change.
@@ -88,7 +88,7 @@ class WebhooksResource(Resource):
 
         """
         return await self._http.call(
-            "PATCH", f"/webhooks/{webhook_id}", WebhookOut, json=body(changes)
+            "PATCH", t"/webhooks/{webhook_id}", WebhookOut, json=body(changes)
         )
 
     async def delete(self, webhook_id: Id) -> None:
@@ -102,7 +102,7 @@ class WebhooksResource(Resource):
             await lekto.webhooks.delete(webhook_id)
 
         """
-        await self._http.call_empty("DELETE", f"/webhooks/{webhook_id}")
+        await self._http.call_empty("DELETE", t"/webhooks/{webhook_id}")
 
     async def renew_secret(self, webhook_id: Id) -> WebhookCreated:
         """Give a webhook a new secret; the old one stays valid for a while.
@@ -116,7 +116,7 @@ class WebhooksResource(Resource):
             store(renewed.secret)
 
         """
-        return await self._http.call("POST", f"/webhooks/{webhook_id}/secret", WebhookCreated)
+        return await self._http.call("POST", t"/webhooks/{webhook_id}/secret", WebhookCreated)
 
     async def stop_signing(self, webhook_id: Id) -> WebhookOut:
         """Send a webhook's requests unsigned from now on.
@@ -129,7 +129,7 @@ class WebhooksResource(Resource):
             await lekto.webhooks.stop_signing(webhook_id)
 
         """
-        return await self._http.call("DELETE", f"/webhooks/{webhook_id}/secret", WebhookOut)
+        return await self._http.call("DELETE", t"/webhooks/{webhook_id}/secret", WebhookOut)
 
     async def test(self, webhook_id: Id) -> DeliveryOut:
         """Send a webhook a test request and return how it went.
@@ -143,23 +143,21 @@ class WebhooksResource(Resource):
             print(delivery.outcome, delivery.status)
 
         """
-        return await self._http.call("POST", f"/webhooks/{webhook_id}/test", DeliveryOut)
+        return await self._http.call("POST", t"/webhooks/{webhook_id}/test", DeliveryOut)
 
     def deliveries(
         self,
         webhook_id: Id,
         *,
-        outcome: Sequence[DeliveryOutcome] | None = None,
-        event_type: str | None = None,
         page_size: int | None = None,
+        **filters: Unpack[DeliveryFilter],
     ) -> AsyncIterator[DeliveryOut]:
         """Iterate over the delivery log of a webhook, page after page.
 
         Args:
             webhook_id: The webhook.
-            outcome: Only deliveries with these outcomes.
-            event_type: Only deliveries of this event.
             page_size: How many deliveries each request fetches.
+            **filters: Which deliveries (:class:`pylekto.types.DeliveryFilter`).
 
         Example::
 
@@ -169,13 +167,7 @@ class WebhooksResource(Resource):
         """
 
         async def fetch(offset: int) -> DeliveryPageOut:
-            return await self.deliveries_page(
-                webhook_id,
-                outcome=outcome,
-                event_type=event_type,
-                offset=offset,
-                limit=page_size,
-            )
+            return await self.deliveries_page(webhook_id, offset=offset, limit=page_size, **filters)
 
         return offset_items(fetch)
 
@@ -183,28 +175,26 @@ class WebhooksResource(Resource):
         self,
         webhook_id: Id,
         *,
-        outcome: Sequence[DeliveryOutcome] | None = None,
-        event_type: str | None = None,
         offset: int | None = None,
         limit: int | None = None,
+        **filters: Unpack[DeliveryFilter],
     ) -> DeliveryPageOut:
         """Return one page of the delivery log of a webhook.
 
         Args:
             webhook_id: The webhook.
-            outcome: Only deliveries with these outcomes.
-            event_type: Only deliveries of this event.
             offset: Skip so many deliveries.
             limit: How many deliveries the page holds at most.
+            **filters: Which deliveries (:class:`pylekto.types.DeliveryFilter`).
 
         Example::
 
             page = await lekto.webhooks.deliveries_page(webhook_id, limit=20)
 
         """
-        params = query(outcome=outcome, event_type=event_type, offset=offset, limit=limit)
+        params = query(offset=offset, limit=limit, **filters)
         return await self._http.get(
-            f"/webhooks/{webhook_id}/deliveries", DeliveryPageOut, params=params
+            t"/webhooks/{webhook_id}/deliveries", DeliveryPageOut, params=params
         )
 
     async def deliveries_summary(
@@ -222,7 +212,7 @@ class WebhooksResource(Resource):
 
         """
         return await self._http.get(
-            f"/webhooks/{webhook_id}/deliveries/summary",
+            t"/webhooks/{webhook_id}/deliveries/summary",
             DeliverySummaryOut,
             params=query(event_type=event_type),
         )

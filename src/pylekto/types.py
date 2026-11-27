@@ -9,8 +9,17 @@ from datetime import date
 from typing import Literal, NotRequired, TypedDict
 from uuid import UUID
 
-from pylekto._unknown import Unknown
-from pylekto.models import LaneFilter
+from pylekto.models import (
+    Channel,
+    DeliveryOutcome,
+    IdentifierKind,
+    InboxTab,
+    JobState,
+    LaneFilter,
+    MailOutcome,
+    OpenSource,
+    Period,
+)
 
 # The id of an object: a UUID, or its text.
 type Id = UUID | str
@@ -68,6 +77,118 @@ class ListedFilter(DocumentFilter, total=False):
     ``all_users`` in every user's inbox, with the caller's own seen marks."""
 
 
+class InboxFilter(TypedDict, total=False):
+    """Which documents of the inbox a list takes.
+
+    Example::
+
+        async for item in lekto.inbox.list(tab="review", all_users=True):
+            print(item.document.title)
+
+    """
+
+    tab: InboxTab
+    """The tab; default: everything open."""
+    all_users: bool
+    """Every user's inbox (admins)."""
+
+
+class OpenIdentifierFilter(TypedDict, total=False):
+    """Which open identifiers a list or a search takes.
+
+    Example::
+
+        page = await lekto.open_identifiers.page(kind="iban", recommended=True)
+
+    """
+
+    source: OpenSource
+    """Only those learned from confirmed documents, or only suggested ones."""
+    kind: IdentifierKind
+    """Only identifiers of this kind."""
+    recommended: bool
+    """Only those their documents recommend for a contact."""
+
+
+class JobFilter(TypedDict, total=False):
+    """Which jobs a list takes.
+
+    Example::
+
+        async for job in lekto.jobs.list(state=["failed"], kind="pipeline.node"):
+            print(job.error)
+
+    """
+
+    state: Sequence[JobState]
+    """Only jobs in these states."""
+    kind: str
+    """Only jobs of this kind, such as ``pipeline.node``."""
+
+
+class MailFilter(TypedDict, total=False):
+    """Which mails of a mailbox's log a list takes.
+
+    Example::
+
+        page = await lekto.mailboxes.mails_page(mailbox_id, outcome=["failed"])
+
+    """
+
+    outcome: Sequence[MailOutcome]
+    """Only mails with these outcomes."""
+    rule_id: Id
+    """Only mails this mail rule took."""
+
+
+class DeliveryFilter(TypedDict, total=False):
+    """Which deliveries of a webhook's log a list takes.
+
+    Example::
+
+        page = await lekto.webhooks.deliveries_page(webhook_id, outcome=["gave_up"])
+
+    """
+
+    outcome: Sequence[DeliveryOutcome]
+    """Only deliveries with these outcomes."""
+    event_type: str
+    """Only deliveries of this event."""
+
+
+class AutomationFilter(TypedDict, total=False):
+    """Which documents a report of the automation looks at.
+
+    Example::
+
+        report = await lekto.automation.get(channel=["mail"], period="30d", tz="Europe/Berlin")
+
+    """
+
+    channel: Sequence[Channel]
+    """Only documents that came in these ways."""
+    period: Period
+    """The time to look back on."""
+    tz: str
+    """The IANA time zone the days and months begin in."""
+
+
+class DocumentCounts(TypedDict, total=False):
+    """Whether a list of master data counts the documents of each item.
+
+    Example::
+
+        for contact in await lekto.contacts.list(document_counts=True):
+            print(contact.name, contact.document_count)
+
+    """
+
+    document_counts: bool
+    """Count the documents of each item."""
+    all_users: bool
+    """Count every user's documents, not only the caller's reach (admins)."""
+
+
 class PagePick(TypedDict):
     """One page of a part of a page edit."""
 
@@ -87,64 +208,3 @@ class EditPart(TypedDict):
     """Its pages in their order; each page goes in one part at most."""
     replaces: NotRequired[bool]
     """It becomes the document's next version; every other part becomes a new document."""
-
-
-# The kind of an identifier, such as an IBAN or a customer number.
-type IdentifierKind = (
-    Literal[
-        "iban",
-        "vat_id",
-        "customer_number",
-        "personnel_number",
-        "email_domain",
-        "tax_id",
-        "social_security_number",
-        "health_insurance_number",
-        "email_address",
-        "creditor_id",
-        "commercial_register",
-        "tax_number",
-        "contract_number",
-        "meter_number",
-        "mandate_reference",
-        "license_plate",
-        "invoice_number",
-        "credit_note_number",
-        "order_number",
-        "file_reference",
-        "our_reference",
-        "claim_number",
-        "ticket_number",
-        "your_reference",
-        "letter_date",
-        "child_benefit_number",
-    ]
-    | Unknown
-)
-
-# What a tag is for.
-type TagScope = Literal["document", "contact", "document_type", "topic"] | Unknown
-
-# Where an open identifier comes from: learned from confirmed documents, or suggested.
-type OpenSource = Literal["learned", "suggested"] | Unknown
-
-# Whether a rule acts in every space or in one.
-type RuleScope = Literal["global", "space"] | Unknown
-
-# A tab of the inbox.
-type InboxTab = Literal["new", "review", "intervene", "processing", "done"] | Unknown
-
-# The outcome of a webhook delivery.
-type DeliveryOutcome = Literal["delivered", "retrying", "gave_up", "dropped"] | Unknown
-
-# What became of a mail a mailbox fetched.
-type MailOutcome = Literal["taken", "no_rule", "nothing", "known", "too_large", "failed"] | Unknown
-
-# The state of a job.
-type JobState = Literal["running", "due", "planned", "done", "failed"] | Unknown
-
-# The way a document came in.
-type Channel = Literal["web", "api", "migration", "mail"] | Unknown
-
-# The time an automation report looks back on.
-type Period = Literal["30d", "12m", "all"] | Unknown

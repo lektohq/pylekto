@@ -59,7 +59,7 @@ class SpacesResource(Resource):
             space = await lekto.spaces.get(space_id)
 
         """
-        return await self._http.get(f"/spaces/{space_id}", SpaceOut)
+        return await self._http.get(t"/spaces/{space_id}", SpaceOut)
 
     async def update(self, space_id: Id, changes: SpacePatch) -> SpaceOut:
         """Rename a space or change its description.
@@ -73,7 +73,7 @@ class SpacesResource(Resource):
             await lekto.spaces.update(space_id, SpacePatch(name="Family"))
 
         """
-        return await self._http.call("PATCH", f"/spaces/{space_id}", SpaceOut, json=body(changes))
+        return await self._http.call("PATCH", t"/spaces/{space_id}", SpaceOut, json=body(changes))
 
     async def delete(self, space_id: Id) -> None:
         """Delete a space; it must hold no documents.
@@ -86,7 +86,7 @@ class SpacesResource(Resource):
             await lekto.spaces.delete(space_id)
 
         """
-        await self._http.call_empty("DELETE", f"/spaces/{space_id}")
+        await self._http.call_empty("DELETE", t"/spaces/{space_id}")
 
     async def set_member(self, space_id: Id, user_id: Id, member: MemberIn) -> SpaceOut:
         """Add a member to a space or change their role.
@@ -102,7 +102,7 @@ class SpacesResource(Resource):
 
         """
         return await self._http.call(
-            "PUT", f"/spaces/{space_id}/members/{user_id}", SpaceOut, json=body(member)
+            "PUT", t"/spaces/{space_id}/members/{user_id}", SpaceOut, json=body(member)
         )
 
     async def remove_member(self, space_id: Id, user_id: Id) -> SpaceOut | None:
@@ -119,5 +119,5 @@ class SpacesResource(Resource):
             await lekto.spaces.remove_member(space_id, user_id)
 
         """
-        response = await self._http.request("DELETE", f"/spaces/{space_id}/members/{user_id}")
+        response = await self._http.request("DELETE", t"/spaces/{space_id}/members/{user_id}")
         return parse(response, SpaceOut) if response.content else None

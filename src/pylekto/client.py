@@ -1,15 +1,15 @@
 """The client of one Lekto instance."""
 
 import json
+import os
 import re
 import warnings
+from pathlib import Path
 from typing import TYPE_CHECKING, Literal, Self
 
-import httpx2
-
-from pylekto._http import TIMEOUT, Http, parse
+from pylekto._http import Http, new_client, parse
 from pylekto._lekto import API_VERSION, LEKTO_VERSION
-from pylekto.exceptions import LektoVersionWarning
+from pylekto.exceptions import LektoResponseError, LektoVersionWarning
 from pylekto.models import Me
 from pylekto.resources import (
     AuthResource,
@@ -44,8 +44,13 @@ from pylekto.resources import (
 if TYPE_CHECKING:
     from types import TracebackType
 
+    import httpx2
+
 # ASCII and bounded: int() refuses over 4300 digits, and \d also takes other scripts.
 _API_VERSION = re.compile(r"([0-9]{1,9})\.([0-9]{1,9})")
+
+# The warning names the caller's line, also through ``async with`` (``__aenter__``).
+_PACKAGE = (str(Path(__file__).parent) + os.sep,)
 
 type ApiFit = Literal["fits", "newer", "older", "unknown"]
 
@@ -74,7 +79,7 @@ class LektoClient:
     def __init__(self, url: str, token: str, *, client: httpx2.AsyncClient | None = None) -> None:
         """Prepare the client; nothing is sent before the first request."""
         self._own_client = client is None
-        self._client = httpx2.AsyncClient(timeout=TIMEOUT) if client is None else client
+        self._client = new_client() if client is None else client
         http = Http(url, token, self._client)
         self._http = http
         self.auth = AuthResource(http)
@@ -104,8 +109,18 @@ class LektoClient:
         self.users = UsersResource(http)
         self.version = VersionResource(http)
         self.webhooks = WebhooksResource(http)
-        self.lekto_version: str | None = None
-        self.api_version: str | None = None
+        self._lekto_version: str | None = None
+        self._api_version: str | None = None
+
+    @property
+    def lekto_version(self) -> str | None:
+        """The version of the Lekto that answered :meth:`connect`; None before."""
+        return self._lekto_version
+
+    @property
+    def api_version(self) -> str | None:
+        """The version of the API that Lekto speaks (see :func:`pylekto.api_fit`); None before."""
+        return self._api_version
 
     async def __aenter__(self) -> Self:
         """Connect (:meth:`connect`); a failure closes the client again."""
@@ -140,21 +155,16 @@ class LektoClient:
 
         """
         response = await self._http.request("GET", "/auth/me")
-        # Read before the model, which a Lekto without an API version does not fit.
-        answered = _field(response, "api_version")
-        if api_fit(answered) != "fits":
-            lekto = _field(response, "lekto_version")
-            who = f"Lekto {lekto}" if lekto else "Lekto"
-            api = f"the API {answered}" if answered else "no API version"
-            warnings.warn(
-                f"{who} answers with {api}; this pylekto speaks the API {API_VERSION} "
-                f"of Lekto {LEKTO_VERSION}",
-                LektoVersionWarning,
-                stacklevel=2,
-            )
-        me = parse(response, Me)
-        self.lekto_version = me.lekto_version
-        self.api_version = me.api_version
+        try:
+            me = parse(response, Me)
+        except LektoResponseError:
+            # A Lekto without an API version does not fit the model: warn from what it sent.
+            sent = _texts(response)
+            _warn_unless_fit(sent.get("api_version"), sent.get("lekto_version"))
+            raise
+        _warn_unless_fit(me.api_version, me.lekto_version)
+        self._lekto_version = me.lekto_version
+        self._api_version = me.api_version
         return me
 
     async def close(self) -> None:
@@ -173,14 +183,29 @@ class LektoClient:
             await self._client.aclose()
 
 
-def _field(response: httpx2.Response, name: str) -> str | None:
-    """Return a text field of a JSON answer, or None where it has none."""
+def _texts(response: httpx2.Response) -> dict[str, str]:
+    """Return the text fields of a JSON answer; none of an answer that is no object."""
     try:
         body = json.loads(response.content)
     except ValueError:
-        return None
-    value = body.get(name) if isinstance(body, dict) else None
-    return value if isinstance(value, str) else None
+        return {}
+    if not isinstance(body, dict):
+        return {}
+    return {name: value for name, value in body.items() if isinstance(value, str)}
+
+
+def _warn_unless_fit(answered: str | None, lekto: str | None) -> None:
+    """Warn that Lekto's API may differ from pylekto's, naming both, unless it fits."""
+    if api_fit(answered) == "fits":
+        return
+    who = f"Lekto {lekto}" if lekto else "Lekto"
+    api = f"the API {answered}" if answered else "no API version"
+    warnings.warn(
+        f"{who} answers with {api}; this pylekto speaks the API {API_VERSION} "
+        f"of Lekto {LEKTO_VERSION}",
+        LektoVersionWarning,
+        skip_file_prefixes=_PACKAGE,
+    )
 
 
 def api_fit(api_version: str | None) -> ApiFit:

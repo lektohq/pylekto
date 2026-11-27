@@ -66,7 +66,7 @@ class LensesResource(Resource):
             lens = await lekto.lenses.get(lens_id)
 
         """
-        return await self._http.get(f"/lenses/{lens_id}", LensOut)
+        return await self._http.get(t"/lenses/{lens_id}", LensOut)
 
     async def update(self, lens_id: Id, changes: LensPatch) -> LensOut:
         """Change a lens; only the values set in ``changes`` change.
@@ -80,7 +80,7 @@ class LensesResource(Resource):
             await lekto.lenses.update(lens_id, LensPatch(name="Bills"))
 
         """
-        return await self._http.call("PATCH", f"/lenses/{lens_id}", LensOut, json=body(changes))
+        return await self._http.call("PATCH", t"/lenses/{lens_id}", LensOut, json=body(changes))
 
     async def delete(self, lens_id: Id) -> None:
         """Delete a lens.
@@ -93,4 +93,4 @@ class LensesResource(Resource):
             await lekto.lenses.delete(lens_id)
 
         """
-        await self._http.call_empty("DELETE", f"/lenses/{lens_id}")
+        await self._http.call_empty("DELETE", t"/lenses/{lens_id}")

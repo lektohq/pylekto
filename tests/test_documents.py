@@ -53,9 +53,7 @@ ANSWERS: dict[str, Call] = {
     "documents_structure": lambda lekto, r: lekto.documents.structure(document(r)),
     "documents_log": lambda lekto, r: lekto.documents.log(document(r)),
     "documents_facts": lambda lekto, r: lekto.documents.facts(document(r)),
-    "documents_place": lambda lekto, r: lekto.documents.place(
-        document(r), r.segment(4), r.segment(5)
-    ),
+    "documents_place": lambda lekto, r: lekto.documents.place(document(r), r.kind(4), r.segment(5)),
     "documents_files": lambda lekto, r: lekto.documents.files(document(r)),
     "documents_reading": lambda lekto, r: lekto.documents.reading(document(r)),
     "documents_review": lambda lekto, r: lekto.documents.review(document(r)),

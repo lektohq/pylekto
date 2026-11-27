@@ -1,6 +1,6 @@
 """``/identifiers/open``: identifiers that belong to no contact yet, to confirm or reject."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Unpack
 
 from pydantic import TypeAdapter
 
@@ -19,7 +19,8 @@ if TYPE_CHECKING:
     import builtins
     from collections.abc import AsyncIterator
 
-    from pylekto.types import IdentifierKind, OpenSource
+    from pylekto.models import IdentifierKind
+    from pylekto.types import OpenIdentifierFilter
 
 _OUTCOMES = TypeAdapter(list[OutcomeOut])
 
@@ -31,20 +32,13 @@ class OpenIdentifiersResource(Resource):
     """
 
     def list(
-        self,
-        *,
-        source: OpenSource | None = None,
-        kind: IdentifierKind | None = None,
-        recommended: bool | None = None,
-        page_size: int | None = None,
+        self, *, page_size: int | None = None, **filters: Unpack[OpenIdentifierFilter]
     ) -> AsyncIterator[OpenIdentifierOut]:
         """Iterate over every open identifier, page after page.
 
         Args:
-            source: Only those learned from confirmed documents, or only suggested ones.
-            kind: Only identifiers of this kind.
-            recommended: Only those their documents recommend for a contact.
             page_size: How many identifiers each request fetches.
+            **filters: Which identifiers (:class:`pylekto.types.OpenIdentifierFilter`).
 
         Example::
 
@@ -54,29 +48,23 @@ class OpenIdentifiersResource(Resource):
         """
 
         async def fetch(offset: int) -> OpenPageOut:
-            return await self.page(
-                source=source, kind=kind, recommended=recommended, offset=offset, limit=page_size
-            )
+            return await self.page(offset=offset, limit=page_size, **filters)
 
         return total_items(fetch)
 
     async def page(
         self,
         *,
-        source: OpenSource | None = None,
-        kind: IdentifierKind | None = None,
-        recommended: bool | None = None,
         offset: int | None = None,
         limit: int | None = None,
+        **filters: Unpack[OpenIdentifierFilter],
     ) -> OpenPageOut:
         """Return a page of the open identifiers, with their counts.
 
         Args:
-            source: Only those learned from confirmed documents, or only suggested ones.
-            kind: Only identifiers of this kind.
-            recommended: Only those their documents recommend for a contact.
             offset: Skip so many.
             limit: How many the page holds at most.
+            **filters: Which identifiers (:class:`pylekto.types.OpenIdentifierFilter`).
 
         Example::
 
@@ -84,39 +72,31 @@ class OpenIdentifiersResource(Resource):
             print(page.total, [item.value for item in page.items])
 
         """
-        params = query(
-            source=source, kind=kind, recommended=recommended, offset=offset, limit=limit
-        )
+        params = query(offset=offset, limit=limit, **filters)
         return await self._http.get("/identifiers/open", OpenPageOut, params=params)
 
     async def search(
         self,
         words: str,
         *,
-        source: OpenSource | None = None,
-        kind: IdentifierKind | None = None,
-        recommended: bool | None = None,
         offset: int | None = None,
         limit: int | None = None,
+        **filters: Unpack[OpenIdentifierFilter],
     ) -> OpenPageOut:
         """Find open identifiers by words (in the body, never in the address).
 
         Args:
             words: What to look for in the value, the holder or the documents.
-            source: Only those learned from confirmed documents, or only suggested ones.
-            kind: Only identifiers of this kind.
-            recommended: Only those their documents recommend for a contact.
             offset: Skip so many.
             limit: How many the page holds at most.
+            **filters: Which identifiers (:class:`pylekto.types.OpenIdentifierFilter`).
 
         Example::
 
             page = await lekto.open_identifiers.search("Muster")
 
         """
-        params = query(
-            source=source, kind=kind, recommended=recommended, offset=offset, limit=limit
-        )
+        params = query(offset=offset, limit=limit, **filters)
         return await self._http.call(
             "POST", "/identifiers/open/search", OpenPageOut, params=params, json={"q": words}
         )
@@ -143,7 +123,7 @@ class OpenIdentifiersResource(Resource):
             detail = await lekto.open_identifiers.get("iban", ref)
 
         """
-        return await self._http.get(f"/identifiers/open/{kind}/{ref}", OpenDetailOut)
+        return await self._http.get(t"/identifiers/open/{kind}/{ref}", OpenDetailOut)
 
     async def decide(self, decisions: OpenDecisionsIn) -> builtins.list[OutcomeOut]:
         """Confirm open identifiers at a contact, or reject them.

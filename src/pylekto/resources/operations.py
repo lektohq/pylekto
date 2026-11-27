@@ -1,6 +1,6 @@
 """Running Lekto: notifications, the pipeline, jobs, the automation's report, the classifier."""
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal, Unpack
 
 from pydantic import TypeAdapter
 
@@ -29,9 +29,10 @@ from pylekto.resources._base import Resource
 
 if TYPE_CHECKING:
     import builtins
-    from collections.abc import AsyncIterator, Sequence
+    from collections.abc import AsyncIterator
 
-    from pylekto.types import Channel, Id, IdentifierKind, JobState, Period
+    from pylekto.models import IdentifierKind
+    from pylekto.types import AutomationFilter, Id, JobFilter
 
 _DEVICES = TypeAdapter(list[PushDeviceOut])
 _MODELS = TypeAdapter(list[ClassifierModelOut])
@@ -84,7 +85,7 @@ class PushResource(Resource):
             await lekto.push.remove_device(device_id)
 
         """
-        await self._http.call_empty("DELETE", f"/push/devices/{device_id}")
+        await self._http.call_empty("DELETE", t"/push/devices/{device_id}")
 
     async def test_device(self, device_id: Id) -> PushTestOut:
         """Send a device a test notification.
@@ -97,7 +98,7 @@ class PushResource(Resource):
             result = await lekto.push.test_device(device_id)
 
         """
-        return await self._http.call("POST", f"/push/devices/{device_id}/test", PushTestOut)
+        return await self._http.call("POST", t"/push/devices/{device_id}/test", PushTestOut)
 
     async def preferences(self) -> PushPreferencesBody:
         """Return what the caller is told about.
@@ -195,18 +196,13 @@ class JobsResource(Resource):
         return await self._http.get("/jobs/summary", JobsSummaryOut)
 
     def list(
-        self,
-        *,
-        state: Sequence[JobState] | None = None,
-        kind: str | None = None,
-        page_size: int | None = None,
+        self, *, page_size: int | None = None, **filters: Unpack[JobFilter]
     ) -> AsyncIterator[JobOut]:
         """Iterate over the jobs, page after page.
 
         Args:
-            state: Only jobs in these states.
-            kind: Only jobs of this kind, such as ``pipeline.node``.
             page_size: How many jobs each request fetches.
+            **filters: Which jobs (:class:`pylekto.types.JobFilter`).
 
         Example::
 
@@ -216,32 +212,30 @@ class JobsResource(Resource):
         """
 
         async def fetch(offset: int) -> JobPageOut:
-            return await self.page(state=state, kind=kind, offset=offset, limit=page_size)
+            return await self.page(offset=offset, limit=page_size, **filters)
 
         return offset_items(fetch)
 
     async def page(
         self,
         *,
-        state: Sequence[JobState] | None = None,
-        kind: str | None = None,
         offset: int | None = None,
         limit: int | None = None,
+        **filters: Unpack[JobFilter],
     ) -> JobPageOut:
         """Return one page of the jobs.
 
         Args:
-            state: Only jobs in these states.
-            kind: Only jobs of this kind, such as ``pipeline.node``.
             offset: Skip so many jobs.
             limit: How many jobs the page holds at most.
+            **filters: Which jobs (:class:`pylekto.types.JobFilter`).
 
         Example::
 
             page = await lekto.jobs.page(state=["failed"], limit=20)
 
         """
-        params = query(state=state, kind=kind, offset=offset, limit=limit)
+        params = query(offset=offset, limit=limit, **filters)
         return await self._http.get("/jobs", JobPageOut, params=params)
 
     async def durations(self) -> JobDurationsOut:
@@ -265,55 +259,37 @@ class JobsResource(Resource):
             job = await lekto.jobs.retry(job_id)
 
         """
-        return await self._http.call("POST", f"/jobs/{job_id}/retry", JobOut)
+        return await self._http.call("POST", t"/jobs/{job_id}/retry", JobOut)
 
 
 class AutomationResource(Resource):
     """How well Lekto worked by itself: lanes, signals and the holders of identifiers."""
 
-    async def get(
-        self,
-        *,
-        channel: Sequence[Channel] | None = None,
-        period: Period | None = None,
-        tz: str | None = None,
-    ) -> AutomationOut:
+    async def get(self, **filters: Unpack[AutomationFilter]) -> AutomationOut:
         """Return how the automation did: documents by lane, over time.
 
         Args:
-            channel: Only documents that came in these ways.
-            period: The time to look back on.
-            tz: The IANA time zone the days and months begin in.
+            **filters: Which documents (:class:`pylekto.types.AutomationFilter`).
 
         Example::
 
             report = await lekto.automation.get(period="30d", tz="Europe/Berlin")
 
         """
-        params = query(channel=channel, period=period, tz=tz)
-        return await self._http.get("/automation", AutomationOut, params=params)
+        return await self._http.get("/automation", AutomationOut, params=query(**filters))
 
-    async def signals(
-        self,
-        *,
-        channel: Sequence[Channel] | None = None,
-        period: Period | None = None,
-        tz: str | None = None,
-    ) -> SignalsOut:
+    async def signals(self, **filters: Unpack[AutomationFilter]) -> SignalsOut:
         """Return how often each signal hit.
 
         Args:
-            channel: Only documents that came in these ways.
-            period: The time to look back on.
-            tz: The IANA time zone the days and months begin in.
+            **filters: Which documents (:class:`pylekto.types.AutomationFilter`).
 
         Example::
 
             signals = await lekto.automation.signals(period="12m")
 
         """
-        params = query(channel=channel, period=period, tz=tz)
-        return await self._http.get("/automation/signals", SignalsOut, params=params)
+        return await self._http.get("/automation/signals", SignalsOut, params=query(**filters))
 
     async def holders(self) -> HoldersOut:
         """Return how the holders Lekto found compare with the decisions at the contacts.
@@ -326,12 +302,12 @@ class AutomationResource(Resource):
         return await self._http.get("/automation/holders", HoldersOut)
 
     async def holder_cases(
-        self, measure: IdentifierKind | str, outcome: HolderOutcome
+        self, measure: IdentifierKind | Literal["recommendation"], outcome: HolderOutcome
     ) -> HolderCasesOut:
         """Return the decisions behind one number of :meth:`holders`.
 
         Args:
-            measure: The kind of identifier, or another measure the report names.
+            measure: The kind of identifier, or ``recommendation``.
             outcome: Which outcome to show the cases of.
 
         Example::

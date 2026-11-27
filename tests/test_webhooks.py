@@ -131,6 +131,8 @@ def test_a_secret_that_is_none(secret: str) -> None:
     request = recorded("rule_send")
     with pytest.raises(ValueError, match="not a webhook secret"):
         webhooks.verify(request["headers"], request["body"].encode(), secret, now=sent_at(request))
+    with pytest.raises(ValueError, match="not a webhook secret"):
+        webhooks.verify({}, b"", [request["secret"], secret])
 
 
 def test_bodies_read_as_their_models() -> None:
@@ -189,14 +191,32 @@ def test_a_body_of_another_kind() -> None:
 def test_task_from_the_headers() -> None:
     """A request that asks names its task in the headers; one that does not, none."""
     asked = recorded("rule_ask")
-    task = webhooks.task(asked["headers"])
+    task = webhooks.read_task(asked["headers"])
     assert task is not None
     content = webhooks.read_rule_ask(asked["body"])
     assert task.id == str(content.task.id)
     assert task.token == content.task.token
     assert task.callback == content.task.callback
-    assert task.deadline is not None
-    assert webhooks.task(recorded("rule_send")["headers"]) is None
+    assert task.deadline == content.task.deadline
+    assert task.deadline.tzinfo is not None
+    assert webhooks.read_task(recorded("rule_send")["headers"]) is None
+
+
+@pytest.mark.parametrize("deadline", ["soon", "2026-11-24T10:32:44", "2026-11-24"])
+def test_task_with_a_deadline_that_is_no_time(deadline: str) -> None:
+    """A deadline pylekto cannot read, or one without a zone, is no answer of its models."""
+    headers = {name.lower(): value for name, value in recorded("rule_ask")["headers"].items()}
+    with pytest.raises(LektoResponseError, match=f"is no time with a zone: '{deadline}'"):
+        webhooks.read_task(headers | {"lekto-deadline": deadline})
+
+
+def test_task_without_a_deadline() -> None:
+    """A task whose request names no deadline has none."""
+    headers = {name.lower(): value for name, value in recorded("rule_ask")["headers"].items()}
+    del headers["lekto-deadline"]
+    task = webhooks.read_task(headers)
+    assert task is not None
+    assert task.deadline is None
 
 
 TASK = webhooks.Task(

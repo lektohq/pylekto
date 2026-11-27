@@ -13,7 +13,9 @@ from collections.abc import (
 from contextlib import asynccontextmanager
 from datetime import date
 from http import HTTPStatus
+from string.templatelib import Template
 from typing import IO, Any, Protocol, TypedDict, Unpack
+from urllib.parse import quote
 from uuid import UUID
 
 import httpx2
@@ -44,11 +46,19 @@ _JSON: TypeAdapter[Any] = TypeAdapter(Any)
 # Lekto recognises a file by its content, not by the type a client names.
 FILE_TYPE = "application/octet-stream"
 
+# A path below ``/api/v1``: a template (``t"/documents/{document_id}"``) wherever it holds values.
+type Path = str | Template
 type Params = Mapping[str, str | Sequence[str]]
 type Upload = bytes | IO[bytes]
 # A multipart part: a file (name, content, type) or a form field (None, its text).
 type Part = tuple[str, Upload, str] | tuple[None, str]
 type Files = Sequence[tuple[str, Part]]
+
+
+def file_part(file: Upload, filename: str, field: str = "file") -> tuple[str, Part]:
+    """Return a file as a part of a multipart body, under the name of its form field."""
+    return field, (filename, file, FILE_TYPE)
+
 
 _ERRORS: dict[int, type[LektoApiError]] = {
     HTTPStatus.UNAUTHORIZED: LektoAuthenticationError,
@@ -85,43 +95,45 @@ class Http:
         self._headers = {"Authorization": f"Bearer {token}"}
         self._client = client
 
-    async def request(self, method: str, path: str, **send: Unpack[Send]) -> httpx2.Response:
+    async def request(self, method: str, path: Path, **send: Unpack[Send]) -> httpx2.Response:
         """Send a request below ``/api/v1``; an error status raises, unless it is in ``accept``."""
-        return await exchange(self._client, method, self._api + path, self._headers, **send)
+        url = self._api + address(path)
+        return await exchange(self._client, method, url, self._headers, **send)
 
-    async def get[M: BaseModel](self, path: str, model: type[M], **send: Unpack[Send]) -> M:
+    async def get[M: BaseModel](self, path: Path, model: type[M], **send: Unpack[Send]) -> M:
         """GET a JSON answer as a model."""
-        return parse(await self.request("GET", path, **send), model)
+        return await self.call("GET", path, model, **send)
 
     async def call[M: BaseModel](
-        self, method: str, path: str, model: type[M], **send: Unpack[Send]
+        self, method: str, path: Path, model: type[M], **send: Unpack[Send]
     ) -> M:
         """Send a request and read its JSON answer as a model."""
         return parse(await self.request(method, path, **send), model)
 
     async def call_as[T](
-        self, method: str, path: str, answer: TypeAdapter[T], **send: Unpack[Send]
+        self, method: str, path: Path, answer: TypeAdapter[T], **send: Unpack[Send]
     ) -> T:
         """Send a request and read its JSON answer as a type that is no model: a list, a union."""
         return parse_as(await self.request(method, path, **send), answer)
 
-    async def call_empty(self, method: str, path: str, **send: Unpack[Send]) -> None:
+    async def call_empty(self, method: str, path: Path, **send: Unpack[Send]) -> None:
         """Send a request whose answer has no body (204, or 202 without one)."""
         await self.request(method, path, **send)
 
-    async def download(self, path: str, **send: Unpack[Send]) -> bytes:
+    async def download(self, path: Path) -> bytes:
         """GET the bytes of a file."""
-        return (await self.request("GET", path, **send)).content
+        return (await self.request("GET", path)).content
 
-    async def lines(self, path: str, *, params: Params | None = None) -> AsyncGenerator[str]:
+    async def lines(self, path: Path, *, params: Params | None = None) -> AsyncGenerator[str]:
         """GET a stream and yield its lines as they come, until Lekto ends it.
 
         Lekto may send no event for long but keeps the stream alive with comments: after 30 s
         without a byte it raises :class:`LektoTimeoutError`.
         """
+        target = address(path)
         try:
             async with self._client.stream(
-                "GET", self._api + path, params=params, headers=self._headers, timeout=STREAM
+                "GET", self._api + target, params=params, headers=self._headers, timeout=STREAM
             ) as response:
                 if response.is_error:
                     await response.aread()
@@ -129,7 +141,7 @@ class Http:
                 async for line in response.aiter_lines():
                     yield line
         except httpx2.RequestError as error:
-            raise _request_error(error, "GET", path) from error
+            raise _request_error(error, "GET", target) from error
 
 
 async def exchange(
@@ -170,17 +182,46 @@ def _request_error(error: httpx2.RequestError, method: str, path: str) -> LektoC
     )
 
 
+def new_client() -> httpx2.AsyncClient:
+    """Make the httpx2 client pylekto sends with where none is passed in."""
+    return httpx2.AsyncClient(timeout=TIMEOUT)
+
+
 @asynccontextmanager
 async def http_client(client: httpx2.AsyncClient | None) -> AsyncIterator[httpx2.AsyncClient]:
     """Yield the client given, or one made for the moment and closed afterwards."""
     if client is not None:
         yield client
         return
-    own = httpx2.AsyncClient(timeout=TIMEOUT)
+    own = new_client()
     try:
         yield own
     finally:
         await own.aclose()
+
+
+def address(path: Path) -> str:
+    """Write a path with each value of its template as one segment, percent-encoded.
+
+    A value never leaves its segment: an id with ``?`` in it would add a query, one with ``/``
+    reach another operation.
+    """
+    if isinstance(path, str):
+        return path
+    return "".join(part if isinstance(part, str) else _segment(part.value) for part in path)
+
+
+def _segment(value: object) -> str:
+    """Encode one path value, or refuse one that no encoding keeps in its segment.
+
+    An empty one names another operation; httpx2 resolves ``.`` and ``..``; Lekto's server
+    decodes ``%2F`` before it finds the operation, and a proxy may read a backslash as ``/``.
+    """
+    text = str(value)
+    if text in {"", ".", ".."} or "/" in text or "\\" in text:
+        message = f"no path value: {text!r}"
+        raise ValueError(message)
+    return quote(text, safe="")
 
 
 def query(**values: object) -> dict[str, str | list[str]]:
@@ -233,9 +274,7 @@ def parse[M: BaseModel](response: httpx2.Response, model: type[M]) -> M:
     try:
         return model.model_validate_json(response.content)
     except ValidationError as error:
-        request = response.request
-        message = f"Lekto's answer to {request.method} {request.url.path} is no {model.__name__}"
-        raise LektoResponseError(message) from error
+        raise _unfit(response, f"is no {model.__name__}") from error
 
 
 def parse_as[T](response: httpx2.Response, answer: TypeAdapter[T]) -> T:
@@ -243,9 +282,13 @@ def parse_as[T](response: httpx2.Response, answer: TypeAdapter[T]) -> T:
     try:
         return answer.validate_json(response.content)
     except ValidationError as error:
-        request = response.request
-        message = f"Lekto's answer to {request.method} {request.url.path} does not fit"
-        raise LektoResponseError(message) from error
+        raise _unfit(response, "does not fit") from error
+
+
+def _unfit(response: httpx2.Response, how: str) -> LektoResponseError:
+    """Return the exception for an answer the models do not describe."""
+    request = response.request
+    return LektoResponseError(f"Lekto's answer to {request.method} {request.url.path} {how}")
 
 
 def api_error(response: httpx2.Response) -> LektoApiError:
@@ -331,26 +374,16 @@ async def cursor_items[T](
     fetch: Callable[[str | None], Awaitable[CursorPage[T]]],
 ) -> AsyncIterator[T]:
     """Every item of a list, page after page; ``fetch`` gets the cursor (None for the first)."""
-    cursor: str | None = None
-    while True:
-        page = await fetch(cursor)
+    async for page in _pages(None, fetch, lambda _, page: page.next_cursor):
         for item in page.items:
             yield item
-        if page.next_cursor is None:
-            return
-        cursor = page.next_cursor
 
 
 async def offset_items[T](fetch: Callable[[int], Awaitable[OffsetPage[T]]]) -> AsyncIterator[T]:
     """Every item of a list, page after page; ``fetch`` gets the offset (0 for the first)."""
-    offset = 0
-    while True:
-        page = await fetch(offset)
+    async for page in _pages(0, fetch, lambda _, page: page.next_offset):
         for item in page.items:
             yield item
-        if page.next_offset is None:
-            return
-        offset = page.next_offset
 
 
 async def total_items[T](fetch: Callable[[int], Awaitable[TotalPage[T]]]) -> AsyncIterator[T]:
@@ -358,11 +391,26 @@ async def total_items[T](fetch: Callable[[int], Awaitable[TotalPage[T]]]) -> Asy
 
     An empty page ends it too: the total may shrink while the pages are read.
     """
-    offset = 0
-    while True:
-        page = await fetch(offset)
+    async for page in _pages(0, fetch, _offset_below_total):
         for item in page.items:
             yield item
-        offset += len(page.items)
-        if not page.items or offset >= page.total:
+
+
+def _offset_below_total(offset: int, page: TotalPage[Any]) -> int | None:
+    """Return the offset after a page, or None once it was empty or reached the total."""
+    after = offset + len(page.items)
+    return after if page.items and after < page.total else None
+
+
+async def _pages[P, G](
+    start: P, fetch: Callable[[P], Awaitable[G]], following: Callable[[P, G], P | None]
+) -> AsyncIterator[G]:
+    """Yield page after page from ``start``; ``following`` names the next position, or None."""
+    position = start
+    while True:
+        page = await fetch(position)
+        yield page
+        after = following(position, page)
+        if after is None:
             return
+        position = after

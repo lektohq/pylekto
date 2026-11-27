@@ -66,6 +66,8 @@ TESTS_URL = "https://lekto.example.com"
 PLACEHOLDER = re.compile(r"\{(\w+)\}")
 # Secrets in answers are written as these made-up values (a webhook's signing secret).
 REDACTED = {"secret": "whsec_TWFkZSB1cCBmb3IgdGhlIHNuYXBzaG90IQ=="}
+# Lekto recognises a file by its content, not by the type a client names.
+FILE_TYPE = "application/octet-stream"
 
 type Lookup = Callable[["Recorder"], str]
 
@@ -130,25 +132,28 @@ class Recorder:
             return {key: self.fill(item) for key, item in value.items()}
         return value
 
+    def upload(self, filename: str, content: bytes) -> str:
+        """Upload a file as a new document; return the document's id."""
+        files = [("file", (filename, content, FILE_TYPE))]
+        return str(self.call("POST", "/documents", files=files)["id"])
+
     def settle(self, document_id: str) -> None:
         """Wait until Lekto has processed a document (at most five minutes)."""
-        for _ in range(300):
+
+        def processed() -> bool:
             processing = self.call("GET", f"/documents/{document_id}")["processing"]
-            if processing is None or processing["status"] != "processing":
-                return
-            time.sleep(1)
-        message = f"document {document_id} is still in processing"
-        raise SystemExit(message)
+            return processing is None or processing["status"] != "processing"
+
+        wait_until(processed, 300, f"document {document_id} is still in processing")
 
     def idle(self) -> None:
         """Wait until Lekto runs no job and has none due (at most five minutes)."""
-        for _ in range(300):
+
+        def quiet() -> bool:
             kinds = self.call("GET", "/jobs/summary")["kinds"]
-            if not any(kind["running"] or kind["due"] for kind in kinds):
-                return
-            time.sleep(1)
-        message = "Lekto still has jobs running or due"
-        raise SystemExit(message)
+            return not any(kind["running"] or kind["due"] for kind in kinds)
+
+        wait_until(quiet, 300, "Lekto still has jobs running or due")
 
     def listen(self, recording: Recording, path: str, params: Any) -> tuple[int, str]:
         """Record a stream of events around its trigger; return the status and the text.
@@ -175,59 +180,73 @@ class Recorder:
 
     def record(self, recording: Recording) -> int:
         """Send one recording and write its file; return the status."""
-        if recording.listen is not None:
-            path = self.fill(recording.path)
-            params = self.fill(recording.params)
-            status, text = self.listen(recording, path, params)
-            snapshot = {
-                "lekto_version": LEKTO_VERSION,
-                "method": recording.method,
-                "operation": recording.operation,
-                "path": path,
-                "params": params,
-                "json": None,
-                "data": {},
-                "status": status,
-                "body": None,
-                "text": text,
-            }
-            written = json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n"
-            (SNAPSHOT / f"{recording.name}.json").write_text(
-                written.replace(self.url, TESTS_URL), encoding="utf-8"
-            )
-            return status
         if recording.settle is not None:
             self.settle(self.value(recording.settle))
         path = self.fill(recording.path)
         params = self.fill(recording.params)
+        if recording.listen is not None:
+            status, text = self.listen(recording, path, params)
+            return self.write(recording, path, params, status, text=text)
         body = self.fill(recording.json)
         data = self.fill(recording.data)
         # Form fields go as parts of a multipart body, as Lekto reads them.
         files: list[tuple[str, Any]] = [(name, (None, text)) for name, text in data.items()]
         if recording.upload is not None:
-            files.append(("file", (*recording.upload, "application/octet-stream")))
+            files.append(("file", (*recording.upload, FILE_TYPE)))
         response = self.client.request(
             recording.method, path, params=params, json=body, files=files or None
         )
         answer = response.json() if response.content else None
         self.answers[recording.name] = answer
-        answer = redact(answer)
+        return self.write(
+            recording, path, params, response.status_code, sent=body, data=data, body=redact(answer)
+        )
+
+    def write(
+        self,
+        recording: Recording,
+        path: str,
+        params: Any,
+        status: int,
+        *,
+        sent: Any = None,
+        data: Any = None,
+        body: Any = None,
+        text: str | None = None,
+    ) -> int:
+        """Write the file of a recording: the request as sent and the answer; return the status.
+
+        A stream holds its ``text`` instead of a body. The address of the instance becomes the
+        one the tests use.
+        """
         snapshot = {
             "lekto_version": LEKTO_VERSION,
             "method": recording.method,
             "operation": recording.operation,
             "path": path,
             "params": params,
-            "json": body,
-            "data": data,
-            "status": response.status_code,
-            "body": answer,
+            "json": sent,
+            "data": data or {},
+            "status": status,
+            "body": body,
         }
-        text = json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n"
+        if text is not None:
+            snapshot["text"] = text
+        written = json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n"
         (SNAPSHOT / f"{recording.name}.json").write_text(
-            text.replace(self.url, TESTS_URL), encoding="utf-8"
+            written.replace(self.url, TESTS_URL), encoding="utf-8"
         )
-        return response.status_code
+        return status
+
+
+def wait_until[T](ready: Callable[[], T | None], seconds: int, message: str) -> T:
+    """Ask once a second until ``ready`` holds; after ``seconds`` stop with ``message``."""
+    for _ in range(seconds):
+        found = ready()
+        if found:
+            return found
+        time.sleep(1)
+    raise SystemExit(message)
 
 
 def redact(value: Any) -> Any:
@@ -1227,9 +1246,7 @@ def record_webhook_requests(recorder: Recorder, receiver: str, log: Path) -> Non
                 },
             )["id"]
         )
-        content = pdf(f"Muster Frage {time.time_ns()}")
-        files = [("file", ("question.pdf", content, "application/octet-stream"))]
-        document = str(recorder.call("POST", "/documents", files=files)["id"])
+        document = recorder.upload("question.pdf", pdf(f"Muster Frage {time.time_ns()}"))
         answered: set[str] = set()
         _wait_for(log, "rule.ask")
         _answer_tasks(recorder, log, answered)
@@ -1241,16 +1258,13 @@ def record_webhook_requests(recorder: Recorder, receiver: str, log: Path) -> Non
             "document_date": "2026-10-01",
         }
         recorder.call("POST", f"/documents/{document}/confirm", json={"changes": changes})
-        # Confirming runs the rules again, so the rule asks again before the document is filed.
-        for _ in range(180):
+
+        def filed() -> bool:
+            # Confirming runs the rules again: the rule asks once more before it is filed.
             _answer_tasks(recorder, log, answered)
-            kinds = {_kind(request) for request in _requests(log)}
-            if {"rule.send", "document.filed"} <= kinds:
-                break
-            time.sleep(1)
-        else:
-            message = "rule.send or document.filed did not reach the receiver"
-            raise SystemExit(message)
+            return {"rule.send", "document.filed"} <= {_kind(sent) for sent in _requests(log)}
+
+        wait_until(filed, 180, "rule.send or document.filed did not reach the receiver")
     finally:
         if rule is not None:
             recorder.call("DELETE", f"/rules/{rule}")
@@ -1297,17 +1311,10 @@ def _record_model_call(recorder: Recorder, receiver: str, log: Path) -> None:
     (log.parent / "model_call_secret").write_text(str(created["secret"]), encoding="utf-8")
     document: str | None = None
     try:
-        content = pdf(f"Muster Vorschlag {time.time_ns()}")
-        files = [("file", ("proposal.pdf", content, "application/octet-stream"))]
-        document = str(recorder.call("POST", "/documents", files=files)["id"])
-        proposal = _wait_for(log, "external.propose")
-        task = {name.lower(): value for name, value in proposal["headers"].items()}
-        response = recorder.client.post(
-            task["lekto-callback"],
-            json={"status": "error", "producer": "pylekto snapshot", "reason": "made up"},
-            headers={"Authorization": f"Bearer {task['lekto-task-token']}"},
-        )
-        sys.stdout.write(f"{response.status_code} model call answered\n")
+        document = recorder.upload("proposal.pdf", pdf(f"Muster Vorschlag {time.time_ns()}"))
+        task = _task(_wait_for(log, "external.propose"))
+        refusal = {"status": "error", "producer": "pylekto snapshot", "reason": "made up"}
+        sys.stdout.write(f"{_answer_task(recorder, task, refusal)} model call answered\n")
         recorder.settle(document)
     finally:
         recorder.call("DELETE", f"/webhooks/{hook}")
@@ -1320,20 +1327,31 @@ def _requests(log: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in log.read_text(encoding="utf-8").splitlines()]
 
 
+def _task(request: dict[str, Any]) -> dict[str, str]:
+    """Return the headers of a request by their names in lower case (``lekto-task-…``)."""
+    return {name.lower(): value for name, value in request["headers"].items()}
+
+
+def _answer_task(recorder: Recorder, task: dict[str, str], result: dict[str, Any]) -> int:
+    """Answer a task at its callback with its token; return the status."""
+    response = recorder.client.post(
+        task["lekto-callback"],
+        json=result,
+        headers={"Authorization": f"Bearer {task['lekto-task-token']}"},
+    )
+    return response.status_code
+
+
 def _answer_tasks(recorder: Recorder, log: Path, answered: set[str]) -> None:
     """Answer every task the receiver got that is not answered yet."""
-    answer = {"status": "ok", "producer": "pylekto snapshot", "answer": {"checked": True}}
+    result = {"status": "ok", "producer": "pylekto snapshot", "answer": {"checked": True}}
     for request in _requests(log):
-        task = {name.lower(): value for name, value in request["headers"].items()}
+        task = _task(request)
         if "lekto-task-id" not in task or task["lekto-task-id"] in answered:
             continue
-        response = recorder.client.post(
-            task["lekto-callback"],
-            json=answer,
-            headers={"Authorization": f"Bearer {task['lekto-task-token']}"},
-        )
+        status = _answer_task(recorder, task, result)
         answered.add(task["lekto-task-id"])
-        sys.stdout.write(f"{response.status_code} task answered\n")
+        sys.stdout.write(f"{status} task answered\n")
 
 
 def _kind(request: dict[str, Any]) -> str:
@@ -1346,13 +1364,11 @@ def _kind(request: dict[str, Any]) -> str:
 
 def _wait_for(log: Path, kind: str) -> dict[str, Any]:
     """Wait until the receiver's log holds a request of a kind (at most two minutes)."""
-    for _ in range(120):
-        for request in _requests(log):
-            if _kind(request) == kind:
-                return request
-        time.sleep(1)
-    message = f"no {kind} request reached the receiver"
-    raise SystemExit(message)
+
+    def arrived() -> dict[str, Any] | None:
+        return next((request for request in _requests(log) if _kind(request) == kind), None)
+
+    return wait_until(arrived, 120, f"no {kind} request reached the receiver")
 
 
 def main() -> None:
@@ -1366,6 +1382,8 @@ def main() -> None:
     )
     parser.add_argument("--receiver-log", type=Path, help="where the receiver writes its requests")
     arguments = parser.parse_args()
+    if bool(arguments.receiver) != bool(arguments.receiver_log):
+        parser.error("--receiver and --receiver-log go together")
     token = os.environ.get("PYLEKTO_SNAPSHOT_TOKEN")
     if not token:
         message = "PYLEKTO_SNAPSHOT_TOKEN is not set"

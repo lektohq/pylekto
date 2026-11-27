@@ -1,16 +1,13 @@
 """Tests that the models are the ones generated from the OpenAPI description in the repository."""
 
-import json
 import runpy
-from pathlib import Path
 
 import pytest
 from pydantic import BaseModel
 
 from pylekto import API_VERSION, LEKTO_VERSION, models
 
-ROOT = Path(__file__).resolve().parent.parent
-
+from .conftest import DESCRIPTION, ROOT
 
 GENERATOR = runpy.run_path(str(ROOT / "script" / "generate_models.py"))
 
@@ -35,13 +32,16 @@ def test_choices_are_opened_but_not_examples() -> None:
 
 def test_versions_are_the_descriptions() -> None:
     """``LEKTO_VERSION`` names the Lekto release of ``openapi.json``, ``API_VERSION`` its API."""
-    description = json.loads((ROOT / "openapi.json").read_text(encoding="utf-8"))
-    assert description["info"]["x-lekto-version"] == LEKTO_VERSION
-    assert description["info"]["version"] == API_VERSION
+    assert DESCRIPTION["info"]["x-lekto-version"] == LEKTO_VERSION
+    assert DESCRIPTION["info"]["version"] == API_VERSION
 
 
 def test_every_model_builds() -> None:
-    """Every generated model is complete: each name in its annotations resolves at run time."""
+    """Every generated model is complete: each name in its annotations resolves at run time.
+
+    A model defined before an alias it reaches (the items of a group of conditions) completes
+    on its first use, which is what ``model_rebuild`` does here.
+    """
     built = [
         value
         for value in vars(models).values()
@@ -50,4 +50,6 @@ def test_every_model_builds() -> None:
         and value.__module__ == models.__name__
     ]
     assert len(built) > 100
+    for model in built:
+        model.model_rebuild()
     assert [model.__name__ for model in built if not model.__pydantic_complete__] == []

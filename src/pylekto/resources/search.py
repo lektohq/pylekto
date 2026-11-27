@@ -105,7 +105,7 @@ class SearchResource(Resource):
 
         """
         return await self._http.call(
-            "POST", f"/documents/{document_id}/search-places", SearchPlacesOut, json={"q": words}
+            "POST", t"/documents/{document_id}/search-places", SearchPlacesOut, json={"q": words}
         )
 
     async def warm(self) -> None:
