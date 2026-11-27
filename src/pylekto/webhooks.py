@@ -207,11 +207,13 @@ class Task:
     id: str
     callback: str
     token: str
-    deadline: str | None
+    deadline: datetime | None
 
 
 def read_task(headers: Mapping[str, str]) -> Task | None:
     """Return the task of a request from its headers ``lekto-task-*``, or None for none.
+
+    A deadline that is no time raises :class:`pylekto.LektoResponseError`.
 
     Args:
         headers: The request's headers (any case).
@@ -227,7 +229,18 @@ def read_task(headers: Mapping[str, str]) -> Task | None:
     token = named.get("lekto-task-token")
     if not task_id or not callback or not token:
         return None
-    return Task(task_id, callback, token, named.get("lekto-deadline"))
+    return Task(task_id, callback, token, _deadline(named.get("lekto-deadline")))
+
+
+def _deadline(header: str | None) -> datetime | None:
+    """Read ``lekto-deadline`` (ISO 8601) as the time the body's ``task.deadline`` is."""
+    if header is None:
+        return None
+    try:
+        return datetime.fromisoformat(header)
+    except ValueError as error:
+        message = f"the webhook's lekto-deadline is no time: {header!r}"
+        raise LektoResponseError(message) from error
 
 
 async def answer(

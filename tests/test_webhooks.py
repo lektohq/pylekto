@@ -197,8 +197,19 @@ def test_task_from_the_headers() -> None:
     assert task.id == str(content.task.id)
     assert task.token == content.task.token
     assert task.callback == content.task.callback
-    assert task.deadline is not None
+    assert task.deadline == content.task.deadline
     assert webhooks.read_task(recorded("rule_send")["headers"]) is None
+
+
+def test_task_with_a_deadline_that_is_no_time() -> None:
+    """A deadline pylekto cannot read is an answer its models do not describe; none is None."""
+    headers = {name.lower(): value for name, value in recorded("rule_ask")["headers"].items()}
+    with pytest.raises(LektoResponseError, match="lekto-deadline is no time: 'soon'"):
+        webhooks.read_task(headers | {"lekto-deadline": "soon"})
+    del headers["lekto-deadline"]
+    task = webhooks.read_task(headers)
+    assert task is not None
+    assert task.deadline is None
 
 
 TASK = webhooks.Task(
