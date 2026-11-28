@@ -15,7 +15,7 @@ from pylekto import (
     LektoResponseError,
     LektoTimeoutError,
 )
-from pylekto._sse import ServerSentEvent, server_sent_events
+from pylekto._sse import ServerSentEvent, server_sent_events, text_lines
 
 from .conftest import Api, assert_sent
 
@@ -267,6 +267,41 @@ async def test_listen_to_an_event_that_is_no_event_message(
         [event async for event in lekto.events.listen()]
     assert isinstance(raised.value.__cause__, ValidationError)
     assert stream.closed
+
+
+@pytest.mark.parametrize(
+    ("chunks", "expected"),
+    [
+        (["one\ntwo\r\nthree\rfour\n"], ["one", "two", "three", "four"]),
+        (["one\r", "\ntwo\n"], ["one", "two"]),
+        (["one\r", "", "\n\ntwo\n"], ["one", "", "two"]),
+        (["one\r", "\r", "two"], ["one", "", "two"]),
+        (["on", "e\ntw", "o"], ["one", "two"]),
+        (["a\u2028b\u2029c\x85d\x0be\x0cf\x1cg\n"], ["a\u2028b\u2029c\x85d\x0be\x0cf\x1cg"]),
+        ([], []),
+    ],
+    ids=["each ending", "CRLF in two chunks", "an empty chunk", "CR twice", "split", "kin", "none"],
+)
+async def test_lines_end_as_the_standard_says(chunks: list[str], expected: list[str]) -> None:
+    """Only CR, LF and CRLF end a line, wherever the chunks break; the last needs no ending."""
+    assert [line async for line in text_lines(lines(chunks))] == expected
+
+
+@pytest.mark.parametrize("separator", ["\u2028", "\u2029", "\x85"])
+async def test_listen_to_an_event_with_a_separator_in_its_data(
+    api: Api, lekto: LektoClient, separator: str
+) -> None:
+    """A character that only ``str.splitlines`` takes for a line's end stays in the event."""
+    data = (
+        '{"type": "search.meaning_ready", "id": "0199a3c4-0000-7000-8000-000000000009", '
+        f'"occurred_at": "2026-11-19T08:00:00Z", "query": "first{separator}second"}}'
+    )
+    text = f": ready\r\n\r\nevent: search.meaning_ready\r\ndata: {data}\r\n\r\n"
+    api.answer("GET", "/events", content=text.encode(), headers=STREAM)
+
+    events = [event async for event in lekto.events.listen()]
+
+    assert [event.model_extra for event in events] == [{"query": f"first{separator}second"}]
 
 
 async def test_events_are_read_as_the_standard_says() -> None:

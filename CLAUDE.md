@@ -77,7 +77,8 @@ tag.
   --receiver-log <file a receiving server writes>`; the tests verify Lekto's real signatures.
 - Streams (`GET /events`) are read line by line (`Http.lines`) with a read timeout of 30 s
   (`STREAM`), twice the 15 s after which Lekto sends a keep-alive comment, and parsed by `_sse.py`
-  as the HTML standard says; a recording of a stream holds its text (`Recording.listen`, with a
+  as the HTML standard says, its lines too (`text_lines`: only CR, LF and CRLF end one, where
+  httpx2's `aiter_lines` also breaks at U+2028 and its kin, which may stand in an event's data); a recording of a stream holds its text (`Recording.listen`, with a
   request that triggers events). `events.listen(on_connected=...)` calls back once, when the first
   line of the stream arrives, whichever it is (Lekto sends `: ready` right away): only a line
   shows that the stream flows, because a proxy may answer 200 and hold the stream back. An

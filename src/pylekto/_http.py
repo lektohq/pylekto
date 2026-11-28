@@ -21,6 +21,7 @@ from uuid import UUID
 import httpx2
 from pydantic import BaseModel, SecretBytes, SecretStr, TypeAdapter, ValidationError
 
+from pylekto._sse import text_lines
 from pylekto.exceptions import (
     LektoApiError,
     LektoAuthenticationError,
@@ -143,7 +144,7 @@ class Http:
                 if not _is_event_stream(response):
                     text = f"Lekto's answer to GET {target} is no event stream"
                     raise LektoResponseError(text)
-                async for line in response.aiter_lines():
+                async for line in text_lines(response.aiter_text()):
                     yield line
         except httpx2.RequestError as error:
             raise _request_error(error, "GET", target) from error
