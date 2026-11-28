@@ -45,9 +45,9 @@ asyncio.run(main())
   problem details with a reason code. pylekto repeats nothing: whether to try again is up to you.
   An id that is no part of an address (empty, `.`, `..`, with a slash) raises `ValueError` before
   anything is sent.
-- **A stream says when it flows.** `lekto.events.listen(on_connected=...)` calls back once, with
-  the first line Lekto sends (it sends one at once), before any event. Listening again after an
-  error is up to you; the callback tells you that it worked.
+- **A stream says when it flows.** `lekto.events.listen(on_connected=...)` calls back once, when
+  the first line of the stream arrives (Lekto sends one right away), before any event. Listening
+  again after an error is up to you; the callback tells you that it worked.
 - **New values read.** A choice in the models is `Literal[...] | Unknown`: a value that a newer
   Lekto sends and this pylekto does not know arrives as `pylekto.Unknown` (a `str`) instead of
   failing; `case Unknown():` matches it. The choices themselves (`IdentifierKind`, `JobState`, …)

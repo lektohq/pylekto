@@ -100,9 +100,16 @@ async def test_listen_calls_back_once_the_stream_flows(api: Api, lekto: LektoCli
     assert len(recorded.text.splitlines()) > 1
 
 
-async def test_listen_calls_back_without_an_event(api: Api, lekto: LektoClient) -> None:
-    """Lekto's first comment is enough: a stream no event comes on is connected too."""
-    api.answer("GET", "/events", stream=FallsSilent(), headers=STREAM)
+@pytest.mark.parametrize(
+    "sent",
+    [b": ready\n\n", b": ready\n", b"\n"],
+    ids=["Lekto's comment", "one line", "an empty line"],
+)
+async def test_listen_calls_back_without_an_event(
+    api: Api, lekto: LektoClient, sent: bytes
+) -> None:
+    """The first line is enough, whichever it is: a stream no event comes on is connected too."""
+    api.answer("GET", "/events", stream=FallsSilent(sent), headers=STREAM)
     connected: list[bool] = []
     with pytest.raises(LektoTimeoutError):
         [event async for event in lekto.events.listen(on_connected=lambda: connected.append(True))]
@@ -117,17 +124,32 @@ async def test_listen_calls_back_without_an_event(api: Api, lekto: LektoClient) 
         {"stream": FallsSilent(b""), "headers": STREAM},
         {"stream": FallsSilent(b": rea"), "headers": STREAM},
     ],
-    ids=["refused", "not reachable", "held back", "half a line"],
+    ids=["refused", "not reachable", "held back", "half a line, then silence"],
 )
 async def test_listen_does_not_call_back_before_a_line(
     api: Api, lekto: LektoClient, answer: dict[str, Any]
 ) -> None:
-    """Only a whole line shows that the stream flows: a proxy may answer 200 and hold it back."""
+    """A refusal, no byte, or half a line before the silence is no line: nothing flows yet."""
     api.answer("GET", "/events", **answer)
     connected: list[bool] = []
     with pytest.raises(LektoError):
         [event async for event in lekto.events.listen(on_connected=lambda: connected.append(True))]
     assert not connected
+
+
+async def test_listen_ends_with_what_the_callback_raises(api: Api, lekto: LektoClient) -> None:
+    """What ``on_connected`` raises reaches the caller as it is, and the stream is closed."""
+    stream = Closes(": ready\n\n")
+    api.answer("GET", "/events", stream=stream, headers=STREAM)
+    failure = httpx2.ReadError("the caller's own")
+
+    def fail() -> None:
+        raise failure
+
+    with pytest.raises(httpx2.ReadError) as raised:
+        [event async for event in lekto.events.listen(on_connected=fail)]
+    assert raised.value is failure
+    assert stream.closed
 
 
 async def test_listen_refused(api: Api, lekto: LektoClient) -> None:

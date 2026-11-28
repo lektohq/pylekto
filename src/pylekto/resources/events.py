@@ -33,9 +33,11 @@ class EventsResource(Resource):
 
         Args:
             document_id: Only the events of this document.
-            on_connected: Called once, before the first event, as soon as the stream flows:
-                with its first line, which Lekto sends at once. A stream a proxy holds back
-                never calls it and ends with the :class:`~pylekto.LektoTimeoutError`.
+            on_connected: A plain function, no coroutine, called once when the first line of
+                the stream arrives, before any event. Lekto sends a line right away, so the call
+                shows that the stream flows. It is never called for a stream a proxy holds back;
+                that stream raises :class:`~pylekto.LektoTimeoutError`. What it raises ends the
+                stream and reaches the caller.
 
         Example::
 
@@ -46,14 +48,23 @@ class EventsResource(Resource):
         """
         # Closed here, not when the garbage collector finds it: a raise would leave it open.
         async with aclosing(
-            self._http.lines(
-                "/events", params=query(document_id=document_id), on_first=on_connected
-            )
+            self._http.lines("/events", params=query(document_id=document_id))
         ) as lines:
-            async for event in server_sent_events(lines):
+            flowing = lines if on_connected is None else _announced(lines, on_connected)
+            async for event in server_sent_events(flowing):
                 try:
                     message = EventMessage.model_validate_json(event.data)
                 except ValidationError as error:
                     text = f"Lekto's event {event.event} on GET /events is no EventMessage"
                     raise LektoResponseError(text) from error
                 yield message
+
+
+async def _announced(lines: AsyncIterator[str], announce: Callable[[], None]) -> AsyncIterator[str]:
+    """Only a line shows that a stream flows: a proxy may answer 200 and hold the stream back."""
+    first = True
+    async for line in lines:
+        if first:
+            announce()
+            first = False
+        yield line
