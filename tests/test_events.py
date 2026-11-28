@@ -1,6 +1,7 @@
 """Tests of the event stream and the reading of server-sent events."""
 
-from typing import TYPE_CHECKING
+from contextlib import aclosing
+from typing import TYPE_CHECKING, Any
 
 import httpx2
 import pytest
@@ -10,10 +11,11 @@ from pylekto import (
     LektoAuthenticationError,
     LektoClient,
     LektoConnectionError,
+    LektoError,
     LektoResponseError,
     LektoTimeoutError,
 )
-from pylekto._sse import ServerSentEvent, server_sent_events
+from pylekto._sse import ServerSentEvent, server_sent_events, text_lines
 
 from .conftest import Api, assert_sent
 
@@ -21,12 +23,19 @@ if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Iterable
 
 
+STREAM = {"Content-Type": "text/event-stream"}
+
+
 class FallsSilent(httpx2.AsyncByteStream):
     """A stream that starts, then waits for its next byte longer than the read timeout."""
 
+    def __init__(self, sent: bytes = b": ready\n\n") -> None:
+        """Hold what comes before the silence: Lekto's first comment unless told otherwise."""
+        self.sent = sent
+
     async def __aiter__(self) -> AsyncIterator[bytes]:
-        """Yield Lekto's first comment, then time out as httpx2 does."""
-        yield b": ready\n\n"
+        """Yield what was sent, then time out as httpx2 does."""
+        yield self.sent
         message = "no byte within the read timeout"
         raise httpx2.ReadTimeout(message)
 
@@ -79,6 +88,126 @@ async def test_listen_to_one_document(api: Api, lekto: LektoClient) -> None:
     assert all(str(event.document_id) == document for event in events)
 
 
+async def test_listen_calls_back_once_the_stream_flows(api: Api, lekto: LektoClient) -> None:
+    """``on_connected`` is called once for all the lines of a stream, before its first event."""
+    recorded = api.replay("events_listen")
+    seen: list[str] = []
+    events = lekto.events.listen(on_connected=lambda: seen.append("connected"))
+    first = await anext(events)
+    seen.append(first.type)
+    assert [event async for event in events] == []
+    assert seen == ["connected", "document.updated"]
+    assert recorded.text is not None
+    assert len(recorded.text.splitlines()) > 1
+
+
+@pytest.mark.parametrize(
+    "sent",
+    [b": ready\n\n", b": ready\n", b"\n"],
+    ids=["Lekto's comment", "one line", "an empty line"],
+)
+async def test_listen_calls_back_without_an_event(
+    api: Api, lekto: LektoClient, sent: bytes
+) -> None:
+    """The first line is enough, whichever it is: a stream no event comes on is connected too."""
+    api.answer("GET", "/events", stream=FallsSilent(sent), headers=STREAM)
+    connected: list[bool] = []
+    with pytest.raises(LektoTimeoutError):
+        [event async for event in lekto.events.listen(on_connected=lambda: connected.append(True))]
+    assert connected == [True]
+
+
+@pytest.mark.parametrize(
+    "answer",
+    [
+        {"status": 401, "json": {"title": "Unauthorized", "status": 401}},
+        {"error": httpx2.ConnectTimeout("slow")},
+        {"stream": FallsSilent(b""), "headers": STREAM},
+        {"stream": FallsSilent(b": rea"), "headers": STREAM},
+    ],
+    ids=["refused", "not reachable", "held back", "half a line, then silence"],
+)
+async def test_listen_does_not_call_back_before_a_line(
+    api: Api, lekto: LektoClient, answer: dict[str, Any]
+) -> None:
+    """A refusal, no byte, or half a line before the silence is no line: nothing flows yet."""
+    api.answer("GET", "/events", **answer)
+    connected: list[bool] = []
+    with pytest.raises(LektoError):
+        [event async for event in lekto.events.listen(on_connected=lambda: connected.append(True))]
+    assert not connected
+
+
+async def test_listen_ends_with_what_the_callback_raises(api: Api, lekto: LektoClient) -> None:
+    """What ``on_connected`` raises reaches the caller as it is, and the stream is closed."""
+    stream = Closes(": ready\n\n")
+    api.answer("GET", "/events", stream=stream, headers=STREAM)
+    failure = httpx2.ReadError("the caller's own")
+
+    def fail() -> None:
+        raise failure
+
+    with pytest.raises(httpx2.ReadError) as raised:
+        [event async for event in lekto.events.listen(on_connected=fail)]
+    assert raised.value is failure
+    assert stream.closed
+
+
+@pytest.mark.parametrize(
+    "answer",
+    [
+        {"content": b"<html>\nSign in\n</html>\n", "headers": {"Content-Type": "text/html"}},
+        {"content": b": ready\n\n", "headers": {"Content-Type": "text/event-streams"}},
+        {"content": b": ready\n\n"},
+        {"status": 302, "content": b"Found\n", "headers": STREAM | {"Location": "/login"}},
+        {"status": 204, "headers": STREAM},
+    ],
+    ids=["a page", "nearly the type", "no type", "a redirect", "no content"],
+)
+async def test_listen_to_what_is_no_event_stream(
+    api: Api, lekto: LektoClient, answer: dict[str, Any]
+) -> None:
+    """Only a 200 of the type ``text/event-stream`` is a stream: a proxy's page never connects."""
+    api.answer("GET", "/events", **answer)
+    connected: list[bool] = []
+    with pytest.raises(LektoResponseError, match=r"GET /events is no event stream"):
+        [event async for event in lekto.events.listen(on_connected=lambda: connected.append(True))]
+    assert not connected
+
+
+@pytest.mark.parametrize(
+    "media_type",
+    ["text/event-stream; charset=utf-8", "text/event-stream ;charset=utf-8", "Text/Event-Stream"],
+)
+async def test_listen_to_an_event_stream_named_otherwise(
+    api: Api, lekto: LektoClient, media_type: str
+) -> None:
+    """The type counts without its parameters and whatever its case."""
+    recorded = api.replay("events_listen")
+    assert recorded.text is not None
+    headers = {"Content-Type": media_type}
+    api.answer("GET", "/events", content=recorded.text.encode(), headers=headers)
+
+    events = [event async for event in lekto.events.listen()]
+
+    assert [event.type for event in events] == ["document.updated"]
+
+
+async def test_listen_can_be_closed_early(api: Api, lekto: LektoClient) -> None:
+    """The stream is a generator: closing it after an event closes Lekto's answer at once."""
+    recorded = api.replay("events_listen")
+    assert recorded.text is not None
+    stream = Closes(recorded.text)
+    api.answer("GET", "/events", stream=stream, headers=STREAM)
+
+    async with aclosing(lekto.events.listen()) as events:
+        first = await anext(events)
+        assert not stream.closed
+
+    assert first.type == "document.updated"
+    assert stream.closed
+
+
 async def test_listen_refused(api: Api, lekto: LektoClient) -> None:
     """A stream that Lekto refuses raises with the problem details."""
     api.answer("GET", "/events", 401, json={"title": "Unauthorized", "status": 401})
@@ -105,9 +234,7 @@ async def test_listen_fails(
 
 async def test_listen_to_a_connection_that_falls_silent(api: Api, lekto: LektoClient) -> None:
     """A stream waits 30 s for a byte, twice the 15 s after which Lekto sends a comment."""
-    api.answer(
-        "GET", "/events", stream=FallsSilent(), headers={"Content-Type": "text/event-stream"}
-    )
+    api.answer("GET", "/events", stream=FallsSilent(), headers=STREAM)
     with pytest.raises(LektoTimeoutError, match=r"GET /events in time"):
         [event async for event in lekto.events.listen()]
     timeout = api.requests[-1].extensions["timeout"]
@@ -133,13 +260,48 @@ async def test_listen_to_an_event_that_is_no_event_message(
 ) -> None:
     """An event whose data is no ``EventMessage`` (a proxy's damage) raises a response error."""
     stream = Closes(f": ready\n\nevent: document.received\ndata: {data}\n\n")
-    api.answer("GET", "/events", stream=stream, headers={"Content-Type": "text/event-stream"})
+    api.answer("GET", "/events", stream=stream, headers=STREAM)
     with pytest.raises(
         LektoResponseError, match=r"event document.received on GET /events"
     ) as raised:
         [event async for event in lekto.events.listen()]
     assert isinstance(raised.value.__cause__, ValidationError)
     assert stream.closed
+
+
+@pytest.mark.parametrize(
+    ("chunks", "expected"),
+    [
+        (["one\ntwo\r\nthree\rfour\n"], ["one", "two", "three", "four"]),
+        (["one\r", "\ntwo\n"], ["one", "two"]),
+        (["one\r", "", "\n\ntwo\n"], ["one", "", "two"]),
+        (["one\r", "\r", "two"], ["one", "", "two"]),
+        (["on", "e\ntw", "o"], ["one", "two"]),
+        (["a\u2028b\u2029c\x85d\x0be\x0cf\x1cg\n"], ["a\u2028b\u2029c\x85d\x0be\x0cf\x1cg"]),
+        ([], []),
+    ],
+    ids=["each ending", "CRLF in two chunks", "an empty chunk", "CR twice", "split", "kin", "none"],
+)
+async def test_lines_end_as_the_standard_says(chunks: list[str], expected: list[str]) -> None:
+    """Only CR, LF and CRLF end a line, wherever the chunks break; the last needs no ending."""
+    assert [line async for line in text_lines(lines(chunks))] == expected
+
+
+@pytest.mark.parametrize("separator", ["\u2028", "\u2029", "\x85"])
+async def test_listen_to_an_event_with_a_separator_in_its_data(
+    api: Api, lekto: LektoClient, separator: str
+) -> None:
+    """A character that only ``str.splitlines`` takes for a line's end stays in the event."""
+    data = (
+        '{"type": "search.meaning_ready", "id": "0199a3c4-0000-7000-8000-000000000009", '
+        f'"occurred_at": "2026-11-19T08:00:00Z", "query": "first{separator}second"}}'
+    )
+    text = f": ready\r\n\r\nevent: search.meaning_ready\r\ndata: {data}\r\n\r\n"
+    api.answer("GET", "/events", content=text.encode(), headers=STREAM)
+
+    events = [event async for event in lekto.events.listen()]
+
+    assert [event.model_extra for event in events] == [{"query": f"first{separator}second"}]
 
 
 async def test_events_are_read_as_the_standard_says() -> None:

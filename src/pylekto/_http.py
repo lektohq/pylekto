@@ -13,6 +13,7 @@ from collections.abc import (
 from contextlib import asynccontextmanager
 from datetime import date
 from http import HTTPStatus
+from math import isfinite
 from string.templatelib import Template
 from typing import IO, Any, Protocol, TypedDict, Unpack
 from urllib.parse import quote
@@ -21,6 +22,7 @@ from uuid import UUID
 import httpx2
 from pydantic import BaseModel, SecretBytes, SecretStr, TypeAdapter, ValidationError
 
+from pylekto._sse import text_lines
 from pylekto.exceptions import (
     LektoApiError,
     LektoAuthenticationError,
@@ -45,6 +47,7 @@ STREAM = httpx2.Timeout(None, connect=10.0, read=30.0)
 _JSON: TypeAdapter[Any] = TypeAdapter(Any)
 # Lekto recognises a file by its content, not by the type a client names.
 FILE_TYPE = "application/octet-stream"
+EVENT_STREAM = "text/event-stream"
 
 # A path below ``/api/v1``: a template (``t"/documents/{document_id}"``) wherever it holds values.
 type Path = str | Template
@@ -125,10 +128,11 @@ class Http:
         return (await self.request("GET", path)).content
 
     async def lines(self, path: Path, *, params: Params | None = None) -> AsyncGenerator[str]:
-        """GET a stream and yield its lines as they come, until Lekto ends it.
+        """GET an event stream and yield its lines as they come, until Lekto ends it.
 
         Lekto may send no event for long but keeps the stream alive with comments: after 30 s
-        without a byte it raises :class:`LektoTimeoutError`.
+        without a byte it raises :class:`LektoTimeoutError`. An answer that is no event stream,
+        such as the page of a proxy, raises :class:`LektoResponseError`.
         """
         target = address(path)
         try:
@@ -138,7 +142,10 @@ class Http:
                 if response.is_error:
                     await response.aread()
                     raise api_error(response)
-                async for line in response.aiter_lines():
+                if not _is_event_stream(response):
+                    text = f"Lekto's answer to GET {target} is no event stream"
+                    raise LektoResponseError(text)
+                async for line in text_lines(response.aiter_text()):
                     yield line
         except httpx2.RequestError as error:
             raise _request_error(error, "GET", target) from error
@@ -166,6 +173,12 @@ async def exchange(
     if response.is_error and response.status_code not in send.get("accept", ()):
         raise api_error(response)
     return response
+
+
+def _is_event_stream(response: httpx2.Response) -> bool:
+    """Tell a stream as the HTML standard does: a 200 of the type ``text/event-stream``."""
+    media_type = response.headers.get("Content-Type", "").partition(";")[0].strip().lower()
+    return response.status_code == HTTPStatus.OK and media_type == EVENT_STREAM
 
 
 def _request_error(error: httpx2.RequestError, method: str, path: str) -> LektoConnectionError:
@@ -321,11 +334,12 @@ def _problem(response: httpx2.Response) -> Problem:
 
 
 def _retry_after(header: str | None) -> float | None:
-    """Seconds from a ``Retry-After`` header that holds a number."""
+    """Seconds from a ``Retry-After`` header that holds a number; ``inf`` and ``nan`` are none."""
     try:
-        return max(float(header), 0.0) if header is not None else None
+        seconds = float(header) if header is not None else None
     except ValueError:
         return None
+    return max(seconds, 0.0) if seconds is not None and isfinite(seconds) else None
 
 
 class CursorPage[T](Protocol):
