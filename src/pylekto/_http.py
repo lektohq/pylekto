@@ -45,6 +45,7 @@ STREAM = httpx2.Timeout(None, connect=10.0, read=30.0)
 _JSON: TypeAdapter[Any] = TypeAdapter(Any)
 # Lekto recognises a file by its content, not by the type a client names.
 FILE_TYPE = "application/octet-stream"
+EVENT_STREAM = "text/event-stream"
 
 # A path below ``/api/v1``: a template (``t"/documents/{document_id}"``) wherever it holds values.
 type Path = str | Template
@@ -125,10 +126,11 @@ class Http:
         return (await self.request("GET", path)).content
 
     async def lines(self, path: Path, *, params: Params | None = None) -> AsyncGenerator[str]:
-        """GET a stream and yield its lines as they come, until Lekto ends it.
+        """GET an event stream and yield its lines as they come, until Lekto ends it.
 
         Lekto may send no event for long but keeps the stream alive with comments: after 30 s
-        without a byte it raises :class:`LektoTimeoutError`.
+        without a byte it raises :class:`LektoTimeoutError`. An answer that is no event stream,
+        such as the page of a proxy, raises :class:`LektoResponseError`.
         """
         target = address(path)
         try:
@@ -138,6 +140,8 @@ class Http:
                 if response.is_error:
                     await response.aread()
                     raise api_error(response)
+                if not _is_event_stream(response):
+                    raise _unfit(response, "is no event stream")
                 async for line in response.aiter_lines():
                     yield line
         except httpx2.RequestError as error:
@@ -166,6 +170,12 @@ async def exchange(
     if response.is_error and response.status_code not in send.get("accept", ()):
         raise api_error(response)
     return response
+
+
+def _is_event_stream(response: httpx2.Response) -> bool:
+    """Tell a stream as the HTML standard does: a 200 of the type ``text/event-stream``."""
+    media_type = response.headers.get("Content-Type", "").partition(";")[0].strip().lower()
+    return response.status_code == HTTPStatus.OK and media_type == EVENT_STREAM
 
 
 def _request_error(error: httpx2.RequestError, method: str, path: str) -> LektoConnectionError:

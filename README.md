@@ -47,7 +47,8 @@ asyncio.run(main())
   anything is sent.
 - **A stream says when it flows.** `lekto.events.listen(on_connected=...)` calls back once, when
   the first line of the stream arrives (Lekto sends one right away), before any event. Listening
-  again after an error is up to you; the callback tells you that it worked.
+  again after an error is up to you; the callback tells you that it worked. An answer that is
+  no event stream, such as a proxy's sign-in page, raises `LektoResponseError`.
 - **New values read.** A choice in the models is `Literal[...] | Unknown`: a value that a newer
   Lekto sends and this pylekto does not know arrives as `pylekto.Unknown` (a `str`) instead of
   failing; `case Unknown():` matches it. The choices themselves (`IdentifierKind`, `JobState`, …)

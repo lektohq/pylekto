@@ -80,7 +80,9 @@ tag.
   as the HTML standard says; a recording of a stream holds its text (`Recording.listen`, with a
   request that triggers events). `events.listen(on_connected=...)` calls back once, when the first
   line of the stream arrives, whichever it is (Lekto sends `: ready` right away): only a line
-  shows that the stream flows, because a proxy may answer 200 and hold the stream back.
+  shows that the stream flows, because a proxy may answer 200 and hold the stream back. An
+  answer that is no 200 of the type `text/event-stream` (a proxy's page) is no stream:
+  `LektoResponseError`, as the HTML standard has a client fail such a connection.
 - `models.py` is generated; a test fails if it differs from what `script/generate_models.py`
   writes from `openapi.json`. Ruff and typos leave it out; mypy checks it.
 - Every choice (an `enum` of strings, in the models) is `Literal[...] | Unknown`:

@@ -152,6 +152,42 @@ async def test_listen_ends_with_what_the_callback_raises(api: Api, lekto: LektoC
     assert stream.closed
 
 
+@pytest.mark.parametrize(
+    "answer",
+    [
+        {"content": b"<html>\nSign in\n</html>\n", "headers": {"Content-Type": "text/html"}},
+        {"content": b": ready\n\n"},
+        {"status": 302, "content": b"Found\n", "headers": STREAM | {"Location": "/login"}},
+        {"status": 204, "headers": STREAM},
+    ],
+    ids=["a page", "no type", "a redirect", "no content"],
+)
+async def test_listen_to_what_is_no_event_stream(
+    api: Api, lekto: LektoClient, answer: dict[str, Any]
+) -> None:
+    """Only a 200 of the type ``text/event-stream`` is a stream: a proxy's page never connects."""
+    api.answer("GET", "/events", **answer)
+    connected: list[bool] = []
+    with pytest.raises(LektoResponseError, match=r"GET /api/v1/events is no event stream"):
+        [event async for event in lekto.events.listen(on_connected=lambda: connected.append(True))]
+    assert not connected
+
+
+@pytest.mark.parametrize("media_type", ["text/event-stream; charset=utf-8", "Text/Event-Stream"])
+async def test_listen_to_an_event_stream_named_otherwise(
+    api: Api, lekto: LektoClient, media_type: str
+) -> None:
+    """The type counts without its parameters and whatever its case."""
+    recorded = api.replay("events_listen")
+    assert recorded.text is not None
+    headers = {"Content-Type": media_type}
+    api.answer("GET", "/events", content=recorded.text.encode(), headers=headers)
+
+    events = [event async for event in lekto.events.listen()]
+
+    assert [event.type for event in events] == ["document.updated"]
+
+
 async def test_listen_refused(api: Api, lekto: LektoClient) -> None:
     """A stream that Lekto refuses raises with the problem details."""
     api.answer("GET", "/events", 401, json={"title": "Unauthorized", "status": 401})

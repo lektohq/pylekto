@@ -28,8 +28,9 @@ class EventsResource(Resource):
         The events are thin: fetch the document for its state. There is no replay: after
         listening again, fetch the current state. Lekto ends the stream when the token is no
         longer valid; a connection silent for 30 s (Lekto keeps a living one busy) raises
-        :class:`~pylekto.LektoTimeoutError`. Whether and when to listen again is up to the
-        caller.
+        :class:`~pylekto.LektoTimeoutError`, an answer that is no event stream (the page of a
+        proxy) :class:`~pylekto.LektoResponseError`. Whether and when to listen again is up to
+        the caller.
 
         Args:
             document_id: Only the events of this document.
