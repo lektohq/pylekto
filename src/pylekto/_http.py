@@ -124,11 +124,19 @@ class Http:
         """GET the bytes of a file."""
         return (await self.request("GET", path)).content
 
-    async def lines(self, path: Path, *, params: Params | None = None) -> AsyncGenerator[str]:
+    async def lines(
+        self,
+        path: Path,
+        *,
+        params: Params | None = None,
+        on_first: Callable[[], None] | None = None,
+    ) -> AsyncGenerator[str]:
         """GET a stream and yield its lines as they come, until Lekto ends it.
 
         Lekto may send no event for long but keeps the stream alive with comments: after 30 s
-        without a byte it raises :class:`LektoTimeoutError`.
+        without a byte it raises :class:`LektoTimeoutError`. ``on_first`` is called once, with
+        the first line: the status alone does not show that a stream flows, a proxy may hold
+        back one it answered with 200.
         """
         target = address(path)
         try:
@@ -138,7 +146,11 @@ class Http:
                 if response.is_error:
                     await response.aread()
                     raise api_error(response)
+                first = True
                 async for line in response.aiter_lines():
+                    if first and on_first is not None:
+                        on_first()
+                    first = False
                     yield line
         except httpx2.RequestError as error:
             raise _request_error(error, "GET", target) from error

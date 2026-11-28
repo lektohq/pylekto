@@ -78,7 +78,9 @@ tag.
 - Streams (`GET /events`) are read line by line (`Http.lines`) with a read timeout of 30 s
   (`STREAM`), twice the 15 s after which Lekto sends a keep-alive comment, and parsed by `_sse.py`
   as the HTML standard says; a recording of a stream holds its text (`Recording.listen`, with a
-  request that triggers events).
+  request that triggers events). `events.listen(on_connected=...)` calls back once, with the first
+  line of the stream, whichever it is (Lekto sends `: ready` at once): only a line shows that the
+  stream flows, a proxy may answer 200 and hold it back.
 - `models.py` is generated; a test fails if it differs from what `script/generate_models.py`
   writes from `openapi.json`. Ruff and typos leave it out; mypy checks it.
 - Every choice (an `enum` of strings, in the models) is `Literal[...] | Unknown`:

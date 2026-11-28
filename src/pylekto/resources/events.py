@@ -12,7 +12,7 @@ from pylekto.models import EventMessage
 from pylekto.resources._base import Resource
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
+    from collections.abc import AsyncIterator, Callable
 
     from pylekto.types import Id
 
@@ -20,7 +20,9 @@ if TYPE_CHECKING:
 class EventsResource(Resource):
     """The events of the documents the token's user may read, as Lekto sends them."""
 
-    async def listen(self, *, document_id: Id | None = None) -> AsyncIterator[EventMessage]:
+    async def listen(
+        self, *, document_id: Id | None = None, on_connected: Callable[[], None] | None = None
+    ) -> AsyncIterator[EventMessage]:
         """Yield the events as they happen, until Lekto ends the stream.
 
         The events are thin: fetch the document for its state. There is no replay: after
@@ -31,17 +33,22 @@ class EventsResource(Resource):
 
         Args:
             document_id: Only the events of this document.
+            on_connected: Called once, before the first event, as soon as the stream flows:
+                with its first line, which Lekto sends at once. A stream a proxy holds back
+                never calls it and ends with the :class:`~pylekto.LektoTimeoutError`.
 
         Example::
 
-            async for event in lekto.events.listen():
+            async for event in lekto.events.listen(on_connected=lambda: print("listening")):
                 if event.type == "document.filed":
                     document = await lekto.documents.get(event.document_id)
 
         """
         # Closed here, not when the garbage collector finds it: a raise would leave it open.
         async with aclosing(
-            self._http.lines("/events", params=query(document_id=document_id))
+            self._http.lines(
+                "/events", params=query(document_id=document_id), on_first=on_connected
+            )
         ) as lines:
             async for event in server_sent_events(lines):
                 try:
