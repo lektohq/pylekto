@@ -13,6 +13,7 @@ from collections.abc import (
 from contextlib import asynccontextmanager
 from datetime import date
 from http import HTTPStatus
+from math import isfinite
 from string.templatelib import Template
 from typing import IO, Any, Protocol, TypedDict, Unpack
 from urllib.parse import quote
@@ -333,11 +334,12 @@ def _problem(response: httpx2.Response) -> Problem:
 
 
 def _retry_after(header: str | None) -> float | None:
-    """Seconds from a ``Retry-After`` header that holds a number."""
+    """Seconds from a ``Retry-After`` header that holds a number; ``inf`` and ``nan`` are none."""
     try:
-        return max(float(header), 0.0) if header is not None else None
+        seconds = float(header) if header is not None else None
     except ValueError:
         return None
+    return max(seconds, 0.0) if seconds is not None and isfinite(seconds) else None
 
 
 class CursorPage[T](Protocol):

@@ -124,12 +124,22 @@ async def test_error_with_other_json_keeps_its_text(api: Api, lekto: LektoClient
 
 @pytest.mark.parametrize(
     ("header", "seconds"),
-    [("7", 7.0), ("0.5", 0.5), ("-3", 0.0), ("Wed, 21 Oct 2026 07:28:00 GMT", None), (None, None)],
+    [
+        ("7", 7.0),
+        ("0.5", 0.5),
+        ("-3", 0.0),
+        ("Wed, 21 Oct 2026 07:28:00 GMT", None),
+        ("inf", None),
+        ("-inf", None),
+        ("1e999", None),
+        ("nan", None),
+        (None, None),
+    ],
 )
 async def test_rate_limit_says_how_long_to_wait(
     api: Api, lekto: LektoClient, header: str | None, seconds: float | None
 ) -> None:
-    """``Retry-After`` in seconds becomes ``retry_after``; any other form is None."""
+    """``Retry-After`` in seconds becomes ``retry_after``; any other form, or no end, is None."""
     headers = {} if header is None else {"Retry-After": header}
     api.answer("GET", "/auth/me", 429, json={"title": "Too Many", "status": 429}, headers=headers)
     with pytest.raises(LektoRateLimitError) as raised:
