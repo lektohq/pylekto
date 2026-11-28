@@ -12,7 +12,7 @@ from pylekto.models import EventMessage
 from pylekto.resources._base import Resource
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Callable
+    from collections.abc import AsyncGenerator, AsyncIterator, Callable
 
     from pylekto.types import Id
 
@@ -22,7 +22,7 @@ class EventsResource(Resource):
 
     async def listen(
         self, *, document_id: Id | None = None, on_connected: Callable[[], None] | None = None
-    ) -> AsyncIterator[EventMessage]:
+    ) -> AsyncGenerator[EventMessage]:
         """Yield the events as they happen, until Lekto ends the stream.
 
         The events are thin: fetch the document for its state. There is no replay: after
@@ -30,7 +30,9 @@ class EventsResource(Resource):
         longer valid; a connection silent for 30 s (Lekto keeps a living one busy) raises
         :class:`~pylekto.LektoTimeoutError`, an answer that is no event stream (the page of a
         proxy) :class:`~pylekto.LektoResponseError`. Whether and when to listen again is up to
-        the caller.
+        the caller. To stop before the stream ends, close it (``aclose()``, or
+        ``contextlib.aclosing``): leaving the loop alone keeps the connection open until the
+        garbage collector finds it.
 
         Args:
             document_id: Only the events of this document.

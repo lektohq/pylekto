@@ -1,5 +1,6 @@
 """Tests of the event stream and the reading of server-sent events."""
 
+from contextlib import aclosing
 from typing import TYPE_CHECKING, Any
 
 import httpx2
@@ -190,6 +191,21 @@ async def test_listen_to_an_event_stream_named_otherwise(
     events = [event async for event in lekto.events.listen()]
 
     assert [event.type for event in events] == ["document.updated"]
+
+
+async def test_listen_can_be_closed_early(api: Api, lekto: LektoClient) -> None:
+    """The stream is a generator: closing it after an event closes Lekto's answer at once."""
+    recorded = api.replay("events_listen")
+    assert recorded.text is not None
+    stream = Closes(recorded.text)
+    api.answer("GET", "/events", stream=stream, headers=STREAM)
+
+    async with aclosing(lekto.events.listen()) as events:
+        first = await anext(events)
+        assert not stream.closed
+
+    assert first.type == "document.updated"
+    assert stream.closed
 
 
 async def test_listen_refused(api: Api, lekto: LektoClient) -> None:
