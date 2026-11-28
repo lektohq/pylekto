@@ -141,7 +141,8 @@ class Http:
                     await response.aread()
                     raise api_error(response)
                 if not _is_event_stream(response):
-                    raise _unfit(response, "is no event stream")
+                    text = f"Lekto's answer to GET {target} is no event stream"
+                    raise LektoResponseError(text)
                 async for line in response.aiter_lines():
                     yield line
         except httpx2.RequestError as error:
